@@ -3,7 +3,7 @@ import { Grid, IconButton, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import "./login.css";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
 import validationSchema from "../../ValidationSchema/loginPage";
@@ -39,6 +39,13 @@ const Login = () => {
       <Grid item xl={6} lg={6} md={6} className="loginHero-image">
         <img src={loginHeroImage} alt="Login Page" width="100%" height="100%" />
       </Grid>
+      <div className="dm-btn">
+        <Button
+          name={<DarkModeOutlinedIcon fontSize="large" />}
+          variant="outlined"
+          size="large"
+        />
+      </div>
       <Grid
         item
         xl={6}

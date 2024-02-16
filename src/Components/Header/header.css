@@ -1,0 +1,30 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 1.25rem;
+}
+
+.header-logo-image img {
+    height: 4.625rem;
+}
+
+.header-user-detail {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.header-nav-links {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    padding: 1.25rem;
+}
+
+.header-nav-links li {
+    font-size: larger;
+}

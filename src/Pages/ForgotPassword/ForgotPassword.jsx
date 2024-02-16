@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, InputAdornment, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import "./forgotPassword.css";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
 import validationSchema from "../../ValidationSchema/loginPage";
@@ -30,6 +30,14 @@ const ForgotPassword = () => {
       <Grid item xl={6} lg={6} md={6} className="loginHero-image">
         <img src={loginHeroImage} alt="Login Page" width="100%" height="100%" />
       </Grid>
+      <div className="dm-btn">
+        <Button
+          name={<DarkModeOutlinedIcon fontSize="large" />}
+          variant="outlined"
+        //   color={theme.palette.primary}
+          size="large"
+        />
+      </div>
       <Grid item xl={6} lg={6} md={6} sm={12} xs={12} height="100%">
         <div className="bg-image"></div>
         <div className="right-page">
@@ -65,7 +73,7 @@ const ForgotPassword = () => {
               margin="normal"
             />
             <Button
-              className="primary-btn"
+              className="btn"
               name="Reset Your Password"
               type="submit"
               fullWidth
@@ -73,10 +81,8 @@ const ForgotPassword = () => {
             />
           </form>
           <div className="link">
-            <Link to={AppRoutes.LOGIN}>
-              <ArrowBackIosNewIcon />
-              Back To Login
-            </Link>
+            <ArrowBackIosNewIcon color="#67abb1" />
+            <Link to={AppRoutes.LOGIN}>Back To Login</Link>
           </div>
           <div className="footer-links-fp">
             <Link to="#">Terms of Condition</Link>
