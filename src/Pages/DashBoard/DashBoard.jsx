@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header/Header";
 import { Box, Grid, Typography } from "@mui/material";
 import NewReleasesOutlinedIcon from "@mui/icons-material/NewReleasesOutlined";
@@ -12,6 +12,22 @@ import RequestPageOutlinedIcon from "@mui/icons-material/RequestPageOutlined";
 import "./dashboard.css";
 import { Button } from "../../Components/Button/Button";
 import MyTable from "../../Components/Table/MyTable";
+import {
+  rows,
+  newColumns,
+  newDropdown,
+  indicator,
+  pendingColumns,
+  pendingDropdown,
+  activeColumns,
+  activeDropdown,
+  concludeColumns,
+  concludeDropdown,
+  toCloseColumns,
+  toCloseDropdown,
+  unpaidColumns,
+  unpaidDropdown,
+} from "../../constants/tableData";
 import {
   primaryTriangle,
   secondaryTriangle,
@@ -69,11 +85,46 @@ const cards = [
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState(0);
+  const [columns, setColumns] = useState(newColumns);
+  const [dropDown, setDropDown] = useState(newDropdown);
 
   const handleClick = (index) => {
     setActiveButton(index);
     setIsActive(true);
   };
+
+  useEffect(() => {
+    switch (activeButton) {
+      case 0:
+        setColumns(newColumns);
+        setDropDown(newDropdown);
+        break;
+      case 1:
+        setColumns(pendingColumns);
+        setDropDown(pendingDropdown);
+        break;
+      case 2:
+        setColumns(activeColumns);
+        setDropDown(activeDropdown);
+        break;
+      case 3:
+        setColumns(concludeColumns);
+        setDropDown(concludeDropdown);
+        break;
+      case 4:
+        setColumns(toCloseColumns);
+        setDropDown(toCloseDropdown);
+        break;
+      case 5:
+        setColumns(unpaidColumns);
+        setDropDown(unpaidDropdown);
+        break;
+      default:
+        setColumns(newColumns);
+        setDropDown(newDropdown);
+    }
+  }, [activeButton]);
+
   return (
     <Box>
       <Header />
@@ -171,7 +222,12 @@ const DashBoard = () => {
             </Grid>
           </Grid>
         </Box>
-        <MyTable />
+        <MyTable
+          rows={rows}
+          columns={columns}
+          dropDown={dropDown}
+          indicator={indicator}
+        />
       </Box>
     </Box>
   );
