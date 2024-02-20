@@ -4,6 +4,7 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import { AppRoutes } from "./constants/routes";
 import "./App.css";
 import DashBoard from "./Pages/DashBoard/DashBoard";
+import ViewReservation from "./Pages/ViewReservation/ViewReservation";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path={AppRoutes.LOGIN} element={<Login />} />
         <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
         <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
+        <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
       </Routes>
     </div>
   );

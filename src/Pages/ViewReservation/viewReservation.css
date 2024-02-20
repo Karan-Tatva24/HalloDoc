@@ -1,0 +1,47 @@
+.main-container {
+    background-color: #f6f6f6;
+}
+
+.main-wrapper {
+    padding: 1rem 3rem;
+}
+
+.form-container {
+    padding: 1.25rem;
+}
+
+.form-input {
+    margin-bottom: 1.25rem !important;
+}
+
+.input-container {
+    margin-top: 0.75rem !important;
+    margin-bottom: 1.8rem !important;
+}
+
+.form-btn {
+    height: 3.438rem !important;
+}
+
+.phone-icon {
+    margin-right: 1rem;
+}
+
+.patient-btn {
+    height: 1.5rem;
+    border-radius: 10px;
+    background-color: #1dc01d;
+    color: white;
+    padding: 0.25rem 1rem;
+    margin-left: 5px;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+}
+
+/* Media query */
+
+@media (max-width: 600px) {
+    .back-btn {
+        display: none !important;
+    }
+}

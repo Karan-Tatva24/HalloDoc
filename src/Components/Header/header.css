@@ -6,6 +6,15 @@
     padding: 1.25rem;
 }
 
+.dark-btn {
+    max-width: 2.3rem !important;
+    height: 2.3rem !important;
+}
+
+.toggle-btn {
+    display: none !important;
+}
+
 .header-logo-image img {
     height: 4.625rem;
 }
@@ -20,11 +29,50 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 2rem;
+    column-gap: 2rem;
     list-style: none;
     padding: 1.25rem;
 }
 
 .header-nav-links li {
     font-size: larger;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a.active {
+    border-bottom: 3px solid aqua;
+}
+
+/* Media query */
+
+@media (max-width: 900px) {
+    .toggle-btn {
+        display: block !important;
+    }
+
+    .dark-btn {
+        display: none !important;
+    }
+
+    .log-out-btn {
+        display: none !important;
+    }
+
+    .header-nav-links {
+        display: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-logo-image {
+        display: none !important;
+    }
+
+    .header-user-detail p {
+        display: none !important;
+    }
 }

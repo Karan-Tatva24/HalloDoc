@@ -76,9 +76,9 @@ const Login = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               helperText={formik.touched.username && formik.errors.username}
+              error={formik.touched.username && Boolean(formik.errors.username)}
               type="text"
               variant="outlined"
-              error={formik.touched.username && Boolean(formik.errors.username)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

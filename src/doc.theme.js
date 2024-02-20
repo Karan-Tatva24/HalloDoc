@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
-// const primary = "#59B997";
+const primary = "#01bce9";
 // const primaryContrast = "#F6F6F6";
 // const secondary = "#4B4B4B";
 // const secondaryMain = "#424242";
@@ -9,7 +9,7 @@ import { createTheme } from "@mui/material";
 // const grey = "#E9E9E9";
 // const greyLight = "#FAFAFA";
 // const greyDark = "#A5A5A5";
-// const white = "#FFFFFF";
+const white = "#FFFFFF";
 // const whiteLight = "#EAEAEA";
 // const black = "#000000";
 // const blue = "#E6F4FF";
@@ -22,6 +22,11 @@ import { createTheme } from "@mui/material";
 // const primaryLight = "#3EAE86";
 
 export const halloDocTheme = createTheme({
+  palette: {
+    primary: {
+      main: primary,
+    },
+  },
   components: {
     MuiTableCell: {
       styleOverrides: {
@@ -42,6 +47,28 @@ export const halloDocTheme = createTheme({
           "&.drop-list .MuiInputBase-root": {
             width: "15rem",
           },
+        },
+      },
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          color: white,
+          "&.icon-btn": {
+            minWidth: "33px",
+            width: "100%",
+            padding: 0,
+          },
+          "&.log-out-btn": {
+            width: "100px",
+          },
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          minWidth: "250px",
         },
       },
     },
