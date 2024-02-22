@@ -33,11 +33,11 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(4);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const notify = () => toast("Copied Succsessfully");
+  const notify = () => toast.success("Copied Succsessfully");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -302,7 +302,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 20]}
+          rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={filteredData.length}
           rowsPerPage={rowsPerPage}
