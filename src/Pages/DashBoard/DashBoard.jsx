@@ -23,12 +23,25 @@ import {
   unpaidDropdown,
 } from "../../constants/tableData";
 import "./dashboard.css";
+import CancelModal from "../../Components/Modal/CancelModal";
+import AssignModal from "../../Components/Modal/AssignModal";
+import ConfirmBlockModal from "../../Components/Modal/ConfirmBlockModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState(0);
   const [columns, setColumns] = useState(newColumns);
   const [dropDown, setDropDown] = useState(newDropdown);
+  const [modalName, setModalName] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (name) => {
+    setModalName(name);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setModalName("");
+  };
 
   const handleClick = (index) => {
     setActiveButton(index);
@@ -68,110 +81,128 @@ const DashBoard = () => {
   }, [activeButton]);
 
   return (
-    <Box>
-      <Header />
-      <Box className="dashboard-container">
-        <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
-          {cards.map((card, index) => {
-            return (
-              <Grid
-                key={index}
-                container
-                justifyContent="center"
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={2}
-              >
-                <Button
-                  color={card.color}
-                  variant={
-                    isActive && activeButton === index
-                      ? "contained"
-                      : "outlined"
-                  }
-                  className="card-btn"
-                  fullWidth
-                  onClick={() => handleClick(index)}
+    <>
+      <Box>
+        <Header />
+        <Box className="dashboard-container">
+          <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
+            {cards.map((card, index) => {
+              return (
+                <Grid
+                  key={index}
+                  container
+                  justifyContent="center"
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={2}
                 >
-                  <Box className="card-content-heading">
-                    {card.icon}
-                    <Typography variant="body1">
-                      {card.applicationState}
+                  <Button
+                    color={card.color}
+                    variant={
+                      isActive && activeButton === index
+                        ? "contained"
+                        : "outlined"
+                    }
+                    className="card-btn"
+                    fullWidth
+                    onClick={() => handleClick(index)}
+                  >
+                    <Box className="card-content-heading">
+                      {card.icon}
+                      <Typography variant="body1">
+                        {card.applicationState}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h5">
+                      <b>{card.figure}</b>
                     </Typography>
-                  </Box>
-                  <Typography variant="h5">
-                    <b>{card.figure}</b>
-                  </Typography>
-                </Button>
-                {isActive && activeButton === index ? (
-                  <img
-                    src={card.toolTip}
-                    alt="triangle"
-                    className="btn-triangle"
-                  />
-                ) : null}
-              </Grid>
-            );
-          })}
-        </Grid>
-        <Box className="dashboard-text-btn">
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="baseline"
-            spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}
-          >
-            <Grid item xs={12} lg={5}>
-              <Typography variant="h5">
-                Patients<span className="state">(New)</span>
-              </Typography>
-            </Grid>
-            <Grid item xs={12} lg={7}>
-              <Box className="deshboard-btn">
-                <Button
-                  name="Send Link"
-                  variant="contained"
-                  startIcon={<SendOutlinedIcon />}
-                  className="btn"
-                />
-                <Button
-                  name="Create Request"
-                  variant="contained"
-                  startIcon={<RequestPageOutlinedIcon />}
-                  className="btn"
-                />
-                <Button
-                  name="Export"
-                  variant="contained"
-                  startIcon={<SendOutlinedIcon />}
-                  className="btn"
-                />
-                <Button
-                  name="Export All"
-                  variant="contained"
-                  startIcon={<SendOutlinedIcon />}
-                  className="btn"
-                />
-                <Button
-                  name="Request DTY Support"
-                  variant="contained"
-                  startIcon={<SendOutlinedIcon />}
-                  className="btn"
-                />
-              </Box>
-            </Grid>
+                  </Button>
+                  {isActive && activeButton === index ? (
+                    <img
+                      src={card.toolTip}
+                      alt="triangle"
+                      className="btn-triangle"
+                    />
+                  ) : null}
+                </Grid>
+              );
+            })}
           </Grid>
+          <Box className="dashboard-text-btn">
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="baseline"
+              spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}
+            >
+              <Grid item xs={12} lg={5}>
+                <Typography variant="h5">
+                  Patients<span className="state">(New)</span>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} lg={7}>
+                <Box className="deshboard-btn">
+                  <Button
+                    name="Send Link"
+                    variant="contained"
+                    startIcon={<SendOutlinedIcon />}
+                    className="btn"
+                  />
+                  <Button
+                    name="Create Request"
+                    variant="contained"
+                    startIcon={<RequestPageOutlinedIcon />}
+                    className="btn"
+                  />
+                  <Button
+                    name="Export"
+                    variant="contained"
+                    startIcon={<SendOutlinedIcon />}
+                    className="btn"
+                  />
+                  <Button
+                    name="Export All"
+                    variant="contained"
+                    startIcon={<SendOutlinedIcon />}
+                    className="btn"
+                  />
+                  <Button
+                    name="Request DTY Support"
+                    variant="contained"
+                    startIcon={<SendOutlinedIcon />}
+                    className="btn"
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+          <MyTable
+            rows={rows}
+            columns={columns}
+            dropDown={dropDown}
+            indicator={indicator}
+            onClick={handleOpen}
+          />
         </Box>
-        <MyTable
-          rows={rows}
-          columns={columns}
-          dropDown={dropDown}
-          indicator={indicator}
-        />
       </Box>
-    </Box>
+      <CancelModal
+        open={open && modalName === "Cancel Case"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Cancel Case" ? handleOpen : null}
+      />
+      <ConfirmBlockModal
+        open={open && modalName === "Block Patient"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Block Patient" ? handleOpen : null}
+      />
+      <AssignModal
+        open={open && modalName === "Assign Case"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Assign Case" ? handleOpen : null}
+      />
+    </>
   );
 };
 

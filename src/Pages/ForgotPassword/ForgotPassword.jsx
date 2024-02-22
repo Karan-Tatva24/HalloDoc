@@ -5,11 +5,11 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
-import validationSchema from "../../ValidationSchema/loginPage";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button/Button";
+import { forgotPasswordSchema } from "../../ValidationSchema/ValidationSchema";
 
 const initialValues = {
   username: "",
@@ -21,7 +21,7 @@ const onSubmit = (values) => {
 const ForgotPassword = () => {
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema : forgotPasswordSchema,
     onSubmit,
   });
 

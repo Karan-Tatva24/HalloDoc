@@ -45,7 +45,34 @@ a {
 
 a.active {
     border-bottom: 3px solid aqua;
+    color: aqua;
 }
+
+.sidebar {
+    min-width: 238px;
+    transition: all 0.5s ease;
+}
+
+.sidelinks {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding-left: 30px;
+}
+
+.sidelinks:hover,
+.sidelinks:focus,
+.sidelinks:active {
+    background-color: #3eae86;
+    color: #ffffff;
+}
+
+.sidebar .active {
+    background-color: #4cc59a;
+    color: #ffffff;
+    border-bottom: none;
+}
+
 
 /* Media query */
 

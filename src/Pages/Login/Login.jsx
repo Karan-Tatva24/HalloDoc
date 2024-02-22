@@ -6,26 +6,30 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
-import validationSchema from "../../ValidationSchema/loginPage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button/Button";
+import { useAuth } from "../../Utils/auth";
+import { loginSchema } from "../../ValidationSchema/ValidationSchema";
 
 const initialValues = {
   username: "",
   password: "",
 };
 
-const onSubmit = (values) => {
-  alert(JSON.stringify(values, null, 2));
-};
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const auth = useAuth();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
-    validationSchema,
-    onSubmit,
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      auth.login(values.username);
+      navigate(AppRoutes.DASHBOARD, { replace: true });
+      console.log(values);
+    },
   });
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

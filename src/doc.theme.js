@@ -9,7 +9,7 @@ const primary = "#01bce9";
 // const grey = "#E9E9E9";
 // const greyLight = "#FAFAFA";
 // const greyDark = "#A5A5A5";
-const white = "#FFFFFF";
+// const white = "#FFFFFF";
 // const whiteLight = "#EAEAEA";
 // const black = "#000000";
 // const blue = "#E6F4FF";
@@ -53,7 +53,6 @@ export const halloDocTheme = createTheme({
     MuiButtonBase: {
       styleOverrides: {
         root: {
-          color: white,
           "&.icon-btn": {
             minWidth: "33px",
             width: "100%",
@@ -69,6 +68,11 @@ export const halloDocTheme = createTheme({
       styleOverrides: {
         paper: {
           minWidth: "250px",
+        },
+        root: {
+          "&.sidebar .MuiDrawer-paper": {
+            backgroundColor: "#d1e7df",
+          },
         },
       },
     },

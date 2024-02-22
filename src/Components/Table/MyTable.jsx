@@ -24,13 +24,16 @@ import { Box } from "@mui/system";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button/Button";
 import "./table.css";
+import { AppRoutes } from "../../constants/routes";
+import { useNavigate } from "react-router-dom";
 
-const MyTable = ({ rows, columns, dropDown, indicator }) => {
+const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(4);
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -40,8 +43,27 @@ const MyTable = ({ rows, columns, dropDown, indicator }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (action) => {
     setAnchorEl(null);
+    switch (action) {
+      case "Assign Case":
+        onClick(action);
+        break;
+      case "Cancel Case":
+        onClick(action);
+        break;
+      case "View Case":
+        navigate(AppRoutes.VIEW_CASE);
+        break;
+      case "View Notes":
+        navigate(AppRoutes.VIEW_NOTES);
+        break;
+      case "Block Patient":
+        onClick(action);
+        break;
+      default:
+        break;
+    }
   };
 
   const copyButtonText = (btnId, event) => {
@@ -257,7 +279,7 @@ const MyTable = ({ rows, columns, dropDown, indicator }) => {
                                       return (
                                         <MenuItem
                                           key={data.id}
-                                          onClick={handleClose}
+                                          onClick={() => handleClose(data.name)}
                                           disableRipple
                                         >
                                           {data.icon}&nbsp;{data.name}
@@ -280,7 +302,7 @@ const MyTable = ({ rows, columns, dropDown, indicator }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 20]}
           component="div"
           count={filteredData.length}
           rowsPerPage={rowsPerPage}
