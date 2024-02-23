@@ -61,6 +61,9 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
       case "Block Patient":
         onClick(action);
         break;
+      case "View Upload":
+        navigate(AppRoutes.VIEW_UPLOAD);
+        break;
       default:
         break;
     }

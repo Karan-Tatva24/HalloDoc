@@ -1,25 +1,22 @@
+import React from "react";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import React from "react";
-import { loginHeading } from "../../assets/Images";
-import { Button } from "../Button/Button";
-import "./header.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
-import { useAuth } from "../../Utils/auth";
-import { useDispatch } from "react-redux";
+import { Button } from "../Button/Button";
+import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/loginSlice";
+import { loginHeading } from "../../assets/Images";
+import "./header.css";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
-  const auth = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    auth.logout();
     dispatch(logout());
     navigate(AppRoutes.LOGIN);
   };
@@ -34,7 +31,7 @@ const Header = () => {
           <img src={loginHeading} alt="HalloDoc" />
         </Box>
         <Box className="header-user-detail">
-          <Typography>Welcome&nbsp;{auth.user}</Typography>
+          <Typography>Welcome&nbsp;Karan</Typography>
           <Button
             name="Log Out"
             variant="outlined"
@@ -164,7 +161,7 @@ const Header = () => {
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Records
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink to={AppRoutes.LOGIN} className="sidelinks" onClick={handleLogout}>
           Logout
         </NavLink>
       </Drawer>
