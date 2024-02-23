@@ -8,6 +8,7 @@ import ViewReservation from "./Pages/ViewReservation/ViewReservation";
 import ViewNotes from "./Pages/ViewNotes/ViewNotes";
 import { AuthProvider } from "./Utils/auth";
 import { RequireAuth } from "./Utils/RequireAuth";
+import ViewUpload from "./Pages/ViewUpload/ViewUpload";
 
 function App() {
   return (
@@ -16,31 +17,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path={AppRoutes.LOGIN} element={<Login />} />
-          <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
-          <Route
-            path={AppRoutes.DASHBOARD}
-            element={
-              <RequireAuth>
-                <DashBoard />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={AppRoutes.VIEW_CASE}
-            element={
-              <RequireAuth>
-                <ViewReservation />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path={AppRoutes.VIEW_NOTES}
-            element={
-              <RequireAuth>
-                <ViewNotes />
-              </RequireAuth>
-            }
-          />
+          <Route element={<RequireAuth />}>
+            <Route
+              path={AppRoutes.FORGOTPASSWORD}
+              element={<ForgotPassword />}
+            />
+            <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
+            <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
+            <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
+          </Route>
+          <Route path={AppRoutes.VIEW_UPLOAD} element={<ViewUpload />} />
         </Routes>
       </AuthProvider>
     </div>

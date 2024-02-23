@@ -9,25 +9,30 @@ import { AppRoutes } from "../../constants/routes";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
 import { useAuth } from "../../Utils/auth";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/halloSlices/loginSlice";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const auth = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     auth.logout();
+    dispatch(logout());
     navigate(AppRoutes.LOGIN);
   };
 
   return (
     <Box>
       <Box className="header">
-        <NavLink to={AppRoutes.DASHBOARD}>
-          <Box className="header-logo-image">
-            <img src={loginHeading} alt="HalloDoc" />
-          </Box>
-        </NavLink>
+        <Box
+          className="header-logo-image"
+          onClick={() => navigate(AppRoutes.DASHBOARD)}
+        >
+          <img src={loginHeading} alt="HalloDoc" />
+        </Box>
         <Box className="header-user-detail">
           <Typography>Welcome&nbsp;{auth.user}</Typography>
           <Button

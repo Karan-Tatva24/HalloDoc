@@ -4,4 +4,5 @@ export const AppRoutes = {
   DASHBOARD: "/dashboard",
   VIEW_CASE: "/dashboard/viewcase",
   VIEW_NOTES: "/dashboard/viewnotes",
+  VIEW_UPLOAD:  "/dashboard/viewupload"
 };
