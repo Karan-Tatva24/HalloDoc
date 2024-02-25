@@ -76,7 +76,7 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Submit" variant="contained" />
+            <Button name="Submit" variant="contained" className="modal-btn" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

@@ -1,49 +1,53 @@
 .dashboard-container {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .state-box {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .state {
-    font-size: medium;
-    font-weight: 400;
-    margin-left: 5px;
+  font-size: medium;
+  font-weight: 400;
+  margin-left: 5px;
 }
 
 .dashboard-text-btn {
-    padding-top: 3rem;
+  padding-top: 3rem;
 }
 
 .deshboard-btn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .card-btn {
-    height: 6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start !important;
-    justify-content: space-around !important;
-    border-radius: 0.8rem !important;
+  height: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  justify-content: space-around !important;
+  border-radius: 0.8rem !important;
+}
+
+.active-card-btn {
+  color: white !important;
 }
 
 .btn-triangle {
-    width: 25px;
-    position: relative;
-    top: -2px;
-    z-index: 1;
+  width: 25px;
+  position: relative;
+  top: -2px;
+  z-index: 1;
 }
 
 .card-btn .card-content-heading {
-    display: flex;
-    gap: 0.625rem;
+  display: flex;
+  gap: 0.625rem;
 }

@@ -1,80 +1,95 @@
 .my-table-container {
-    border: 1px solid #ddd;
-    margin-top: 2rem;
+  border: 1px solid #ddd;
+  margin-top: 2rem;
 }
 
 .table-head {
-    padding: 1rem 1rem 0rem 1rem;
+  padding: 1rem 1rem 0rem 1rem;
 }
 
 .my-table-container table {
-    border-collapse: collapse;
-    width: 100%;
+  border-collapse: collapse;
+  width: 100%;
 }
 
 .search-dropdown {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.indicator-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 30px;
 }
 
 .my-table-container th,
 .my-table-container td {
-    padding: 8px;
-    text-align: left;
+  padding: 8px;
+  text-align: left;
 }
 
 .dropdown {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .requestor-patient {
-    background-color: rgb(73, 187, 73) !important;
+  background-color: rgb(73, 187, 73) !important;
 }
 
 .requestor-patient td {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 
 .requestor-familyfriend {
-    background-color: orange !important;
+  background-color: orange !important;
 }
 
 .requestor-familyfriend td {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 
 .requestor-business {
-    background-color: rgba(168, 124, 131, 0.938) !important;
+  background-color: rgba(168, 124, 131, 0.938) !important;
 }
 
 .requestor-business td {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 
 .requestor-concierge {
-    background-color: blue !important;
+  background-color: blue !important;
 }
 
 .requestor-concierge td {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 
 .requestor-vip {
-    background-color: purple !important;
+  background-color: purple !important;
 }
 
 .requestor-vip td {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 
 .table-head-label {
-    font-weight: bold !important;
+  font-weight: bold !important;
 }
 
 .phone-btn {
-    border-radius: 10px !important;
+  border-radius: 10px !important;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -60,6 +60,9 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         break;
       case "Block Patient":
         onClick(action);
+        break;
+      case "View Upload":
+        navigate(AppRoutes.VIEW_UPLOAD);
         break;
       default:
         break;
@@ -131,7 +134,10 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
     );
   };
 
-  const filteredData = filterRows(rows, searchTerm);
+  const filteredData = useMemo(
+    () => filterRows(rows, searchTerm),
+    [rows, searchTerm, filterRows]
+  );
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -187,25 +193,21 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
             </Input>
           </Box>
         </Grid>
-        <Grid container justifyContent={"flex-end"} item xs={12} md={8} lg={6}>
+        <Grid container justifyContent="flex-end" item xs={12} md={8} lg={6}>
           <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
             <Button name="All" variant="outlined" />
 
             {indicator.map((value, index) => {
               return (
-                <React.Fragment key={index}>
+                <Box key={index} className="indicators">
                   <span
+                    className="indicator-point"
                     style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
                       backgroundColor: value.color,
-                      display: "inline-block",
-                      marginLeft: "30px",
                     }}
                   ></span>
                   <Typography ml={1}>{value.name}</Typography>
-                </React.Fragment>
+                </Box>
               );
             })}
           </Box>

@@ -6,29 +6,26 @@ import "./App.css";
 import DashBoard from "./Pages/DashBoard/DashBoard";
 import ViewReservation from "./Pages/ViewReservation/ViewReservation";
 import ViewNotes from "./Pages/ViewNotes/ViewNotes";
-import { AuthProvider } from "./Utils/auth";
 import { RequireAuth } from "./Utils/RequireAuth";
 import ViewUpload from "./Pages/ViewUpload/ViewUpload";
+import { BackLoginAuth } from "./Utils/BackLoginAuth";
 
 function App() {
   return (
     <div className="App">
-      <AuthProvider>
-        <Routes>
+      <Routes>
+        <Route element={<BackLoginAuth />}>
           <Route path="/" element={<Login />} />
           <Route path={AppRoutes.LOGIN} element={<Login />} />
-          <Route element={<RequireAuth />}>
-            <Route
-              path={AppRoutes.FORGOTPASSWORD}
-              element={<ForgotPassword />}
-            />
-            <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
-            <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
-            <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
-          </Route>
+        </Route>
+        <Route element={<RequireAuth />}>
+          <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
+          <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
+          <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
+          <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
           <Route path={AppRoutes.VIEW_UPLOAD} element={<ViewUpload />} />
-        </Routes>
-      </AuthProvider>
+        </Route>
+      </Routes>
     </div>
   );
 }

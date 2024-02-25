@@ -105,7 +105,11 @@ const DashBoard = () => {
                         ? "contained"
                         : "outlined"
                     }
-                    className="card-btn"
+                    className={
+                      isActive && activeButton === index
+                        ? "active-card-btn card-btn"
+                        : "card-btn"
+                    }
                     fullWidth
                     onClick={() => handleClick(index)}
                   >
