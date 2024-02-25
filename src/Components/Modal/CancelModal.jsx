@@ -6,7 +6,6 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button/Button";
 import { cancleModalSchema } from "../../ValidationSchema/ValidationSchema";
 
-
 const CancelModal = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
     initialValues: {
@@ -66,7 +65,7 @@ const CancelModal = ({ open, handleClose, handleOpen }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Conform" variant="contained" />
+            <Button name="Conform" variant="contained" className="modal-btn" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

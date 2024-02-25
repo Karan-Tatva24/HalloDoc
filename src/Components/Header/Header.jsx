@@ -137,7 +137,7 @@ const Header = () => {
           <CloseOutlinedIcon
             onClick={() => setOpen(false)}
             id="close-icon"
-            sx={{ position: "initial" }}
+            sx={{ position: "initial", cursor: "pointer" }}
           />
         </Box>
         <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">
@@ -161,7 +161,11 @@ const Header = () => {
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Records
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks" onClick={handleLogout}>
+        <NavLink
+          to={AppRoutes.LOGIN}
+          className="sidelinks"
+          onClick={handleLogout}
+        >
           Logout
         </NavLink>
       </Drawer>
