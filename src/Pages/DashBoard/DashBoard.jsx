@@ -26,6 +26,7 @@ import "./dashboard.css";
 import CancelModal from "../../Components/Modal/CancelModal";
 import AssignModal from "../../Components/Modal/AssignModal";
 import ConfirmBlockModal from "../../Components/Modal/ConfirmBlockModal";
+import TransferRequest from "../../Components/Modal/TransferRequest";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -105,7 +106,11 @@ const DashBoard = () => {
                         ? "contained"
                         : "outlined"
                     }
-                    className="card-btn"
+                    className={
+                      isActive && activeButton === index
+                        ? "active-card-btn card-btn"
+                        : "card-btn"
+                    }
                     fullWidth
                     onClick={() => handleClick(index)}
                   >
@@ -201,6 +206,11 @@ const DashBoard = () => {
         open={open && modalName === "Assign Case"}
         handleClose={handleClose}
         handleOpen={modalName === "Assign Case" ? handleOpen : null}
+      />
+      <TransferRequest
+        open={open && modalName === "Transfer"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Transfer" ? handleOpen : null}
       />
     </>
   );

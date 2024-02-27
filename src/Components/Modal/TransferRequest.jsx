@@ -4,16 +4,16 @@ import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button/Button";
-import { assignModalSchema } from "../../ValidationSchema/ValidationSchema";
+import { transferModalSchema } from "../../ValidationSchema/ValidationSchema";
 
-const AssignModal = ({ open, handleClose, handleOpen }) => {
+const TransferRequest = ({ open, handleClose, handleOpen }) => {
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
       description: "",
       physician: "",
     },
-    validationSchema: assignModalSchema,
+    validationSchema: transferModalSchema,
     onSubmit: (values) => {
       console.log("submmitted", values);
     },
@@ -23,12 +23,12 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
       open={open}
       handleOpen={handleOpen}
       handleClose={handleClose}
-      header="Assign Request"
+      header="Transfer Request"
     >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">
-            To assign this request, searach and select another Physician
+            To transfer this request, searach and select another Physician
           </Typography>
           <Input
             fullWidth
@@ -90,4 +90,4 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
   );
 };
 
-export default AssignModal;
+export default TransferRequest;

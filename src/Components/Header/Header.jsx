@@ -1,25 +1,22 @@
-import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import React from "react";
-import { loginHeading } from "../../assets/Images";
-import { Button } from "../Button/Button";
-import "./header.css";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
+import { Box, Divider, Drawer, Typography } from "@mui/material";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
-import { useAuth } from "../../Utils/auth";
-import { useDispatch } from "react-redux";
+import { Button } from "../Button/Button";
+import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/loginSlice";
+import { loginHeading } from "../../assets/Images";
+import "./header.css";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
-  const auth = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    auth.logout();
     dispatch(logout());
     navigate(AppRoutes.LOGIN);
   };
@@ -34,7 +31,7 @@ const Header = () => {
           <img src={loginHeading} alt="HalloDoc" />
         </Box>
         <Box className="header-user-detail">
-          <Typography>Welcome&nbsp;{auth.user}</Typography>
+          <Typography>Welcome&nbsp;Karan</Typography>
           <Button
             name="Log Out"
             variant="outlined"
@@ -43,9 +40,7 @@ const Header = () => {
             onClick={handleLogout}
           />
           <Button variant="outlined" size="large" className="dark-btn icon-btn">
-            <IconButton size="small">
-              <DarkModeOutlinedIcon />
-            </IconButton>
+            <DarkModeOutlinedIcon />
           </Button>
           <Button
             variant="outlined"
@@ -53,9 +48,7 @@ const Header = () => {
             className="toggle-btn icon-btn"
             onClick={() => setOpen(true)}
           >
-            <IconButton variant="outlined" color="neutral">
-              <Menu />
-            </IconButton>
+            <Menu />
           </Button>
         </Box>
       </Box>
@@ -121,28 +114,23 @@ const Header = () => {
 
       <Drawer open={open} onClose={() => setOpen(false)} className="sidebar">
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 0.5,
-            ml: "auto",
-            mt: 1,
-            mr: 2,
-          }}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={2}
+          p={1}
         >
-          <Button variant="outlined" size="large" className="dark-btn icon-btn">
-            <IconButton size="small">
-              <DarkModeOutlinedIcon />
-            </IconButton>
+          <Button variant="outlined" color="info">
+            <DarkModeOutlinedIcon />
           </Button>
 
           <CloseOutlinedIcon
             onClick={() => setOpen(false)}
             id="close-icon"
-            sx={{ position: "initial" }}
+            sx={{ position: "initial", cursor: "pointer" }}
           />
         </Box>
+
         <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">
           Dashboard
         </NavLink>
@@ -164,7 +152,11 @@ const Header = () => {
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Records
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink
+          to={AppRoutes.LOGIN}
+          className="sidelinks"
+          onClick={handleLogout}
+        >
           Logout
         </NavLink>
       </Drawer>

@@ -484,7 +484,7 @@ export const pendingDropdown = [
   },
   {
     id: "4",
-    name: "Transfer ",
+    name: "Transfer",
     icon: <ListAltOutlinedIcon />,
   },
   {

@@ -63,12 +63,12 @@ a.active {
 .sidelinks:hover,
 .sidelinks:focus,
 .sidelinks:active {
-    background-color: #3eae86;
+    background-color: #3e7aae;
     color: #ffffff;
 }
 
 .sidebar .active {
-    background-color: #4cc59a;
+    background-color: #4c8dc5;
     color: #ffffff;
     border-bottom: none;
 }

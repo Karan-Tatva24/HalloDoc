@@ -1,0 +1,16 @@
+.order-main-container {
+    background-color: #f6f6f6;
+}
+
+.order-main-wrapper {
+    padding: 1rem 3rem;
+}
+
+.order-paper {
+    padding: 13px;
+    border-radius: 16px !important;
+}
+
+.order-btn {
+    color: #ffffff !important;
+}

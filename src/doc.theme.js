@@ -71,7 +71,7 @@ export const halloDocTheme = createTheme({
         },
         root: {
           "&.sidebar .MuiDrawer-paper": {
-            backgroundColor: "#d1e7df",
+            backgroundColor: "#c7ecf2",
           },
         },
       },
