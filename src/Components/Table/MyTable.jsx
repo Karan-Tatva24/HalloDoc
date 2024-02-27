@@ -36,10 +36,12 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [rowId, setRowId] = useState(null);
   const open = Boolean(anchorEl);
   const notify = () => toast.success("Copied Succsessfully");
 
-  const handleClick = (event) => {
+  const handleClick = (event, id) => {
+    setRowId(id);
     setAnchorEl(event.currentTarget);
   };
 
@@ -69,6 +71,9 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         break;
       case "Transfer":
         onClick(action);
+        break;
+      case "Clear Case":
+        onClick(action, rowId);
         break;
       default:
         break;
@@ -136,13 +141,13 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
           (selectedColumn === "action" &&
             row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
         );
-      })
+      }),
     );
   };
 
   const filteredData = useMemo(
     () => filterRows(rows, searchTerm),
-    [rows, searchTerm, filterRows]
+    [rows, searchTerm, filterRows],
   );
 
   const handleAdditionalFilterChange = (event) => {
@@ -248,7 +253,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                         return (
                           <TableCell key={column.id}>
                             {["phoneNumber", "chatWith", "action"].includes(
-                              column.id
+                              column.id,
                             ) ? (
                               <>
                                 <Button
@@ -267,7 +272,8 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                                   onClick={(e) => {
                                     column.id === "phoneNumber" &&
                                       copyButtonText(row.id, e);
-                                    column.id === "action" && handleClick(e);
+                                    column.id === "action" &&
+                                      handleClick(e, row.id);
                                   }}
                                 />
                                 {column.id === "phoneNumber" &&
@@ -279,7 +285,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                                       "aria-labelledby": "fade-button",
                                     }}
                                     anchorEl={anchorEl}
-                                    open={open}
+                                    open={open && row.id === rowId}
                                     onClose={handleClose}
                                     TransitionComponent={Fade}
                                   >

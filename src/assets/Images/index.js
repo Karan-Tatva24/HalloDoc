@@ -6,3 +6,4 @@ export const errorTriangle = require("./errorTriangle..svg").default;
 export const infoTriangle = require("./infoTriangle.svg").default;
 export const warningTriangle = require("./warningTriangle.svg").default;
 export const successTriangle = require("./successTriangle.svg").default;
+export const infoImage = require("./info.svg").default;

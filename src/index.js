@@ -18,5 +18,5 @@ root.render(
         <ToastContainer />
       </ThemeProvider>
     </BrowserRouter>
-  </Provider>
+  </Provider>,
 );

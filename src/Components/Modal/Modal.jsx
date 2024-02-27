@@ -26,6 +26,6 @@ const Modal = ({ open, handleClose, children, header }) => {
       </Box>
     </MuiModal>
   );
-}
+};
 
 export default Modal;

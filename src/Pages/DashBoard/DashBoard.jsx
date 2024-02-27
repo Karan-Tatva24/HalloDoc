@@ -27,6 +27,7 @@ import CancelModal from "../../Components/Modal/CancelModal";
 import AssignModal from "../../Components/Modal/AssignModal";
 import ConfirmBlockModal from "../../Components/Modal/ConfirmBlockModal";
 import TransferRequest from "../../Components/Modal/TransferRequest";
+import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -35,10 +36,20 @@ const DashBoard = () => {
   const [dropDown, setDropDown] = useState(newDropdown);
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = React.useState(false);
-  const handleOpen = (name) => {
+  const [rowId, setRowId] = useState(null);
+  const [filterRows, setFilterRows] = useState(rows);
+
+  const handleOpen = (name, id) => {
     setModalName(name);
+    setRowId(id);
     setOpen(true);
   };
+
+  const handleClear = (id) => {
+    setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
+    handleClose();
+  };
+
   const handleClose = () => {
     setOpen(false);
     setModalName("");
@@ -184,7 +195,7 @@ const DashBoard = () => {
             </Grid>
           </Box>
           <MyTable
-            rows={rows}
+            rows={filterRows}
             columns={columns}
             dropDown={dropDown}
             indicator={indicator}
@@ -211,6 +222,17 @@ const DashBoard = () => {
         open={open && modalName === "Transfer"}
         handleClose={handleClose}
         handleOpen={modalName === "Transfer" ? handleOpen : null}
+      />
+      <ClearCaseModal
+        open={open && modalName === "Clear Case"}
+        handleClose={handleClose}
+        handleClear={handleClear}
+        rowId={rowId}
+        handleOpen={
+          modalName === "Clear Case"
+            ? () => handleOpen("Clear Case", rowId)
+            : null
+        }
       />
     </>
   );

@@ -40,7 +40,7 @@ const ViewReservation = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
-    validationSchema:viewReservationSchema,
+    validationSchema: viewReservationSchema,
     onSubmit,
   });
 

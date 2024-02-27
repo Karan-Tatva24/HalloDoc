@@ -22,7 +22,7 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 import Header from "../../Components/Header/Header";
 import "./viewUpload.css";
 
-let rows = [
+const rows = [
   { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
   { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
   { id: 3, document: "Document 3", uploadDate: "2024-02-22" },
@@ -58,7 +58,7 @@ const ViewUpload = () => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -298,7 +298,7 @@ const ViewUpload = () => {
                           </Button>
                         </TableCell>
                       </TableRow>
-                    )
+                    ),
                   )}
                 </TableBody>
               </Table>

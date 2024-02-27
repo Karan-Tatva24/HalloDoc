@@ -21,7 +21,7 @@ const onSubmit = (values) => {
 const ForgotPassword = () => {
   const formik = useFormik({
     initialValues,
-    validationSchema : forgotPasswordSchema,
+    validationSchema: forgotPasswordSchema,
     onSubmit,
   });
 
@@ -34,7 +34,7 @@ const ForgotPassword = () => {
         <Button
           name={<DarkModeOutlinedIcon fontSize="large" />}
           variant="outlined"
-        //   color={theme.palette.primary}
+          //   color={theme.palette.primary}
           size="large"
         />
       </div>

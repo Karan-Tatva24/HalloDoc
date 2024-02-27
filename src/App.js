@@ -18,9 +18,9 @@ function App() {
         <Route element={<BackLoginAuth />}>
           <Route path="/" element={<Login />} />
           <Route path={AppRoutes.LOGIN} element={<Login />} />
+          <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
         </Route>
         <Route element={<RequireAuth />}>
-          <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
           <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
           <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
           <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
