@@ -55,3 +55,10 @@ export const orderDetails = Yup.object({
   orderDetail: Yup.string().required("orderDetail is required"),
   refillNumber: Yup.string().required("Refill number is required"),
 });
+
+export const sendAgreementSchema = Yup.object({
+  phone: Yup.string().required("Phone number is required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Phone number is required"),
+});

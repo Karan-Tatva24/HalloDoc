@@ -28,6 +28,7 @@ import AssignModal from "../../Components/Modal/AssignModal";
 import ConfirmBlockModal from "../../Components/Modal/ConfirmBlockModal";
 import TransferRequest from "../../Components/Modal/TransferRequest";
 import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
+import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -222,6 +223,11 @@ const DashBoard = () => {
         open={open && modalName === "Transfer"}
         handleClose={handleClose}
         handleOpen={modalName === "Transfer" ? handleOpen : null}
+      />
+      <SendAgreementModal
+        open={open && modalName === "Send Agreement"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Send Agreement" ? handleOpen : null}
       />
       <ClearCaseModal
         open={open && modalName === "Clear Case"}

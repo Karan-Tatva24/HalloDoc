@@ -24,3 +24,19 @@
 .modal-btn {
   color: white !important;
 }
+
+.text-dot {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.text-dot::before {
+  position: absolute;
+  content: "";
+  height: 0.8rem;
+  width: 0.8rem;
+  left: 0;
+  top: 0.313rem;
+  border-radius: 50%;
+  background-color: green;
+}

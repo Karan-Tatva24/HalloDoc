@@ -75,6 +75,9 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
       case "Clear Case":
         onClick(action, rowId);
         break;
+      case "Send Agreement":
+        onClick(action);
+        break;
       default:
         break;
     }
@@ -207,10 +210,13 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         <Grid container justifyContent="flex-end" item xs={12} md={8} lg={6}>
           <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
             <Button name="All" variant="outlined" />
-
             {indicator.map((value, index) => {
               return (
-                <Box key={index} className="indicators">
+                <Box
+                  key={index}
+                  className="indicators"
+                  onClick={() => setSelectIndicator(value.name)}
+                >
                   <span
                     className="indicator-point"
                     style={{
