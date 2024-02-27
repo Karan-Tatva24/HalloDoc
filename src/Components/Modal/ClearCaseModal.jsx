@@ -30,8 +30,8 @@ const ClearCaseModal = ({
           Confirmation for clear case
         </Typography>
         <Typography variant="body2" mt={3}>
-          Are sure you want to clear this request? Once clear this request then
-          you are not able to see this request
+          Are sure you want to clear this request? Once clear this
+          &emsp;&emsp;request then you are not able to see this request
         </Typography>
         <Box display="flex" gap={2} mt={5}>
           <Button
