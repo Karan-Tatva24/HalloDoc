@@ -6,4 +6,5 @@ export const AppRoutes = {
   VIEW_NOTES: "/dashboard/viewnotes",
   VIEW_UPLOAD: "/dashboard/viewupload",
   SEND_ORDER: "/dashboard/sendorder",
+  CLOSE_CASE: "/dashboard/closecase",
 };

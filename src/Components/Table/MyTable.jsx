@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
+  const [tableData, setTableData] = useState(rows);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
@@ -78,6 +79,9 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
       case "Send Agreement":
         onClick(action);
         break;
+      case "Close Case":
+        navigate(AppRoutes.CLOSE_CASE);
+        break;
       default:
         break;
     }
@@ -108,7 +112,8 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   };
 
   const filterRows = (rows, term) => {
-    return rows.filter((row) =>
+    setSearchTerm(term);
+    const filteredData = rows.filter((row) =>
       Object.entries(row).some(([key, value]) => {
         if (!value) {
           return false;
@@ -146,12 +151,21 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         );
       }),
     );
+    setTableData(filteredData);
   };
 
-  const filteredData = useMemo(
-    () => filterRows(rows, searchTerm),
-    [rows, searchTerm, filterRows],
-  );
+  const filterByIndicator = (indicatorValue) => {
+    if (indicatorValue === "all") return setTableData(rows);
+    else {
+      const filteredData = rows.filter((row) => {
+        const lowerCaseString = row.requestor.toLowerCase();
+        return lowerCaseString.includes(indicatorValue.toLowerCase())
+          ? true
+          : false;
+      });
+      setTableData(filteredData);
+    }
+  };
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
@@ -181,7 +195,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => filterRows(e.target.value)}
             />
             <Input
               className="search-text drop-list"
@@ -209,13 +223,17 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         </Grid>
         <Grid container justifyContent="flex-end" item xs={12} md={8} lg={6}>
           <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-            <Button name="All" variant="outlined" />
+            <Button
+              name="All"
+              variant="outlined"
+              onClick={() => filterByIndicator("all")}
+            />
             {indicator.map((value, index) => {
               return (
                 <Box
                   key={index}
                   className="indicators"
-                  onClick={() => setSelectIndicator(value.name)}
+                  onClick={() => filterByIndicator(value.name)}
                 >
                   <span
                     className="indicator-point"
@@ -247,7 +265,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData
+              {tableData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -324,7 +342,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={filteredData.length}
+          count={tableData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

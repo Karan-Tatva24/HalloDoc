@@ -62,3 +62,10 @@ export const sendAgreementSchema = Yup.object({
     .email("Invalid email")
     .required("Phone number is required"),
 });
+
+export const closeCaseSchema = Yup.object({
+  phone: Yup.string().required("Phone number is required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Phone number is required"),
+});

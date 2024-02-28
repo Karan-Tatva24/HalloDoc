@@ -10,6 +10,7 @@ import { RequireAuth } from "./Utils/RequireAuth";
 import ViewUpload from "./Pages/ViewUpload/ViewUpload";
 import { BackLoginAuth } from "./Utils/BackLoginAuth";
 import Order from "./Pages/OrderSend/Order";
+import CloseCase from "./Pages/CloseCase/CloseCase";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
           <Route path={AppRoutes.VIEW_UPLOAD} element={<ViewUpload />} />
           <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
+          <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
         </Route>
       </Routes>
     </div>
