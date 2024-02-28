@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import BasicModal from "./Modal";
 import { Input } from "../TextField/Input";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { blockModalSchema } from "../../ValidationSchema/ValidationSchema";
 
 const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {

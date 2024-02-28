@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Box, Typography } from "@mui/material";
 import { Input } from "../TextField/Input";
 import { sendAgreementSchema } from "../../ValidationSchema/ValidationSchema";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import "./modal.css";
 
 const SendAgreementModal = ({ open, handleClose, handleOpen }) => {

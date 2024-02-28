@@ -3,7 +3,7 @@ import React from "react";
 import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { transferModalSchema } from "../../ValidationSchema/ValidationSchema";
 
 const TransferRequest = ({ open, handleClose, handleOpen }) => {

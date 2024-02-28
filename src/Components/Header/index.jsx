@@ -5,7 +5,7 @@ import { Box, Divider, Drawer, Typography } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
@@ -39,7 +39,7 @@ const Header = () => {
             className="log-out-btn"
             onClick={handleLogout}
           />
-          <Button variant="outlined" size="large" className="dark-btn icon-btn">
+          <Button variant="outlined" size="large" className="dark-btn">
             <DarkModeOutlinedIcon />
           </Button>
           <Button

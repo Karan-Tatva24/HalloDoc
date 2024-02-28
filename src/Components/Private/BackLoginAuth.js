@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { AppRoutes } from "../constants/routes";
+import { AppRoutes } from "../../constants/routes";
 
 export const BackLoginAuth = () => {
   const location = useLocation();

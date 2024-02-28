@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "./Pages/Login/Login";
-import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import Login from "./Pages/Login";
+import ForgotPassword from "./Pages/ForgotPassword";
 import { AppRoutes } from "./constants/routes";
 import "./App.css";
-import DashBoard from "./Pages/DashBoard/DashBoard";
-import ViewReservation from "./Pages/ViewReservation/ViewReservation";
-import ViewNotes from "./Pages/ViewNotes/ViewNotes";
-import { RequireAuth } from "./Utils/RequireAuth";
-import ViewUpload from "./Pages/ViewUpload/ViewUpload";
-import { BackLoginAuth } from "./Utils/BackLoginAuth";
-import Order from "./Pages/OrderSend/Order";
-import CloseCase from "./Pages/CloseCase/CloseCase";
+import DashBoard from "./Pages/DashBoard";
+import ViewReservation from "./Pages/ViewReservation";
+import ViewNotes from "./Pages/ViewNotes";
+import { RequireAuth } from "./Components/Private/RequireAuth";
+import ViewUpload from "./Pages/ViewUpload";
+import { BackLoginAuth } from "./Components/Private/BackLoginAuth";
+import Order from "./Pages/OrderSend";
+import CloseCase from "./Pages/CloseCase";
 
 function App() {
   return (

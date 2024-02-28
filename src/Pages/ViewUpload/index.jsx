@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../Components/Button/Button";
+import { Button } from "../../Components/Button";
 import {
   Box,
   Container,
@@ -19,7 +19,7 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
-import Header from "../../Components/Header/Header";
+import Header from "../../Components/Header";
 import "./viewUpload.css";
 
 const rows = [

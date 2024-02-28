@@ -1,6 +1,6 @@
 import { Box, Modal, Typography } from "@mui/material";
 import React from "react";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { infoImage } from "../../assets/Images";
 import "./modal.css";
 

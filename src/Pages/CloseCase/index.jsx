@@ -14,8 +14,8 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import { Button } from "../../Components/Button/Button";
-import Header from "../../Components/Header/Header";
+import { Button } from "../../Components/Button";
+import Header from "../../Components/Header";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";

@@ -3,7 +3,7 @@ import { Box, MenuItem, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { cancleModalSchema } from "../../ValidationSchema/ValidationSchema";
 
 const CancelModal = ({ open, handleClose, handleOpen }) => {

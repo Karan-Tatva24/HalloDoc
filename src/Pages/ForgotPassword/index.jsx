@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
-import { Button } from "../../Components/Button/Button";
+import { Button } from "../../Components/Button";
 import { forgotPasswordSchema } from "../../ValidationSchema/ValidationSchema";
 
 const initialValues = {

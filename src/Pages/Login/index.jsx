@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
-import { Button } from "../../Components/Button/Button";
+import { Button } from "../../Components/Button";
 import { loginSchema } from "../../ValidationSchema/ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import {

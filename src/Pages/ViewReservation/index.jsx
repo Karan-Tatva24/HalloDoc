@@ -7,18 +7,19 @@ import {
   Container,
   Divider,
   Grid,
-  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
 import "./viewReservation.css";
 import { Input } from "../../Components/TextField/Input";
-import { Button } from "../../Components/Button/Button";
-import Header from "../../Components/Header/Header";
+import { Button } from "../../Components/Button";
+import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useFormik } from "formik";
 import { viewReservationSchema } from "../../ValidationSchema/ValidationSchema";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const initialValues = {
   patientNotes: "",
@@ -158,15 +159,16 @@ const ViewReservation = () => {
                   />
                 </Grid>
                 <Grid item xs={10} md={5}>
-                  <Input
+                  <PhoneInput
                     label="Phone Number"
                     name="phone"
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    country={"in"}
                     helperText={formik.touched.phone && formik.errors.phone}
                     error={formik.touched.phone && Boolean(formik.errors.phone)}
-                    fullWidth
+                    inputStyle={{ width: "100%", height: "3.438rem" }}
                   />
                 </Grid>
                 <Grid item xs={2} md={1}>
@@ -175,9 +177,7 @@ const ViewReservation = () => {
                     size="large"
                     className="form-btn icon-btn"
                   >
-                    <IconButton size="small">
-                      <PhoneOutlinedIcon />
-                    </IconButton>
+                    <PhoneOutlinedIcon />
                   </Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -241,9 +241,7 @@ const ViewReservation = () => {
                     size="large"
                     className="form-btn icon-btn"
                   >
-                    <IconButton size="small">
-                      <LocationOnOutlinedIcon />
-                    </IconButton>
+                    <LocationOnOutlinedIcon />
                   </Button>
                 </Grid>
                 <Grid item xs={12} md={6}>

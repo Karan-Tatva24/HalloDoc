@@ -1,15 +1,15 @@
 import React from "react";
-import Header from "../../Components/Header/Header";
+import Header from "../../Components/Header";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../Components/Button/Button";
+import { Button } from "../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import MultipleStopOutlinedIcon from "@mui/icons-material/MultipleStopOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import "./viewNotes.css";
 import { Input } from "../../Components/TextField/Input";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema/ValidationSchema";
 

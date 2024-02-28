@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Box } from "@mui/system";
 import { Input } from "../TextField/Input";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import "./table.css";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
@@ -195,7 +195,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => filterRows(e.target.value)}
+              onChange={(e) => filterRows(rows, e.target.value)}
             />
             <Input
               className="search-text drop-list"

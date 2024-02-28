@@ -54,7 +54,8 @@ export const halloDocTheme = createTheme({
       styleOverrides: {
         root: {
           "&.icon-btn": {
-            minWidth: "33px",
+            minWidth: "55px",
+            minHeight: "3.438rem",
             width: "100%",
             padding: 0,
           },

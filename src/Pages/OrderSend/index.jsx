@@ -6,8 +6,8 @@ import { Container } from "@mui/system";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { orderDetails } from "../../ValidationSchema/ValidationSchema";
 import "./order.css";
-import Header from "../../Components/Header/Header";
-import { Button } from "../../Components/Button/Button";
+import Header from "../../Components/Header";
+import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
 
