@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import { useFormik } from "formik";
 import { Box, Typography } from "@mui/material";
 import { Input } from "../TextField/Input";
-import { sendAgreementSchema } from "../../ValidationSchema/ValidationSchema";
+import { sendAgreementSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import "./modal.css";
 

@@ -17,7 +17,7 @@ import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useFormik } from "formik";
-import { viewReservationSchema } from "../../ValidationSchema/ValidationSchema";
+import { viewReservationSchema } from "../../ValidationSchema";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 

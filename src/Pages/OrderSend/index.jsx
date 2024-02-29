@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Box, Grid, MenuItem, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import { orderDetails } from "../../ValidationSchema/ValidationSchema";
+import { orderDetails } from "../../ValidationSchema";
 import "./order.css";
 import Header from "../../Components/Header";
 import { Button } from "../../Components/Button";

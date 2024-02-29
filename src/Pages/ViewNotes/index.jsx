@@ -11,7 +11,7 @@ import "./viewNotes.css";
 import { Input } from "../../Components/TextField/Input";
 import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
-import { viewNotesSchema } from "../../ValidationSchema/ValidationSchema";
+import { viewNotesSchema } from "../../ValidationSchema";
 
 const onSubmit = (values) => {
   console.log(values);

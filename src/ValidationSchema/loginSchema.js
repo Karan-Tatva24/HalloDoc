@@ -1,0 +1,13 @@
+import * as Yup from "yup";
+
+export const loginSchema = Yup.object({
+  username: Yup.string()
+    .email("User name must be valid email")
+    .required("Required!"),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/,
+      "Invalid Password Formate",
+    )
+    .required("Required!"),
+});

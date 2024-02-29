@@ -25,7 +25,7 @@ import "./closecase.css";
 import { Input } from "../../Components/TextField/Input";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { closeCaseSchema } from "../../ValidationSchema/ValidationSchema";
+import { closeCaseSchema } from "../../ValidationSchema";
 
 const rows = [
   {

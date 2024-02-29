@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import { forgotPasswordSchema } from "../../ValidationSchema/ValidationSchema";
+import { forgotPasswordSchema } from "../../ValidationSchema";
 
 const initialValues = {
   username: "",
