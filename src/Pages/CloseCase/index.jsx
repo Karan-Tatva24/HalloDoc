@@ -35,21 +35,25 @@ const rows = [
   },
 ];
 
+const INITIAL_VALUES = {
+  phone: "9182006992",
+  email: "qatatva8786@gmail.com",
+};
+
 const CloseCase = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const [orderBy, setOrderBy] = useState("uploadDate");
   const [order, setOrder] = useState("asc");
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
   const formik = useFormik({
-    initialValues: {
-      phone: "918200699203",
-      email: "qatatva8786@ReportGmailerrorred.com",
-    },
+    initialValues: initialValues,
     validationSchema: closeCaseSchema,
     onSubmit: (values) => {
       console.log(values);
     },
+    enableReinitialize: true,
   });
 
   const handleEdit = () => {
@@ -57,6 +61,12 @@ const CloseCase = () => {
   };
 
   const handleSave = () => {
+    setInitialValues(formik.values);
+    setIsDisabled(true);
+  };
+
+  const handleCancle = () => {
+    formik.setValues(initialValues);
     setIsDisabled(true);
   };
 
@@ -269,8 +279,8 @@ const CloseCase = () => {
                   size="large"
                   onClick={
                     isDisabled
-                      ? () => console.log("Close Csase clicked")
-                      : handleSave
+                      ? () => console.log("Close Case clicked")
+                      : handleCancle
                   }
                 />
               </Box>

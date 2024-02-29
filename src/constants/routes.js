@@ -7,4 +7,5 @@ export const AppRoutes = {
   VIEW_UPLOAD: "/dashboard/viewupload",
   SEND_ORDER: "/dashboard/sendorder",
   CLOSE_CASE: "/dashboard/closecase",
+  MY_PROFILE: "/myprofile",
 };

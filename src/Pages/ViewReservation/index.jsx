@@ -68,7 +68,7 @@ const ViewReservation = () => {
               size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
-              onClick={() => navigate(AppRoutes.DASHBOARD)}
+              onClick={() => navigate(-1)}
               className="back-btn"
             />
           </Box>

@@ -9,3 +9,8 @@ export { blockModalSchema } from "./blockModalSchema";
 export { orderDetails } from "./orderDetails";
 export { sendAgreementSchema } from "./sendAgreementSchema";
 export { closeCaseSchema } from "./closeCaseSchema";
+export {
+  accountInfoSchema,
+  administratorInfoSchema,
+  addressInfoSchema,
+} from "./myProfileSchema";

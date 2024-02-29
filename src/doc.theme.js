@@ -77,5 +77,14 @@ export const halloDocTheme = createTheme({
         },
       },
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          "&.checkbox-padding .MuiCheckbox-root": {
+            padding: "0.34rem 0.5rem",
+          },
+        },
+      },
+    },
   },
 });

@@ -1,0 +1,19 @@
+.main-profile-container {
+    background-color: #f6f6f6;
+}
+
+.main-profile-wrapper {
+    padding: 1rem 3rem;
+}
+
+.profile-form-container {
+    padding: 1.25rem;
+}
+
+.profile-btn {
+    color: #ffffff !important;
+}
+
+.profile-input-container {
+    margin-top: 0.348rem !important;
+}

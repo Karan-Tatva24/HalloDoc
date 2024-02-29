@@ -72,7 +72,7 @@ const Header = () => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.MY_PROFILE}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             My Profile
