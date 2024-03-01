@@ -28,6 +28,7 @@ import ConfirmBlockModal from "../../Components/Modal/ConfirmBlockModal";
 import TransferRequest from "../../Components/Modal/TransferRequest";
 import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
 import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
+import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -159,31 +160,27 @@ const DashBoard = () => {
                     name="Send Link"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    className="btn"
                   />
                   <Button
                     name="Create Request"
                     variant="contained"
                     startIcon={<RequestPageOutlinedIcon />}
-                    className="btn"
                   />
                   <Button
                     name="Export"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    className="btn"
                   />
                   <Button
                     name="Export All"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    className="btn"
                   />
                   <Button
                     name="Request DTY Support"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    className="btn"
+                    onClick={() => handleOpen("Request Support")}
                   />
                 </Box>
               </Grid>
@@ -198,6 +195,11 @@ const DashBoard = () => {
           />
         </Box>
       </Box>
+      <RequestSupportModal
+        open={open && modalName === "Request Support"}
+        handleClose={handleClose}
+        handleOpen={modalName === "Request Support" ? handleOpen : null}
+      />
       <CancelModal
         open={open && modalName === "Cancel Case"}
         handleClose={handleClose}

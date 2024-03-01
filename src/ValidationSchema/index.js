@@ -14,3 +14,4 @@ export {
   administratorInfoSchema,
   addressInfoSchema,
 } from "./myProfileSchema";
+export { requestSupportSchema } from "./requestSupportSchema";
