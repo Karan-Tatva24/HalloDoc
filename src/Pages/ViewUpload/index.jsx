@@ -19,7 +19,6 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
-import Header from "../../Components/Header";
 import "./viewUpload.css";
 
 const rows = [
@@ -145,7 +144,6 @@ const ViewUpload = () => {
 
   return (
     <>
-      <Header />
       <Box className="upload-main-container">
         <Container maxWidth="lg" className="upload-main-wrapper">
           <Box
@@ -208,7 +206,6 @@ const ViewUpload = () => {
                     size="large"
                     startIcon={<CloudUploadOutlinedIcon />}
                     onClick={handleUpload}
-                    className="upload-btn"
                   />
                 </Box>
               </Box>

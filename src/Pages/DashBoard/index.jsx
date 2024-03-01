@@ -3,7 +3,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import RequestPageOutlinedIcon from "@mui/icons-material/RequestPageOutlined";
 import { Button } from "../../Components/Button";
-import Header from "../../Components/Header";
 import { cards } from "../../constants/cardConst";
 import MyTable from "../../Components/Table";
 import {
@@ -96,7 +95,6 @@ const DashBoard = () => {
   return (
     <>
       <Box>
-        <Header />
         <Box className="dashboard-container">
           <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
             {cards.map((card, index) => {
@@ -118,11 +116,7 @@ const DashBoard = () => {
                         ? "contained"
                         : "outlined"
                     }
-                    className={
-                      isActive && activeButton === index
-                        ? "active-card-btn card-btn"
-                        : "card-btn"
-                    }
+                    className="card-btn"
                     fullWidth
                     onClick={() => handleClick(index)}
                   >

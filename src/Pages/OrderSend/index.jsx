@@ -6,7 +6,6 @@ import { Container } from "@mui/system";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { orderDetails } from "../../ValidationSchema";
 import "./order.css";
-import Header from "../../Components/Header";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
@@ -32,7 +31,6 @@ const Order = () => {
   });
   return (
     <>
-      <Header />
       <Box className="order-main-container">
         <Container maxWidth="lg" className="order-main-wrapper">
           <Box
@@ -169,12 +167,7 @@ const Order = () => {
                 </Grid>
               </Grid>
               <Box display="flex" justifyContent="flex-end" gap={2} mt={5}>
-                <Button
-                  name="Submit"
-                  variant="contained"
-                  className="order-btn"
-                  type="submit"
-                />
+                <Button name="Submit" variant="contained" type="submit" />
                 <Button
                   name="Cancle"
                   variant="outlined"

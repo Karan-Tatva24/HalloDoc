@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Menu from "@mui/icons-material/Menu";
 import { Button } from "../Button";
@@ -11,7 +12,7 @@ import { logout } from "../../redux/halloSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
 
-const Header = () => {
+const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,8 +40,13 @@ const Header = () => {
             className="log-out-btn"
             onClick={handleLogout}
           />
-          <Button variant="outlined" size="large" className="dark-btn">
-            <DarkModeOutlinedIcon />
+          <Button
+            variant="outlined"
+            size="large"
+            className="dark-btn"
+            onClick={onClickDarkTheme}
+          >
+            {!toggle ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
           </Button>
           <Button
             variant="outlined"
@@ -160,6 +166,7 @@ const Header = () => {
           Logout
         </NavLink>
       </Drawer>
+      <Outlet />
     </Box>
   );
 };

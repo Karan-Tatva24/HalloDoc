@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { Button } from "../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import Header from "../../Components/Header";
 import "./myProfile.css";
 import AccountInfo from "./components/AccountInfo";
 import AdministratorInfo from "./components/AdministratorInfo";
@@ -13,7 +12,6 @@ const MyProfile = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Header />
       <Box className="main-profile-container">
         <Container maxWidth="md" className="main-profile-wrapper">
           <Box
@@ -24,7 +22,7 @@ const MyProfile = () => {
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
-                <b>View Reservation</b>
+                <b>My Profile</b>
               </Typography>
             </Box>
             <Button

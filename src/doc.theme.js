@@ -21,70 +21,80 @@ const primary = "#01bce9";
 // const primaryHoverDark = "#338e6fe6";
 // const primaryLight = "#3EAE86";
 
-export const halloDocTheme = createTheme({
-  palette: {
-    primary: {
-      main: primary,
-    },
-  },
-  components: {
-    MuiTableCell: {
-      styleOverrides: {
-        head: {
-          lineHeight: "3.5rem",
-        },
-        body: {
-          lineHeight: "3rem",
-        },
+export const halloDocTheme = (toggleDarkMode) => {
+  return createTheme({
+    palette: {
+      mode: toggleDarkMode ? "dark" : "light",
+      primary: {
+        main: primary,
       },
     },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          "&.search-text .MuiInputBase-root": {
-            height: "2.5rem",
-          },
-          "&.drop-list .MuiInputBase-root": {
-            width: "15rem",
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          contained: {
+            color: "white",
           },
         },
       },
-    },
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          "&.icon-btn": {
-            minWidth: "55px",
-            minHeight: "3.438rem",
-            width: "100%",
-            padding: 0,
+      MuiTableCell: {
+        styleOverrides: {
+          head: {
+            lineHeight: "3.5rem",
           },
-          "&.log-out-btn": {
-            width: "100px",
+          body: {
+            lineHeight: "3rem",
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            "&.search-text .MuiInputBase-root": {
+              height: "2.5rem",
+            },
+            "&.drop-list .MuiInputBase-root": {
+              width: "15rem",
+            },
+          },
+        },
+      },
+      MuiButtonBase: {
+        styleOverrides: {
+          root: {
+            "&.icon-btn": {
+              minWidth: "55px",
+              minHeight: "3.438rem",
+              width: "100%",
+              padding: 0,
+            },
+            "&.log-out-btn": {
+              width: "100px",
+            },
+          },
+        },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            minWidth: "250px",
+          },
+          root: {
+            "&.sidebar .MuiDrawer-paper": {
+              backgroundColor: "#c7ecf2",
+            },
+          },
+        },
+      },
+      MuiFormControlLabel: {
+        styleOverrides: {
+          root: {
+            "&.checkbox-padding .MuiCheckbox-root": {
+              padding: "0.34rem 0.5rem",
+            },
           },
         },
       },
     },
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          minWidth: "250px",
-        },
-        root: {
-          "&.sidebar .MuiDrawer-paper": {
-            backgroundColor: "#c7ecf2",
-          },
-        },
-      },
-    },
-    MuiFormControlLabel: {
-      styleOverrides: {
-        root: {
-          "&.checkbox-padding .MuiCheckbox-root": {
-            padding: "0.34rem 0.5rem",
-          },
-        },
-      },
-    },
-  },
-});
+  });
+};

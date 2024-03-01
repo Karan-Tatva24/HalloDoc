@@ -37,7 +37,6 @@ const ClearCaseModal = ({
           <Button
             name="Clear"
             variant="contained"
-            className="modal-btn"
             onClick={handleClearButton}
           />
           <Button name="Cancel" variant="outlined" onClick={handleClose} />

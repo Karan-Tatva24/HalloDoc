@@ -53,12 +53,7 @@ const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
             error={formik.touched.email && Boolean(formik.errors.email)}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button
-              name="Send"
-              type="submit"
-              variant="contained"
-              className="modal-btn"
-            />
+            <Button name="Send" type="submit" variant="contained" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

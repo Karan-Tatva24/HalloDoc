@@ -42,7 +42,7 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Conform" variant="contained" className="modal-btn" />
+            <Button name="Conform" variant="contained" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../../Components/Header";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../Components/Button";
@@ -28,7 +27,6 @@ const ViewNotes = () => {
   });
   return (
     <>
-      <Header />
       <Box className="main-notes-container">
         <Container maxWidth="md" className="main-notes-wrapper">
           <Box
@@ -117,7 +115,7 @@ const ViewNotes = () => {
                     rows={5}
                     fullWidth
                   />
-                  <Button name="Save Changes" className="view-notes-btn" />
+                  <Button name="Save Changes" />
                 </Paper>
               </form>
             </Grid>

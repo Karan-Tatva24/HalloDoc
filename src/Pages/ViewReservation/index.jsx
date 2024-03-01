@@ -13,7 +13,6 @@ import {
 import "./viewReservation.css";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useFormik } from "formik";
@@ -47,7 +46,6 @@ const ViewReservation = () => {
 
   return (
     <>
-      <Header />
       <Box className="main-container">
         <Container maxWidth="md" className="main-wrapper">
           <Box
@@ -270,7 +268,6 @@ const ViewReservation = () => {
                   name="Assign"
                   variant="contained"
                   color="primary"
-                  className="view-case-btn"
                   disableRipple
                 />
                 <Button
@@ -278,7 +275,6 @@ const ViewReservation = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => navigate(AppRoutes.VIEW_NOTES)}
-                  className="view-case-btn"
                 />
                 <Button name="Cancle" variant="contained" color="error" />
               </Box>

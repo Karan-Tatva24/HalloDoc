@@ -29,6 +29,7 @@ const AdministratorInfo = () => {
     onSubmit: (value) => {
       console.log("Account Values", value);
     },
+    enableReinitialize: true,
   });
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -148,17 +149,12 @@ const AdministratorInfo = () => {
         mb={2}
       >
         {isDisabled ? (
-          <Button
-            name="Edit"
-            className="profile-btn"
-            onClick={() => setIsDisabled(false)}
-          />
+          <Button name="Edit" onClick={() => setIsDisabled(false)} />
         ) : (
           <>
             <Button
               name="Save"
               type="submit"
-              className="profile-btn"
               onClick={() => {
                 setInitialValues(formik.values);
                 setIsDisabled(true);

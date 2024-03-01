@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Button } from "../../Components/Button";
-import Header from "../../Components/Header";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";
@@ -107,7 +106,6 @@ const CloseCase = () => {
   };
   return (
     <>
-      <Header />
       <Box className="closecase-main-container">
         <Container maxWidth="lg" className="closecase-main-wrapper">
           <Box
@@ -270,7 +268,6 @@ const CloseCase = () => {
                   name={isDisabled ? "Edit" : "Save"}
                   type="submit"
                   size="large"
-                  className="edit-btn"
                   onClick={isDisabled ? handleEdit : handleSave}
                 />
                 <Button
