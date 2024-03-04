@@ -4,19 +4,13 @@ import { Button } from "../Button";
 import { infoImage } from "../../assets/Images";
 import "./modal.css";
 
-const ClearCaseModal = ({
-  open,
-  handleClose,
-  handleOpen,
-  handleClear,
-  rowId,
-}) => {
+const ClearCaseModal = ({ open, handleClose, handleClear, rowId }) => {
   const handleClearButton = () => {
     handleClear(rowId);
   };
 
   return (
-    <Modal open={open} handleOpen={handleOpen}>
+    <Modal open={open} handleClose={handleClose}>
       <Box
         className="modal-container"
         display="flex"

@@ -1,0 +1,12 @@
+.provider-main-container {
+    background-color: #f6f6f6;
+}
+
+.provider-main-wrapper {
+    padding: 1rem 3rem;
+}
+
+.provider-paper {
+    padding: 13px;
+    border-radius: 16px !important;
+}

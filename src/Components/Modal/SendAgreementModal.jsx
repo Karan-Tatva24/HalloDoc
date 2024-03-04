@@ -7,7 +7,7 @@ import { sendAgreementSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import "./modal.css";
 
-const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
+const SendAgreementModal = ({ open, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       phone: "",
@@ -21,12 +21,7 @@ const SendAgreementModal = ({ open, handleClose, handleOpen }) => {
     validationSchema: sendAgreementSchema,
   });
   return (
-    <Modal
-      open={open}
-      handleClose={handleClose}
-      handleOpen={handleOpen}
-      header="Send Agreement"
-    >
+    <Modal open={open} handleClose={handleClose} header="Send Agreement">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography className="text-dot">Patient</Typography>

@@ -40,10 +40,11 @@ export const halloDocTheme = (toggleDarkMode) => {
       MuiTableCell: {
         styleOverrides: {
           head: {
-            lineHeight: "3.5rem",
+            height: "5rem",
+            fontWeight: "bold",
           },
           body: {
-            lineHeight: "3rem",
+            height: "4.5rem",
           },
         },
       },
@@ -55,6 +56,10 @@ export const halloDocTheme = (toggleDarkMode) => {
             },
             "&.drop-list .MuiInputBase-root": {
               width: "15rem",
+            },
+            "&.large-drop-list .MuiInputBase-root": {
+              width: "18rem",
+              height: "2.7rem",
             },
           },
         },

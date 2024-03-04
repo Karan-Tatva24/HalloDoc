@@ -29,6 +29,7 @@ import TransferRequest from "../../Components/Modal/TransferRequest";
 import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
 import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
+import SendLinkModal from "../../Components/Modal/SendLinkModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -46,14 +47,14 @@ const DashBoard = () => {
     setOpen(true);
   };
 
-  const handleClear = (id) => {
-    setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
-    handleClose();
-  };
-
   const handleClose = () => {
     setOpen(false);
     setModalName("");
+  };
+
+  const handleClear = (id) => {
+    setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
+    handleClose();
   };
 
   const handleClick = (index) => {
@@ -160,6 +161,7 @@ const DashBoard = () => {
                     name="Send Link"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
+                    onClick={() => handleOpen("Send Link")}
                   />
                   <Button
                     name="Create Request"
@@ -198,43 +200,36 @@ const DashBoard = () => {
       <RequestSupportModal
         open={open && modalName === "Request Support"}
         handleClose={handleClose}
-        handleOpen={modalName === "Request Support" ? handleOpen : null}
+      />
+      <SendLinkModal
+        open={open && modalName === "Send Link"}
+        handleClose={handleClose}
       />
       <CancelModal
         open={open && modalName === "Cancel Case"}
         handleClose={handleClose}
-        handleOpen={modalName === "Cancel Case" ? handleOpen : null}
       />
       <ConfirmBlockModal
         open={open && modalName === "Block Patient"}
         handleClose={handleClose}
-        handleOpen={modalName === "Block Patient" ? handleOpen : null}
       />
       <AssignModal
         open={open && modalName === "Assign Case"}
         handleClose={handleClose}
-        handleOpen={modalName === "Assign Case" ? handleOpen : null}
       />
       <TransferRequest
         open={open && modalName === "Transfer"}
         handleClose={handleClose}
-        handleOpen={modalName === "Transfer" ? handleOpen : null}
       />
       <SendAgreementModal
         open={open && modalName === "Send Agreement"}
         handleClose={handleClose}
-        handleOpen={modalName === "Send Agreement" ? handleOpen : null}
       />
       <ClearCaseModal
         open={open && modalName === "Clear Case"}
         handleClose={handleClose}
         handleClear={handleClear}
         rowId={rowId}
-        handleOpen={
-          modalName === "Clear Case"
-            ? () => handleOpen("Clear Case", rowId)
-            : null
-        }
       />
     </>
   );

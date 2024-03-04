@@ -96,7 +96,7 @@ const ViewNotes = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={12}>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <Paper className="input-notes-container">
                   <Input
                     label="Admin Notes"
@@ -115,7 +115,7 @@ const ViewNotes = () => {
                     rows={5}
                     fullWidth
                   />
-                  <Button name="Save Changes" />
+                  <Button name="Save Changes" type="submit" />
                 </Paper>
               </form>
             </Grid>

@@ -86,7 +86,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.PROVIDER}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Providers

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
-  const [tableData, setTableData] = useState(rows);
+  const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
@@ -40,6 +40,10 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const [rowId, setRowId] = useState(null);
   const open = Boolean(anchorEl);
   const notify = () => toast.success("Copied Succsessfully");
+
+  useEffect(() => {
+    setTableData(rows);
+  }, [rows]);
 
   const handleClick = (event, id) => {
     setRowId(id);
@@ -195,7 +199,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => filterRows(rows, e.target.value)}
+              onChange={(e) => filterRows(tableData, e.target.value)}
             />
             <Input
               className="search-text drop-list"

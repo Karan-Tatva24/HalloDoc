@@ -6,7 +6,7 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { assignModalSchema } from "../../ValidationSchema";
 
-const AssignModal = ({ open, handleClose, handleOpen }) => {
+const AssignModal = ({ open, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -14,17 +14,14 @@ const AssignModal = ({ open, handleClose, handleOpen }) => {
       physician: "",
     },
     validationSchema: assignModalSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       console.log("submmitted", values);
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (
-    <Modal
-      open={open}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
-      header="Assign Request"
-    >
+    <Modal open={open} handleClose={handleClose} header="Assign Request">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">

@@ -1,28 +1,25 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import BasicModal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { requestSupportSchema } from "../../ValidationSchema";
+import Modal from "./Modal";
 
-const RequestSupportModal = ({ open, handleClose, handleOpen }) => {
+const RequestSupportModal = ({ open, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       message: "",
     },
     validationSchema: requestSupportSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       console.log("submmitted", values);
+      handleClose();
+      onSubmitProps.resetForm();
     },
   });
   return (
-    <BasicModal
-      open={open}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
-      header="Request Support"
-    >
+    <Modal open={open} handleClose={handleClose} header="Request Support">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
@@ -39,6 +36,7 @@ const RequestSupportModal = ({ open, handleClose, handleOpen }) => {
             onBlur={formik.handleBlur}
             value={formik.values.message}
             error={formik.touched.message && Boolean(formik.errors.message)}
+            helperText={formik.touched.message && formik.errors.message}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" type="submit" variant="contained" />
@@ -46,7 +44,7 @@ const RequestSupportModal = ({ open, handleClose, handleOpen }) => {
           </Box>
         </Box>
       </form>
-    </BasicModal>
+    </Modal>
   );
 };
 

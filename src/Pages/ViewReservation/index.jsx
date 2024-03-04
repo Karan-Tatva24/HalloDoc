@@ -32,16 +32,15 @@ const initialValues = {
   roomNo: "",
 };
 
-const onSubmit = (values) => {
-  console.log(values);
-};
-
 const ViewReservation = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
     validationSchema: viewReservationSchema,
-    onSubmit,
+    onSubmit: (values, onSubmitProps) => {
+      console.log(values);
+      onSubmitProps.resetForm();
+    },
   });
 
   return (
@@ -72,7 +71,7 @@ const ViewReservation = () => {
           </Box>
 
           <Paper className="form-container">
-            <form>
+            <form onSubmit={formik.handleSubmit}>
               <Typography variant="h6">
                 <b>Patient Information</b>
               </Typography>
@@ -264,12 +263,7 @@ const ViewReservation = () => {
                 mt={4}
                 flexWrap="wrap"
               >
-                <Button
-                  name="Assign"
-                  variant="contained"
-                  color="primary"
-                  disableRipple
-                />
+                <Button name="Assign" type="submit" disableRipple />
                 <Button
                   name="View Notes"
                   variant="contained"

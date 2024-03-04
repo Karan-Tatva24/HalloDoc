@@ -15,3 +15,4 @@ export {
   addressInfoSchema,
 } from "./myProfileSchema";
 export { requestSupportSchema } from "./requestSupportSchema";
+export { sendLinkSchema } from "./sendLinkSchema";

@@ -16,6 +16,7 @@ import Header from "./Components/Header";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { halloDocTheme } from "./doc.theme";
 import { useState } from "react";
+import ProviderInfo from "./Pages/ProviderInfo";
 
 function App() {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -49,6 +50,7 @@ function App() {
               <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
               <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
               <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />
+              <Route path={AppRoutes.PROVIDER} element={<ProviderInfo />} />
             </Route>
           </Route>
         </Routes>

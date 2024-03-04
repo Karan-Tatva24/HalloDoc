@@ -6,24 +6,21 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { blockModalSchema } from "../../ValidationSchema";
 
-const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
+const ConfirmBlockModal = ({ open, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       blockRequest: "",
     },
     validationSchema: blockModalSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, onSubmitProps) => {
       console.log("submmitted", values);
+      onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (
-    <BasicModal
-      open={open}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
-      header="Confirm Block"
-    >
-      <form>
+    <BasicModal open={open} handleClose={handleClose} header="Confirm Block">
+      <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
             Patient Name :<span style={{ color: "aqua" }}>test test</span>
@@ -42,7 +39,7 @@ const ConfirmBlockModal = ({ open, handleClose, handleOpen }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Conform" variant="contained" />
+            <Button name="Conform" variant="contained" type="submit" />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>
