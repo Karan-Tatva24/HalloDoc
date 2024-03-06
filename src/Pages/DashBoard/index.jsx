@@ -37,7 +37,7 @@ const DashBoard = () => {
   const [columns, setColumns] = useState(newColumns);
   const [dropDown, setDropDown] = useState(newDropdown);
   const [modalName, setModalName] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
   const [filterRows, setFilterRows] = useState(rows);
 

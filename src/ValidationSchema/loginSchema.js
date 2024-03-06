@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 
 export const loginSchema = Yup.object({
-  username: Yup.string()
-    .email("User name must be valid email")
+  email: Yup.string()
+    .email("Username must be valid email")
     .required("Required!"),
   password: Yup.string()
     .matches(

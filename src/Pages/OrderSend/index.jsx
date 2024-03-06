@@ -70,6 +70,10 @@ const Order = () => {
                       formik.touched.selectProfession &&
                       Boolean(formik.errors.selectProfession)
                     }
+                    helperText={
+                      formik.touched.selectProfession &&
+                      formik.errors.selectProfession
+                    }
                   >
                     <MenuItem value="doctor">Doctor</MenuItem>
                     <MenuItem value="teacher">Teacher</MenuItem>
@@ -88,6 +92,9 @@ const Order = () => {
                     error={
                       formik.touched.business && Boolean(formik.errors.business)
                     }
+                    helperText={
+                      formik.touched.business && formik.errors.business
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -102,6 +109,10 @@ const Order = () => {
                       formik.touched.businessContact &&
                       Boolean(formik.errors.businessContact)
                     }
+                    helperText={
+                      formik.touched.businessContact &&
+                      formik.errors.businessContact
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -113,6 +124,7 @@ const Order = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.email}
                     error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -126,6 +138,9 @@ const Order = () => {
                     error={
                       formik.touched.faxNumber &&
                       Boolean(formik.errors.faxNumber)
+                    }
+                    helperText={
+                      formik.touched.faxNumber && formik.errors.faxNumber
                     }
                   />
                 </Grid>
@@ -143,6 +158,9 @@ const Order = () => {
                       formik.touched.orderDetail &&
                       Boolean(formik.errors.orderDetail)
                     }
+                    helperText={
+                      formik.touched.orderDetail && formik.errors.orderDetail
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -157,6 +175,9 @@ const Order = () => {
                     error={
                       formik.touched.refillNumber &&
                       Boolean(formik.errors.refillNumber)
+                    }
+                    helperText={
+                      formik.touched.refillNumber && formik.errors.refillNumber
                     }
                   >
                     <MenuItem value="notrequired">Not required</MenuItem>

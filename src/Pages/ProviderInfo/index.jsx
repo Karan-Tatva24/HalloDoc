@@ -21,6 +21,9 @@ import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { columns, rows } from "../../constants/providerData";
 import "./providerInfo.css";
+import ContectProviderModal from "../../Components/Modal/ContectProviderModal";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
 
 const ProviderInfo = () => {
   const [searchTerm, setSearchTerm] = useState("all");
@@ -29,8 +32,18 @@ const ProviderInfo = () => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("providerName");
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => setTableData(rows), [rows]);
+  useEffect(() => setTableData(rows), []);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -150,11 +163,15 @@ const ProviderInfo = () => {
                                       name="Contact"
                                       variant="outlined"
                                       size="small"
+                                      onClick={handleOpen}
                                     />
                                     <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
+                                      onClick={() =>
+                                        navigate(AppRoutes.EDIT_PHYSICIAN)
+                                      }
                                     />
                                   </Box>
                                 ) : (
@@ -181,6 +198,7 @@ const ProviderInfo = () => {
           </Paper>
         </Container>
       </Box>
+      <ContectProviderModal open={open} handleClose={handleClose} />
     </>
   );
 };

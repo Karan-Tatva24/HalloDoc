@@ -13,6 +13,9 @@ export {
   accountInfoSchema,
   administratorInfoSchema,
   addressInfoSchema,
-} from "./myProfileSchema";
+  physicianInformationSchema,
+  providerProfileSchema,
+} from "./infoFormsSchema";
 export { requestSupportSchema } from "./requestSupportSchema";
 export { sendLinkSchema } from "./sendLinkSchema";
+export { contectProviderSchema } from "./ContectProviderSchema";

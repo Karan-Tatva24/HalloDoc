@@ -36,3 +36,23 @@ export const addressInfoSchema = Yup.object({
     .required("Required!")
     .matches(/^\d{10}$/, "Invalid phone number"),
 });
+
+export const physicianInformationSchema = Yup.object({
+  firstname: Yup.string().required("Firstname required!"),
+  lastname: Yup.string().required("Lastname required!"),
+  email: Yup.string().email("Invalid email!").required("Email required!"),
+  phoneNumber: Yup.string()
+    .required("Required!")
+    .matches(/^\d{10}$/, "Invalid phone number"),
+  medicalLicence: Yup.string().required("Require!"),
+  npiNumber: Yup.string().required("Require!"),
+  synEmail: Yup.string()
+    .email("Invalid email!")
+    .required("Syncronization email required!"),
+});
+
+export const providerProfileSchema = Yup.object({
+  businessname: Yup.string().required("Required!"),
+  businesswebsite: Yup.string().required("Required!"),
+  adminnotes: Yup.string().required("Required!"),
+});

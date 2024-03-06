@@ -1,11 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Box, Grid, MenuItem, Typography } from "@mui/material";
-import { Button } from "../../../Components/Button";
-import { Input } from "../../../Components/TextField/Input";
-import { AppRoutes } from "../../../constants/routes";
+import { Button } from "../Button";
+import { Input } from "../TextField/Input";
+import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
-import { accountInfoSchema } from "../../../ValidationSchema";
+import { accountInfoSchema } from "../../ValidationSchema";
 
 const initialValues = {
   username: "admin@gmail.com",

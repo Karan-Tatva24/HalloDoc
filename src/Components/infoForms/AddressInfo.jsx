@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button } from "../../../Components/Button";
+import { Button } from "../Button";
 import { Box, Grid, MenuItem, Typography } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
-import { Input } from "../../../Components/TextField/Input";
+import { Input } from "../TextField/Input";
 import { useFormik } from "formik";
-import { addressInfoSchema } from "../../../ValidationSchema";
+import { addressInfoSchema } from "../../ValidationSchema";
 
 const INITIAL_VALUE = {
   address1: "test",

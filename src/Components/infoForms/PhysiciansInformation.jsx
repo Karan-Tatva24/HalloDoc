@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Checkbox,
@@ -6,35 +5,38 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Button } from "../../../Components/Button";
+import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import { Input } from "../../../Components/TextField/Input";
 import { useFormik } from "formik";
-import { administratorInfoSchema } from "../../../ValidationSchema";
+import { Input } from "../TextField/Input";
+import { Button } from "../Button";
+import { physicianInformationSchema } from "../../ValidationSchema";
 
 const INITIAL_VALUE = {
-  firstname: "Test",
-  lastname: "test",
-  email: "test@gmail.com",
-  confirmemail: "test@gmail.com",
-  administratorPhone: "7435002910",
+  firstname: "1234",
+  lastname: "2345",
+  email: "test123@mailinator.com",
+  phoneNumber: "4565156514",
+  medicalLicence: "51351531gvbjkdcbsdhjbjhvbvg",
+  npiNumber: "",
+  synEmail: "",
 };
 
-const AdministratorInfo = () => {
+const PhysiciansInformation = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: administratorInfoSchema,
-    onSubmit: (value) => {
-      console.log("Account Values", value);
+    onSubmit: (values) => {
+      console.log("Form submitted", values);
     },
-    enableReinitialize: true,
+    validationSchema: physicianInformationSchema,
   });
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant="h6">
-        <b>Administrator Information</b>
+      <Typography variant="h6" className="account">
+        <b>Physician Information</b>
       </Typography>
       <Grid
         container
@@ -76,52 +78,79 @@ const AdministratorInfo = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
+            error={formik.touched.email && Boolean(formik.errors.lastname)}
             helperText={formik.touched.email && formik.errors.email}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Input
-            name="confirmemail"
-            label="Confirm Email"
-            fullWidth
+          <PhoneInput
+            inputStyle={{ height: "55px", width: "100%" }}
+            name="phoneNumber"
+            country="in"
+            label="Phone Number"
+            fullWidth="true"
             disabled={isDisabled}
-            value={formik.values.confirmemail}
+            value={formik.values.phoneNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.confirmemail && Boolean(formik.errors.confirmemail)
+              formik.touched.confirmemail && Boolean(formik.errors.phoneNumber)
             }
             helperText={
-              formik.touched.confirmemail && formik.errors.confirmemail
+              formik.touched.phoneNumber && formik.errors.confirmemail
             }
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PhoneInput
-            label="Phone Number"
-            name="administratorPhone"
-            country={"in"}
+          <Input
+            name="medicalLicence"
+            label="Medical Licence"
+            fullWidth
             disabled={isDisabled}
-            inputStyle={{ width: "100%", height: "3.438rem" }}
-            value={formik.values.administratorPhone}
+            value={formik.values.medicalLicence}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.administratorPhone &&
-              Boolean(formik.errors.administratorPhone)
+              formik.touched.medicalLicence &&
+              Boolean(formik.errors.medicalLicence)
             }
             helperText={
-              formik.touched.administratorPhone &&
-              formik.errors.administratorPhone
+              formik.touched.medicalLicence && formik.errors.medicalLicence
             }
-          />
+          ></Input>
         </Grid>
+        <Grid item xs={12} md={6}>
+          <Input
+            name="npiNumber"
+            label="NPI Number"
+            fullWidth
+            disabled={isDisabled}
+            value={formik.values.npiNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.npiNumber && Boolean(formik.errors.npiNumber)}
+            helperText={formik.touched.npiNumber && formik.errors.npiNumber}
+          ></Input>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Input
+            name="synEmail"
+            label="Synchronization Email Address"
+            fullWidth
+            disabled={isDisabled}
+            value={formik.values.synEmail}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.synEmail && Boolean(formik.errors.synEmail)}
+            helperText={formik.touched.synEmail && formik.errors.synEmail}
+          ></Input>
+        </Grid>
+
         <Grid item xs={12} md={6}>
           <FormControlLabel
             className="checkbox-padding"
             control={<Checkbox size="small" />}
-            label="District Of Colombia"
+            label="District Of Columbia"
           />
           <FormControlLabel
             className="checkbox-padding"
@@ -175,4 +204,4 @@ const AdministratorInfo = () => {
   );
 };
 
-export default AdministratorInfo;
+export default PhysiciansInformation;

@@ -17,8 +17,9 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { halloDocTheme } from "./doc.theme";
 import { useState } from "react";
 import ProviderInfo from "./Pages/ProviderInfo";
+import EditPhysicianInfo from "./Pages/EditPhysicianInfo";
 
-function App() {
+const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
   const toggleDarkTheme = () => {
     console.log("Dark mode button clicked");
@@ -51,12 +52,16 @@ function App() {
               <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
               <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />
               <Route path={AppRoutes.PROVIDER} element={<ProviderInfo />} />
+              <Route
+                path={AppRoutes.EDIT_PHYSICIAN}
+                element={<EditPhysicianInfo />}
+              />
             </Route>
           </Route>
         </Routes>
       </ThemeProvider>
     </div>
   );
-}
+};
 
 export default App;

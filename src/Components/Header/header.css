@@ -44,8 +44,8 @@ a {
 }
 
 a.active {
-    border-bottom: 3px solid aqua;
-    color: aqua;
+    border-bottom: 3px solid #01bce9;
+    color: #01bce9;
 }
 
 .sidebar {

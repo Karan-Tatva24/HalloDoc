@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Box, Divider, Drawer, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import Menu from "@mui/icons-material/Menu";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Button } from "../Button";
 import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/loginSlice";
@@ -13,13 +20,22 @@ import { loginHeading } from "../../assets/Images";
 import "./header.css";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     navigate(AppRoutes.LOGIN);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNavLinkHover = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
   return (
@@ -54,7 +70,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             className="toggle-btn icon-btn"
             onClick={() => setOpen(true)}
           >
-            <Menu />
+            <MenuOutlinedIcon />
           </Button>
         </Box>
       </Box>
@@ -84,13 +100,31 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             My Profile
           </NavLink>
         </li>
-        <li>
+        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
           <NavLink
             to={AppRoutes.PROVIDER}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Providers
           </NavLink>
+          {anchorEl && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.PROVIDER);
+                  handleMenuClose();
+                }}
+              >
+                Provider
+              </MenuItem>
+              <MenuItem onClick={() => navigate(-1)}>Scheduling</MenuItem>
+              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+            </Menu>
+          )}
         </li>
         <li>
           <NavLink

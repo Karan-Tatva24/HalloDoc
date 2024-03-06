@@ -1,33 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { userLogin } from "./loginAPI";
 
 const initialState = {
   isLoggedIn: false,
   isLoading: false,
   error: null,
+  token: "",
 };
 
 export const loginSlice = createSlice({
   name: "Login",
   initialState,
   reducers: {
-    loginRequest: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    loginSuccess: (state) => {
-      state.isLoggedIn = true;
-      state.isLoading = false;
-    },
-    loginFailure: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
     logout: (state) => {
       state.isLoggedIn = false;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(userLogin.fulfilled, (state, action) => {
+      if (action.payload.token) {
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+      }
+    });
+    builder.addCase(userLogin.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(userLogin.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+  },
 });
 
-export const { loginRequest, loginFailure, logout, loginSuccess } =
-  loginSlice.actions;
+export const { logout } = loginSlice.actions;
 export default loginSlice.reducer;

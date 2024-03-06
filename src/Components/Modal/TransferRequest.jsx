@@ -38,6 +38,9 @@ const TransferRequest = ({ open, handleClose }) => {
             error={
               formik.touched.searchRegion && Boolean(formik.errors.searchRegion)
             }
+            helperText={
+              formik.touched.searchRegion && formik.errors.searchRegion
+            }
           >
             <MenuItem value="all">Service not Availabel</MenuItem>
             <MenuItem value="all">Doctor are not Availabel</MenuItem>
@@ -53,6 +56,7 @@ const TransferRequest = ({ open, handleClose }) => {
             onBlur={formik.handleBlur}
             value={formik.values.physician}
             error={formik.touched.physician && Boolean(formik.errors.physician)}
+            helperText={formik.touched.physician && formik.errors.physician}
           >
             <MenuItem value="all">Service not Availabel</MenuItem>
             <MenuItem value="all">Doctor are not Availabel</MenuItem>
@@ -71,6 +75,7 @@ const TransferRequest = ({ open, handleClose }) => {
             error={
               formik.touched.description && Boolean(formik.errors.description)
             }
+            helperText={formik.touched.description && formik.errors.description}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Submit" type="submit" variant="contained" />

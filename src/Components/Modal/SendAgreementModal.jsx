@@ -37,6 +37,7 @@ const SendAgreementModal = ({ open, handleClose }) => {
             onBlur={formik.handleBlur}
             value={formik.values.phone}
             error={formik.touched.phone && Boolean(formik.errors.phone)}
+            helperText={formik.touched.phone && formik.errors.phone}
           />
           <Input
             name="email"
@@ -46,6 +47,7 @@ const SendAgreementModal = ({ open, handleClose }) => {
             onBlur={formik.handleBlur}
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" type="submit" variant="contained" />

@@ -12,37 +12,30 @@ import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { loginSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loginFailure,
-  loginRequest,
-  loginSuccess,
-} from "../../redux/halloSlices/loginSlice";
 import { toast } from "react-toastify";
+import { userLogin } from "../../redux/halloSlices/loginAPI";
 
 const initialValues = {
-  username: "",
+  email: "",
   password: "",
 };
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { isLoading, error } = useSelector((state) => state.login);
+  const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (values) => {
-    dispatch(loginRequest());
-    if (
-      values.username === "admin@gmail.com" &&
-      values.password === "Admin@123"
-    ) {
-      dispatch(loginSuccess());
-      toast.success("You are login Successfully");
-      navigate(AppRoutes.DASHBOARD, { replace: true });
-    } else {
-      dispatch(loginFailure("Invalid username or password"));
-      error && toast.error(error);
-    }
+    dispatch(userLogin(values)).then((response) => {
+      console.log("response", response);
+      if (response.type === "userLogin/fulfilled") {
+        toast.success("You are login Successfully");
+        navigate(AppRoutes.DASHBOARD);
+      } else {
+        toast.error("Invalid email or password");
+      }
+    });
   };
 
   const formik = useFormik({
@@ -92,14 +85,13 @@ const Login = () => {
           <form onSubmit={formik.handleSubmit} className="login-form">
             <Input
               className="form-input"
-              name="username"
-              id="username"
+              name="email"
               label="Username"
-              value={formik.values.username}
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              helperText={formik.touched.username && formik.errors.username}
-              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.email && formik.errors.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
               type="text"
               variant="outlined"
               InputProps={{
@@ -115,7 +107,6 @@ const Login = () => {
             <Input
               className="form-input"
               name="password"
-              id="password"
               label="Password"
               value={formik.values.password}
               onChange={formik.handleChange}

@@ -9,4 +9,5 @@ export const AppRoutes = {
   CLOSE_CASE: "/dashboard/closecase",
   MY_PROFILE: "/myprofile",
   PROVIDER: "/provider",
+  EDIT_PHYSICIAN: "/provider/editinfo",
 };
