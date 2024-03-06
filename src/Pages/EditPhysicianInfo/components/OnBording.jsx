@@ -26,7 +26,7 @@ const OnBording = () => {
       <Typography variant="h6" mb={3}>
         <b>Onbording</b>
       </Typography>
-      <Box display="flex" gap={2}>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
@@ -36,12 +36,12 @@ const OnBording = () => {
             />
           }
           label="Indipendent Contractor Aggrement"
-          sx={{ width: "300px" }}
+          sx={{ width: "310px" }}
         />
         <Button name="Upload" />
         {checked.IndConAgg ? <Button name="View" /> : null}
       </Box>
-      <Box display="flex" gap={2}>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
@@ -56,7 +56,7 @@ const OnBording = () => {
         <Button name="Upload" />
         {checked.BacCheak ? <Button name="View" /> : null}
       </Box>
-      <Box display="flex" gap={2}>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
@@ -71,7 +71,7 @@ const OnBording = () => {
         <Button name="Upload" />
         {checked.HIPAA ? <Button name="View" /> : null}
       </Box>
-      <Box display="flex" gap={2}>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
@@ -86,7 +86,7 @@ const OnBording = () => {
         <Button name="Upload" />
         {checked.nonDisAgg ? <Button name="View" /> : null}
       </Box>
-      <Box display="flex" gap={2}>
+      <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox

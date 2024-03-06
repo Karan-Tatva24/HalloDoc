@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import EditIcon from "@mui/icons-material/Edit";
@@ -6,6 +6,7 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { useFormik } from "formik";
 import { providerProfileSchema } from "../../ValidationSchema";
+import SignatureCanvas from "react-signature-canvas";
 
 const INITIAL_VALUE = {
   businessname: "hbsdjcsdhbvsfbgfhgdfg",
@@ -16,6 +17,23 @@ const INITIAL_VALUE = {
 const ProviderProfile = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const [openModel, setOpenModal] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
+  const sigCanvas = useRef();
+
+  const create = () => {
+    const URL = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+    setImageURL(URL);
+    setOpenModal(false);
+  };
+
+  const download = () => {
+    const dlink = document.createElement("a");
+    dlink.setAttribute("href", imageURL);
+    dlink.setAttribute("download", "signature.png");
+    dlink.click();
+  };
+
   const formik = useFormik({
     initialValues,
     onSubmit: (value) => {
@@ -120,7 +138,45 @@ const ProviderProfile = () => {
             variant="contained"
             size="large"
             startIcon={<EditIcon />}
+            onClick={() => setOpenModal(true)}
           />
+        </Grid>
+        <Grid item xs={4}>
+          {openModel && (
+            <div className="modalContainer">
+              <div className="modal">
+                <div className="sigPadContainer">
+                  <SignatureCanvas
+                    penColor="black"
+                    canvasProps={{ className: "sigCanvas" }}
+                    ref={sigCanvas}
+                  />
+                  <hr />
+                  <button onClick={() => sigCanvas.current.clear()}>
+                    Clear
+                  </button>
+                </div>
+                <div className="modal__bottom">
+                  <button onClick={() => setOpenModal(false)}>Cancel</button>
+                  <button className="create" onClick={create}>
+                    Create
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {imageURL && (
+            <>
+              <img src={imageURL} alt="signature" className="signature" />
+              <br />
+              <button
+                onClick={download}
+                style={{ padding: "5px", marginTop: "5px" }}
+              >
+                Download
+              </button>
+            </>
+          )}
         </Grid>
         <Grid item xs={12}>
           <Input

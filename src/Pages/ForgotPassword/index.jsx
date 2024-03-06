@@ -10,19 +10,30 @@ import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { forgotPasswordSchema } from "../../ValidationSchema";
+import { useDispatch } from "react-redux";
+import { forgotPass } from "../../redux/halloSlices/forgotPasswordAPI";
+import { toast } from "react-toastify";
 
 const initialValues = {
-  username: "",
+  email: "",
 };
 
-const onSubmit = (values) => {
-  alert(JSON.stringify(values, null, 2));
-};
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues,
     validationSchema: forgotPasswordSchema,
-    onSubmit,
+    onSubmit: (values) => {
+      console.log(values);
+      dispatch(forgotPass(values)).then((response) => {
+        console.log("Forgot response ", response);
+        if (response.type === "forgotPass/fulfilled") {
+          toast.success(response?.payload?.message);
+        } else {
+          toast.error(response?.error?.message);
+        }
+      });
+    },
   });
 
   return (
@@ -34,7 +45,6 @@ const ForgotPassword = () => {
         <Button
           name={<DarkModeOutlinedIcon fontSize="large" />}
           variant="outlined"
-          //   color={theme.palette.primary}
           size="large"
         />
       </div>
@@ -52,16 +62,16 @@ const ForgotPassword = () => {
           <form onSubmit={formik.handleSubmit} className="login-form">
             <Input
               className="form-input"
-              name="username"
-              id="username"
+              name="email"
+              id="email"
               label="Username"
-              value={formik.values.username}
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              helperText={formik.touched.username && formik.errors.username}
+              helperText={formik.touched.email && formik.errors.email}
               type="text"
               variant="outlined"
-              error={formik.touched.username && Boolean(formik.errors.username)}
+              error={formik.touched.email && Boolean(formik.errors.email)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

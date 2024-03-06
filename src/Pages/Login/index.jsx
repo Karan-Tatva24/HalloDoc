@@ -28,7 +28,6 @@ const Login = () => {
 
   const onSubmit = (values) => {
     dispatch(userLogin(values)).then((response) => {
-      console.log("response", response);
       if (response.type === "userLogin/fulfilled") {
         toast.success("You are login Successfully");
         navigate(AppRoutes.DASHBOARD);
