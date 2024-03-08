@@ -136,7 +136,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.ACCOUNT_ACCESS}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Access

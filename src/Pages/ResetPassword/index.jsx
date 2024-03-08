@@ -2,44 +2,45 @@ import React, { useState } from "react";
 import { Grid, IconButton, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import { loginSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { userLogin } from "../../redux/halloAPIs/loginAPI";
+import { resetPassword } from "../../redux/halloAPIs/resetPassAPI";
+import { resetPasswordSchema } from "../../ValidationSchema/resetPasswordSchema";
 
 const initialValues = {
-  email: "",
-  password: "",
+  newPassword: "",
+  confirmPassword: "",
 };
 
-const Login = () => {
+const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { isLoading } = useSelector((state) => state.root.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { token } = useParams();
 
   const onSubmit = (values) => {
-    dispatch(userLogin(values)).then((response) => {
-      if (response.type === "userLogin/fulfilled") {
+    dispatch(resetPassword({ values, token })).then((response) => {
+      //   console.log("Reset password", response);
+      if (response.type === "resetPassword/fulfilled") {
         toast.success("You are login Successfully");
-        navigate(AppRoutes.DASHBOARD);
+        navigate(AppRoutes.LOGIN);
       } else {
-        toast.error("Invalid email or password");
+        toast.error(response?.error?.message);
       }
     });
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema: loginSchema,
+    validationSchema: resetPasswordSchema,
     onSubmit,
   });
 
@@ -78,25 +79,40 @@ const Login = () => {
           </div>
           <div className="loginHeading">
             <Typography variant="h4" gutterBottom fontWeight="600">
-              Login To Your Account
+              Set Your New Password
             </Typography>
           </div>
           <form onSubmit={formik.handleSubmit} className="login-form">
             <Input
               className="form-input"
-              name="email"
-              label="Username"
-              value={formik.values.email}
+              name="newPassword"
+              label="New Password"
+              value={formik.values.newPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              helperText={formik.touched.email && formik.errors.email}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              type="text"
+              helperText={
+                formik.touched.newPassword && formik.errors.newPassword
+              }
+              error={
+                formik.touched.newPassword && Boolean(formik.errors.newPassword)
+              }
+              type={showPassword ? "text" : "password"}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <AccountCircleOutlinedIcon />
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOffOutlinedIcon />
+                      ) : (
+                        <VisibilityOutlinedIcon />
+                      )}
+                    </IconButton>
                   </InputAdornment>
                 ),
               }}
@@ -105,15 +121,20 @@ const Login = () => {
             />
             <Input
               className="form-input"
-              name="password"
-              label="Password"
-              value={formik.values.password}
+              name="confirmPassword"
+              label="Confirm Password"
+              value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              helperText={formik.touched.password && formik.errors.password}
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
               type={showPassword ? "text" : "password"}
               variant="outlined"
-              error={formik.touched.password && Boolean(formik.errors.password)}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -137,18 +158,13 @@ const Login = () => {
             />
             <Button
               className="btn"
-              name="Log In"
+              name="Reset Password"
               type="submit"
               fullWidth
               size="large"
             />
             {isLoading && <p>Loading ...</p>}
           </form>
-          <div className="link">
-            <Link to={AppRoutes.FORGOTPASSWORD} underline="hover">
-              Forgot Password?
-            </Link>
-          </div>
           <div className="footer-links-login">
             <Link to="#">Terms of Conditions</Link>
             <Link to="#">Privacy Policy</Link>
@@ -159,4 +175,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

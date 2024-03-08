@@ -1,6 +1,7 @@
 export const AppRoutes = {
   LOGIN: "/login",
   FORGOTPASSWORD: "/forgot-password",
+  RESETPASSWORD: "/auth/resetPassword/:token",
   DASHBOARD: "/dashboard",
   VIEW_CASE: "/dashboard/viewcase",
   VIEW_NOTES: "/dashboard/viewnotes",
@@ -10,4 +11,5 @@ export const AppRoutes = {
   MY_PROFILE: "/myprofile",
   PROVIDER: "/provider",
   EDIT_PHYSICIAN: "/provider/editinfo",
+  ACCOUNT_ACCESS: "/access",
 };

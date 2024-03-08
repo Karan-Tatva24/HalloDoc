@@ -26,8 +26,9 @@ import { Button } from "../Button";
 import "./table.css";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
+const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,6 +41,8 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
   const [rowId, setRowId] = useState(null);
   const open = Boolean(anchorEl);
   const notify = () => toast.success("Copied Succsessfully");
+  const state = useSelector((state) => state.root.newState);
+  const rows = state.data.data;
 
   useEffect(() => {
     setTableData(rows);
@@ -162,7 +165,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
     if (indicatorValue === "all") return setTableData(rows);
     else {
       const filteredData = rows.filter((row) => {
-        const lowerCaseString = row.requestor.toLowerCase();
+        const lowerCaseString = row.Requestor.toLowerCase();
         return lowerCaseString.includes(indicatorValue.toLowerCase())
           ? true
           : false;
@@ -275,18 +278,24 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                   return (
                     <TableRow
                       key={row.id}
-                      className={`requestor-${row.requestor.toLowerCase()}`}
+                      className={`requestor-${row.Requestor.toLowerCase()}`}
                     >
                       {columns.map((column) => {
                         return (
                           <TableCell key={column.id}>
-                            {["phoneNumber", "chatWith", "action"].includes(
-                              column.id,
+                            {["Phone", "Chat With", "Actions"].includes(
+                              column.label,
                             ) ? (
                               <>
                                 <Button
                                   className="phone-btn"
-                                  name={row[column.id]}
+                                  name={
+                                    column.label === "Phone"
+                                      ? row[column.label]
+                                      : column.id === "chatWith"
+                                        ? "Provider"
+                                        : column.label
+                                  }
                                   startIcon={
                                     (column.id === "phoneNumber" && (
                                       <LocalPhoneOutlinedIcon />
@@ -332,7 +341,7 @@ const MyTable = ({ rows, columns, dropDown, indicator, onClick }) => {
                                 )}
                               </>
                             ) : (
-                              row[column.id]
+                              row[column.label]
                             )}
                           </TableCell>
                         );

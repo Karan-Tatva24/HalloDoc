@@ -4,7 +4,7 @@ import { AppRoutes } from "../../constants/routes";
 
 export const BackLoginAuth = () => {
   const location = useLocation();
-  const state = useSelector((state) => state.login);
+  const state = useSelector((state) => state.root.login);
 
   if (state.isLoggedIn) {
     return (

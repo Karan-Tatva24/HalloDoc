@@ -210,7 +210,7 @@ export const pendingColumns = [
   },
   {
     id: "dateOfService",
-    label: "Date of Service",
+    label: "Date Of Service",
     maxWidth: 95,
     align: "right",
   },
@@ -346,12 +346,6 @@ export const toCloseColumns = [
   { id: "name", label: "Name", minWidth: 200 },
   { id: "mail", label: "", minWidth: 10 },
   { id: "dateOfBirth", label: "Date Of Birth", minWidth: 100 },
-  {
-    id: "requestor",
-    label: "Requestor",
-    align: "right",
-    maxWidth: 100,
-  },
   {
     id: "region",
     label: "Region",
@@ -628,7 +622,7 @@ export const unpaidDropdown = [
 
 export const indicator = [
   { name: "Patient", color: "green" },
-  { name: "Family/Freind", color: "orange" },
+  { name: "Family/Friend", color: "orange" },
   { name: "Business", color: "Pink" },
   { name: "Concierge", color: "blue" },
   { name: "VIP", color: "purple" },

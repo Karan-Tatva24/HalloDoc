@@ -30,16 +30,19 @@ import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
 import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 import SendLinkModal from "../../Components/Modal/SendLinkModal";
+import { useDispatch } from "react-redux";
+import { newState } from "../../redux/halloAPIs/newStateAPI";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
-  const [activeButton, setActiveButton] = useState(0);
+  const [activeButton, setActiveButton] = useState("New");
   const [columns, setColumns] = useState(newColumns);
   const [dropDown, setDropDown] = useState(newDropdown);
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
   const [filterRows, setFilterRows] = useState(rows);
+  const dispatch = useDispatch();
 
   const handleOpen = (name, id) => {
     setModalName(name);
@@ -57,34 +60,40 @@ const DashBoard = () => {
     handleClose();
   };
 
-  const handleClick = (index) => {
-    setActiveButton(index);
+  const handleClick = (name) => {
+    setActiveButton(name);
     setIsActive(true);
   };
 
   useEffect(() => {
+    dispatch(newState(activeButton.toLowerCase())).then((response) => {
+      console.log("State Data ", response?.payload?.data);
+    });
+  }, [activeButton, dispatch]);
+
+  useEffect(() => {
     switch (activeButton) {
-      case 0:
+      case "New":
         setColumns(newColumns);
         setDropDown(newDropdown);
         break;
-      case 1:
+      case "Pending":
         setColumns(pendingColumns);
         setDropDown(pendingDropdown);
         break;
-      case 2:
+      case "Active":
         setColumns(activeColumns);
         setDropDown(activeDropdown);
         break;
-      case 3:
+      case "Conclude":
         setColumns(concludeColumns);
         setDropDown(concludeDropdown);
         break;
-      case 4:
+      case "To Close":
         setColumns(toCloseColumns);
         setDropDown(toCloseDropdown);
         break;
-      case 5:
+      case "Unpaid":
         setColumns(unpaidColumns);
         setDropDown(unpaidDropdown);
         break;
@@ -114,13 +123,13 @@ const DashBoard = () => {
                   <Button
                     color={card.color}
                     variant={
-                      isActive && activeButton === index
+                      isActive && activeButton === card.applicationState
                         ? "contained"
                         : "outlined"
                     }
                     className="card-btn"
                     fullWidth
-                    onClick={() => handleClick(index)}
+                    onClick={() => handleClick(card.applicationState)}
                   >
                     <Box className="card-content-heading">
                       {card.icon}
@@ -132,7 +141,7 @@ const DashBoard = () => {
                       <b>{card.figure}</b>
                     </Typography>
                   </Button>
-                  {isActive && activeButton === index ? (
+                  {isActive && activeButton === card.applicationState ? (
                     <img
                       src={card.toolTip}
                       alt="triangle"

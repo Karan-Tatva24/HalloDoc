@@ -47,18 +47,18 @@
 }
 
 .requestor-patient {
-    background-color: rgb(73, 187, 73) !important;
+    background-color: #49bb49 !important;
 }
 
 .requestor-patient td {
     color: aliceblue !important;
 }
 
-.requestor-familyfriend {
-    background-color: orange !important;
+.requestor-family\/friend {
+    background-color: #d6a242 !important;
 }
 
-.requestor-familyfriend td {
+.requestor-family\/friend td {
     color: aliceblue !important;
 }
 

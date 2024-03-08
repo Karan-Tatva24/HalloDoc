@@ -18,6 +18,8 @@ import { halloDocTheme } from "./doc.theme";
 import { useState } from "react";
 import ProviderInfo from "./Pages/ProviderInfo";
 import EditPhysicianInfo from "./Pages/EditPhysicianInfo";
+import ResetPassword from "./Pages/ResetPassword";
+import AccountAccess from "./Pages/AccountAccess";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -35,6 +37,7 @@ const App = () => {
             <Route path={AppRoutes.LOGIN} element={<Login />} />
           </Route>
           <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
+          <Route path={AppRoutes.RESETPASSWORD} element={<ResetPassword />} />
           <Route element={<RequireAuth />}>
             <Route
               element={
@@ -55,6 +58,10 @@ const App = () => {
               <Route
                 path={AppRoutes.EDIT_PHYSICIAN}
                 element={<EditPhysicianInfo />}
+              />
+              <Route
+                path={AppRoutes.ACCOUNT_ACCESS}
+                element={<AccountAccess />}
               />
             </Route>
           </Route>
