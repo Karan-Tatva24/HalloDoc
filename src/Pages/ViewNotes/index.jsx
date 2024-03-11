@@ -11,6 +11,7 @@ import { Input } from "../../Components/TextField/Input";
 import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema";
+import { useSelector } from "react-redux";
 
 const onSubmit = (values) => {
   console.log(values);
@@ -18,6 +19,10 @@ const onSubmit = (values) => {
 
 const ViewNotes = () => {
   const navigate = useNavigate();
+  const state = useSelector((state) => state.root.viewNotes);
+  const data = state.data.data.notes[0];
+  const value = state.data.data;
+  console.log("State", value);
   const formik = useFormik({
     initialValues: {
       adminNotes: "",
@@ -61,8 +66,7 @@ const ViewNotes = () => {
                     <b>Transfer Notes</b>
                   </Typography>
                   <Typography className="caption-txt">
-                    Admin Transferred to Dr.AGOLA on 27/09/2023 at 9:38:04 AM:
-                    test assign
+                    {data["Transfer Notes"]}
                   </Typography>
                 </Box>
               </Paper>
@@ -74,10 +78,10 @@ const ViewNotes = () => {
                 </Box>
                 <Box>
                   <Typography variant="subtitle1">
-                    <b>Transfer Notes</b>
+                    <b>Physician Notes</b>
                   </Typography>
                   <Typography className="caption-txt">
-                    test add, conclude
+                    {data["Physician Notes"]}
                   </Typography>
                 </Box>
               </Paper>
@@ -89,7 +93,7 @@ const ViewNotes = () => {
                 </Box>
                 <Box>
                   <Typography variant="subtitle1">
-                    <b>Transfer Notes</b>
+                    <b>Admin Notes</b>
                   </Typography>
                   <Typography className="caption-txt">-</Typography>
                 </Box>

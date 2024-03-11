@@ -19,23 +19,25 @@ import { useFormik } from "formik";
 import { viewReservationSchema } from "../../ValidationSchema";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-
-const initialValues = {
-  patientNotes: "",
-  firstName: "",
-  lastName: "",
-  dateOfBirth: "",
-  phone: "",
-  email: "",
-  region: "",
-  address: "",
-  roomNo: "",
-};
+import { useSelector } from "react-redux";
 
 const ViewReservation = () => {
   const navigate = useNavigate();
+  const state = useSelector((state) => state.root.viewCase);
+  const data = state.data.data[0];
+  console.log("Data ", data);
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      patientNotes: data["Patient Notes"],
+      firstName: data["First Name"],
+      lastName: data["Last Name"],
+      dateOfBirth: data["Date Of Birth"],
+      phone: data["Phone Number"],
+      email: data["Email"],
+      region: data["Region"],
+      address: data["Address"],
+      roomNo: data["Room"],
+    },
     validationSchema: viewReservationSchema,
     onSubmit: (values, onSubmitProps) => {
       console.log(values);
@@ -79,11 +81,12 @@ const ViewReservation = () => {
                 Conformation Number
               </Typography>
               <Typography variant="subtitle1" color="primary">
-                <b>MD200224MOAB0002</b>
+                <b>{data["Confirmation Number"]}</b>
               </Typography>
               <Input
                 label="Patient Notes"
                 name="patientNotes"
+                disabled
                 value={formik.values.patientNotes}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -109,6 +112,7 @@ const ViewReservation = () => {
                   <Input
                     label="First Name"
                     name="firstName"
+                    disabled
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -126,6 +130,7 @@ const ViewReservation = () => {
                   <Input
                     label="Last Name"
                     name="lastName"
+                    disabled
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -142,6 +147,7 @@ const ViewReservation = () => {
                   <Input
                     type="date"
                     name="dateOfBirth"
+                    disabled
                     value={formik.values.dateOfBirth}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -159,6 +165,7 @@ const ViewReservation = () => {
                   <PhoneInput
                     label="Phone Number"
                     name="phone"
+                    disabled
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -181,21 +188,13 @@ const ViewReservation = () => {
                   <Input
                     label="Email"
                     name="email"
+                    disabled
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={formik.touched.email && formik.errors.email}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Button
-                    variant="outlined"
-                    name="Edit"
-                    color="primary"
-                    size="large"
-                    className="form-btn"
                   />
                 </Grid>
               </Grid>
@@ -208,6 +207,7 @@ const ViewReservation = () => {
                   <Input
                     label="Region"
                     name="region"
+                    disabled
                     value={formik.values.region}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -222,6 +222,7 @@ const ViewReservation = () => {
                   <Input
                     label="Business Name/Address"
                     name="address"
+                    disabled
                     value={formik.values.address}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -245,6 +246,7 @@ const ViewReservation = () => {
                   <Input
                     label="Room #"
                     name="roomNo"
+                    disabled
                     value={formik.values.roomNo}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -263,7 +265,9 @@ const ViewReservation = () => {
                 mt={4}
                 flexWrap="wrap"
               >
-                <Button name="Assign" type="submit" disableRipple />
+                {data["Case Tag"] === "New" && (
+                  <Button name="Assign" type="submit" disableRipple />
+                )}
                 <Button
                   name="View Notes"
                   variant="contained"

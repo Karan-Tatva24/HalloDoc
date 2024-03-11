@@ -26,7 +26,9 @@ import { Button } from "../Button";
 import "./table.css";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
+import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
 
 const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const [rowId, setRowId] = useState(null);
   const open = Boolean(anchorEl);
   const notify = () => toast.success("Copied Succsessfully");
+  const dispatch = useDispatch();
   const state = useSelector((state) => state.root.newState);
   const rows = state.data.data;
 
@@ -63,9 +66,12 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
         onClick(action);
         break;
       case "View Case":
+        dispatch(viewCase(rowId));
         navigate(AppRoutes.VIEW_CASE);
         break;
       case "View Notes":
+        console.log("Id ", rowId);
+        dispatch(viewNotes(rowId));
         navigate(AppRoutes.VIEW_NOTES);
         break;
       case "Block Patient":

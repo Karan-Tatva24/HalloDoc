@@ -6,7 +6,6 @@ import { Button } from "../../Components/Button";
 import { cards } from "../../constants/cardConst";
 import MyTable from "../../Components/Table";
 import {
-  rows,
   newColumns,
   newDropdown,
   indicator,
@@ -41,7 +40,7 @@ const DashBoard = () => {
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
-  const [filterRows, setFilterRows] = useState(rows);
+  // const [filterRows, setFilterRows] = useState(rows);
   const dispatch = useDispatch();
 
   const handleOpen = (name, id) => {
@@ -55,10 +54,10 @@ const DashBoard = () => {
     setModalName("");
   };
 
-  const handleClear = (id) => {
-    setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
-    handleClose();
-  };
+  // const handleClear = (id) => {
+  //   setFilterRows((prevRows) => prevRows.filter((row) => id !== row.id));
+  //   handleClose();
+  // };
 
   const handleClick = (name) => {
     setActiveButton(name);
@@ -198,7 +197,6 @@ const DashBoard = () => {
             </Grid>
           </Box>
           <MyTable
-            rows={filterRows}
             columns={columns}
             dropDown={dropDown}
             indicator={indicator}
@@ -237,7 +235,7 @@ const DashBoard = () => {
       <ClearCaseModal
         open={open && modalName === "Clear Case"}
         handleClose={handleClose}
-        handleClear={handleClear}
+        // handleClear={handleClear}
         rowId={rowId}
       />
     </>

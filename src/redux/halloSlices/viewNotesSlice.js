@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewCase } from "../halloAPIs/viewReservationAPI";
+import { viewNotes } from "../halloAPIs/viewNotesAPI";
 
 const initialState = [];
 
-export const viewReservatinSlice = createSlice({
-  name: "View Case",
+export const viewNotesSlice = createSlice({
+  name: "View Notes",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(viewCase.fulfilled, (state, action) => {
+    builder.addCase(viewNotes.fulfilled, (state, action) => {
       if (action.payload) {
         const data = action.payload;
         return { ...state, data };
@@ -16,4 +16,4 @@ export const viewReservatinSlice = createSlice({
   },
 });
 
-export default viewReservatinSlice.reducer;
+export default viewNotesSlice.reducer;
