@@ -16,6 +16,8 @@ import {
 import { columns, rows } from "../../constants/accountAccess";
 import "./accountAccess.css";
 import { Button } from "../../Components/Button";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
 
 const AccountAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -23,6 +25,7 @@ const AccountAccess = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => setTableData(rows), [tableData]);
 
   const handleChangePage = (event, newPage) => {
@@ -74,7 +77,11 @@ const AccountAccess = () => {
           </Typography>
           <Paper className="acess-full-paper">
             <Box display="flex" justifyContent="end" p={3}>
-              <Button name="Create Acess" variant="outlined" />
+              <Button
+                name="Create Acess"
+                variant="outlined"
+                onClick={() => navigate(AppRoutes.CREATE_ROLE)}
+              />
             </Box>
 
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>

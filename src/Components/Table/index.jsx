@@ -44,8 +44,11 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const open = Boolean(anchorEl);
   const notify = () => toast.success("Copied Succsessfully");
   const dispatch = useDispatch();
+
   const state = useSelector((state) => state.root.newState);
   const rows = state.data.data;
+
+  const { regions } = useSelector((state) => state.getRegionPhysician);
 
   useEffect(() => {
     setTableData(rows);
@@ -70,7 +73,6 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
         navigate(AppRoutes.VIEW_CASE);
         break;
       case "View Notes":
-        console.log("Id ", rowId);
         dispatch(viewNotes(rowId));
         navigate(AppRoutes.VIEW_NOTES);
         break;
@@ -224,10 +226,10 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
               }}
             >
               <MenuItem value="all">All Regions</MenuItem>
-              {columns.map((column) => {
+              {regions.map((region) => {
                 return (
-                  <MenuItem key={column.id} value={column.id}>
-                    {column.label}
+                  <MenuItem key={region.id} value={region.name}>
+                    {region.name}
                   </MenuItem>
                 );
               })}

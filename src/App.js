@@ -20,6 +20,7 @@ import ProviderInfo from "./Pages/ProviderInfo";
 import EditPhysicianInfo from "./Pages/EditPhysicianInfo";
 import ResetPassword from "./Pages/ResetPassword";
 import AccountAccess from "./Pages/AccountAccess";
+import CreateAccess from "./Pages/CreateAccess";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -63,6 +64,7 @@ const App = () => {
                 path={AppRoutes.ACCOUNT_ACCESS}
                 element={<AccountAccess />}
               />
+              <Route path={AppRoutes.CREATE_ROLE} element={<CreateAccess />} />
             </Route>
           </Route>
         </Routes>

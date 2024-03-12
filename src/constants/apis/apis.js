@@ -4,3 +4,6 @@ export const RESET_PASS = "/auth/resetPassword";
 export const NEW_STATE = "/admin";
 export const VIEW_CASE = "/admin/viewCase";
 export const VIEW_NOTES = "/admin/viewNotes";
+export const UPDATE_NOTES = "/admin/updateNotes";
+export const GET_REGION = "/admin/regions";
+export const GET_PHYSICIAN = "admin/physicianByRegion";

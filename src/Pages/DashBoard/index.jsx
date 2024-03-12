@@ -31,6 +31,7 @@ import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 import SendLinkModal from "../../Components/Modal/SendLinkModal";
 import { useDispatch } from "react-redux";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
+import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -65,9 +66,11 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
-    dispatch(newState(activeButton.toLowerCase())).then((response) => {
-      console.log("State Data ", response?.payload?.data);
-    });
+    dispatch(getRegions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(newState(activeButton.toLowerCase()));
   }, [activeButton, dispatch]);
 
   useEffect(() => {

@@ -5,8 +5,14 @@ import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { assignModalSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 
 const AssignModal = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
+  const { regions } = useSelector((state) => state.getRegionPhysician);
+  const { physicians } = useSelector((state) => state.getRegionPhysician);
+
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -42,10 +48,17 @@ const AssignModal = ({ open, handleClose }) => {
               formik.touched.searchRegion && formik.errors.searchRegion
             }
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {regions.map((region) => {
+              return (
+                <MenuItem
+                  key={region.id}
+                  value={region.name}
+                  onClick={() => dispatch(getPhysician(region.id))}
+                >
+                  {region.name}
+                </MenuItem>
+              );
+            })}
           </Input>
           <Input
             fullWidth
@@ -58,10 +71,17 @@ const AssignModal = ({ open, handleClose }) => {
             error={formik.touched.physician && Boolean(formik.errors.physician)}
             helperText={formik.touched.physician && formik.errors.physician}
           >
-            <MenuItem value="all">Service not Availabel</MenuItem>
-            <MenuItem value="all">Doctor are not Availabel</MenuItem>
-            <MenuItem value="all">Slots are nbot free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {physicians &&
+              physicians.map((physician) => {
+                return (
+                  <MenuItem
+                    key={physician.id}
+                    value={`${physician.firstName} ${physician.lastName}`}
+                  >
+                    {`${physician.firstName} ${physician.lastName}`}
+                  </MenuItem>
+                );
+              })}
           </Input>
           <Input
             name="description"

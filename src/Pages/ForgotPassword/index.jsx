@@ -24,9 +24,7 @@ const ForgotPassword = () => {
     initialValues,
     validationSchema: forgotPasswordSchema,
     onSubmit: (values) => {
-      console.log(values);
       dispatch(forgotPass(values)).then((response) => {
-        console.log("Forgot response ", response);
         if (response.type === "forgotPass/fulfilled") {
           toast.success(response?.payload?.message);
         } else {

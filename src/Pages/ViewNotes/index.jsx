@@ -11,25 +11,37 @@ import { Input } from "../../Components/TextField/Input";
 import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema";
-import { useSelector } from "react-redux";
-
-const onSubmit = (values) => {
-  console.log(values);
-};
+import { useDispatch, useSelector } from "react-redux";
+import { viewNotes, viewNotesPost } from "../../redux/halloAPIs/viewNotesAPI";
+import { toast } from "react-toastify";
 
 const ViewNotes = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.viewNotes);
   const data = state.data.data.notes[0];
-  const value = state.data.data;
-  console.log("State", value);
+  const dispatch = useDispatch();
+  const id = data.id;
+
   const formik = useFormik({
     initialValues: {
       adminNotes: "",
     },
-    onSubmit,
+    onSubmit: (values, onSubmitProps) => {
+      dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
+        (response) => {
+          if (response.type === "viewNotesPost/fulfilled") {
+            toast.success("You are successfully save changes");
+            onSubmitProps.resetForm();
+            dispatch(viewNotes(id));
+          } else {
+            toast.error(response?.error?.message);
+          }
+        },
+      );
+    },
     validationSchema: viewNotesSchema,
   });
+
   return (
     <>
       <Box className="main-notes-container">
@@ -95,7 +107,9 @@ const ViewNotes = () => {
                   <Typography variant="subtitle1">
                     <b>Admin Notes</b>
                   </Typography>
-                  <Typography className="caption-txt">-</Typography>
+                  <Typography className="caption-txt">
+                    {data["Admin Notes"]}
+                  </Typography>
                 </Box>
               </Paper>
             </Grid>

@@ -25,7 +25,7 @@ const ViewReservation = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.viewCase);
   const data = state.data.data[0];
-  console.log("Data ", data);
+
   const formik = useFormik({
     initialValues: {
       patientNotes: data["Patient Notes"],
