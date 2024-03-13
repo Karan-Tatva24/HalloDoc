@@ -7,11 +7,13 @@ import { Button } from "../Button";
 import { assignModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { assignCase } from "../../redux/halloAPIs/assignCaseAPI";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.getRegionPhysician);
   const { physicians } = useSelector((state) => state.getRegionPhysician);
+  const { id } = useSelector((state) => state.root.patientName);
 
   const formik = useFormik({
     initialValues: {
@@ -21,7 +23,13 @@ const AssignModal = ({ open, handleClose }) => {
     },
     validationSchema: assignModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      dispatch(
+        assignCase({
+          id: id,
+          physicianId: physicians.id,
+          adminNotes: values.description,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },

@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 const ViewReservation = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.viewCase);
-  const data = state.data.data[0];
+  const data = state?.data?.data[0];
 
   const formik = useFormik({
     initialValues: {
@@ -87,7 +87,9 @@ const ViewReservation = () => {
                 label="Patient Notes"
                 name="patientNotes"
                 disabled
-                value={formik.values.patientNotes}
+                value={
+                  formik.values.patientNotes ? formik.values.patientNotes : "-"
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 helperText={

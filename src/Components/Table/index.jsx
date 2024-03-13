@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
 import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
+import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
 
 const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
@@ -42,11 +43,10 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [rowId, setRowId] = useState(null);
   const open = Boolean(anchorEl);
-  const notify = () => toast.success("Copied Succsessfully");
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.root.newState);
-  const rows = state.data.data;
+  const rows = state?.data?.data?.patients;
 
   const { regions } = useSelector((state) => state.getRegionPhysician);
 
@@ -60,6 +60,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   };
 
   const handleClose = (action) => {
+    dispatch(getPatientName(rowId));
     setAnchorEl(null);
     switch (action) {
       case "Assign Case":
@@ -109,7 +110,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
       .writeText(textToCopy)
       .then(() => {
         setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
-        notify();
+        toast.success("Copied Succsessfully");
         setTimeout(() => {
           setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
         }, 1000);
@@ -281,8 +282,8 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
             </TableHead>
             <TableBody>
               {tableData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                // ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.map((row) => {
                   return (
                     <TableRow
                       key={row.id}
@@ -348,6 +349,8 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
                                   </Menu>
                                 )}
                               </>
+                            ) : column.label === "Physician Name" ? (
+                              row?.physician?.["Physician Name"]
                             ) : (
                               row[column.label]
                             )}
@@ -363,7 +366,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={tableData.length}
+          count={tableData?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

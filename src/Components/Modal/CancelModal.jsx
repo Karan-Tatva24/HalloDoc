@@ -5,8 +5,14 @@ import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { cancleModalSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
 
 const CancelModal = ({ open, handleClose }) => {
+  const { patientName } = useSelector((state) => state.root.patientName);
+  const { id } = useSelector((state) => state.root.patientName);
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       additionalnotes: "",
@@ -14,17 +20,24 @@ const CancelModal = ({ open, handleClose }) => {
     },
     validationSchema: cancleModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      dispatch(
+        cancelCase({
+          id,
+          reasonForCancellation: values.canelReason,
+          adminNotes: values.additionalnotes,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },
   });
+
   return (
     <Modal open={open} handleClose={handleClose} header="Confirm Cancellation">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>test test</span>
+            Patient Name :<span style={{ color: "aqua" }}>{patientName}</span>
           </Typography>
           <Input
             fullWidth
