@@ -64,7 +64,7 @@ const CloseCase = () => {
     setIsDisabled(true);
   };
 
-  const handleCancle = () => {
+  const handleCancel = () => {
     formik.setValues(initialValues);
     setIsDisabled(true);
   };
@@ -271,13 +271,13 @@ const CloseCase = () => {
                   onClick={isDisabled ? handleEdit : handleSave}
                 />
                 <Button
-                  name={isDisabled ? "Close Case" : "Cancle"}
+                  name={isDisabled ? "Close Case" : "Cancel"}
                   variant="outlined"
                   size="large"
                   onClick={
                     isDisabled
                       ? () => console.log("Close Case clicked")
-                      : handleCancle
+                      : handleCancel
                   }
                 />
               </Box>

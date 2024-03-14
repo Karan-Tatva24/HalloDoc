@@ -27,7 +27,7 @@ Axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.request?.statusText === "Unauthorized") {
-      // for handaling unauthorise api
+      // for handling unauthorize api
     }
 
     return Promise.reject(error);

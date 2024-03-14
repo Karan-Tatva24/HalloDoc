@@ -17,7 +17,7 @@ const INITIAL_VALUE = {
   lastname: "2345",
   email: "test123@mailinator.com",
   phoneNumber: "4565156514",
-  medicalLicence: "51351531gvbjkdcbsdhjbjhvbvg",
+  medicalLicense: "51351531gvbjkdcbsdhjbjhvbvg",
   npiNumber: "",
   synEmail: "",
 };
@@ -103,19 +103,19 @@ const PhysiciansInformation = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="medicalLicence"
-            label="Medical Licence"
+            name="medicalLicense"
+            label="Medical License"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.medicalLicence}
+            value={formik.values.medicalLicense}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.medicalLicence &&
-              Boolean(formik.errors.medicalLicence)
+              formik.touched.medicalLicense &&
+              Boolean(formik.errors.medicalLicense)
             }
             helperText={
-              formik.touched.medicalLicence && formik.errors.medicalLicence
+              formik.touched.medicalLicense && formik.errors.medicalLicense
             }
           ></Input>
         </Grid>

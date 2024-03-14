@@ -4,7 +4,7 @@ export { viewReservationSchema } from "./viewReservationSchema";
 export { viewNotesSchema } from "./viewNotesSchema";
 export { assignModalSchema } from "./assignModalSchema";
 export { transferModalSchema } from "./transferModalSchema";
-export { cancleModalSchema } from "./cancleModalSchema";
+export { cancelModalSchema } from "./cancelModalSchema";
 export { blockModalSchema } from "./blockModalSchema";
 export { orderDetails } from "./orderDetails";
 export { sendAgreementSchema } from "./sendAgreementSchema";

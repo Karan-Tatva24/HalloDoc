@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
-import { cancleModalSchema } from "../../ValidationSchema";
+import { cancelModalSchema as cancelModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
 
@@ -15,16 +15,16 @@ const CancelModal = ({ open, handleClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      additionalnotes: "",
-      canelReason: "",
+      additionalNotes: "",
+      cancelReason: "",
     },
-    validationSchema: cancleModalSchema,
+    validationSchema: cancelModalSchema,
     onSubmit: (values, onSubmitProps) => {
       dispatch(
         cancelCase({
           id,
-          reasonForCancellation: values.canelReason,
-          adminNotes: values.additionalnotes,
+          reasonForCancellation: values.cancelReason,
+          adminNotes: values.additionalNotes,
         }),
       );
       onSubmitProps.resetForm();
@@ -43,39 +43,41 @@ const CancelModal = ({ open, handleClose }) => {
             fullWidth
             label="Reason for Cancellation"
             select
-            name="canelReason"
+            name="cancelReason"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.canelReason}
+            value={formik.values.cancelReason}
             error={
-              formik.touched.canelReason && Boolean(formik.errors.canelReason)
+              formik.touched.cancelReason && Boolean(formik.errors.cancelReason)
             }
-            helperText={formik.touched.canelReason && formik.errors.canelReason}
+            helperText={
+              formik.touched.cancelReason && formik.errors.cancelReason
+            }
           >
-            <MenuItem value="Service not Availabel">
-              Service not Availabel
+            <MenuItem value="Service not Available">
+              Service not Available
             </MenuItem>
-            <MenuItem value="Doctor are not Availabel">
-              Doctor are not Availabel
+            <MenuItem value="Doctor are not Available">
+              Doctor are not Available
             </MenuItem>
-            <MenuItem value="Slots are nbot free">Slots are nbot free</MenuItem>
+            <MenuItem value="Slots are not free">Slots are not free</MenuItem>
             <MenuItem value="Other">Other</MenuItem>
           </Input>
           <Input
-            name="additionalnotes"
-            label="Provide Addtional Notes"
+            name="additionalNotes"
+            label="Provide Additional Notes"
             fullWidth
             multiline
             rows={4}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.additionalnotes}
+            value={formik.values.additionalNotes}
             error={
-              formik.touched.additionalnotes &&
-              Boolean(formik.errors.additionalnotes)
+              formik.touched.additionalNotes &&
+              Boolean(formik.errors.additionalNotes)
             }
             helperText={
-              formik.touched.additionalnotes && formik.errors.additionalnotes
+              formik.touched.additionalNotes && formik.errors.additionalNotes
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>

@@ -20,7 +20,7 @@ const CreateAccess = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      rolename: "",
+      roleName: "",
       role: "all",
     },
   });
@@ -28,7 +28,7 @@ const CreateAccess = () => {
     <>
       <Box className="main-createaccess-container">
         <form>
-          <Container maxWidth="lg" className="createacess-conatiner-wrapper">
+          <Container maxWidth="lg" className="createacess-container-wrapper">
             <Box display="flex" justifyContent="space-between" mb="8px">
               <Box display="flex">
                 <Typography variant="h5" gutterBottom>
@@ -47,18 +47,18 @@ const CreateAccess = () => {
               <Grid container spacing={{ xs: 1, md: 2 }} margin="2rem">
                 <Grid item xs={12} md={6} lg={6}>
                   <Input
-                    name="rolename"
+                    name="roleName"
                     label="Role Name"
                     fullWidth
                     className="form-input"
                     onChange={formik.handleChange}
-                    value={formik.values.rolename}
+                    value={formik.values.roleName}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.rolename && Boolean(formik.errors.rolename)
+                      formik.touched.roleName && Boolean(formik.errors.roleName)
                     }
                     helperText={
-                      formik.touched.rolename && formik.errors.rolename
+                      formik.touched.roleName && formik.errors.roleName
                     }
                   />
                 </Grid>

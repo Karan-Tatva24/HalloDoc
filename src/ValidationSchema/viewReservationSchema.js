@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const viewReservationSchema = Yup.object({
-  patientNotes: Yup.string().required("Patient note is required"),
+  patientNotes: Yup.string(),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name required"),
   dateOfBirth: Yup.date().required("Date of birth is required"),

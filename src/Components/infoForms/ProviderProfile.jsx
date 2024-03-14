@@ -9,9 +9,9 @@ import { providerProfileSchema } from "../../ValidationSchema";
 import SignatureCanvas from "react-signature-canvas";
 
 const INITIAL_VALUE = {
-  businessname: "hbsdjcsdhbvsfbgfhgdfg",
-  businesswebsite: "dvgbjksfvbsh",
-  adminnotes: "hello",
+  businessName: "hbsdjcsdhbvsfbgfhgdfg",
+  businessWebsite: "dvgbjksfvbsh",
+  adminNotes: "hello",
 };
 
 const ProviderProfile = () => {
@@ -57,36 +57,36 @@ const ProviderProfile = () => {
       >
         <Grid item xs={12} md={6}>
           <Input
-            name="businessname"
+            name="businessName"
             label="Business name"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.businessname}
+            value={formik.values.businessName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.businessname && Boolean(formik.errors.businessname)
+              formik.touched.businessName && Boolean(formik.errors.businessName)
             }
             helperText={
-              formik.touched.businessname && formik.errors.businessname
+              formik.touched.businessName && formik.errors.businessName
             }
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="businesswebsite"
+            name="businessWebsite"
             label="Business Website"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.businesswebsite}
+            value={formik.values.businessWebsite}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.businesswebsite &&
-              Boolean(formik.errors.businesswebsite)
+              formik.touched.businessWebsite &&
+              Boolean(formik.errors.businessWebsite)
             }
             helperText={
-              formik.touched.businesswebsite && formik.errors.businesswebsite
+              formik.touched.businessWebsite && formik.errors.businessWebsite
             }
           />
         </Grid>
@@ -180,19 +180,19 @@ const ProviderProfile = () => {
         </Grid>
         <Grid item xs={12}>
           <Input
-            name="adminnotes"
+            name="adminNotes"
             label="Admin Notes"
             fullWidth
             multiline
             rows={4}
             disabled={isDisabled}
-            value={formik.values.adminnotes}
+            value={formik.values.adminNotes}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.adminnotes && Boolean(formik.errors.adminnotes)
+              formik.touched.adminNotes && Boolean(formik.errors.adminNotes)
             }
-            helperText={formik.touched.adminnotes && formik.errors.adminnotes}
+            helperText={formik.touched.adminNotes && formik.errors.adminNotes}
           />
         </Grid>
       </Grid>

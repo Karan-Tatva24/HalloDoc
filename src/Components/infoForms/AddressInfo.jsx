@@ -90,7 +90,7 @@ const AddressInfo = () => {
           >
             <MenuItem value="newyork">New York</MenuItem>
             <MenuItem value="lasvegas">Las Vegas</MenuItem>
-            <MenuItem value="wasington">Wasington</MenuItem>
+            <MenuItem value="washington">Washington</MenuItem>
           </Input>
         </Grid>
         <Grid item xs={12} md={6}>

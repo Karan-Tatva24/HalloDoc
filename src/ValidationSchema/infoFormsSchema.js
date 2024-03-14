@@ -13,8 +13,8 @@ export const accountInfoSchema = Yup.object({
 });
 
 export const administratorInfoSchema = Yup.object({
-  firstname: Yup.string().required("Firstname required!"),
-  lastname: Yup.string().required("Lastname required!"),
+  firstname: Yup.string().required("First name required!"),
+  lastname: Yup.string().required("Last name required!"),
   email: Yup.string().email("Invalid email!").required("Email required!"),
   confirmemail: Yup.string()
     .email("Invalid email!")
@@ -31,28 +31,28 @@ export const addressInfoSchema = Yup.object({
   state: Yup.string().required("State required!"),
   zip: Yup.string()
     .required("Zip required!")
-    .matches(/^\d{6}$/, "Invalid zipcode"),
+    .matches(/^\d{6}$/, "Invalid zip code"),
   mailingPhone: Yup.string()
     .required("Required!")
     .matches(/^\d{10}$/, "Invalid phone number"),
 });
 
 export const physicianInformationSchema = Yup.object({
-  firstname: Yup.string().required("Firstname required!"),
-  lastname: Yup.string().required("Lastname required!"),
+  firstname: Yup.string().required("First name required!"),
+  lastname: Yup.string().required("Last name required!"),
   email: Yup.string().email("Invalid email!").required("Email required!"),
   phoneNumber: Yup.string()
     .required("Required!")
     .matches(/^\d{10}$/, "Invalid phone number"),
-  medicalLicence: Yup.string().required("Require!"),
+  medicalLicense: Yup.string().required("Require!"),
   npiNumber: Yup.string().required("Require!"),
   synEmail: Yup.string()
     .email("Invalid email!")
-    .required("Syncronization email required!"),
+    .required("Synchronization email required!"),
 });
 
 export const providerProfileSchema = Yup.object({
-  businessname: Yup.string().required("Required!"),
-  businesswebsite: Yup.string().required("Required!"),
-  adminnotes: Yup.string().required("Required!"),
+  businessName: Yup.string().required("Required!"),
+  businessWebsite: Yup.string().required("Required!"),
+  adminNotes: Yup.string().required("Required!"),
 });

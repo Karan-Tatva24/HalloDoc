@@ -4,7 +4,7 @@ import newStateSliceReducer from "./newStateSlice";
 import viewCaseSliceReducer from "./viewReservationSlice";
 import viewNotesSliceReducer from "./viewNotesSlice";
 import getPatientNameSliceReducer from "./getPatientNameSlice";
-import getDeshboardCountSliceReducer from "./getDeshboardCountSlice";
+import getDashboardCountSliceReducer from "./getDashboardCountSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -12,5 +12,5 @@ export const rootReducer = combineReducers({
   viewCase: viewCaseSliceReducer,
   viewNotes: viewNotesSliceReducer,
   patientName: getPatientNameSliceReducer,
-  deshboardCount: getDeshboardCountSliceReducer,
+  dashboardCount: getDashboardCountSliceReducer,
 });

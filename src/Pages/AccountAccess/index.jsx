@@ -70,15 +70,15 @@ const AccountAccess = () => {
   };
   return (
     <>
-      <Box className="acess-main-container">
+      <Box className="access-main-container">
         <Container maxWidth="lg" className="access-wrapper-container">
           <Typography variant="h5" gutterBottom>
-            <b>Account Acess</b>
+            <b>Account Access</b>
           </Typography>
-          <Paper className="acess-full-paper">
+          <Paper className="access-full-paper">
             <Box display="flex" justifyContent="end" p={3}>
               <Button
-                name="Create Acess"
+                name="Create Access"
                 variant="outlined"
                 onClick={() => navigate(AppRoutes.CREATE_ROLE)}
               />

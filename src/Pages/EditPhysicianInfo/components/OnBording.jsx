@@ -4,7 +4,7 @@ import { Button } from "../../../Components/Button";
 
 const initialValue = {
   IndConAgg: false,
-  BacCheak: false,
+  BacCheck: false,
   HIPAA: false,
   nonDisAgg: false,
   licDoc: false,
@@ -24,7 +24,7 @@ const OnBording = () => {
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" gap={3}>
       <Typography variant="h6" mb={3}>
-        <b>Onbording</b>
+        <b>Onboarding</b>
       </Typography>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
@@ -35,7 +35,7 @@ const OnBording = () => {
               onChange={handleCheckBox}
             />
           }
-          label="Indipendent Contractor Aggrement"
+          label="Independent Contractor Agreement"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
@@ -45,16 +45,16 @@ const OnBording = () => {
         <FormControlLabel
           control={
             <Checkbox
-              name="BacCheak"
-              checked={checked.BacCheak}
+              name="BacCheck"
+              checked={checked.BacCheck}
               onChange={handleCheckBox}
             />
           }
-          label="Background Cheak"
+          label="Background Check"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.BacCheak ? <Button name="View" /> : null}
+        {checked.BacCheck ? <Button name="View" /> : null}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
@@ -95,7 +95,7 @@ const OnBording = () => {
               onChange={handleCheckBox}
             />
           }
-          label="Licence Document"
+          label="License Document"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />

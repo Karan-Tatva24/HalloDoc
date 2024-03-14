@@ -20,7 +20,7 @@ const ViewNotes = () => {
   const state = useSelector((state) => state.root.viewNotes);
   const data = state?.data?.data[0];
   const dispatch = useDispatch();
-  const id = data.id;
+  const id = data?.id;
 
   const formik = useFormik({
     initialValues: {

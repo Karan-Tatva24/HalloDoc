@@ -2,19 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { dashboardCount } from "../halloAPIs/dashboardCountAPI";
 
 const initialState = {
-  deshboardCount: [],
+  dashboardCount: [],
 };
 
-export const getDashboarsCountSlice = createSlice({
+export const getDashboardCountSlice = createSlice({
   name: "Dashboard Count",
   initialState,
   extraReducers: (builder) => {
     builder.addCase(dashboardCount.fulfilled, (state, action) => {
       if (action.payload) {
-        state.deshboardCount = action.payload;
+        state.dashboardCount = action.payload;
       }
     });
   },
 });
 
-export default getDashboarsCountSlice.reducer;
+export default getDashboardCountSlice.reducer;

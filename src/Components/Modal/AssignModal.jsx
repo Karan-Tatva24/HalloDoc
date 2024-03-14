@@ -39,11 +39,11 @@ const AssignModal = ({ open, handleClose }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">
-            To assign this request, searach and select another Physician
+            To assign this request, search and select another Physician
           </Typography>
           <Input
             fullWidth
-            label="Nerrow Search By Region"
+            label="Narrow Search By Region"
             select
             name="searchRegion"
             onChange={formik.handleChange}
@@ -93,7 +93,7 @@ const AssignModal = ({ open, handleClose }) => {
           </Input>
           <Input
             name="description"
-            label="Provide Addtional Notes"
+            label="Provide Additional Notes"
             fullWidth
             multiline
             rows={4}

@@ -28,15 +28,15 @@ const ViewReservation = () => {
 
   const formik = useFormik({
     initialValues: {
-      patientNotes: data["Patient Notes"] || "",
-      firstName: data["First Name"] || "",
-      lastName: data["Last Name"] || "",
-      dateOfBirth: data["Date Of Birth"] || "",
-      phone: data["Phone Number"] || "",
-      email: data["Email"] || "",
-      region: data["Region"] || "",
-      address: data["Address"] || "",
-      roomNo: data["Room"] || "",
+      patientNotes: data?.["Patient Notes"] || "",
+      firstName: data?.["First Name"] || "",
+      lastName: data?.["Last Name"] || "",
+      dateOfBirth: data?.["Date Of Birth"] || "",
+      phone: data?.["Phone Number"] || "",
+      email: data?.["Email"] || "",
+      region: data?.["Region"] || "",
+      address: data?.["Address"] || "",
+      roomNo: data?.["Room"] || "",
     },
     validationSchema: viewReservationSchema,
     onSubmit: (values, onSubmitProps) => {
@@ -201,7 +201,7 @@ const ViewReservation = () => {
               </Grid>
 
               <Typography variant="h6">
-                <b>Locatoin Information</b>
+                <b>Location Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12} md={6}>
@@ -275,7 +275,7 @@ const ViewReservation = () => {
                   color="primary"
                   onClick={() => navigate(AppRoutes.VIEW_NOTES)}
                 />
-                <Button name="Cancle" variant="contained" color="error" />
+                <Button name="Cancel" variant="contained" color="error" />
               </Box>
             </form>
           </Paper>

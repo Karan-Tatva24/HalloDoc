@@ -214,7 +214,7 @@ export const toCloseColumns = [
     align: "right",
   },
   {
-    id: "physicanName",
+    id: "physicianName",
     label: "Physician Name",
     align: "right",
     maxWidth: 100,
@@ -255,7 +255,7 @@ export const toCloseColumns = [
 export const unpaidColumns = [
   { id: "name", label: "Name", minWidth: 200 },
   {
-    id: "physicanName",
+    id: "physicianName",
     label: "Physician Name",
     align: "right",
     maxWidth: 100,

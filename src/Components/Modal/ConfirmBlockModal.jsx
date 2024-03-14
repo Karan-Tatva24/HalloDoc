@@ -13,7 +13,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
     },
     validationSchema: blockModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      console.log("submitted", values);
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -27,7 +27,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
           </Typography>
           <Input
             name="blockRequest"
-            label="Provide Addtional Notes"
+            label="Provide Additional Notes"
             fullWidth
             multiline
             rows={4}

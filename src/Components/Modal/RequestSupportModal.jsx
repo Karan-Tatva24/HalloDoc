@@ -13,7 +13,7 @@ const RequestSupportModal = ({ open, handleClose }) => {
     },
     validationSchema: requestSupportSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submmitted", values);
+      console.log("submitted", values);
       handleClose();
       onSubmitProps.resetForm();
     },

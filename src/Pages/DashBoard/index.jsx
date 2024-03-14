@@ -43,8 +43,8 @@ const DashBoard = () => {
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.root.deshboardCount);
-  const counts = state?.deshboardCount?.data;
+  const state = useSelector((state) => state.root.dashboardCount);
+  const counts = state?.dashboardCount?.data;
   const handleOpen = (name, id) => {
     setModalName(name);
     setRowId(id);
@@ -170,7 +170,7 @@ const DashBoard = () => {
                 </Typography>
               </Grid>
               <Grid item xs={12} lg={7}>
-                <Box className="deshboard-btn">
+                <Box className="dashboard-btn">
                   <Button
                     name="Send Link"
                     variant="contained"

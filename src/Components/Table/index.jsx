@@ -110,7 +110,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
       .writeText(textToCopy)
       .then(() => {
         setCopiedStates((prev) => ({ ...prev, [btnId]: true }));
-        toast.success("Copied Succsessfully");
+        toast.success("Copied Successfully");
         setTimeout(() => {
           setCopiedStates((prev) => ({ ...prev, [btnId]: false }));
         }, 1000);

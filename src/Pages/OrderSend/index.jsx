@@ -77,7 +77,7 @@ const Order = () => {
                   >
                     <MenuItem value="doctor">Doctor</MenuItem>
                     <MenuItem value="teacher">Teacher</MenuItem>
-                    <MenuItem value="govemployee">Goverment employee</MenuItem>
+                    <MenuItem value="govemployee">Government employee</MenuItem>
                     <MenuItem value="Other">Other</MenuItem>
                   </Input>
                 </Grid>
@@ -190,7 +190,7 @@ const Order = () => {
               <Box display="flex" justifyContent="flex-end" gap={2} mt={5}>
                 <Button name="Submit" variant="contained" type="submit" />
                 <Button
-                  name="Cancle"
+                  name="Cancel"
                   variant="outlined"
                   onClick={() => navigate(AppRoutes.DASHBOARD)}
                 />

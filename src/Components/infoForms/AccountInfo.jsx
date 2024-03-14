@@ -11,7 +11,7 @@ const initialValues = {
   username: "admin@gmail.com",
   password: "Admin@123",
   status: "active",
-  role: "masteradmin",
+  role: "masterAdmin",
 };
 
 const AccountInfo = () => {
@@ -71,7 +71,7 @@ const AccountInfo = () => {
             helperText={formik.touched.status && formik.errors.status}
           >
             <MenuItem value="active">Active</MenuItem>
-            <MenuItem value="unactive">Unactive</MenuItem>
+            <MenuItem value="inactive">Inactive</MenuItem>
           </Input>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -87,7 +87,7 @@ const AccountInfo = () => {
             error={formik.touched.role && Boolean(formik.errors.role)}
             helperText={formik.touched.role && formik.errors.role}
           >
-            <MenuItem value="masteradmin">Master Admin</MenuItem>
+            <MenuItem value="masterAdmin">Master Admin</MenuItem>
             <MenuItem value="admin">Admin</MenuItem>
           </Input>
         </Grid>

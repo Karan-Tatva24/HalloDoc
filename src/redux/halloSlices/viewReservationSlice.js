@@ -3,7 +3,7 @@ import { viewCase } from "../halloAPIs/viewReservationAPI";
 
 const initialState = [];
 
-export const viewReservatinSlice = createSlice({
+export const viewReservationSlice = createSlice({
   name: "View Case",
   initialState,
   extraReducers: (builder) => {
@@ -16,4 +16,4 @@ export const viewReservatinSlice = createSlice({
   },
 });
 
-export default viewReservatinSlice.reducer;
+export default viewReservationSlice.reducer;
