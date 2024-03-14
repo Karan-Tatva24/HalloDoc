@@ -11,3 +11,4 @@ export const ASSIGN_CASE = "/admin/assignCase";
 export const PATIENT_NAME = "/admin/patientName";
 export const CANCEL_CASE = "/admin/cancelCase";
 export const BLOCK_CASE = "/admin/blockCase";
+export const DESHBOARD_COUNT = "/admin/dashboard";

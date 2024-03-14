@@ -29,9 +29,10 @@ import ClearCaseModal from "../../Components/Modal/ClearCaseModal";
 import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 import SendLinkModal from "../../Components/Modal/SendLinkModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -42,7 +43,8 @@ const DashBoard = () => {
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
   const dispatch = useDispatch();
-
+  const state = useSelector((state) => state.root.deshboardCount);
+  const counts = state?.deshboardCount?.data;
   const handleOpen = (name, id) => {
     setModalName(name);
     setRowId(id);
@@ -61,6 +63,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     dispatch(getRegions());
+    dispatch(dashboardCount());
   }, [dispatch]);
 
   useEffect(() => {
@@ -133,9 +136,15 @@ const DashBoard = () => {
                         {card.applicationState}
                       </Typography>
                     </Box>
-                    <Typography variant="h5">
-                      <b>{card.figure}</b>
-                    </Typography>
+                    {counts?.map((count, index) => {
+                      return (
+                        <Typography variant="h5" key={index}>
+                          {count.caseTag === card.applicationState && (
+                            <b>{count.count}</b>
+                          )}
+                        </Typography>
+                      );
+                    })}
                   </Button>
                   {isActive && activeButton === card.applicationState ? (
                     <img

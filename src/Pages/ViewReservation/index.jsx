@@ -22,21 +22,21 @@ import "react-phone-input-2/lib/style.css";
 import { useSelector } from "react-redux";
 
 const ViewReservation = () => {
-  const navigate = useNavigate();
-  const state = useSelector((state) => state.root.viewCase);
+  const state = useSelector((state) => state.root?.viewCase);
   const data = state?.data?.data[0];
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      patientNotes: data["Patient Notes"],
-      firstName: data["First Name"],
-      lastName: data["Last Name"],
-      dateOfBirth: data["Date Of Birth"],
-      phone: data["Phone Number"],
-      email: data["Email"],
-      region: data["Region"],
-      address: data["Address"],
-      roomNo: data["Room"],
+      patientNotes: data["Patient Notes"] || "",
+      firstName: data["First Name"] || "",
+      lastName: data["Last Name"] || "",
+      dateOfBirth: data["Date Of Birth"] || "",
+      phone: data["Phone Number"] || "",
+      email: data["Email"] || "",
+      region: data["Region"] || "",
+      address: data["Address"] || "",
+      roomNo: data["Room"] || "",
     },
     validationSchema: viewReservationSchema,
     onSubmit: (values, onSubmitProps) => {
@@ -44,7 +44,6 @@ const ViewReservation = () => {
       onSubmitProps.resetForm();
     },
   });
-
   return (
     <>
       <Box className="main-container">

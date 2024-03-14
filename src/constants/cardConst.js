@@ -50,7 +50,7 @@ export const cards = [
     toolTip: infoTriangle,
   },
   {
-    applicationState: "Unpaid",
+    applicationState: "UnPaid",
     figure: "16",
     icon: <PaidOutlinedIcon />,
     color: "warning",
