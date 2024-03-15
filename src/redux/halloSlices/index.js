@@ -5,6 +5,7 @@ import viewCaseSliceReducer from "./viewReservationSlice";
 import viewNotesSliceReducer from "./viewNotesSlice";
 import getPatientNameSliceReducer from "./getPatientNameSlice";
 import getDashboardCountSliceReducer from "./getDashboardCountSlice";
+import getRegionPhysicianSliceReducer from "./getRegionPhysicianSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   viewNotes: viewNotesSliceReducer,
   patientName: getPatientNameSliceReducer,
   dashboardCount: getDashboardCountSliceReducer,
+  getRegionPhysician: getRegionPhysicianSliceReducer,
 });

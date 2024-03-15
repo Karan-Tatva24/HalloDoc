@@ -1,12 +1,22 @@
 import { Box, MenuItem, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { transferModalSchema } from "../../ValidationSchema";
+import { transferRequest } from "../../redux/halloAPIs/transferRequestAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { useDispatch, useSelector } from "react-redux";
 
 const TransferRequest = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { physicians } = useSelector((state) => state.root.getRegionPhysician);
+  const { id } = useSelector((state) => state.root.patientName);
+  const [phyId, setPhyId] = useState(-1);
+
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -15,7 +25,14 @@ const TransferRequest = ({ open, handleClose }) => {
     },
     validationSchema: transferModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submitted", values);
+      dispatch(
+        transferRequest({
+          id: id,
+          physicianId: phyId,
+          transferNote: values.description,
+        }),
+      );
+      dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -42,10 +59,17 @@ const TransferRequest = ({ open, handleClose }) => {
               formik.touched.searchRegion && formik.errors.searchRegion
             }
           >
-            <MenuItem value="all">Service not Available</MenuItem>
-            <MenuItem value="all">Doctor are not Available</MenuItem>
-            <MenuItem value="all">Slots are not free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {regions?.map((region) => {
+              return (
+                <MenuItem
+                  key={region.id}
+                  value={region.name}
+                  onClick={() => dispatch(getPhysician(region.id))}
+                >
+                  {region.name}
+                </MenuItem>
+              );
+            })}
           </Input>
           <Input
             fullWidth
@@ -58,10 +82,18 @@ const TransferRequest = ({ open, handleClose }) => {
             error={formik.touched.physician && Boolean(formik.errors.physician)}
             helperText={formik.touched.physician && formik.errors.physician}
           >
-            <MenuItem value="all">Service not Available</MenuItem>
-            <MenuItem value="all">Doctor are not Available</MenuItem>
-            <MenuItem value="all">Slots are not free</MenuItem>
-            <MenuItem value="all">Other</MenuItem>
+            {physicians &&
+              physicians?.map((physician) => {
+                return (
+                  <MenuItem
+                    key={physician.id}
+                    value={`${physician.firstName} ${physician.lastName}`}
+                    onClick={() => setPhyId(physician.id)}
+                  >
+                    {`${physician.firstName} ${physician.lastName}`}
+                  </MenuItem>
+                );
+              })}
           </Input>
           <Input
             name="description"

@@ -5,15 +5,22 @@ import BasicModal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { blockModalSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { blockCase } from "../../redux/halloAPIs/blockCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const ConfirmBlockModal = ({ open, handleClose }) => {
+  const { patientName } = useSelector((state) => state.root.patientName);
+  const { id } = useSelector((state) => state.root.patientName);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       blockRequest: "",
     },
     validationSchema: blockModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submitted", values);
+      dispatch(blockCase({ id, reasonForCancellation: values.blockRequest }));
+      dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -23,7 +30,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>test test</span>
+            Patient Name :<span style={{ color: "aqua" }}>{patientName}</span>
           </Typography>
           <Input
             name="blockRequest"

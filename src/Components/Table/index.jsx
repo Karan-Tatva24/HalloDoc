@@ -48,7 +48,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const state = useSelector((state) => state.root.newState);
   const rows = state?.data?.data?.patients;
 
-  const { regions } = useSelector((state) => state.getRegionPhysician);
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
 
   useEffect(() => {
     setTableData(rows);

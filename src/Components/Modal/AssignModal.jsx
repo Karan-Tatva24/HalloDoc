@@ -12,8 +12,8 @@ import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
-  const { regions } = useSelector((state) => state.getRegionPhysician);
-  const { physicians } = useSelector((state) => state.getRegionPhysician);
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { physicians } = useSelector((state) => state.root.getRegionPhysician);
   const { id } = useSelector((state) => state.root.patientName);
   const [phyId, setPhyId] = useState(-1);
 

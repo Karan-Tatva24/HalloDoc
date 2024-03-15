@@ -3,11 +3,13 @@ import React from "react";
 import { Button } from "../Button";
 import { infoImage } from "../../assets/Images";
 import "./modal.css";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCase } from "../../redux/halloAPIs/clearCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
-const ClearCaseModal = ({ open, handleClose, handleClear, rowId }) => {
-  const handleClearButton = () => {
-    handleClear(rowId);
-  };
+const ClearCaseModal = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.root.patientName);
 
   return (
     <Modal open={open} handleClose={handleClose}>
@@ -31,7 +33,11 @@ const ClearCaseModal = ({ open, handleClose, handleClear, rowId }) => {
           <Button
             name="Clear"
             variant="contained"
-            onClick={handleClearButton}
+            onClick={() => {
+              dispatch(clearCase(id));
+              dispatch(dashboardCount());
+              handleClose();
+            }}
           />
           <Button name="Cancel" variant="outlined" onClick={handleClose} />
         </Box>

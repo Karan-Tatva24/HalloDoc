@@ -7,6 +7,7 @@ import { Button } from "../Button";
 import { cancelModalSchema as cancelModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const CancelModal = ({ open, handleClose }) => {
   const { patientName } = useSelector((state) => state.root.patientName);
@@ -27,6 +28,7 @@ const CancelModal = ({ open, handleClose }) => {
           adminNotes: values.additionalNotes,
         }),
       );
+      dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
     },
