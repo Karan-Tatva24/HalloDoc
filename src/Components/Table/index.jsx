@@ -227,7 +227,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
               }}
             >
               <MenuItem value="all">All Regions</MenuItem>
-              {regions.map((region) => {
+              {regions?.map((region) => {
                 return (
                   <MenuItem key={region.id} value={region.name}>
                     {region.name}
@@ -282,7 +282,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
             </TableHead>
             <TableBody>
               {tableData
-                // ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((row) => {
                   return (
                     <TableRow

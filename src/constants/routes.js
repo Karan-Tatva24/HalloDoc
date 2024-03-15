@@ -13,4 +13,5 @@ export const AppRoutes = {
   EDIT_PHYSICIAN: "/provider/editinfo",
   ACCOUNT_ACCESS: "/access",
   CREATE_ROLE: "/access/createrole",
+  SCHEDULING: "/provider/scheduling",
 };

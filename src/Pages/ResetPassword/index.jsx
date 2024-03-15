@@ -29,7 +29,7 @@ const ResetPassword = () => {
   const onSubmit = (values) => {
     dispatch(resetPassword({ values, token })).then((response) => {
       if (response.type === "resetPassword/fulfilled") {
-        toast.success("You are login Successfully");
+        toast.success("You are Reset Password Successfully");
         navigate(AppRoutes.LOGIN);
       } else {
         toast.error(response?.error?.message);

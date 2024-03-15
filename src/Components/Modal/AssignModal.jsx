@@ -1,5 +1,5 @@
 import { Box, MenuItem, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import Modal from "./Modal";
 import { Input } from "../TextField/Input";
@@ -8,12 +8,14 @@ import { assignModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { assignCase } from "../../redux/halloAPIs/assignCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.getRegionPhysician);
   const { physicians } = useSelector((state) => state.getRegionPhysician);
   const { id } = useSelector((state) => state.root.patientName);
+  const [phyId, setPhyId] = useState(-1);
 
   const formik = useFormik({
     initialValues: {
@@ -26,10 +28,11 @@ const AssignModal = ({ open, handleClose }) => {
       dispatch(
         assignCase({
           id: id,
-          physicianId: physicians.id,
-          adminNotes: values.description,
+          physicianId: phyId,
+          transferNote: values.description,
         }),
       );
+      dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -56,7 +59,7 @@ const AssignModal = ({ open, handleClose }) => {
               formik.touched.searchRegion && formik.errors.searchRegion
             }
           >
-            {regions.map((region) => {
+            {regions?.map((region) => {
               return (
                 <MenuItem
                   key={region.id}
@@ -80,11 +83,12 @@ const AssignModal = ({ open, handleClose }) => {
             helperText={formik.touched.physician && formik.errors.physician}
           >
             {physicians &&
-              physicians.map((physician) => {
+              physicians?.map((physician) => {
                 return (
                   <MenuItem
                     key={physician.id}
                     value={`${physician.firstName} ${physician.lastName}`}
+                    onClick={() => setPhyId(physician.id)}
                   >
                     {`${physician.firstName} ${physician.lastName}`}
                   </MenuItem>

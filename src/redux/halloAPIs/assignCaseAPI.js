@@ -5,12 +5,11 @@ import { ASSIGN_CASE } from "../../constants/apis/apis";
 export const assignCase = createAsyncThunk(
   "assignCase",
   async (params, { rejectWithValue }) => {
-    const { id, physicianId, adminNotes } = params;
+    const { id, physicianId, transferNote } = params;
     try {
       const response = await Axios.post(`${ASSIGN_CASE}/${id}`, {
-        withAuthToken: true,
         physicianId,
-        adminNotes,
+        transferNote,
       });
       return response?.data;
     } catch (error) {

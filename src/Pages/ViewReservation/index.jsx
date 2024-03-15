@@ -80,7 +80,7 @@ const ViewReservation = () => {
                 Conformation Number
               </Typography>
               <Typography variant="subtitle1" color="primary">
-                <b>{data["Confirmation Number"]}</b>
+                <b>{data?.["Confirmation Number"]}</b>
               </Typography>
               <Input
                 label="Patient Notes"

@@ -121,7 +121,14 @@ const Header = ({ onClickDarkTheme, toggle }) => {
               >
                 Provider
               </MenuItem>
-              <MenuItem onClick={() => navigate(-1)}>Scheduling</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SCHEDULING);
+                  handleMenuClose();
+                }}
+              >
+                Scheduling
+              </MenuItem>
               <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
             </Menu>
           )}

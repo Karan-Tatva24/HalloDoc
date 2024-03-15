@@ -21,6 +21,7 @@ import EditPhysicianInfo from "./Pages/EditPhysicianInfo";
 import ResetPassword from "./Pages/ResetPassword";
 import AccountAccess from "./Pages/AccountAccess";
 import CreateAccess from "./Pages/CreateAccess";
+import Scheduling from "./Pages/Scheduling";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -36,8 +37,11 @@ const App = () => {
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<Login />} />
             <Route path={AppRoutes.LOGIN} element={<Login />} />
+            <Route
+              path={AppRoutes.FORGOTPASSWORD}
+              element={<ForgotPassword />}
+            />
           </Route>
-          <Route path={AppRoutes.FORGOTPASSWORD} element={<ForgotPassword />} />
           <Route path={AppRoutes.RESETPASSWORD} element={<ResetPassword />} />
           <Route element={<RequireAuth />}>
             <Route
@@ -65,6 +69,7 @@ const App = () => {
                 element={<AccountAccess />}
               />
               <Route path={AppRoutes.CREATE_ROLE} element={<CreateAccess />} />
+              <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
             </Route>
           </Route>
         </Routes>
