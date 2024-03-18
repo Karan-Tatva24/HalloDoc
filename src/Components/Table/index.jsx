@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
 import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
 import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
+import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 
 const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
         onClick(action);
         break;
       case "View Upload":
+        dispatch(viewUpload(rowId));
         navigate(AppRoutes.VIEW_UPLOAD);
         break;
       case "Orders":

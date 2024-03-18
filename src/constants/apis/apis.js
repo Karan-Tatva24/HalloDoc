@@ -14,3 +14,4 @@ export const BLOCK_CASE = "/admin/dashboard/blockCase";
 export const DASHBOARD_COUNT = "/admin/dashboard/dashboard";
 export const CLEAR_CASE = "/admin/dashboard/clearCase";
 export const TRANSFER_REQUEST = "/admin/dashboard/transferRequest";
+export const VIEW_UPLOAD = "/admin/dashboard/viewUploads";

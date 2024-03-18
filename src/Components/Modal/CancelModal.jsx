@@ -10,8 +10,9 @@ import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const CancelModal = ({ open, handleClose }) => {
-  const { patientName } = useSelector((state) => state.root.patientName);
-  const { id } = useSelector((state) => state.root.patientName);
+  const { patientFirstName, patientLastName, id } = useSelector(
+    (state) => state.root.patientName,
+  );
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -39,7 +40,11 @@ const CancelModal = ({ open, handleClose }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>{patientName}</span>
+            Patient Name :
+            <span style={{ color: "aqua" }}>
+              {patientFirstName}
+              {patientLastName}
+            </span>
           </Typography>
           <Input
             fullWidth

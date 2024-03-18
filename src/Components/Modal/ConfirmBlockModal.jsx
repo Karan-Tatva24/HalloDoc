@@ -10,8 +10,9 @@ import { blockCase } from "../../redux/halloAPIs/blockCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 
 const ConfirmBlockModal = ({ open, handleClose }) => {
-  const { patientName } = useSelector((state) => state.root.patientName);
-  const { id } = useSelector((state) => state.root.patientName);
+  const { patientFirstName, patientLastName, id } = useSelector(
+    (state) => state.root.patientName,
+  );
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -30,7 +31,11 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
-            Patient Name :<span style={{ color: "aqua" }}>{patientName}</span>
+            Patient Name :
+            <span style={{ color: "aqua" }}>
+              {patientFirstName}
+              {patientLastName}
+            </span>
           </Typography>
           <Input
             name="blockRequest"

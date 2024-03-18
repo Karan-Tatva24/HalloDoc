@@ -1,22 +1,34 @@
-import React from "react";
-import { Box, Container, MenuItem, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
+import {
+  Box,
+  Container,
+  InputAdornment,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-// import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import "./scheduling.css";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
+import { AppRoutes } from "../../constants/routes";
 
 const Scheduling = () => {
   const navigate = useNavigate();
-  const { regions } = useSelector((state) => state.getRegionPhysician);
+  const [selectRegion, setSelectRegion] = useState("all");
+  const calendarRef = useRef(null);
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const handleDateClick = (arg) => {
     alert(arg.dateStr);
+  };
+
+  const handleChangeRegion = (e) => {
+    setSelectRegion(e.target.value);
   };
 
   return (
@@ -41,39 +53,42 @@ const Scheduling = () => {
             <Input
               className="search-text drop-list"
               select
-              placeholder="All Regions"
-              //   value={additionalFilter}
-              //   onChange={handleAdditionalFilterChange}
-              //   InputProps={{
-              //     startAdornment: (
-              //       <InputAdornment position="start">
-              //         <SearchOutlinedIcon />
-              //       </InputAdornment>
-              //     ),
-              //   }}
+              value={selectRegion}
+              onChange={(e) => handleChangeRegion(e)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
             >
               <MenuItem value="all">All Regions</MenuItem>
-              {regions.map((region, index) => {
+              {regions?.map((region) => {
                 return (
-                  <MenuItem key={index} value={region.region_name}>
-                    {region.region_name}
+                  <MenuItem key={region.id} value={region.name}>
+                    {region.name}
                   </MenuItem>
                 );
               })}
             </Input>
             <Box display="flex" gap={2}>
               <Button name="Provider on call"></Button>
-              <Button name="Shifts For Review"></Button>
+              <Button
+                name="Shifts For Review"
+                onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
+              ></Button>
               <Button name="Add New Shift"></Button>
             </Box>
           </Box>
           <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+            ref={calendarRef}
+            plugins={[dayGridPlugin, resourceTimelinePlugin]}
             dateClick={handleDateClick}
-            initialView="timeGridDay"
+            initialView="resourceTimelineWeek"
             headerToolbar={{
               left: "title prev next",
-              right: "timeGridDay timeGridWeek dayGridMonth",
+              right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
             }}
             events={[
               { title: "event 1", date: "2024-03-15" },

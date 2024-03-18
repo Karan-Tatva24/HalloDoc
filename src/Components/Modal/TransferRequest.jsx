@@ -12,8 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const TransferRequest = ({ open, handleClose }) => {
   const dispatch = useDispatch();
-  const { regions } = useSelector((state) => state.root.getRegionPhysician);
-  const { physicians } = useSelector((state) => state.root.getRegionPhysician);
+  const { regions, physicians } = useSelector(
+    (state) => state.root.getRegionPhysician,
+  );
   const { id } = useSelector((state) => state.root.patientName);
   const [phyId, setPhyId] = useState(-1);
 

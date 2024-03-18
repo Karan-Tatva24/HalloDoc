@@ -6,6 +6,7 @@ import viewNotesSliceReducer from "./viewNotesSlice";
 import getPatientNameSliceReducer from "./getPatientNameSlice";
 import getDashboardCountSliceReducer from "./getDashboardCountSlice";
 import getRegionPhysicianSliceReducer from "./getRegionPhysicianSlice";
+import viewUploadSliceReducer from "./viewUploadSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   patientName: getPatientNameSliceReducer,
   dashboardCount: getDashboardCountSliceReducer,
   getRegionPhysician: getRegionPhysicianSliceReducer,
+  viewUpload: viewUploadSliceReducer,
 });

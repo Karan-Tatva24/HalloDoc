@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getPatientName } from "../halloAPIs/getPatientNameAPI";
 
 const initialState = {
-  patientName: "",
+  patientFirstName: "",
+  patientLastName: "",
+  confirmationNumber: "",
   id: "",
 };
 
@@ -11,9 +13,13 @@ export const getPatientNameSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(getPatientName.fulfilled, (state, action) => {
+      console.log("object", action.payload);
       if (action.payload) {
         state.id = action.payload.data[0]?.id;
-        state.patientName = action.payload.data[0]?.["Patient Name"];
+        state.patientFirstName = action.payload.data[0]?.["patientFirstName"];
+        state.patientLastName = action.payload.data[0]?.["patientLastName"];
+        state.confirmationNumber =
+          action.payload.data[0]?.["confirmationNumber"];
       }
     });
   },

@@ -22,6 +22,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import AccountAccess from "./Pages/AccountAccess";
 import CreateAccess from "./Pages/CreateAccess";
 import Scheduling from "./Pages/Scheduling";
+import RequestedShifts from "./Pages/RequestedShifts";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -70,6 +71,10 @@ const App = () => {
               />
               <Route path={AppRoutes.CREATE_ROLE} element={<CreateAccess />} />
               <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
+              <Route
+                path={AppRoutes.REQUESTED_SHIFTS}
+                element={<RequestedShifts />}
+              />
             </Route>
           </Route>
         </Routes>

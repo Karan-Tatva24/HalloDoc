@@ -20,19 +20,19 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import "./viewUpload.css";
-
-const rows = [
-  { id: 1, document: "Document 1", uploadDate: "2024-02-20" },
-  { id: 2, document: "Document 2", uploadDate: "2024-02-21" },
-  { id: 3, document: "Document 3", uploadDate: "2024-02-22" },
-];
+import { useSelector } from "react-redux";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
-  const [filterData, setFilterData] = useState(rows);
   const [selectedFile, setSelectedFile] = useState([]);
+  const state = useSelector((state) => state.root.viewUpload);
+  const rows = state.viewUpload;
+  const [filterData, setFilterData] = useState(rows);
+  const { patientFirstName, confirmationNumber, patientLastName } = useSelector(
+    (state) => state.root.patientName,
+  );
   const navigate = useNavigate();
 
   const handleSelectAllClick = (event) => {
@@ -126,7 +126,7 @@ const ViewUpload = () => {
     selected.forEach((id) => {
       const file = rows.find((row) => row.id === id);
       if (file) {
-        handleDownload(file.document);
+        handleDownload(file.fileName);
       }
     });
   };
@@ -170,7 +170,11 @@ const ViewUpload = () => {
           <Paper className="upload-container">
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
-              <b className="patient-name">Bhoomi Prajapati</b>(MD101819PRBH0005)
+              <b className="patient-name">
+                {patientFirstName}
+                {patientLastName}
+              </b>
+              ({confirmationNumber})
             </Typography>
             <Typography variant="body2">
               Check here to review and add files that you or the Client/Member
@@ -253,9 +257,9 @@ const ViewUpload = () => {
                     <TableCell className="document-cl">Documents</TableCell>
                     <TableCell className="date-cl">
                       <TableSortLabel
-                        active={orderBy === "uploadDate"}
+                        active={orderBy === "createdAt"}
                         direction={order}
-                        onClick={() => handleRequestSort("uploadDate")}
+                        onClick={() => handleRequestSort("createdAt")}
                       >
                         Upload Date
                       </TableSortLabel>
@@ -273,12 +277,12 @@ const ViewUpload = () => {
                             onClick={(event) => handleClick(event, row.id)}
                           />
                         </TableCell>
-                        <TableCell>{row.document}</TableCell>
-                        <TableCell>{row.uploadDate}</TableCell>
+                        <TableCell>{row.fileName}</TableCell>
+                        <TableCell>{row.createdAt}</TableCell>
                         <TableCell>
                           <Button
                             variant="outlined"
-                            onClick={() => handleDownload(row.document)}
+                            onClick={() => handleDownload(row.fileName)}
                             size="large"
                             className="icon-btn"
                           >
