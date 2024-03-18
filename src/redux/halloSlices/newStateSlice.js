@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { newState } from "../halloAPIs/newStateAPI";
 
-const initialState = [];
+const initialState = {
+  stateData: [],
+};
 
 export const newStateSlice = createSlice({
   name: "New State",
@@ -9,8 +11,7 @@ export const newStateSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(newState.fulfilled, (state, action) => {
       if (action.payload) {
-        const data = action.payload;
-        return { ...state, data };
+        state.stateData = action.payload?.data?.patients;
       }
     });
   },

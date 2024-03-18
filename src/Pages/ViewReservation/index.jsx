@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 
 const ViewReservation = () => {
   const state = useSelector((state) => state.root?.viewCase);
-  const data = state?.data?.data[0];
+  const data = state?.viewCase;
   const navigate = useNavigate();
 
   const formik = useFormik({

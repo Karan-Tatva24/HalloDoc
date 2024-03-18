@@ -11,7 +11,7 @@ export const getDashboardCountSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(dashboardCount.fulfilled, (state, action) => {
       if (action.payload) {
-        state.dashboardCount = action.payload;
+        state.dashboardCount = action.payload.data;
       }
     });
   },

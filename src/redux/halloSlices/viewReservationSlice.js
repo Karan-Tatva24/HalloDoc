@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { viewCase } from "../halloAPIs/viewReservationAPI";
 
-const initialState = [];
+const initialState = {
+  viewCase: {},
+};
 
 export const viewReservationSlice = createSlice({
   name: "View Case",
@@ -9,8 +11,7 @@ export const viewReservationSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(viewCase.fulfilled, (state, action) => {
       if (action.payload) {
-        const data = action.payload;
-        return { ...state, data };
+        state.viewCase = action.payload?.data?.[0];
       }
     });
   },

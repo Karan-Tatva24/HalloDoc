@@ -46,7 +46,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.root.newState);
-  const rows = state?.data?.data?.patients;
+  const rows = state?.stateData;
 
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
 

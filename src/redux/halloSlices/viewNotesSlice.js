@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { viewNotes } from "../halloAPIs/viewNotesAPI";
 
-const initialState = [];
+const initialState = {
+  notes: {},
+};
 
 export const viewNotesSlice = createSlice({
   name: "View Notes",
@@ -9,8 +11,7 @@ export const viewNotesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(viewNotes.fulfilled, (state, action) => {
       if (action.payload) {
-        const data = action.payload;
-        return { ...state, data };
+        state.notes = action.payload?.data?.[0];
       }
     });
   },

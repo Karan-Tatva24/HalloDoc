@@ -44,7 +44,7 @@ const DashBoard = () => {
   const [rowId, setRowId] = useState(null);
   const dispatch = useDispatch();
   const state = useSelector((state) => state.root.dashboardCount);
-  const counts = state?.dashboardCount?.data;
+  const counts = state?.dashboardCount;
   const handleOpen = (name, id) => {
     setModalName(name);
     setRowId(id);

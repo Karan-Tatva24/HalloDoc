@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 const ViewNotes = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state.root.viewNotes);
-  const data = state?.data?.data[0];
+  const data = state?.notes;
   const dispatch = useDispatch();
   const id = data?.id;
 
