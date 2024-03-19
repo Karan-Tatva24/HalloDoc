@@ -67,7 +67,7 @@ const DashBoard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(newState(activeButton.toLowerCase()));
+    dispatch(newState({ state: activeButton.toLowerCase(), search: "" }));
   }, [activeButton, dispatch]);
 
   useEffect(() => {
@@ -206,6 +206,7 @@ const DashBoard = () => {
             columns={columns}
             dropDown={dropDown}
             indicator={indicator}
+            activeState={activeButton}
             onClick={handleOpen}
           />
         </Box>

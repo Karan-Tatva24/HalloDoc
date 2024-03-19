@@ -13,7 +13,6 @@ export const getPatientNameSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(getPatientName.fulfilled, (state, action) => {
-      console.log("object", action.payload);
       if (action.payload) {
         state.id = action.payload.data[0]?.id;
         state.patientFirstName = action.payload.data[0]?.["patientFirstName"];

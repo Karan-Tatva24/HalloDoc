@@ -11,7 +11,6 @@ export const viewUploadSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(viewUpload.fulfilled, (state, action) => {
       if (action.payload) {
-        console.log("data", action.payload.data);
         state.viewUpload = action.payload?.data;
       }
     });

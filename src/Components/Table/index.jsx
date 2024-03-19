@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Menu,
   Fade,
+  TableSortLabel,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -31,18 +32,20 @@ import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
 import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
 import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
 import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
+import { newState } from "../../redux/halloAPIs/newStateAPI";
 
-const MyTable = ({ columns, dropDown, indicator, onClick }) => {
+const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedColumn, setSelectedColumn] = useState("name");
   const [additionalFilter, setAdditionalFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [rowId, setRowId] = useState(null);
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("Requested Date");
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
 
@@ -54,6 +57,38 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
   useEffect(() => {
     setTableData(rows);
   }, [rows]);
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
+      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+  };
+
+  const descendingComparator = (a, b) => {
+    if (b < a) {
+      return -1;
+    }
+    if (b > a) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   const handleClick = (event, id) => {
     setRowId(id);
@@ -129,47 +164,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
     setPage(0);
   };
 
-  const filterRows = (rows, term) => {
+  const filterRows = (term) => {
     setSearchTerm(term);
-    const filteredData = rows.filter((row) =>
-      Object.entries(row).some(([key, value]) => {
-        if (!value) {
-          return false;
-        }
-        const lowerCaseValue =
-          typeof value === "string"
-            ? value.toLowerCase()
-            : String(value).toLowerCase();
-
-        if (key === "name") {
-          const nameText = value.props.children[0].props.children;
-          return nameText.toLowerCase().includes(term.toLowerCase());
-        }
-
-        return (
-          selectedColumn === "all" ||
-          (key === selectedColumn &&
-            lowerCaseValue.includes(term.toLowerCase())) ||
-          (selectedColumn === "dateOfBirth" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "requestor" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "requestedDate" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "phoneNumber" &&
-            row[selectedColumn].toString().includes(term)) ||
-          (selectedColumn === "address" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "notes" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "chatWith" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase())) ||
-          (selectedColumn === "action" &&
-            row[selectedColumn].toLowerCase().includes(term.toLowerCase()))
-        );
-      }),
-    );
-    setTableData(filteredData);
+    dispatch(newState({ state: activeState, search: searchTerm }));
   };
 
   const filterByIndicator = (indicatorValue) => {
@@ -187,7 +184,6 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
 
   const handleAdditionalFilterChange = (event) => {
     setAdditionalFilter(event.target.value);
-    setSelectedColumn(event.target.value);
   };
 
   return (
@@ -213,7 +209,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => filterRows(tableData, e.target.value)}
+              onChange={(e) => filterRows(e.target.value)}
             />
             <Input
               className="search-text drop-list"
@@ -271,19 +267,36 @@ const MyTable = ({ columns, dropDown, indicator, onClick }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
+                {columns.map((column) =>
+                  column.id === "requestedDate" ? (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      <TableSortLabel
+                        key={column.id}
+                        active={orderBy === "Requested Date"}
+                        direction={order}
+                        onClick={() => handleRequestSort("Requested Date")}
+                      >
+                        {column.label}
+                      </TableSortLabel>
+                    </TableCell>
+                  ) : (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ),
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData
+              {stableSort(tableData, getComparator(order, orderBy))
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((row) => {
                   return (

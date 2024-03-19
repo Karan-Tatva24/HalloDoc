@@ -17,7 +17,6 @@ Axios.interceptors.request.use((config) => {
     ...config,
     headers: {
       ...headers,
-      "Content-Type": headers["Content-Type"],
       Authorization: useToken && token && `Bearer ${token}`,
     },
   };

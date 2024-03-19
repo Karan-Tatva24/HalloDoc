@@ -6,7 +6,9 @@ export const newState = createAsyncThunk(
   "newState",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${NEW_STATE}?state=${params}`);
+      const response = await Axios.get(
+        `${NEW_STATE}?state=${params.state}&search=${params.search}`,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

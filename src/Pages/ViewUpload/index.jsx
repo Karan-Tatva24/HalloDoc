@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../Components/Button";
 import {
@@ -20,20 +20,25 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import "./viewUpload.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("uploadDate");
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
   const state = useSelector((state) => state.root.viewUpload);
   const rows = state.viewUpload;
   const [filterData, setFilterData] = useState(rows);
-  const { patientFirstName, confirmationNumber, patientLastName } = useSelector(
-    (state) => state.root.patientName,
-  );
+  const { patientFirstName, confirmationNumber, patientLastName, id } =
+    useSelector((state) => state.root.patientName);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setFilterData(rows);
+  }, [rows]);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -99,23 +104,19 @@ const ViewUpload = () => {
 
   const handleFileChange = (event) => {
     event.preventDefault();
-    setSelectedFile(event.target.files);
+    setSelectedFile(event.target.files[0]);
   };
 
-  const handleUpload = () => {
-    // Handle the upload functionality here with the selected file
-    if (selectedFile) {
-      for (let i = 0; i < selectedFile.length; i++) {
-        const newFile = {
-          id: filterData.length + 1,
-          document: selectedFile[i].name,
-          uploadDate: new Date().toISOString().split("T")[0],
-        };
-        console.log("New file", newFile);
-        filterData.push(newFile);
+  const handleUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("document", selectedFile);
+    dispatch(uploadFile({ id, formData })).then((response) => {
+      if (response.type === "uploadFile/fulfilled") {
+        dispatch(viewUpload(id));
       }
-      setSelectedFile([]); // Reset selected file after upload
-    }
+    });
+    setSelectedFile(null);
   };
 
   const handleDownload = (document) => {
@@ -136,11 +137,6 @@ const ViewUpload = () => {
       ? setFilterData([])
       : setFilterData(filterData.filter((row) => id !== row.id));
   };
-
-  let printFileName = "";
-  for (let i = 0; i < selectedFile.length; i++) {
-    printFileName += `${selectedFile[i].name}, `;
-  }
 
   return (
     <>
@@ -180,12 +176,14 @@ const ViewUpload = () => {
               Check here to review and add files that you or the Client/Member
               has attached to the Request.
             </Typography>
-            <form>
+            <form onSubmit={handleUpload}>
               <Box position="relative" mb={2} mt={2}>
                 <Box display="flex">
                   <Box position="absolute" className="file-select">
                     <label htmlFor="selectfile">
-                      {selectedFile.length > 0 ? printFileName : "Select Files"}
+                      {selectedFile !== null
+                        ? selectedFile.name
+                        : "Select File"}
                     </label>
                   </Box>
 
@@ -196,9 +194,7 @@ const ViewUpload = () => {
                     title="Upload-files"
                   >
                     <input
-                      // accept="image/*"
                       onChange={handleFileChange}
-                      multiple
                       type="file"
                       id="selectfile"
                     />
@@ -209,7 +205,7 @@ const ViewUpload = () => {
                     variant="contained"
                     size="large"
                     startIcon={<CloudUploadOutlinedIcon />}
-                    onClick={handleUpload}
+                    type="submit"
                   />
                 </Box>
               </Box>
