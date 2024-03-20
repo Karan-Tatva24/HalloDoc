@@ -17,10 +17,12 @@ import "./scheduling.css";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
+import CreateShiftModal from "../../Components/Modal/CreateShiftModal";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const [selectRegion, setSelectRegion] = useState("all");
+  const [open, setOpen] = useState(false);
   const calendarRef = useRef(null);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const handleDateClick = (arg) => {
@@ -29,6 +31,14 @@ const Scheduling = () => {
 
   const handleChangeRegion = (e) => {
     setSelectRegion(e.target.value);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -73,12 +83,15 @@ const Scheduling = () => {
               })}
             </Input>
             <Box display="flex" gap={2}>
-              <Button name="Provider on call"></Button>
+              <Button
+                name="Provider on call"
+                onClick={() => navigate(AppRoutes.PROVIDER_ON_CALL)}
+              />
               <Button
                 name="Shifts For Review"
                 onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
-              ></Button>
-              <Button name="Add New Shift"></Button>
+              />
+              <Button name="Add New Shift" onClick={handleOpen} />
             </Box>
           </Box>
           <FullCalendar
@@ -101,6 +114,7 @@ const Scheduling = () => {
           />
         </Container>
       </Box>
+      <CreateShiftModal open={open} handleClose={handleClose} />
     </>
   );
 };

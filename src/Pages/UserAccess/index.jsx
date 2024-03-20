@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
+  InputAdornment,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -13,20 +15,23 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import { columns, rows } from "../../constants/accountAccess";
-import "./accountAccess.css";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import { Input } from "../../Components/TextField/Input";
+import { columns, rows } from "../../constants/userAccess";
 import { Button } from "../../Components/Button";
+import "./userAccess.css";
 import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
 
-const AccountAccess = () => {
+const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
   const [order, setOrder] = useState("asc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
-  const navigate = useNavigate();
+  const [selectedRole, setSelectedRole] = useState("all");
   useEffect(() => setTableData(rows), [tableData]);
+  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -61,29 +66,59 @@ const AccountAccess = () => {
     }
     return 0;
   };
-  const handleOpen = () => {};
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
   return (
     <>
-      <Box className="access-main-container">
-        <Container maxWidth="lg" className="access-wrapper-container">
-          <Typography variant="h5" gutterBottom>
-            <b>Account Access</b>
-          </Typography>
-          <Paper className="access-full-paper">
-            <Box display="flex" justifyContent="end" p={3}>
-              <Button
-                name="Create Access"
-                variant="outlined"
-                onClick={() => navigate(AppRoutes.CREATE_ROLE)}
-              />
+      <Box className="user-access-main-container">
+        <Container maxWidth="lg" className="user-access-wrapper-container">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            mb={2}
+            flexWrap="wrap"
+          >
+            <Box display="flex" flexWrap="wrap">
+              <Typography variant="h5" gutterBottom>
+                <b>User Access</b>
+              </Typography>
             </Box>
-
+            <Button
+              name="Back"
+              variant="outlined"
+              size="small"
+              startIcon={<ArrowBackIosNewOutlinedIcon />}
+              color="primary"
+              onClick={() => navigate(-1)}
+              className="back-btn"
+            />
+          </Box>
+          <Paper className="user-access-full-paper">
+            <Box pb={1}>
+              <Input
+                select
+                value={selectedRole}
+                className="drop-list search-text"
+                onChange={(e) => setSelectedRole(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchOutlinedIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="physician">Physician</MenuItem>
+                <MenuItem value="patient">Patient</MenuItem>
+              </Input>
+            </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
@@ -93,7 +128,6 @@ const AccountAccess = () => {
                         key={column.id}
                         align="center"
                         style={{ minWidth: column.minWidth }}
-                        className="table-head-label"
                       >
                         <TableSortLabel
                           active={orderBy === column.id}
@@ -106,7 +140,6 @@ const AccountAccess = () => {
                     ))}
                   </TableRow>
                 </TableHead>
-
                 <TableBody align="left">
                   {stableSort(tableData, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -123,18 +156,9 @@ const AccountAccess = () => {
                                     justifyContent="center"
                                   >
                                     <Button
-                                      name="Contact"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={handleOpen}
-                                    />
-                                    <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() =>
-                                        navigate(AppRoutes.USER_ACCESS)
-                                      }
                                     />
                                   </Box>
                                 ) : (
@@ -165,4 +189,4 @@ const AccountAccess = () => {
   );
 };
 
-export default AccountAccess;
+export default UserAccess;

@@ -12,7 +12,9 @@ export const AppRoutes = {
   PROVIDER: "/provider",
   EDIT_PHYSICIAN: "/provider/editinfo",
   ACCOUNT_ACCESS: "/access",
+  USER_ACCESS: "/access/useraccess",
   CREATE_ROLE: "/access/createrole",
   SCHEDULING: "/provider/scheduling",
   REQUESTED_SHIFTS: "/provider/scheduling/requestedshifts",
+  PROVIDER_ON_CALL: "/provider/scheduling/provideroncall",
 };

@@ -67,7 +67,15 @@ const DashBoard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(newState({ state: activeButton.toLowerCase(), search: "" }));
+    dispatch(
+      newState({
+        state: activeButton.toLowerCase(),
+        search: "",
+        sortBy: "id",
+        orderBy: "ASC",
+        region: "all",
+      }),
+    );
   }, [activeButton, dispatch]);
 
   useEffect(() => {
@@ -206,7 +214,7 @@ const DashBoard = () => {
             columns={columns}
             dropDown={dropDown}
             indicator={indicator}
-            activeState={activeButton}
+            activeState={activeButton.toLowerCase()}
             onClick={handleOpen}
           />
         </Box>

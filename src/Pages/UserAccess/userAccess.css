@@ -1,0 +1,12 @@
+.user-access-main-container {
+  background-color: #f6f6f6;
+}
+
+.user-access-wrapper-container {
+  padding: 1rem 3rem;
+}
+
+.user-access-full-paper {
+  padding: 1.25rem;
+  border-radius: 20px !important;
+}

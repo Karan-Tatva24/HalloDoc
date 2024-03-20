@@ -186,9 +186,9 @@ const RequestedShifts = () => {
                 })}
               </Input>
               <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button color="success"> View Current Month Shifts</Button>
-                <Button color="success"> Approved Selected</Button>
-                <Button color="error"> Delete Selected</Button>
+                <Button name="View Current Month Shifts" color="success" />
+                <Button name="Approved Selected" color="success" />
+                <Button name="Delete Selected" color="error" />
               </Box>
             </Box>
             <TableContainer component={Paper}>

@@ -38,7 +38,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [additionalFilter, setAdditionalFilter] = useState("all");
+  const [regionFilter, setRegionFilter] = useState("all");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
@@ -57,32 +57,6 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   useEffect(() => {
     setTableData(rows);
   }, [rows]);
-
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
-
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
-  };
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -164,10 +138,17 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
     setPage(0);
   };
 
-  const filterRows = (term) => {
-    setSearchTerm(term);
-    dispatch(newState({ state: activeState, search: searchTerm }));
-  };
+  useEffect(() => {
+    dispatch(
+      newState({
+        state: activeState,
+        search: searchTerm,
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        region: regionFilter,
+      }),
+    );
+  }, [activeState, dispatch, order, orderBy, regionFilter, searchTerm]);
 
   const filterByIndicator = (indicatorValue) => {
     if (indicatorValue === "all") return setTableData(rows);
@@ -180,10 +161,6 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
       });
       setTableData(filteredData);
     }
-  };
-
-  const handleAdditionalFilterChange = (event) => {
-    setAdditionalFilter(event.target.value);
   };
 
   return (
@@ -209,13 +186,13 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => filterRows(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Input
               className="search-text drop-list"
               select
-              value={additionalFilter}
-              onChange={handleAdditionalFilterChange}
+              value={regionFilter}
+              onChange={(e) => setRegionFilter(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -268,7 +245,8 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
             <TableHead>
               <TableRow>
                 {columns.map((column) =>
-                  column.id === "requestedDate" ? (
+                  column.id === "requestedDate" ||
+                  column.id === "dateOfService" ? (
                     <TableCell
                       key={column.id}
                       align={column.align}
@@ -276,9 +254,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                     >
                       <TableSortLabel
                         key={column.id}
-                        active={orderBy === "Requested Date"}
+                        active={orderBy === column.label}
                         direction={order}
-                        onClick={() => handleRequestSort("Requested Date")}
+                        onClick={() => handleRequestSort(column.label)}
                       >
                         {column.label}
                       </TableSortLabel>
@@ -296,7 +274,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(tableData, getComparator(order, orderBy))
+              {tableData
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((row) => {
                   return (

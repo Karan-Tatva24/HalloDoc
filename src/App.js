@@ -23,6 +23,8 @@ import AccountAccess from "./Pages/AccountAccess";
 import CreateAccess from "./Pages/CreateAccess";
 import Scheduling from "./Pages/Scheduling";
 import RequestedShifts from "./Pages/RequestedShifts";
+import UserAccess from "./Pages/UserAccess";
+import ProviderOnCall from "./Pages/ProviderOnCall";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -69,11 +71,16 @@ const App = () => {
                 path={AppRoutes.ACCOUNT_ACCESS}
                 element={<AccountAccess />}
               />
+              <Route path={AppRoutes.USER_ACCESS} element={<UserAccess />} />
               <Route path={AppRoutes.CREATE_ROLE} element={<CreateAccess />} />
               <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
               <Route
                 path={AppRoutes.REQUESTED_SHIFTS}
                 element={<RequestedShifts />}
+              />
+              <Route
+                path={AppRoutes.PROVIDER_ON_CALL}
+                element={<ProviderOnCall />}
               />
             </Route>
           </Route>
