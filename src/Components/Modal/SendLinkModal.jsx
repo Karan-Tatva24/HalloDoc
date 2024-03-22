@@ -6,8 +6,11 @@ import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
 import { sendLinkSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
+import { useDispatch } from "react-redux";
+import { sendLink } from "../../redux/halloAPIs/sendLinkAPI";
 
 const SendLinkModal = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -16,7 +19,14 @@ const SendLinkModal = ({ open, handleClose }) => {
       email: "",
     },
     onSubmit: (values, onSubmitProps) => {
-      console.log(values);
+      dispatch(
+        sendLink({
+          firstName: values.firstname,
+          lastName: values.lastname,
+          phoneNumber: values.phone,
+          email: values.email,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },

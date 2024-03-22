@@ -22,3 +22,4 @@ export const GET_PROFESSIONS = "/admin/partner/professions";
 export const GET_BUSINESS = "/admin/partner/businessByProfession";
 export const VIEW_ORDER = "/admin//partner/viewSendOrder";
 export const SEND_ORDER = "/admin/partner/sendOrder";
+export const SEND_LINK = "/admin/dashboard/sendPatientRequest";
