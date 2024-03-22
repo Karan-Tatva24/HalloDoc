@@ -6,15 +6,19 @@ import { Input } from "../TextField/Input";
 import { sendAgreementSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import "./modal.css";
+import { useDispatch, useSelector } from "react-redux";
+import { sendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
 
 const SendAgreementModal = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.root.patientName);
   const formik = useFormik({
     initialValues: {
       phone: "",
       email: "",
     },
     onSubmit: (values, onSubmitProps) => {
-      console.log("Form Submitted", values);
+      dispatch(sendAgreement(id));
       onSubmitProps.resetForm();
       handleClose();
     },

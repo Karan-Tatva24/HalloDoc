@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { getProfession } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -64,6 +65,7 @@ const DashBoard = () => {
   useEffect(() => {
     dispatch(getRegions());
     dispatch(dashboardCount());
+    dispatch(getProfession());
   }, [dispatch]);
 
   useEffect(() => {
@@ -100,7 +102,7 @@ const DashBoard = () => {
         setColumns(toCloseColumns);
         setDropDown(toCloseDropdown);
         break;
-      case "Unpaid":
+      case "UnPaid":
         setColumns(unpaidColumns);
         setDropDown(unpaidDropdown);
         break;
