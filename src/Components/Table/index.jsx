@@ -33,6 +33,7 @@ import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
 import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
 import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
+import { getSendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
 
 const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const navigate = useNavigate();
@@ -104,6 +105,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         onClick(action, rowId);
         break;
       case "Send Agreement":
+        dispatch(getSendAgreement(rowId));
         onClick(action);
         break;
       case "Close Case":

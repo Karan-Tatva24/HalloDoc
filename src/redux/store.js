@@ -4,6 +4,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 import { rootReducer } from "./halloSlices";
 import sendOrderSliceReducer from "./halloSlices/sendOrderSlice";
+import sendAgreementSliceReducer from "./halloSlices/sendAgreementSlice";
 
 const persistConfig = {
   key: "root",
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     root: persistedReducer,
     sendOrder: sendOrderSliceReducer,
+    sendAgreement: sendAgreementSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -16,6 +16,7 @@ export const CLEAR_CASE = "/admin/dashboard/clearCase";
 export const TRANSFER_REQUEST = "/admin/dashboard/transferRequest";
 export const VIEW_UPLOAD = "/admin/dashboard/viewUploads";
 export const UPLOAD_FILE = "/admin/dashboard/uploadFile";
+export const GET_SEND_AGREEMENT = "/admin/dashboard/viewSendAgreement";
 export const SEND_AGREEMENT = "/admin/dashboard/sendAgreement";
 export const GET_PROFESSIONS = "/admin/partner/professions";
 export const GET_BUSINESS = "/admin/partner/businessByProfession";

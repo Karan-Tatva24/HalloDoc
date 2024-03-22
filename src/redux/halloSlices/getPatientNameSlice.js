@@ -6,6 +6,7 @@ const initialState = {
   patientLastName: "",
   confirmationNumber: "",
   id: "",
+  requestType: "",
 };
 
 export const getPatientNameSlice = createSlice({
@@ -19,6 +20,7 @@ export const getPatientNameSlice = createSlice({
         state.patientLastName = action.payload.data[0]?.["patientLastName"];
         state.confirmationNumber =
           action.payload.data[0]?.["confirmationNumber"];
+        state.requestType = action.payload.data[0]?.["requestType"];
       }
     });
   },

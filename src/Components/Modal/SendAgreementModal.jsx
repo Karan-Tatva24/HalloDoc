@@ -3,7 +3,6 @@ import Modal from "./Modal";
 import { useFormik } from "formik";
 import { Box, Typography } from "@mui/material";
 import { Input } from "../TextField/Input";
-import { sendAgreementSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,24 +10,25 @@ import { sendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
 
 const SendAgreementModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
-  const { id } = useSelector((state) => state.root.patientName);
+  const { id, requestType } = useSelector((state) => state.root.patientName);
+  const { details } = useSelector((state) => state.sendAgreement);
   const formik = useFormik({
-    initialValues: {
-      phone: "",
-      email: "",
-    },
     onSubmit: (values, onSubmitProps) => {
       dispatch(sendAgreement(id));
       onSubmitProps.resetForm();
       handleClose();
     },
-    validationSchema: sendAgreementSchema,
   });
+
   return (
     <Modal open={open} handleClose={handleClose} header="Send Agreement">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
-          <Typography className="text-dot">Patient</Typography>
+          <Typography
+            className={`text-dot text-dot-${requestType?.toLowerCase()}`}
+          >
+            {requestType}
+          </Typography>
           <Typography variant="caption">
             To Send Agreement please make sure you are updating the correct
             contact information below for the responsible party.
@@ -37,9 +37,10 @@ const SendAgreementModal = ({ open, handleClose }) => {
             name="phone"
             fullWidth
             label="Phone Number"
+            disabled
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.phone}
+            value={details.patientPhoneNumber}
             error={formik.touched.phone && Boolean(formik.errors.phone)}
             helperText={formik.touched.phone && formik.errors.phone}
           />
@@ -47,9 +48,10 @@ const SendAgreementModal = ({ open, handleClose }) => {
             name="email"
             fullWidth
             label="Email"
+            disabled
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.email}
+            value={details.patientEmail}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
           />

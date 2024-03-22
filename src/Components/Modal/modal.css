@@ -33,5 +33,24 @@
   left: 0;
   top: 0.313rem;
   border-radius: 50%;
+}
+
+.text-dot-patient::before {
   background-color: green;
+}
+
+.text-dot-family\/friend::before {
+  background-color: #d6a242;
+}
+
+.text-dot-business::before {
+  background-color: rgba(168, 124, 131, 0.938);
+}
+
+.text-dot-concierge::before {
+  background-color: blue;
+}
+
+.text-dot-vip::before {
+  background-color: purple;
 }
