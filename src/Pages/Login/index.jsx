@@ -14,6 +14,7 @@ import { loginSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { userLogin } from "../../redux/halloAPIs/loginAPI";
+import { loggedUser } from "../../redux/halloAPIs/loggedUserAPI";
 
 const initialValues = {
   email: "",
@@ -29,7 +30,9 @@ const Login = () => {
   const onSubmit = (values) => {
     dispatch(userLogin(values)).then((response) => {
       if (response.type === "userLogin/fulfilled") {
+        localStorage.setItem("private_token", response.payload.token);
         toast.success("You are login Successfully");
+        dispatch(loggedUser(values?.email));
         navigate(AppRoutes.DASHBOARD);
       } else {
         toast.error("Invalid email or password");

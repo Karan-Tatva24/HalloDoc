@@ -73,6 +73,10 @@ a.active {
     border-bottom: none;
 }
 
+li{
+    list-style: none;
+}
+
 
 /* Media query */
 

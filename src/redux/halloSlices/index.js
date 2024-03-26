@@ -8,6 +8,8 @@ import getDashboardCountSliceReducer from "./getDashboardCountSlice";
 import getRegionPhysicianSliceReducer from "./getRegionPhysicianSlice";
 import viewUploadSliceReducer from "./viewUploadSlice";
 import getProfessionBusinessSliceReducer from "./getProfessionsBusinessSlice";
+import closeCaseSliceReducer from "./closeCaseSlice";
+import loggedUserDataSliceReducer from "./loggedUserDataSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -19,4 +21,6 @@ export const rootReducer = combineReducers({
   getRegionPhysician: getRegionPhysicianSliceReducer,
   getProfessionsBusiness: getProfessionBusinessSliceReducer,
   viewUpload: viewUploadSliceReducer,
+  closeCase: closeCaseSliceReducer,
+  loggedUserData: loggedUserDataSliceReducer,
 });

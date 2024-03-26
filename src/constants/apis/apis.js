@@ -1,3 +1,4 @@
+export const COMMON_API = "/admin/common/getLoggedUser";
 export const LOGIN_API = "/auth/login";
 export const FORGOT_PASS = "/auth/forgotPassword";
 export const RESET_PASS = "/auth/resetPassword";
@@ -23,3 +24,7 @@ export const GET_BUSINESS = "/admin/partner/businessByProfession";
 export const VIEW_ORDER = "/admin//partner/viewSendOrder";
 export const SEND_ORDER = "/admin/partner/sendOrder";
 export const SEND_LINK = "/admin/dashboard/sendPatientRequest";
+export const REQUEST_SUPPORT = "/admin/dashboard/requestSupport";
+export const CLOSE_CASE_VIEW = "/admin/dashboard/closeCaseView";
+export const CLOSE_CASE = "/admin/dashboard/closeCase";
+export const CLOSE_CASE_EDIT = "/admin/dashboard/updateCloseCase";

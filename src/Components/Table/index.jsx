@@ -19,6 +19,7 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Box } from "@mui/system";
@@ -34,6 +35,7 @@ import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
 import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getSendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
+import { closeCaseView } from "../../redux/halloAPIs/closeCaseAPI";
 
 const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const navigate = useNavigate();
@@ -92,7 +94,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         onClick(action);
         break;
       case "View Upload":
-        dispatch(viewUpload(rowId));
+        dispatch(
+          viewUpload({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
+        );
         navigate(AppRoutes.VIEW_UPLOAD);
         break;
       case "Orders":
@@ -109,6 +113,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         onClick(action);
         break;
       case "Close Case":
+        dispatch(
+          closeCaseView({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
+        );
         navigate(AppRoutes.CLOSE_CASE);
         break;
       default:
@@ -286,10 +293,19 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                     >
                       {columns.map((column) => {
                         return (
-                          <TableCell key={column.id}>
-                            {["Phone", "Chat With", "Actions"].includes(
-                              column.label,
-                            ) ? (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.id === "mail" ? (
+                              <EmailOutlinedIcon
+                                fontSize="medium"
+                                sx={{
+                                  border: "1px solid white",
+                                  padding: "3px",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ) : ["Phone", "Chat With", "Actions"].includes(
+                                column.label,
+                              ) ? (
                               <>
                                 <Button
                                   className="phone-btn"
@@ -317,6 +333,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                                       handleClick(e, row.id);
                                   }}
                                 />
+                                {column.id === "phoneNumber" && (
+                                  <div>({row.Requestor.split(" ")[0]})</div>
+                                )}
                                 {column.id === "phoneNumber" &&
                                   copiedStates[row.id]}
                                 {column.id === "action" && (
@@ -346,6 +365,18 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                               </>
                             ) : column.label === "Physician Name" ? (
                               row?.physician?.["Physician Name"]
+                            ) : column.label === "Notes" ? (
+                              activeState === "new" ? (
+                                row["Patient Note"] === null ? (
+                                  " - "
+                                ) : (
+                                  row["Patient Note"]
+                                )
+                              ) : row["Transfer Note"] === null ? (
+                                " - "
+                              ) : (
+                                row["Transfer Note"]
+                              )
                             ) : (
                               row[column.label]
                             )}

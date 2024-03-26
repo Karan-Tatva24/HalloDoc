@@ -6,7 +6,10 @@ export const viewUpload = createAsyncThunk(
   "viewUpload",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${VIEW_UPLOAD}/${params}`);
+      let url = `${VIEW_UPLOAD}/${params?.id}`;
+      if (params?.sortBy) url += `?sortBy=${params?.sortBy}`;
+      if (params?.orderBy) url += `&orderBy=${params?.orderBy}`;
+      const response = await Axios.get(url);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

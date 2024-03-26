@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -25,14 +25,12 @@ import { Input } from "../../Components/TextField/Input";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { closeCaseSchema } from "../../ValidationSchema";
-
-const rows = [
-  {
-    id: 1,
-    document: "Medical Report Test AkStageBus 12-1-19.pdf",
-    uploadDate: "2024-02-20",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import {
+  closeCase,
+  closeCaseEdit,
+  closeCaseView,
+} from "../../redux/halloAPIs/closeCaseAPI";
 
 const INITIAL_VALUES = {
   phone: "9182006992",
@@ -42,9 +40,12 @@ const INITIAL_VALUES = {
 const CloseCase = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
-  const [orderBy, setOrderBy] = useState("uploadDate");
+  const [orderBy, setOrderBy] = useState("createdAt");
   const [order, setOrder] = useState("asc");
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const { id } = useSelector((state) => state.root.patientName);
+  const { closeCaseData } = useSelector((state) => state.root.closeCase);
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -55,6 +56,13 @@ const CloseCase = () => {
     enableReinitialize: true,
   });
 
+  useEffect(() => {
+    setInitialValues({
+      phone: closeCaseData.patientPhoneNumber,
+      email: closeCaseData.patientEmail,
+    });
+  }, [closeCaseData.patientEmail, closeCaseData.patientPhoneNumber]);
+
   const handleEdit = () => {
     setIsDisabled(false);
   };
@@ -62,6 +70,13 @@ const CloseCase = () => {
   const handleSave = () => {
     setInitialValues(formik.values);
     setIsDisabled(true);
+    dispatch(
+      closeCaseEdit({
+        id,
+        patientPhoneNumber: formik.values.phone,
+        patientEmail: formik.values.email,
+      }),
+    );
   };
 
   const handleCancel = () => {
@@ -73,31 +88,11 @@ const CloseCase = () => {
     console.log(`Downloading ${document}`);
   };
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
-
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
-  };
+  useEffect(() => {
+    dispatch(
+      closeCaseView({ id, sortBy: orderBy, orderBy: order.toUpperCase() }),
+    );
+  }, [dispatch, id, order, orderBy]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -139,8 +134,11 @@ const CloseCase = () => {
               <Box>
                 <Typography variant="caption">Patient Name</Typography>
                 <Typography variant="h6">
-                  <b className="patient-name">Test AkStageBus</b>
-                  (MD101819PRBH0005)
+                  <b className="patient-name">
+                    {closeCaseData.patientFirstName}
+                    {closeCaseData.patientLastName}
+                  </b>
+                  ({closeCaseData.confirmationNumber})
                 </Typography>
               </Box>
               <Button
@@ -161,7 +159,7 @@ const CloseCase = () => {
                       <TableSortLabel
                         active={orderBy === "uploadDate"}
                         direction={order}
-                        onClick={() => handleRequestSort("uploadDate")}
+                        onClick={() => handleRequestSort("createdAt")}
                       >
                         Upload Date
                       </TableSortLabel>
@@ -170,24 +168,22 @@ const CloseCase = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy)).map(
-                    (row) => (
-                      <TableRow key={row.id} hover>
-                        <TableCell>{row.document}</TableCell>
-                        <TableCell>{row.uploadDate}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleDownload(row.document)}
-                            size="large"
-                            className="icon-btn"
-                          >
-                            <CloudDownloadOutlinedIcon size="large" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                  )}
+                  {closeCaseData?.requestWiseFiles?.map((row, index) => (
+                    <TableRow key={index} hover>
+                      <TableCell>{row.fileName}</TableCell>
+                      <TableCell>{row.createdAt}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDownload(row.document)}
+                          size="large"
+                          className="icon-btn"
+                        >
+                          <CloudDownloadOutlinedIcon size="large" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -197,10 +193,20 @@ const CloseCase = () => {
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12} md={6}>
-                  <Input label="First Name" value="Test" fullWidth disabled />
+                  <Input
+                    label="First Name"
+                    value={closeCaseData.patientFirstName}
+                    fullWidth
+                    disabled
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input label="Last Name" value="Test" fullWidth disabled />
+                  <Input
+                    label="Last Name"
+                    value={closeCaseData.patientLastName}
+                    fullWidth
+                    disabled
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Input
@@ -208,7 +214,7 @@ const CloseCase = () => {
                     type="date"
                     fullWidth
                     disabled
-                    value="2000-10-10"
+                    value={closeCaseData.dob}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -266,7 +272,7 @@ const CloseCase = () => {
               >
                 <Button
                   name={isDisabled ? "Edit" : "Save"}
-                  type="submit"
+                  type={isDisabled ? "button" : "submit"}
                   size="large"
                   onClick={isDisabled ? handleEdit : handleSave}
                 />
@@ -276,7 +282,10 @@ const CloseCase = () => {
                   size="large"
                   onClick={
                     isDisabled
-                      ? () => console.log("Close Case clicked")
+                      ? () => {
+                          dispatch(closeCase(id));
+                          navigate(-1);
+                        }
                       : handleCancel
                   }
                 />

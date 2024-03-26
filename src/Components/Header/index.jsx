@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -24,6 +24,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { userName } = useSelector((state) => state?.root.loggedUserData);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -48,7 +49,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
           <img src={loginHeading} alt="HalloDoc" />
         </Box>
         <Box className="header-user-detail">
-          <Typography>Welcome&nbsp;Karan</Typography>
+          <Typography>Welcome&nbsp;{userName}</Typography>
           <Button
             name="Log Out"
             variant="outlined"
@@ -184,16 +185,43 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Provider Location
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink to={AppRoutes.MY_PROFILE} className="sidelinks">
           My Profile
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
-          Providers
-        </NavLink>
+        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
+          <NavLink to={AppRoutes.PROVIDER} className="sidelinks">
+            Providers
+          </NavLink>
+          {anchorEl && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.PROVIDER);
+                  handleMenuClose();
+                }}
+              >
+                Provider
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SCHEDULING);
+                  handleMenuClose();
+                }}
+              >
+                Scheduling
+              </MenuItem>
+              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+            </Menu>
+          )}
+        </li>
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Partners
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sidelinks">
           Access
         </NavLink>
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">

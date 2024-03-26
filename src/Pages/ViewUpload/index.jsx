@@ -26,7 +26,7 @@ import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("uploadDate");
+  const [orderBy, setOrderBy] = useState("createdAt");
   const [selectedFile, setSelectedFile] = useState(null);
   const state = useSelector((state) => state.root.viewUpload);
   const rows = state.viewUpload;
@@ -70,37 +70,15 @@ const ViewUpload = () => {
   };
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
-
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
-  };
-
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  useEffect(() => {
+    dispatch(viewUpload({ id, sortBy: orderBy, orderBy: order.toUpperCase() }));
+  }, [dispatch, id, order, orderBy]);
 
   const handleFileChange = (event) => {
     event.preventDefault();
@@ -113,7 +91,8 @@ const ViewUpload = () => {
     formData.append("document", selectedFile);
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
-        dispatch(viewUpload(id));
+        console.log("ID", id);
+        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
       }
     });
     setSelectedFile(null);
@@ -264,39 +243,37 @@ const ViewUpload = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {stableSort(filterData, getComparator(order, orderBy)).map(
-                    (row) => (
-                      <TableRow key={row.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isSelected(row.id)}
-                            onClick={(event) => handleClick(event, row.id)}
-                          />
-                        </TableCell>
-                        <TableCell>{row.fileName}</TableCell>
-                        <TableCell>{row.createdAt}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleDownload(row.fileName)}
-                            size="large"
-                            className="icon-btn"
-                          >
-                            <CloudDownloadOutlinedIcon size="large" />
-                          </Button>
-                          &nbsp;&nbsp;
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleDelete(row.id)}
-                            className="icon-btn"
-                            size="large"
-                          >
-                            <DeleteOutlinedIcon size="large" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                  )}
+                  {filterData.map((row) => (
+                    <TableRow key={row.id} hover>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isSelected(row.id)}
+                          onClick={(event) => handleClick(event, row.id)}
+                        />
+                      </TableCell>
+                      <TableCell>{row.fileName}</TableCell>
+                      <TableCell>{row.createdAt}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDownload(row.fileName)}
+                          size="large"
+                          className="icon-btn"
+                        >
+                          <CloudDownloadOutlinedIcon size="large" />
+                        </Button>
+                        &nbsp;&nbsp;
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDelete(row.id)}
+                          className="icon-btn"
+                          size="large"
+                        >
+                          <DeleteOutlinedIcon size="large" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

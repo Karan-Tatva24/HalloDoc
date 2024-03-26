@@ -61,7 +61,6 @@ const AccountAccess = () => {
     }
     return 0;
   };
-  const handleOpen = () => {};
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -123,18 +122,17 @@ const AccountAccess = () => {
                                     justifyContent="center"
                                   >
                                     <Button
-                                      name="Contact"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={handleOpen}
-                                    />
-                                    <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
                                       onClick={() =>
                                         navigate(AppRoutes.USER_ACCESS)
                                       }
+                                    />
+                                    <Button
+                                      name="Delete"
+                                      variant="outlined"
+                                      size="small"
                                     />
                                   </Box>
                                 ) : (

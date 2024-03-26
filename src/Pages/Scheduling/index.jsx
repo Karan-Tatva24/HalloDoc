@@ -22,9 +22,11 @@ import CreateShiftModal from "../../Components/Modal/CreateShiftModal";
 const Scheduling = () => {
   const navigate = useNavigate();
   const [selectRegion, setSelectRegion] = useState("all");
+  const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
   const calendarRef = useRef(null);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+
   const handleDateClick = (arg) => {
     alert(arg.dateStr);
   };
@@ -33,12 +35,14 @@ const Scheduling = () => {
     setSelectRegion(e.target.value);
   };
 
-  const handleOpen = () => {
+  const handleOpen = (name) => {
+    setModalName(name);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setModalName("");
   };
 
   return (
@@ -91,7 +95,10 @@ const Scheduling = () => {
                 name="Shifts For Review"
                 onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
               />
-              <Button name="Add New Shift" onClick={handleOpen} />
+              <Button
+                name="Add New Shift"
+                onClick={() => handleOpen("create shift")}
+              />
             </Box>
           </Box>
           <FullCalendar
@@ -114,7 +121,10 @@ const Scheduling = () => {
           />
         </Container>
       </Box>
-      <CreateShiftModal open={open} handleClose={handleClose} />
+      <CreateShiftModal
+        open={open && modalName === "create shift"}
+        handleClose={handleClose}
+      />
     </>
   );
 };

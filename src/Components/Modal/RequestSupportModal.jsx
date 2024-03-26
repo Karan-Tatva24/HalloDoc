@@ -5,17 +5,20 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { requestSupportSchema } from "../../ValidationSchema";
 import Modal from "./Modal";
+import { useDispatch } from "react-redux";
+import { requestSupport } from "../../redux/halloAPIs/requestSupportAPI";
 
 const RequestSupportModal = ({ open, handleClose }) => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       message: "",
     },
     validationSchema: requestSupportSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log("submitted", values);
-      handleClose();
+      dispatch(requestSupport(values.message));
       onSubmitProps.resetForm();
+      handleClose();
     },
   });
   return (

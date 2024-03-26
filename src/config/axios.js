@@ -9,9 +9,7 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use((config) => {
   const useToken = config?.withAuthToken ?? true;
-  const token = JSON.parse(
-    JSON.parse(localStorage.getItem("persist:root")).login,
-  ).token;
+  const token = localStorage.getItem("private_token");
   const headers = config.headers;
   return {
     ...config,
