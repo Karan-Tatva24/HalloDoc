@@ -117,7 +117,10 @@ const ProviderInfo = () => {
               >
                 <MenuItem value="all">All</MenuItem>
               </Input>
-              <Button name="Create Provider Account" />
+              <Button
+                name="Create Provider Account"
+                onClick={() => navigate(AppRoutes.CREATE_PROVIDER_ACCOUNT)}
+              />
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>

@@ -8,13 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { accountInfoSchema } from "../../ValidationSchema";
 
 const initialValues = {
-  username: "admin@gmail.com",
-  password: "Admin@123",
-  status: "active",
   role: "masterAdmin",
 };
 
-const AccountInfo = () => {
+const AccountInfo = ({ userName, status }) => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues,
@@ -36,11 +33,7 @@ const AccountInfo = () => {
             label="User Name"
             fullWidth
             disabled
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.username && Boolean(formik.errors.username)}
-            helperText={formik.touched.username && formik.errors.username}
+            value={userName}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -50,11 +43,7 @@ const AccountInfo = () => {
             type="password"
             fullWidth
             disabled
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
+            value=""
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -64,14 +53,10 @@ const AccountInfo = () => {
             label="Status"
             fullWidth
             disabled
-            value={formik.values.status}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.status && Boolean(formik.errors.status)}
-            helperText={formik.touched.status && formik.errors.status}
+            value={status}
           >
-            <MenuItem value="active">Active</MenuItem>
-            <MenuItem value="inactive">Inactive</MenuItem>
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Inactive">Inactive</MenuItem>
           </Input>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -89,6 +74,8 @@ const AccountInfo = () => {
           >
             <MenuItem value="masterAdmin">Master Admin</MenuItem>
             <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="provider">Provider</MenuItem>
+            <MenuItem value="patient">Patient</MenuItem>
           </Input>
         </Grid>
       </Grid>
@@ -102,7 +89,7 @@ const AccountInfo = () => {
         <Button
           variant="outlined"
           name="Reset Password"
-          onClick={() => navigate(AppRoutes.FORGOTPASSWORD)}
+          onClick={() => navigate(AppRoutes.RESETPASSWORD)}
         />
       </Box>
     </form>

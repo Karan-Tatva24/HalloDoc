@@ -28,3 +28,5 @@ export const REQUEST_SUPPORT = "/admin/dashboard/requestSupport";
 export const CLOSE_CASE_VIEW = "/admin/dashboard/closeCaseView";
 export const CLOSE_CASE = "/admin/dashboard/closeCase";
 export const CLOSE_CASE_EDIT = "/admin/dashboard/updateCloseCase";
+export const ADMIN_PROFILE = "/admin/profile/adminProfile";
+export const EDIT_ADMIN_PROFILE = "/admin/profile/editAdminProfile";

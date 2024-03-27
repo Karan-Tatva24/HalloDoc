@@ -18,6 +18,7 @@ import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
+import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userName } = useSelector((state) => state?.root.loggedUserData);
+  const { id } = useSelector((state) => state.root.loggedUserData);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -97,6 +99,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
           <NavLink
             to={AppRoutes.MY_PROFILE}
             className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => dispatch(adminProfile(id))}
           >
             My Profile
           </NavLink>
@@ -185,7 +188,11 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink to={AppRoutes.LOGIN} className="sidelinks">
           Provider Location
         </NavLink>
-        <NavLink to={AppRoutes.MY_PROFILE} className="sidelinks">
+        <NavLink
+          to={AppRoutes.MY_PROFILE}
+          className="sidelinks"
+          onClick={() => dispatch(adminProfile(id))}
+        >
           My Profile
         </NavLink>
         <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>

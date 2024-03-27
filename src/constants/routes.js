@@ -11,6 +11,7 @@ export const AppRoutes = {
   MY_PROFILE: "/myprofile",
   PROVIDER: "/provider",
   EDIT_PHYSICIAN: "/provider/editinfo",
+  CREATE_PROVIDER_ACCOUNT: "/provider/createprovideraccount",
   ACCOUNT_ACCESS: "/access",
   USER_ACCESS: "/access/useraccess",
   CREATE_ROLE: "/access/createrole",

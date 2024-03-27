@@ -1,14 +1,6 @@
 import * as Yup from "yup";
 
 export const accountInfoSchema = Yup.object({
-  username: Yup.string().required("Username required!"),
-  password: Yup.string()
-    .matches(
-      /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/,
-      "Invalid Password Formate",
-    )
-    .required("Required!"),
-  status: Yup.string().required("Must select status"),
   role: Yup.string().required("Must select role"),
 });
 
@@ -18,7 +10,8 @@ export const administratorInfoSchema = Yup.object({
   email: Yup.string().email("Invalid email!").required("Email required!"),
   confirmemail: Yup.string()
     .email("Invalid email!")
-    .required("Confirm email required!"),
+    .required("Confirm email required!")
+    .oneOf([Yup.ref("email"), null], "Confirm email must match with email"),
   administratorPhone: Yup.string()
     .required("Required!")
     .matches(/^\d{10}$/, "Invalid phone number"),

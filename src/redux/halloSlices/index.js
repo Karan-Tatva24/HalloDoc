@@ -10,6 +10,7 @@ import viewUploadSliceReducer from "./viewUploadSlice";
 import getProfessionBusinessSliceReducer from "./getProfessionsBusinessSlice";
 import closeCaseSliceReducer from "./closeCaseSlice";
 import loggedUserDataSliceReducer from "./loggedUserDataSlice";
+import adminProfileSliceReducer from "./adminProfileSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -23,4 +24,5 @@ export const rootReducer = combineReducers({
   viewUpload: viewUploadSliceReducer,
   closeCase: closeCaseSliceReducer,
   loggedUserData: loggedUserDataSliceReducer,
+  adminProfile: adminProfileSliceReducer,
 });

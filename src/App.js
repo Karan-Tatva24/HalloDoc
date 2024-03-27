@@ -25,6 +25,7 @@ import Scheduling from "./Pages/Scheduling";
 import RequestedShifts from "./Pages/RequestedShifts";
 import UserAccess from "./Pages/UserAccess";
 import ProviderOnCall from "./Pages/ProviderOnCall";
+import CreateProviderAccount from "./Pages/CreateProviderAccount";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -66,6 +67,10 @@ const App = () => {
               <Route
                 path={AppRoutes.EDIT_PHYSICIAN}
                 element={<EditPhysicianInfo />}
+              />
+              <Route
+                path={AppRoutes.CREATE_PROVIDER_ACCOUNT}
+                element={<CreateProviderAccount />}
               />
               <Route
                 path={AppRoutes.ACCOUNT_ACCESS}

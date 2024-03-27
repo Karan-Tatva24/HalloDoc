@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Checkbox,
@@ -11,26 +11,50 @@ import PhoneInput from "react-phone-input-2";
 import { Input } from "../TextField/Input";
 import { useFormik } from "formik";
 import { administratorInfoSchema } from "../../ValidationSchema";
+import {
+  adminProfile,
+  editAdminProfile,
+} from "../../redux/halloAPIs/adminProfileAPI";
+import { useDispatch, useSelector } from "react-redux";
 
 const INITIAL_VALUE = {
-  firstname: "Test",
-  lastname: "test",
-  email: "test@gmail.com",
-  confirmemail: "test@gmail.com",
-  administratorPhone: "7435002910",
+  firstname: "",
+  lastname: "",
+  email: "",
+  confirmemail: "",
+  administratorPhone: "",
 };
 
-const AdministratorInfo = () => {
+const AdministratorInfo = ({
+  firstName,
+  lastName,
+  email,
+  phone,
+  state,
+  regions,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const { id } = useSelector((state) => state.root.loggedUserData);
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: administratorInfoSchema,
-    onSubmit: (value) => {
-      console.log("Account Values", value);
-    },
+    onSubmit: (value) => {},
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    setInitialValues({
+      firstname: firstName,
+      lastname: lastName,
+      email: email,
+      confirmemail: email,
+      administratorPhone: phone,
+    });
+  }, [email, firstName, lastName, phone]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Typography variant="h6">
@@ -118,26 +142,19 @@ const AdministratorInfo = () => {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="District Of Colombia"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="New York"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="Virginia"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="Maryland"
-          />
+          {regions.map((region) => {
+            return (
+              <FormControlLabel
+                className="checkbox-padding"
+                disabled={isDisabled}
+                key={region.id}
+                control={
+                  <Checkbox size="small" checked={state === region.name} />
+                }
+                label={region.name}
+              />
+            );
+          })}
         </Grid>
       </Grid>
       <Box
@@ -156,7 +173,17 @@ const AdministratorInfo = () => {
               name="Save"
               type="submit"
               onClick={() => {
-                setInitialValues(formik.values);
+                dispatch(
+                  editAdminProfile({
+                    id,
+                    section: "administration",
+                    updatedData: formik.values,
+                  }),
+                ).then((response) => {
+                  if (response.type === "editAdminProfile/fulfilled") {
+                    dispatch(adminProfile(id));
+                  }
+                });
                 setIsDisabled(true);
               }}
             />

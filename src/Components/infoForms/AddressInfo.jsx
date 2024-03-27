@@ -1,31 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { Box, Grid, MenuItem, Typography } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import { Input } from "../TextField/Input";
 import { useFormik } from "formik";
 import { addressInfoSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  adminProfile,
+  editAdminProfile,
+} from "../../redux/halloAPIs/adminProfileAPI";
 
 const INITIAL_VALUE = {
-  address1: "test",
-  address2: "test",
-  city: "test",
-  state: "newyork",
-  zip: "123455",
-  mailingPhone: "4378589303",
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  zip: "",
+  mailingPhone: "",
 };
 
-const AddressInfo = () => {
+const AddressInfo = ({
+  address1,
+  address2,
+  city,
+  state,
+  zip,
+  altPhone,
+  regions,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const { id } = useSelector((state) => state.root.loggedUserData);
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues,
     validationSchema: addressInfoSchema,
-    onSubmit: (value) => {
-      console.log("Address Values", value);
-    },
+    onSubmit: (values) => {},
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    setInitialValues({
+      address1,
+      address2,
+      city,
+      state,
+      zip,
+      mailingPhone: altPhone,
+    });
+  }, [address1, address2, altPhone, city, state, zip]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Typography variant="h6">
@@ -88,9 +114,11 @@ const AddressInfo = () => {
             error={formik.touched.state && Boolean(formik.errors.state)}
             helperText={formik.touched.state && formik.errors.state}
           >
-            <MenuItem value="newyork">New York</MenuItem>
-            <MenuItem value="lasvegas">Las Vegas</MenuItem>
-            <MenuItem value="washington">Washington</MenuItem>
+            {regions?.map((region) => (
+              <MenuItem key={region.id} value={region.name}>
+                {region.name}
+              </MenuItem>
+            ))}
           </Input>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -141,7 +169,17 @@ const AddressInfo = () => {
               name="Save"
               type="submit"
               onClick={() => {
-                setInitialValues(formik.values);
+                dispatch(
+                  editAdminProfile({
+                    id,
+                    section: "billing",
+                    updatedData: formik.values,
+                  }),
+                ).then((response) => {
+                  if (response.type === "editAdminProfile/fulfilled") {
+                    dispatch(adminProfile(id));
+                  }
+                });
                 setIsDisabled(true);
               }}
             />

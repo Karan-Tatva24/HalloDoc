@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -13,23 +13,20 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+import interactionPlugin from "@fullcalendar/interaction";
 import "./scheduling.css";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
 import CreateShiftModal from "../../Components/Modal/CreateShiftModal";
+import ViewShiftModal from "../../Components/Modal/ViewShiftModal";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const [selectRegion, setSelectRegion] = useState("all");
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
-  const calendarRef = useRef(null);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
-
-  const handleDateClick = (arg) => {
-    alert(arg.dateStr);
-  };
 
   const handleChangeRegion = (e) => {
     setSelectRegion(e.target.value);
@@ -102,9 +99,8 @@ const Scheduling = () => {
             </Box>
           </Box>
           <FullCalendar
-            ref={calendarRef}
-            plugins={[dayGridPlugin, resourceTimelinePlugin]}
-            dateClick={handleDateClick}
+            plugins={[dayGridPlugin, resourceTimelinePlugin, interactionPlugin]}
+            dateClick={() => handleOpen("view shift")}
             initialView="resourceTimelineWeek"
             headerToolbar={{
               left: "title prev next",
@@ -123,6 +119,10 @@ const Scheduling = () => {
       </Box>
       <CreateShiftModal
         open={open && modalName === "create shift"}
+        handleClose={handleClose}
+      />
+      <ViewShiftModal
+        open={open && modalName === "view shift"}
         handleClose={handleClose}
       />
     </>

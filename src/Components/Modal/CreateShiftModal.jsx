@@ -109,7 +109,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
                 />
               }
               label="Repeat"
-              labelPlacement="repeat"
+              labelPlacement="top"
             />
           </Box>
           <Grid item xs={12} md={6}>

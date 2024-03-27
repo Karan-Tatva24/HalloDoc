@@ -33,8 +33,8 @@ import {
 } from "../../redux/halloAPIs/closeCaseAPI";
 
 const INITIAL_VALUES = {
-  phone: "9182006992",
-  email: "qatatva8786@gmail.com",
+  phone: "",
+  email: "",
 };
 
 const CloseCase = () => {

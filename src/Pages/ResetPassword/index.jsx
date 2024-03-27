@@ -6,7 +6,6 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,7 @@ const ResetPassword = () => {
     dispatch(resetPassword({ values, token })).then((response) => {
       if (response.type === "resetPassword/fulfilled") {
         toast.success("You are Reset Password Successfully");
-        navigate(AppRoutes.LOGIN);
+        navigate(-1);
       } else {
         toast.error(response?.error?.message);
       }
