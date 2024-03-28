@@ -1,6 +1,5 @@
 import React from "react";
 import Modal from "./Modal";
-import { useFormik } from "formik";
 import { Box, Typography } from "@mui/material";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
@@ -12,17 +11,10 @@ const SendAgreementModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { id, requestType } = useSelector((state) => state.root.patientName);
   const { details } = useSelector((state) => state.sendAgreement);
-  const formik = useFormik({
-    onSubmit: (values, onSubmitProps) => {
-      dispatch(sendAgreement(id));
-      onSubmitProps.resetForm();
-      handleClose();
-    },
-  });
 
   return (
     <Modal open={open} handleClose={handleClose} header="Send Agreement">
-      <form onSubmit={formik.handleSubmit}>
+      <form>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography
             className={`text-dot text-dot-${requestType?.toLowerCase()}`}
@@ -38,25 +30,24 @@ const SendAgreementModal = ({ open, handleClose }) => {
             fullWidth
             label="Phone Number"
             disabled
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={details.patientPhoneNumber}
-            error={formik.touched.phone && Boolean(formik.errors.phone)}
-            helperText={formik.touched.phone && formik.errors.phone}
           />
           <Input
             name="email"
             fullWidth
             label="Email"
             disabled
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={details.patientEmail}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Send" type="submit" variant="contained" />
+            <Button
+              name="Send"
+              variant="contained"
+              onClick={() => {
+                dispatch(sendAgreement(id));
+                handleClose();
+              }}
+            />
             <Button name="Cancel" variant="outlined" onClick={handleClose} />
           </Box>
         </Box>

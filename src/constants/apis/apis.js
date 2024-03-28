@@ -30,3 +30,5 @@ export const CLOSE_CASE = "/admin/dashboard/closeCase";
 export const CLOSE_CASE_EDIT = "/admin/dashboard/updateCloseCase";
 export const ADMIN_PROFILE = "/admin/profile/adminProfile";
 export const EDIT_ADMIN_PROFILE = "/admin/profile/editAdminProfile";
+export const DOWNLOAD_FILE = "/admin/common/download";
+export const DELETE_FILE = "/admin/common/deleteFile";

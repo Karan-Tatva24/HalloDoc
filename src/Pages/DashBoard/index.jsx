@@ -78,7 +78,7 @@ const DashBoard = () => {
         region: "all",
       }),
     );
-  }, [activeButton, dispatch]);
+  }, [activeButton, dispatch, counts]);
 
   useEffect(() => {
     switch (activeButton) {

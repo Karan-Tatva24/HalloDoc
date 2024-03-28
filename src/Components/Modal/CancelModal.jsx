@@ -46,8 +46,7 @@ const CancelModal = ({ open, handleClose }) => {
           <Typography>
             Patient Name :
             <span style={{ color: "aqua" }}>
-              {patientFirstName}
-              {patientLastName}
+              {patientFirstName} {patientLastName}
             </span>
           </Typography>
           <Input

@@ -22,6 +22,8 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 import "./viewUpload.css";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
+import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
+import { deleteFile } from "../../redux/halloAPIs/deleteFileAPI";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
@@ -35,6 +37,8 @@ const ViewUpload = () => {
     useSelector((state) => state.root.patientName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const fileNames = [];
 
   useEffect(() => {
     setFilterData(rows);
@@ -98,22 +102,33 @@ const ViewUpload = () => {
   };
 
   const handleDownload = (document) => {
-    console.log("Download : ", document);
+    fileNames.push(document);
+    dispatch(downloadFile({ fileNames }));
   };
 
   const handleDownloadAll = () => {
     selected.forEach((id) => {
       const file = rows.find((row) => row.id === id);
       if (file) {
-        handleDownload(file.fileName);
+        fileNames.push(file.fileName);
       }
     });
+    dispatch(downloadFile({ fileNames }));
   };
 
-  const handleDelete = (id) => {
-    id === "all"
-      ? setFilterData([])
-      : setFilterData(filterData.filter((row) => id !== row.id));
+  const handleDelete = (document) => {
+    fileNames.push(document);
+    dispatch(deleteFile(fileNames));
+  };
+
+  const handleDeleteAll = (id) => {
+    selected.forEach((id) => {
+      const file = rows.find((row) => row.id === id);
+      if (file) {
+        fileNames.push(file.fileName);
+      }
+    });
+    dispatch(deleteFile(fileNames));
   };
 
   return (
@@ -145,8 +160,7 @@ const ViewUpload = () => {
             <Typography variant="caption">Patient Name</Typography>
             <Typography variant="h6">
               <b className="patient-name">
-                {patientFirstName}
-                {patientLastName}
+                {patientFirstName} {patientLastName}
               </b>
               ({confirmationNumber})
             </Typography>
@@ -155,37 +169,38 @@ const ViewUpload = () => {
               has attached to the Request.
             </Typography>
             <form onSubmit={handleUpload}>
-              <Box position="relative" mb={2} mt={2}>
-                <Box display="flex">
-                  <Box position="absolute" className="file-select">
-                    <label htmlFor="selectfile">
-                      {selectedFile !== null
-                        ? selectedFile.name
-                        : "Select File"}
-                    </label>
-                  </Box>
-
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    component="label"
-                    title="Upload-files"
-                  >
-                    <input
-                      onChange={handleFileChange}
-                      type="file"
-                      id="selectfile"
-                    />
-                  </Button>
-
-                  <Button
-                    name="Upload"
-                    variant="contained"
-                    size="large"
-                    startIcon={<CloudUploadOutlinedIcon />}
-                    type="submit"
+              <Box display="flex" position="relative" mb={2} mt={2}>
+                <Button
+                  style={{
+                    color: "#000000",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    backgroundColor: "#f6f6f6",
+                  }}
+                  fullWidth
+                  variant="outlined"
+                  component="label"
+                  title="Upload-files"
+                >
+                  <input
+                    onChange={handleFileChange}
+                    type="file"
+                    id="selectFile"
+                    hidden
                   />
-                </Box>
+                  <label htmlFor="selectFile">
+                    {selectedFile !== null ? selectedFile.name : "Select File"}
+                  </label>
+                </Button>
+
+                <Button
+                  name="Upload"
+                  variant="contained"
+                  size="large"
+                  startIcon={<CloudUploadOutlinedIcon />}
+                  type="submit"
+                />
+                {/* </Box> */}
               </Box>
             </form>
             <Box
@@ -210,7 +225,7 @@ const ViewUpload = () => {
                   name="Delete All"
                   variant="outlined"
                   color="primary"
-                  onClick={() => handleDelete("all")}
+                  onClick={() => handleDeleteAll()}
                 />
                 <Button name="Send Mail" variant="outlined" color="primary" />
               </Box>
@@ -264,7 +279,7 @@ const ViewUpload = () => {
                         &nbsp;&nbsp;
                         <Button
                           variant="outlined"
-                          onClick={() => handleDelete(row.id)}
+                          onClick={() => handleDelete(row.fileName)}
                           className="icon-btn"
                           size="large"
                         >
