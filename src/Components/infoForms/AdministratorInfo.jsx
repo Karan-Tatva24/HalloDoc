@@ -36,6 +36,7 @@ const AdministratorInfo = ({
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const { id } = useSelector((state) => state.root.loggedUserData);
+  const data = useSelector((state) => state.root.getRegionPhysician);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -142,15 +143,16 @@ const AdministratorInfo = ({
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          {regions.map((region) => {
+          {data?.regions.map((region) => {
+            const isChecked = regions?.some(
+              (selectedRegion) => selectedRegion.name === region.name,
+            );
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
                 key={region.id}
-                control={
-                  <Checkbox size="small" checked={state === region.name} />
-                }
+                control={<Checkbox size="small" checked={isChecked} />}
                 label={region.name}
               />
             );

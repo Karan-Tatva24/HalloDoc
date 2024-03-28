@@ -91,7 +91,6 @@ const ViewUpload = () => {
     formData.append("document", selectedFile);
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
-        console.log("ID", id);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
       }
     });

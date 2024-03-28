@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { assignCase } from "../../redux/halloAPIs/assignCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ const AssignModal = ({ open, handleClose }) => {
   );
   const { id } = useSelector((state) => state.root.patientName);
   const [phyId, setPhyId] = useState(-1);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -36,6 +39,7 @@ const AssignModal = ({ open, handleClose }) => {
       dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
+      navigate(AppRoutes.DASHBOARD);
     },
   });
   return (

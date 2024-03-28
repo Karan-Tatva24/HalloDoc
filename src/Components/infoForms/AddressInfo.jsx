@@ -20,18 +20,11 @@ const INITIAL_VALUE = {
   mailingPhone: "",
 };
 
-const AddressInfo = ({
-  address1,
-  address2,
-  city,
-  state,
-  zip,
-  altPhone,
-  regions,
-}) => {
+const AddressInfo = ({ address1, address2, city, state, zip, altPhone }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const { id } = useSelector((state) => state.root.loggedUserData);
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const dispatch = useDispatch();
 
   const formik = useFormik({

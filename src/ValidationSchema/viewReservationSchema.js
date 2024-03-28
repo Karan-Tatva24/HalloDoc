@@ -11,5 +11,4 @@ export const viewReservationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   region: Yup.string().required("Region is required"),
   address: Yup.string().required("Address must be required"),
-  roomNo: Yup.string().required("Required!"),
 });

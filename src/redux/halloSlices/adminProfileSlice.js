@@ -11,7 +11,6 @@ export const adminProfileSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(adminProfile.fulfilled, (state, action) => {
       if (action.payload) {
-        console.log("object", action.payload?.data?.[0]);
         state.profileData = action.payload?.data?.[0];
       }
     });

@@ -30,7 +30,6 @@ import CreateProviderAccount from "./Pages/CreateProviderAccount";
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
   const toggleDarkTheme = () => {
-    console.log("Dark mode button clicked");
     setToggleDarkMode(!toggleDarkMode);
   };
   return (

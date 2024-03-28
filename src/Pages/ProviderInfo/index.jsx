@@ -24,6 +24,7 @@ import "./providerInfo.css";
 import ContectProviderModal from "../../Components/Modal/ContectProviderModal";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
+import { useSelector } from "react-redux";
 
 const ProviderInfo = () => {
   const [searchTerm, setSearchTerm] = useState("all");
@@ -34,6 +35,7 @@ const ProviderInfo = () => {
   const [orderBy, setOrderBy] = useState("providerName");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
 
   useEffect(() => setTableData(rows), []);
 
@@ -116,6 +118,13 @@ const ProviderInfo = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               >
                 <MenuItem value="all">All</MenuItem>
+                {regions?.map((region) => {
+                  return (
+                    <MenuItem key={region.id} value={region.name}>
+                      {region.name}
+                    </MenuItem>
+                  );
+                })}
               </Input>
               <Button
                 name="Create Provider Account"

@@ -8,12 +8,15 @@ import { cancelModalSchema as cancelModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
 
 const CancelModal = ({ open, handleClose }) => {
   const { patientFirstName, patientLastName, id } = useSelector(
     (state) => state.root.patientName,
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -32,6 +35,7 @@ const CancelModal = ({ open, handleClose }) => {
       dispatch(dashboardCount());
       onSubmitProps.resetForm();
       handleClose();
+      navigate(AppRoutes.DASHBOARD);
     },
   });
 

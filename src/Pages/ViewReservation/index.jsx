@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
@@ -20,30 +20,63 @@ import { viewReservationSchema } from "../../ValidationSchema";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useSelector } from "react-redux";
+import AssignModal from "../../Components/Modal/AssignModal";
+import CancelModal from "../../Components/Modal/CancelModal";
+
+const INITIAL_VALUE = {
+  patientNotes: "",
+  firstName: "",
+  lastName: "",
+  dateOfBirth: "",
+  phone: "",
+  email: "",
+  region: "",
+  address: "",
+  roomNo: "",
+};
 
 const ViewReservation = () => {
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const [modalName, setModalName] = useState("");
+  const [open, setOpen] = useState(false);
   const state = useSelector((state) => state.root?.viewCase);
   const data = state?.viewCase;
   const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues: {
-      patientNotes: data?.["Patient Notes"] || "",
-      firstName: data?.["First Name"] || "",
-      lastName: data?.["Last Name"] || "",
-      dateOfBirth: data?.["Date Of Birth"] || "",
-      phone: data?.["Phone Number"] || "",
-      email: data?.["Email"] || "",
-      region: data?.["Region"] || "",
-      address: data?.["Address"] || "",
-      roomNo: data?.["Room"] || "",
-    },
+    initialValues: initialValues,
     validationSchema: viewReservationSchema,
     onSubmit: (values, onSubmitProps) => {
       console.log(values);
       onSubmitProps.resetForm();
     },
+    enableReinitialize: true,
   });
+
+  const handleOpen = (name, id) => {
+    setModalName(name);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setModalName("");
+  };
+
+  useEffect(() => {
+    setInitialValues({
+      patientNotes: data?.["Patient Notes"],
+      firstName: data?.["First Name"],
+      lastName: data?.["Last Name"],
+      dateOfBirth: data?.["Date Of Birth"],
+      phone: data?.["Phone Number"],
+      email: data?.["Email"],
+      region: data?.["Region"],
+      address: data?.["Address"],
+      roomNo: data?.["Room"],
+    });
+  }, [data]);
+
   return (
     <>
       <Box className="main-container">
@@ -86,9 +119,7 @@ const ViewReservation = () => {
                 label="Patient Notes"
                 name="patientNotes"
                 disabled
-                value={
-                  formik.values.patientNotes ? formik.values.patientNotes : "-"
-                }
+                value={formik.values.patientNotes}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 helperText={
@@ -267,7 +298,12 @@ const ViewReservation = () => {
                 flexWrap="wrap"
               >
                 {data["Case Tag"] === "New" && (
-                  <Button name="Assign" type="submit" disableRipple />
+                  <Button
+                    name="Assign"
+                    type="submit"
+                    disableRipple
+                    onClick={() => handleOpen("Assign Case")}
+                  />
                 )}
                 <Button
                   name="View Notes"
@@ -275,12 +311,25 @@ const ViewReservation = () => {
                   color="primary"
                   onClick={() => navigate(AppRoutes.VIEW_NOTES)}
                 />
-                <Button name="Cancel" variant="contained" color="error" />
+                <Button
+                  name="Cancel"
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleOpen("Cancel Case")}
+                />
               </Box>
             </form>
           </Paper>
         </Container>
       </Box>
+      <AssignModal
+        open={open && modalName === "Assign Case"}
+        handleClose={handleClose}
+      />
+      <CancelModal
+        open={open && modalName === "Cancel Case"}
+        handleClose={handleClose}
+      />
     </>
   );
 };
