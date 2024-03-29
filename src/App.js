@@ -26,6 +26,9 @@ import RequestedShifts from "./Pages/RequestedShifts";
 import UserAccess from "./Pages/UserAccess";
 import ProviderOnCall from "./Pages/ProviderOnCall";
 import CreateProviderAccount from "./Pages/CreateProviderAccount";
+import ProviderLocation from "./Pages/ProviderLocation";
+import Partners from "./Pages/Partners";
+import AddBusiness from "./Pages/AddBusiness";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -86,6 +89,12 @@ const App = () => {
                 path={AppRoutes.PROVIDER_ON_CALL}
                 element={<ProviderOnCall />}
               />
+              <Route
+                path={AppRoutes.PROVIDER_LOCATION}
+                element={<ProviderLocation />}
+              />
+              <Route path={AppRoutes.PARTNERS} element={<Partners />} />
+              <Route path={AppRoutes.ADD_BUSINESS} element={<AddBusiness />} />
             </Route>
           </Route>
         </Routes>

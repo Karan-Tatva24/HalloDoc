@@ -89,7 +89,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.PROVIDER_LOCATION}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Provider Location
@@ -139,7 +139,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         </li>
         <li>
           <NavLink
-            to="/"
+            to={AppRoutes.PARTNERS}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Partners
@@ -185,7 +185,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink to={AppRoutes.DASHBOARD} className="sidelinks">
           Dashboard
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink to={AppRoutes.PROVIDER_LOCATION} className="sidelinks">
           Provider Location
         </NavLink>
         <NavLink
@@ -225,7 +225,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             </Menu>
           )}
         </li>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
+        <NavLink to={AppRoutes.PARTNERS} className="sidelinks">
           Partners
         </NavLink>
         <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sidelinks">

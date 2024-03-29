@@ -94,11 +94,9 @@ const PhysiciansInformation = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.confirmemail && Boolean(formik.errors.phoneNumber)
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
             }
-            helperText={
-              formik.touched.phoneNumber && formik.errors.confirmemail
-            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
         </Grid>
         <Grid item xs={12} md={6}>

@@ -73,54 +73,57 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   };
 
   const handleClose = (action) => {
-    dispatch(getPatientName(rowId));
-    setAnchorEl(null);
-    switch (action) {
-      case "Assign Case":
-        onClick(action);
-        break;
-      case "Cancel Case":
-        onClick(action);
-        break;
-      case "View Case":
-        dispatch(viewCase(rowId));
-        navigate(AppRoutes.VIEW_CASE);
-        break;
-      case "View Notes":
-        dispatch(viewNotes(rowId));
-        navigate(AppRoutes.VIEW_NOTES);
-        break;
-      case "Block Patient":
-        onClick(action);
-        break;
-      case "View Upload":
-        dispatch(
-          viewUpload({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
-        );
-        navigate(AppRoutes.VIEW_UPLOAD);
-        break;
-      case "Orders":
-        navigate(AppRoutes.SEND_ORDER);
-        break;
-      case "Transfer":
-        onClick(action);
-        break;
-      case "Clear Case":
-        onClick(action, rowId);
-        break;
-      case "Send Agreement":
-        dispatch(getSendAgreement(rowId));
-        onClick(action);
-        break;
-      case "Close Case":
-        dispatch(
-          closeCaseView({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
-        );
-        navigate(AppRoutes.CLOSE_CASE);
-        break;
-      default:
-        break;
-    }
+    dispatch(getPatientName(rowId)).then((response) => {
+      if (response.type === "getPatientName/fulfilled") {
+        setAnchorEl(null);
+        switch (action) {
+          case "Assign Case":
+            onClick(action);
+            break;
+          case "Cancel Case":
+            onClick(action);
+            break;
+          case "View Case":
+            dispatch(viewCase(rowId));
+            navigate(AppRoutes.VIEW_CASE);
+            break;
+          case "View Notes":
+            dispatch(viewNotes(rowId));
+            navigate(AppRoutes.VIEW_NOTES);
+            break;
+          case "Block Patient":
+            onClick(action);
+            break;
+          case "View Upload":
+            dispatch(
+              viewUpload({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
+            );
+            navigate(AppRoutes.VIEW_UPLOAD);
+            break;
+          case "Orders":
+            navigate(AppRoutes.SEND_ORDER);
+            break;
+          case "Transfer":
+            onClick(action);
+            break;
+          case "Clear Case":
+            onClick(action, rowId);
+            break;
+          case "Send Agreement":
+            dispatch(getSendAgreement(rowId));
+            onClick(action);
+            break;
+          case "Close Case":
+            dispatch(
+              closeCaseView({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
+            );
+            navigate(AppRoutes.CLOSE_CASE);
+            break;
+          default:
+            break;
+        }
+      }
+    });
   };
 
   const copyButtonText = (btnId, event) => {
