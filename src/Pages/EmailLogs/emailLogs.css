@@ -1,0 +1,12 @@
+.email-logs-main-container {
+  background-color: #f6f6f6;
+}
+
+.email-logs-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.email-logs-paper {
+  padding: 13px;
+  border-radius: 16px !important;
+}

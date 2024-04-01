@@ -45,7 +45,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [copiedStates, setCopiedStates] = useState({});
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [rowId, setRowId] = useState(null);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("Requested Date");

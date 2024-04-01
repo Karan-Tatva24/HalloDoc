@@ -29,6 +29,12 @@ import CreateProviderAccount from "./Pages/CreateProviderAccount";
 import ProviderLocation from "./Pages/ProviderLocation";
 import Partners from "./Pages/Partners";
 import AddBusiness from "./Pages/AddBusiness";
+import PatientHistory from "./Pages/PatientHistory";
+import PatientRecord from "./Pages/PatientRecord";
+import SearchRecords from "./Pages/SearchRecords";
+import EmailLogs from "./Pages/EmailLogs";
+import SMSLogs from "./Pages/SMSLogs";
+import BlockHistory from "./Pages/BlockHistory";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -95,6 +101,24 @@ const App = () => {
               />
               <Route path={AppRoutes.PARTNERS} element={<Partners />} />
               <Route path={AppRoutes.ADD_BUSINESS} element={<AddBusiness />} />
+              <Route
+                path={AppRoutes.PATIENT_HISTORY}
+                element={<PatientHistory />}
+              />
+              <Route
+                path={AppRoutes.PATIENTS_RECORDS}
+                element={<PatientRecord />}
+              />
+              <Route
+                path={AppRoutes.SEARCH_RECORDS}
+                element={<SearchRecords />}
+              />
+              <Route path={AppRoutes.EMAIL_LOGS} element={<EmailLogs />} />
+              <Route path={AppRoutes.SMS_LOGS} element={<SMSLogs />} />
+              <Route
+                path={AppRoutes.BLOCKED_HISTORY}
+                element={<BlockHistory />}
+              />
             </Route>
           </Route>
         </Routes>

@@ -6,7 +6,7 @@ export const adminProfile = createAsyncThunk(
   "adminProfile",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.get(`${ADMIN_PROFILE}/${params}`);
+      const response = await Axios.get(`${ADMIN_PROFILE}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

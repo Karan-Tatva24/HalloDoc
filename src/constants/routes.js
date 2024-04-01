@@ -21,5 +21,11 @@ export const AppRoutes = {
   PROVIDER_LOCATION: "/providerlocation",
   PARTNERS: "/partners",
   ADD_BUSINESS: "/partners/addbusiness",
-  UPDATE_BUSINESS: "/partners/updatebusiness",
+  RECORDS: "/records",
+  SEARCH_RECORDS: "/records/searchrecords",
+  EMAIL_LOGS: "/records/emaillog",
+  SMS_LOGS: "/records/smslog",
+  PATIENT_HISTORY: "/records/patienthistory",
+  PATIENTS_RECORDS: "/records/patienthistory/patientsrecords",
+  BLOCKED_HISTORY: "/records/blockedhistory",
 };

@@ -1,0 +1,12 @@
+.sms-logs-main-container {
+  background-color: #f6f6f6;
+}
+
+.sms-logs-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.sms-logs-paper {
+  padding: 13px;
+  border-radius: 16px !important;
+}

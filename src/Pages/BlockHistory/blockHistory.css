@@ -1,0 +1,12 @@
+.block-history-main-container {
+  background-color: #f6f6f6;
+}
+
+.block-history-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.block-history-paper {
+  padding: 13px;
+  border-radius: 16px !important;
+}

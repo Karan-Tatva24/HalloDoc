@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
-  InputAdornment,
-  MenuItem,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -14,27 +13,21 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import { useSelector } from "react-redux";
-import { columns, rows } from "../../constants/partnersDummyData";
-import "./partners.css";
-import { useNavigate } from "react-router-dom";
+import { Input } from "../../Components/TextField/Input";
+import "./patientHistory.css";
+import { columns, rows } from "../../constants/patientHistoryData";
 import { AppRoutes } from "../../constants/routes";
+import { useNavigate } from "react-router-dom";
 
-const Partners = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [professionFilter, setProfessionFilter] = useState("all");
+const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("");
   const navigate = useNavigate();
-  const { professions } = useSelector(
-    (state) => state.root.getProfessionsBusiness,
-  );
+
   useEffect(() => setTableData(rows), []);
+
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -66,68 +59,39 @@ const Partners = () => {
     }
     return 0;
   };
+
   return (
     <>
-      <Box className="partner-main-container">
-        <Container maxWidth="80%" className="partner-wrapper-container">
+      <Box className="patient-history-main-container">
+        <Container maxWidth="80%" className="patient-history-wrapper-container">
           <Typography variant="h5" gutterBottom pt={4}>
-            <b>Vendor(s)</b>
+            <b>Patient History</b>
           </Typography>
-          <Paper className="partner-paper">
+          <Paper className="patient-history-paper">
+            <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid item xs={12} md={3}>
+                <Input label="First Name" name="firstName" fullWidth />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Input label="Last Name" name="lastName" fullWidth />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Input label="Email" name="email" fullWidth />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Input label="Phone Number" name="phoneNumber" fullWidth />
+              </Grid>
+            </Grid>
             <Box
               display="flex"
+              justifyContent="flex-end"
               alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              mb={2}
+              gap={2}
+              pt={2}
+              pb={2}
             >
-              <Box display="flex" alignItems="center" gap={3}>
-                <Input
-                  className="search-text"
-                  placeholder="Search"
-                  variant="outlined"
-                  value={searchTerm}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchOutlinedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <Input
-                  className="search-text drop-list"
-                  placeholder="Search"
-                  variant="outlined"
-                  value={professionFilter}
-                  select
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchOutlinedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => setProfessionFilter(e.target.value)}
-                >
-                  <MenuItem value="all">All Professions</MenuItem>
-                  {professions?.map((profession, index) => {
-                    return (
-                      <MenuItem key={index} value={profession.profession}>
-                        {profession.profession}
-                      </MenuItem>
-                    );
-                  })}
-                </Input>
-              </Box>
-
-              <Button
-                name="Add Business"
-                variant="outlined"
-                startIcon={<AddOutlinedIcon />}
-                onClick={() => navigate(AppRoutes.ADD_BUSINESS)}
-              />
+              <Button name="Clear" variant="outlined" />
+              <Button name="Search" />
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
@@ -160,18 +124,15 @@ const Partners = () => {
                             return (
                               <TableCell key={column.id} align="center">
                                 {column.label === "Actions" ? (
-                                  <Box display="flex" gap={1}>
-                                    <Button
-                                      name="Edit"
-                                      variant="outlined"
-                                      onClick={() =>
-                                        navigate(AppRoutes.ADD_BUSINESS)
-                                      }
-                                    />
-                                    <Button name="Delete" variant="outlined" />
-                                  </Box>
+                                  <Button
+                                    name="Explore"
+                                    variant="outlined"
+                                    onClick={() =>
+                                      navigate(AppRoutes.PATIENTS_RECORDS)
+                                    }
+                                  />
                                 ) : (
-                                  row[column.label]
+                                  row[column.id]
                                 )}
                               </TableCell>
                             );
@@ -190,4 +151,4 @@ const Partners = () => {
   );
 };
 
-export default Partners;
+export default PatientHistory;

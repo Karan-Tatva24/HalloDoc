@@ -22,6 +22,8 @@ import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
+  const [providerMenuOpen, setProviderMenuOpen] = useState(false);
+  const [recordsMenuOpen, setRecordsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,10 +37,19 @@ const Header = ({ onClickDarkTheme, toggle }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    setProviderMenuOpen(false);
+    setRecordsMenuOpen(false);
   };
 
-  const handleNavLinkHover = (event) => {
+  const handleNavLinkHover = (event, menuType) => {
     setAnchorEl(event.currentTarget);
+    if (menuType === "provider") {
+      setProviderMenuOpen(true);
+      setRecordsMenuOpen(false);
+    } else if (menuType === "records") {
+      setProviderMenuOpen(false);
+      setRecordsMenuOpen(true);
+    }
   };
 
   return (
@@ -104,14 +115,17 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             My Profile
           </NavLink>
         </li>
-        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
             to={AppRoutes.PROVIDER}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Providers
           </NavLink>
-          {anchorEl && (
+          {providerMenuOpen && (
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -153,13 +167,49 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             Access
           </NavLink>
         </li>
-        <li>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "records")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
-            to="/"
+            to={AppRoutes.RECORDS}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Records
           </NavLink>
+          {recordsMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SEARCH_RECORDS);
+                  handleMenuClose();
+                }}
+              >
+                Search Records
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.EMAIL_LOGS);
+                  handleMenuClose();
+                }}
+              >
+                Email Logs
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.SMS_LOGS)}>
+                SMS Logs
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.PATIENT_HISTORY)}>
+                Patients Records
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.BLOCKED_HISTORY)}>
+                Blocked History
+              </MenuItem>
+            </Menu>
+          )}
         </li>
       </Box>
 
@@ -191,15 +241,18 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink
           to={AppRoutes.MY_PROFILE}
           className="sidelinks"
-          onClick={() => dispatch(adminProfile(id))}
+          onClick={() => dispatch(adminProfile())}
         >
           My Profile
         </NavLink>
-        <li onMouseEnter={handleNavLinkHover} onMouseLeave={handleMenuClose}>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink to={AppRoutes.PROVIDER} className="sidelinks">
             Providers
           </NavLink>
-          {anchorEl && (
+          {providerMenuOpen && (
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -231,9 +284,47 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sidelinks">
           Access
         </NavLink>
-        <NavLink to={AppRoutes.LOGIN} className="sidelinks">
-          Records
-        </NavLink>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "records")}
+          onMouseLeave={handleMenuClose}
+        >
+          <NavLink to={AppRoutes.RECORDS} className="sidelinks">
+            Records
+          </NavLink>
+          {recordsMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SEARCH_RECORDS);
+                  handleMenuClose();
+                }}
+              >
+                Search Records
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.EMAIL_LOGS);
+                  handleMenuClose();
+                }}
+              >
+                Email Logs
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.SMS_LOGS)}>
+                SMS Logs
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.PATIENT_HISTORY)}>
+                Patients Records
+              </MenuItem>
+              <MenuItem onClick={() => navigate(AppRoutes.BLOCKED_HISTORY)}>
+                Blocked History
+              </MenuItem>
+            </Menu>
+          )}
+        </li>
         <NavLink
           to={AppRoutes.LOGIN}
           className="sidelinks"

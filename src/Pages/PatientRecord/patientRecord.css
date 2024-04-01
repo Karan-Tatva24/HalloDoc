@@ -1,0 +1,12 @@
+.patient-record-main-container {
+  background-color: #f6f6f6;
+}
+
+.patient-record-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.patient-record-paper {
+  padding: 13px;
+  border-radius: 16px !important;
+}

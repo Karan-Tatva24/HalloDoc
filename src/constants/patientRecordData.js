@@ -1,0 +1,128 @@
+export const rows = [
+  {
+    id: 1,
+    client: "John Doe",
+    createdDate: "2024-03-28",
+    confirmation: "ABC123",
+    providerName: "HealthCare Inc.",
+    concludedDate: "2024-04-02",
+    status: "Closed",
+  },
+  {
+    id: 2,
+    client: "Jane Smith",
+    createdDate: "2024-03-30",
+    confirmation: "XYZ456",
+    providerName: "MediCare Services",
+    concludedDate: null,
+    status: "Accepted",
+  },
+  {
+    id: 3,
+    client: "Alice Johnson",
+    createdDate: "2024-03-25",
+    confirmation: "PQR789",
+    providerName: "Wellness Clinic",
+    concludedDate: "2024-04-01",
+    status: "Closed",
+  },
+  {
+    id: 4,
+    client: "Bob Williams",
+    createdDate: "2024-03-29",
+    confirmation: "LMN012",
+    providerName: "Healing Center",
+    concludedDate: null,
+    status: "Pending",
+  },
+  {
+    id: 5,
+    client: "Eva Brown",
+    createdDate: "2024-03-31",
+    confirmation: "JKL345",
+    providerName: "Holistic Health",
+    concludedDate: null,
+    status: "Accepted",
+  },
+  {
+    id: 6,
+    client: "David Lee",
+    createdDate: "2024-03-27",
+    confirmation: "GHI678",
+    providerName: "CareFirst Medical",
+    concludedDate: "2024-04-03",
+    status: "Closed",
+  },
+  {
+    id: 7,
+    client: "Grace Miller",
+    createdDate: "2024-03-26",
+    confirmation: "DEF901",
+    providerName: "HealWell Clinic",
+    concludedDate: null,
+    status: "Pending",
+  },
+  {
+    id: 8,
+    client: "Frank Adams",
+    createdDate: "2024-03-24",
+    confirmation: "STU234",
+    providerName: "Vitality Health",
+    concludedDate: null,
+    status: "Accepted",
+  },
+  {
+    id: 9,
+    client: "Olivia Turner",
+    createdDate: "2024-03-23",
+    confirmation: "VWX567",
+    providerName: "ReviveCare Center",
+    concludedDate: "2024-04-04",
+    status: "Completed",
+  },
+  {
+    id: 10,
+    client: "Henry White",
+    createdDate: "2024-03-22",
+    confirmation: "OPQ890",
+    providerName: "LifeBalance Wellness",
+    concludedDate: null,
+    status: "Pending",
+  },
+];
+
+export const columns = [
+  {
+    id: "client",
+    label: "Client/Member",
+  },
+
+  {
+    id: "createdDate",
+    label: "Created Date",
+  },
+  {
+    id: "confirmation",
+    label: "Confirmation",
+  },
+  {
+    id: "providerName",
+    label: "Provider Name",
+  },
+  {
+    id: "concludedDate",
+    label: "Concluded Date",
+  },
+  {
+    id: "status",
+    label: "Status",
+  },
+  {
+    id: "finalReport",
+    label: "Final Report",
+  },
+  {
+    id: "actions",
+    label: "Actions",
+  },
+];
