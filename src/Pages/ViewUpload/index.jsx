@@ -38,8 +38,6 @@ const ViewUpload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const fileNames = [];
-
   useEffect(() => {
     setFilterData(rows);
   }, [rows]);
@@ -72,6 +70,7 @@ const ViewUpload = () => {
 
     setSelected(newSelected);
   };
+
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const handleRequestSort = (property) => {
@@ -102,33 +101,27 @@ const ViewUpload = () => {
   };
 
   const handleDownload = (document) => {
-    fileNames.push(document);
-    dispatch(downloadFile({ fileNames }));
+    dispatch(downloadFile({ fileNames: [document] }));
   };
 
   const handleDownloadAll = () => {
-    selected.forEach((id) => {
-      const file = rows.find((row) => row.id === id);
-      if (file) {
-        fileNames.push(file.fileName);
-      }
-    });
-    dispatch(downloadFile({ fileNames }));
+    const selectedFiles = rows.filter((row) => selected.includes(row.id));
+    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    dispatch(downloadFile({ fileNames: selectedFileNames }));
   };
 
   const handleDelete = (document) => {
-    fileNames.push(document);
-    dispatch(deleteFile(fileNames));
-  };
-
-  const handleDeleteAll = (id) => {
-    selected.forEach((id) => {
-      const file = rows.find((row) => row.id === id);
-      if (file) {
-        fileNames.push(file.fileName);
+    dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
+      if (response.type === "deleteFile/fulfilled") {
+        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
       }
     });
-    dispatch(deleteFile(fileNames));
+  };
+
+  const handleDeleteAll = () => {
+    const selectedFiles = rows.filter((row) => selected.includes(row.id));
+    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    dispatch(deleteFile({ fileNames: selectedFileNames, id }));
   };
 
   return (
@@ -200,7 +193,6 @@ const ViewUpload = () => {
                   startIcon={<CloudUploadOutlinedIcon />}
                   type="submit"
                 />
-                {/* </Box> */}
               </Box>
             </form>
             <Box

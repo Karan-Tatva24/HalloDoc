@@ -11,6 +11,7 @@ import getProfessionBusinessSliceReducer from "./getProfessionsBusinessSlice";
 import closeCaseSliceReducer from "./closeCaseSlice";
 import loggedUserDataSliceReducer from "./loggedUserDataSlice";
 import adminProfileSliceReducer from "./adminProfileSlice";
+import accountAccessSliceReducer from "./accountAccessSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   closeCase: closeCaseSliceReducer,
   loggedUserData: loggedUserDataSliceReducer,
   adminProfile: adminProfileSliceReducer,
+  accountAccess: accountAccessSliceReducer,
 });

@@ -35,6 +35,7 @@ import SearchRecords from "./Pages/SearchRecords";
 import EmailLogs from "./Pages/EmailLogs";
 import SMSLogs from "./Pages/SMSLogs";
 import BlockHistory from "./Pages/BlockHistory";
+import CreateRequest from "./Pages/CreateRequest";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -118,6 +119,10 @@ const App = () => {
               <Route
                 path={AppRoutes.BLOCKED_HISTORY}
                 element={<BlockHistory />}
+              />
+              <Route
+                path={AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN}
+                element={<CreateRequest />}
               />
             </Route>
           </Route>

@@ -19,6 +19,7 @@ import { logout } from "../../redux/halloSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
 import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
+import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
@@ -27,8 +28,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userName } = useSelector((state) => state?.root.loggedUserData);
-  const { id } = useSelector((state) => state.root.loggedUserData);
+  const { userName, id } = useSelector((state) => state?.root.loggedUserData);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -163,6 +163,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
           <NavLink
             to={AppRoutes.ACCOUNT_ACCESS}
             className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => dispatch(accountAccess())}
           >
             Access
           </NavLink>
@@ -281,7 +282,11 @@ const Header = ({ onClickDarkTheme, toggle }) => {
         <NavLink to={AppRoutes.PARTNERS} className="sidelinks">
           Partners
         </NavLink>
-        <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sidelinks">
+        <NavLink
+          to={AppRoutes.ACCOUNT_ACCESS}
+          className="sidelinks"
+          onClick={() => dispatch(accountAccess())}
+        >
           Access
         </NavLink>
         <li

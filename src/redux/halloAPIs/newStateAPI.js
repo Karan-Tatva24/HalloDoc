@@ -11,6 +11,8 @@ export const newState = createAsyncThunk(
       if (params?.sortBy) url += `&sortBy=${params.sortBy}`;
       if (params?.orderBy) url += `&orderBy=${params.orderBy}`;
       if (params?.region !== "all") url += `&regions=${params.region}`;
+      if (params?.page) url += `&page=${params.page}`;
+      if (params?.pageSize) url += `&pageSize=${params.pageSize}`;
 
       const response = await Axios.get(url);
       return response?.data;

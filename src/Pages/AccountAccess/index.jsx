@@ -13,11 +13,27 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import { columns, rows } from "../../constants/accountAccess";
 import "./accountAccess.css";
 import { Button } from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
+import { useSelector } from "react-redux";
+
+const columns = [
+  {
+    id: "Name",
+    label: "Name",
+  },
+
+  {
+    id: "accountType",
+    label: "Account Type",
+  },
+  {
+    id: "actions",
+    label: "Actions",
+  },
+];
 
 const AccountAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -26,7 +42,9 @@ const AccountAccess = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => setTableData(rows), [tableData]);
+
+  const { accessAccount } = useSelector((state) => state.root.accountAccess);
+  useEffect(() => setTableData(accessAccount), [accessAccount, tableData]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -136,7 +154,7 @@ const AccountAccess = () => {
                                     />
                                   </Box>
                                 ) : (
-                                  row[column.label]
+                                  row[column.id]
                                 )}
                               </TableCell>
                             );

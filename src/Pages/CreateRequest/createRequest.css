@@ -1,0 +1,12 @@
+.create-request-main-container {
+  background-color: #f6f6f6;
+}
+
+.create-request-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.create-request-paper {
+  padding: 13px;
+  border-radius: 16px !important;
+}

@@ -5,9 +5,10 @@ import { DELETE_FILE } from "../../constants/apis/apis";
 export const deleteFile = createAsyncThunk(
   "deleteFile",
   async (params, { rejectWithValue }) => {
+    const { fileNames, id } = params;
     try {
-      const response = await Axios.post(DELETE_FILE, {
-        fileNames: params,
+      const response = await Axios.delete(`${DELETE_FILE}/${id}`, {
+        fileNames,
       });
       return response?.data;
     } catch (error) {

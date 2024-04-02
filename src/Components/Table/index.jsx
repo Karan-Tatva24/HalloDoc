@@ -42,15 +42,21 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const [rowId, setRowId] = useState(null);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("Requested Date");
+  const [pageNo, setPageNo] = useState(1);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
+
+  const { dashboardCount } = useSelector((state) => state.root.dashboardCount);
+  const countData = dashboardCount?.filter((count) => {
+    return count.caseTag?.toLowerCase() === activeState;
+  });
 
   const state = useSelector((state) => state.root.newState);
   const rows = state?.stateData;
@@ -143,6 +149,8 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -158,9 +166,20 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         sortBy: orderBy,
         orderBy: order.toUpperCase(),
         region: regionFilter,
+        page: pageNo,
+        pageSize: rowsPerPage,
       }),
     );
-  }, [activeState, dispatch, order, orderBy, regionFilter, searchTerm]);
+  }, [
+    activeState,
+    dispatch,
+    order,
+    orderBy,
+    pageNo,
+    regionFilter,
+    rowsPerPage,
+    searchTerm,
+  ]);
 
   const filterByIndicator = (indicatorValue) => {
     if (indicatorValue === "all") return setTableData(rows);
@@ -286,116 +305,114 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                ?.map((row) => {
-                  return (
-                    <TableRow
-                      key={row.id}
-                      className={`requestor-${row.Requestor.toLowerCase()}`}
-                    >
-                      {columns.map((column) => {
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.id === "mail" ? (
-                              <EmailOutlinedIcon
-                                fontSize="medium"
-                                sx={{
-                                  border: "1px solid white",
-                                  padding: "3px",
-                                  borderRadius: "4px",
+              {tableData?.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    className={`requestor-${row.Requestor.toLowerCase()}`}
+                  >
+                    {columns.map((column) => {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === "mail" ? (
+                            <EmailOutlinedIcon
+                              fontSize="medium"
+                              sx={{
+                                border: "1px solid white",
+                                padding: "3px",
+                                borderRadius: "4px",
+                              }}
+                            />
+                          ) : ["Phone", "Chat With", "Actions"].includes(
+                              column.label,
+                            ) ? (
+                            <>
+                              <Button
+                                className="phone-btn"
+                                name={
+                                  column.label === "Phone"
+                                    ? row[column.label]
+                                    : column.id === "chatWith"
+                                      ? "Provider"
+                                      : column.label
+                                }
+                                startIcon={
+                                  (column.id === "phoneNumber" && (
+                                    <LocalPhoneOutlinedIcon />
+                                  )) ||
+                                  (column.id === "chatWith" && (
+                                    <PersonOutlineOutlinedIcon />
+                                  ))
+                                }
+                                variant="outlined"
+                                color="inherit"
+                                onClick={(e) => {
+                                  column.id === "phoneNumber" &&
+                                    copyButtonText(row.id, e);
+                                  column.id === "action" &&
+                                    handleClick(e, row.id);
                                 }}
                               />
-                            ) : ["Phone", "Chat With", "Actions"].includes(
-                                column.label,
-                              ) ? (
-                              <>
-                                <Button
-                                  className="phone-btn"
-                                  name={
-                                    column.label === "Phone"
-                                      ? row[column.label]
-                                      : column.id === "chatWith"
-                                        ? "Provider"
-                                        : column.label
-                                  }
-                                  startIcon={
-                                    (column.id === "phoneNumber" && (
-                                      <LocalPhoneOutlinedIcon />
-                                    )) ||
-                                    (column.id === "chatWith" && (
-                                      <PersonOutlineOutlinedIcon />
-                                    ))
-                                  }
-                                  variant="outlined"
-                                  color="inherit"
-                                  onClick={(e) => {
-                                    column.id === "phoneNumber" &&
-                                      copyButtonText(row.id, e);
-                                    column.id === "action" &&
-                                      handleClick(e, row.id);
+                              {column.id === "phoneNumber" && (
+                                <div>({row.Requestor.split(" ")[0]})</div>
+                              )}
+                              {column.id === "phoneNumber" &&
+                                copiedStates[row.id]}
+                              {column.id === "action" && (
+                                <Menu
+                                  id="fade-menu"
+                                  MenuListProps={{
+                                    "aria-labelledby": "fade-button",
                                   }}
-                                />
-                                {column.id === "phoneNumber" && (
-                                  <div>({row.Requestor.split(" ")[0]})</div>
-                                )}
-                                {column.id === "phoneNumber" &&
-                                  copiedStates[row.id]}
-                                {column.id === "action" && (
-                                  <Menu
-                                    id="fade-menu"
-                                    MenuListProps={{
-                                      "aria-labelledby": "fade-button",
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open && row.id === rowId}
-                                    onClose={handleClose}
-                                    TransitionComponent={Fade}
-                                  >
-                                    {dropDown.map((data) => {
-                                      return (
-                                        <MenuItem
-                                          key={data.id}
-                                          onClick={() => handleClose(data.name)}
-                                          disableRipple
-                                        >
-                                          {data.icon}&nbsp;{data.name}
-                                        </MenuItem>
-                                      );
-                                    })}
-                                  </Menu>
-                                )}
-                              </>
-                            ) : column.label === "Physician Name" ? (
-                              row?.physician?.["Physician Name"]
-                            ) : column.label === "Notes" ? (
-                              activeState === "new" ? (
-                                row["Patient Note"] === null ? (
-                                  " - "
-                                ) : (
-                                  row["Patient Note"]
-                                )
-                              ) : row["Transfer Note"] === null ? (
+                                  anchorEl={anchorEl}
+                                  open={open && row.id === rowId}
+                                  onClose={handleClose}
+                                  TransitionComponent={Fade}
+                                >
+                                  {dropDown.map((data) => {
+                                    return (
+                                      <MenuItem
+                                        key={data.id}
+                                        onClick={() => handleClose(data.name)}
+                                        disableRipple
+                                      >
+                                        {data.icon}&nbsp;{data.name}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Menu>
+                              )}
+                            </>
+                          ) : column.label === "Physician Name" ? (
+                            row?.physician?.["Physician Name"]
+                          ) : column.label === "Notes" ? (
+                            activeState === "new" ? (
+                              row["Patient Note"] === null ? (
                                 " - "
                               ) : (
-                                row["Transfer Note"]
+                                row["Patient Note"]
                               )
+                            ) : row["Transfer Note"] === null ? (
+                              " - "
                             ) : (
-                              row[column.label]
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                              row["Transfer Note"]
+                            )
+                          ) : (
+                            row[column.label]
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={tableData?.length}
+          count={countData[0].count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

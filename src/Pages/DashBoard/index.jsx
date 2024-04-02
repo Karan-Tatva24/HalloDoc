@@ -34,6 +34,9 @@ import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 import { getProfession } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../constants/routes";
+import { exportAll, exportByState } from "../../redux/halloAPIs/exportAPI";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -44,6 +47,7 @@ const DashBoard = () => {
   const [open, setOpen] = useState(false);
   const [rowId, setRowId] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const state = useSelector((state) => state.root.dashboardCount);
   const counts = state?.dashboardCount;
   const handleOpen = (name, id) => {
@@ -76,6 +80,8 @@ const DashBoard = () => {
         sortBy: "id",
         orderBy: "ASC",
         region: "all",
+        page: 1,
+        pageSize: 10,
       }),
     );
   }, [activeButton, dispatch, counts]);
@@ -191,16 +197,23 @@ const DashBoard = () => {
                     name="Create Request"
                     variant="contained"
                     startIcon={<RequestPageOutlinedIcon />}
+                    onClick={() =>
+                      navigate(AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN)
+                    }
                   />
                   <Button
                     name="Export"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
+                    onClick={() =>
+                      dispatch(exportByState(activeButton.toLowerCase()))
+                    }
                   />
                   <Button
                     name="Export All"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
+                    onClick={() => dispatch(exportAll())}
                   />
                   <Button
                     name="Request DTY Support"

@@ -32,3 +32,7 @@ export const ADMIN_PROFILE = "/admin/profile/adminProfile";
 export const EDIT_ADMIN_PROFILE = "/admin/profile/editAdminProfile";
 export const DOWNLOAD_FILE = "/admin/common/download";
 export const DELETE_FILE = "/admin/common/deleteFile";
+export const CREATE_ADMIN_REQUEST = "/user/createAdminRequest";
+export const EXPORT = "/admin/common/export";
+export const EXPORT_ALL = "/admin/common/exportAll";
+export const ACCOUNT_ACCESS = "/admin/access/accountAccess";
