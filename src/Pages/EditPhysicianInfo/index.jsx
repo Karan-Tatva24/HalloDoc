@@ -9,9 +9,40 @@ import AddressInfo from "../../Components/infoForms/AddressInfo";
 import "./editPhysicianInfo.css";
 import ProviderProfile from "../../Components/infoForms/ProviderProfile";
 import OnBording from "./components/OnBording";
+import { useSelector } from "react-redux";
 
 const EditPhysicianInfo = () => {
+  const { physicianData } = useSelector((state) => state.root.providerInfo);
   const navigate = useNavigate();
+
+  const {
+    id,
+    userName,
+    status,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    medicalLicense,
+    NPINumber,
+    syncEmailAddress,
+    address1,
+    address2,
+    city,
+    state,
+    zipCode,
+    altPhone,
+    photo,
+    signature,
+    isAgreementDoc,
+    isBackgroundDoc,
+    isNonDisclosureDoc,
+    isLicenseDoc,
+    regions,
+  } = physicianData.physicianProfile[0];
+
+  const { businessName, businessWebsite } = physicianData.businessDetails[0];
+
   return (
     <>
       <Box className="main-edit-container">
@@ -38,12 +69,50 @@ const EditPhysicianInfo = () => {
             />
           </Box>
           <Paper className="edit-form-container">
-            <AccountInfo />
-            <PhysiciansInformation />
-            <AddressInfo />
-            <ProviderProfile />
+            <AccountInfo
+              name="EditProvider"
+              userName={userName}
+              status={status}
+              id={id}
+            />
+            <PhysiciansInformation
+              id={id}
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              phone={phoneNumber}
+              medicalLicense={medicalLicense}
+              npiNumber={NPINumber}
+              syncEmail={syncEmailAddress}
+              state={state}
+              regions={regions}
+            />
+            <AddressInfo
+              index={id}
+              name="EditProvider"
+              address1={address1}
+              address2={address2}
+              city={city}
+              state={state}
+              zipCode={zipCode}
+              altPhone={altPhone}
+              regions={regions}
+            />
+            <ProviderProfile
+              id={id}
+              businessName={businessName}
+              businessWebsite={businessWebsite}
+              photo={photo}
+              signature={signature}
+            />
             <Divider sx={{ backgroundColor: "#1f1e1e86" }} />
-            <OnBording />
+            <OnBording
+              id={id}
+              isAgreementDoc={isAgreementDoc}
+              isBackgroundDoc={isBackgroundDoc}
+              isNonDisclosureDoc={isNonDisclosureDoc}
+              isLicenseDoc={isLicenseDoc}
+            />
             <Divider sx={{ backgroundColor: "#1f1e1e86", marginTop: "1rem" }} />
             <Box
               display="flex"

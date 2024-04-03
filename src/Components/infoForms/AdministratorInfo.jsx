@@ -18,8 +18,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 const INITIAL_VALUE = {
-  firstname: "",
-  lastname: "",
+  firstName: "",
+  lastName: "",
   email: "",
   confirmemail: "",
   administratorPhone: "",
@@ -48,8 +48,8 @@ const AdministratorInfo = ({
 
   useEffect(() => {
     setInitialValues({
-      firstname: firstName,
-      lastname: lastName,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       confirmemail: email,
       administratorPhone: phone,
@@ -68,28 +68,28 @@ const AdministratorInfo = ({
       >
         <Grid item xs={12} md={6}>
           <Input
-            name="firstname"
+            name="firstName"
             label="First Name"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.firstname}
+            value={formik.values.firstName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.firstname && Boolean(formik.errors.firstname)}
-            helperText={formik.touched.firstname && formik.errors.firstname}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="lastname"
+            name="lastName"
             label="Last Name"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.lastname}
+            value={formik.values.lastName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.lastname && Boolean(formik.errors.lastname)}
-            helperText={formik.touched.lastname && formik.errors.lastname}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
           />
         </Grid>
         <Grid item xs={12} md={6}>

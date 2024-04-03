@@ -61,7 +61,7 @@ export const columns = [
     label: "Provider Name",
   },
   {
-    id: "role",
+    id: "accountType",
     label: "Role",
   },
   {
@@ -69,7 +69,7 @@ export const columns = [
     label: "On Call Status",
   },
   {
-    id: "satus",
+    id: "status",
     label: "Status",
   },
   {

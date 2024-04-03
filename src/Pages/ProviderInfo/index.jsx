@@ -19,12 +19,16 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import { columns, rows } from "../../constants/providerData";
-import "./providerInfo.css";
+import { columns } from "../../constants/providerData";
 import ContectProviderModal from "../../Components/Modal/ContectProviderModal";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  physicianProfile,
+  providerInfo,
+} from "../../redux/halloAPIs/providerInfoAPI";
+import "./providerInfo.css";
 
 const ProviderInfo = () => {
   const [searchTerm, setSearchTerm] = useState("all");
@@ -34,12 +38,20 @@ const ProviderInfo = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("providerName");
   const [open, setOpen] = useState(false);
+  const [id, setId] = useState(-1);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { providerInfoData } = useSelector((state) => state.root.providerInfo);
 
-  useEffect(() => setTableData(rows), []);
+  useEffect(() => setTableData(providerInfoData), [providerInfoData]);
 
-  const handleOpen = () => {
+  useEffect(() => {
+    dispatch(providerInfo(searchTerm));
+  }, [dispatch, searchTerm]);
+
+  const handleOpen = (id) => {
+    setId(id);
     setOpen(true);
   };
 
@@ -163,7 +175,7 @@ const ProviderInfo = () => {
                             return (
                               <TableCell key={column.id} align="center">
                                 {column.id === "stopNotification" ? (
-                                  <Checkbox />
+                                  <Checkbox checked={row.notification} />
                                 ) : column.id === "actions" ? (
                                   <Box
                                     display="flex"
@@ -175,17 +187,30 @@ const ProviderInfo = () => {
                                       name="Contact"
                                       variant="outlined"
                                       size="small"
-                                      onClick={handleOpen}
+                                      onClick={() => handleOpen(row.id)}
                                     />
                                     <Button
                                       name="Edit"
                                       variant="outlined"
                                       size="small"
-                                      onClick={() =>
-                                        navigate(AppRoutes.EDIT_PHYSICIAN)
-                                      }
+                                      onClick={() => {
+                                        dispatch(physicianProfile(row.id)).then(
+                                          (response) => {
+                                            if (
+                                              response.type ===
+                                              "physicianProfile/fulfilled"
+                                            ) {
+                                              navigate(
+                                                AppRoutes.EDIT_PHYSICIAN,
+                                              );
+                                            }
+                                          },
+                                        );
+                                      }}
                                     />
                                   </Box>
+                                ) : column.id === "providerName" ? (
+                                  `${row["firstName"]} ${row["lastName"]}`
                                 ) : (
                                   row[column.id]
                                 )}
@@ -210,7 +235,7 @@ const ProviderInfo = () => {
           </Paper>
         </Container>
       </Box>
-      <ContectProviderModal open={open} handleClose={handleClose} />
+      <ContectProviderModal open={open} handleClose={handleClose} id={id} />
     </>
   );
 };

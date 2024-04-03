@@ -5,34 +5,64 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { physicianInformationSchema } from "../../ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editProviderProfile,
+  physicianProfile,
+} from "../../redux/halloAPIs/providerInfoAPI";
 
 const INITIAL_VALUE = {
-  firstname: "1234",
-  lastname: "2345",
-  email: "test123@mailinator.com",
-  phoneNumber: "4565156514",
-  medicalLicense: "51351531gvbjkdcbsdhjbjhvbvg",
-  npiNumber: "",
-  synEmail: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  medicalLicense: "",
+  NPINumber: "",
+  syncEmailAddress: "",
 };
 
-const PhysiciansInformation = () => {
+const PhysiciansInformation = ({
+  id,
+  firstName,
+  lastName,
+  email,
+  phone,
+  medicalLicense,
+  npiNumber,
+  syncEmail,
+  state,
+  regions,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.root.getRegionPhysician);
 
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log("Form submitted", values);
-    },
+    onSubmit: (values) => {},
     validationSchema: physicianInformationSchema,
+    enableReinitialize: true,
   });
+
+  useEffect(() => {
+    setInitialValues({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phone,
+      medicalLicense: medicalLicense,
+      npiNumber: npiNumber,
+      synEmail: syncEmail,
+    });
+  }, [email, firstName, lastName, medicalLicense, npiNumber, phone, syncEmail]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Typography variant="h6" className="account">
@@ -45,28 +75,28 @@ const PhysiciansInformation = () => {
       >
         <Grid item xs={12} md={6}>
           <Input
-            name="firstname"
+            name="firstName"
             label="First Name"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.firstname}
+            value={formik.values.firstName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.firstname && Boolean(formik.errors.firstname)}
-            helperText={formik.touched.firstname && formik.errors.firstname}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="lastname"
+            name="lastName"
             label="Last Name"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.lastname}
+            value={formik.values.lastName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.lastname && Boolean(formik.errors.lastname)}
-            helperText={formik.touched.lastname && formik.errors.lastname}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -119,52 +149,51 @@ const PhysiciansInformation = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="npiNumber"
+            name="NPINumber"
             label="NPI Number"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.npiNumber}
+            value={formik.values.NPINumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.npiNumber && Boolean(formik.errors.npiNumber)}
-            helperText={formik.touched.npiNumber && formik.errors.npiNumber}
-          ></Input>
+            error={formik.touched.NPINumber && Boolean(formik.errors.NPINumber)}
+            helperText={formik.touched.NPINumber && formik.errors.NPINumber}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="synEmail"
+            name="syncEmailAddress"
             label="Synchronization Email Address"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.synEmail}
+            value={formik.values.syncEmailAddress}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.synEmail && Boolean(formik.errors.synEmail)}
-            helperText={formik.touched.synEmail && formik.errors.synEmail}
+            error={
+              formik.touched.syncEmailAddress &&
+              Boolean(formik.errors.syncEmailAddress)
+            }
+            helperText={
+              formik.touched.syncEmailAddress && formik.errors.syncEmailAddress
+            }
           ></Input>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="District Of Columbia"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="New York"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="Virginia"
-          />
-          <FormControlLabel
-            className="checkbox-padding"
-            control={<Checkbox size="small" />}
-            label="Maryland"
-          />
+          {data?.regions.map((region) => {
+            const isChecked = regions?.some(
+              (selectedRegion) => selectedRegion.name === region.name,
+            );
+            return (
+              <FormControlLabel
+                className="checkbox-padding"
+                disabled={isDisabled}
+                key={region.id}
+                control={<Checkbox size="small" checked={isChecked} />}
+                label={region.name}
+              />
+            );
+          })}
         </Grid>
       </Grid>
       <Box
@@ -183,7 +212,13 @@ const PhysiciansInformation = () => {
               name="Save"
               type="submit"
               onClick={() => {
-                setInitialValues(formik.values);
+                dispatch(editProviderProfile({ id, data: formik.values })).then(
+                  (response) => {
+                    if (response.type === "editProviderProfile/fulfilled") {
+                      dispatch(physicianProfile(id));
+                    }
+                  },
+                );
                 setIsDisabled(true);
               }}
             />

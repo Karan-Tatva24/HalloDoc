@@ -55,7 +55,7 @@ const MyProfile = () => {
             />
           </Box>
           <Paper className="profile-form-container">
-            <AccountInfo userName={userName} status={status} />
+            <AccountInfo name="MyProfile" userName={userName} status={status} />
             <AdministratorInfo
               firstName={firstName}
               lastName={lastName}
@@ -65,6 +65,7 @@ const MyProfile = () => {
               regions={regions}
             />
             <AddressInfo
+              name="MyProfile"
               address1={address1}
               address2={address2}
               city={city}

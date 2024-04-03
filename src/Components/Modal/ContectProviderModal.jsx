@@ -12,14 +12,24 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { useFormik } from "formik";
 import { contectProviderSchema } from "../../ValidationSchema";
+import { useDispatch } from "react-redux";
+import { contactProvider } from "../../redux/halloAPIs/providerInfoAPI";
 
-const ContectProviderModal = ({ open, handleClose }) => {
+const ContectProviderModal = ({ open, handleClose, id }) => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       message: "",
+      contactMethod: "email",
     },
     onSubmit: (values, onSubmitProps) => {
-      console.log(values);
+      dispatch(
+        contactProvider({
+          id,
+          contactMethod: values.contactMethod,
+          messageBody: values.message,
+        }),
+      );
       onSubmitProps.resetForm();
       handleClose();
     },
@@ -35,8 +45,10 @@ const ContectProviderModal = ({ open, handleClose }) => {
             </FormLabel>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="sms"
-              name="radio-buttons-group"
+              defaultValue={formik.values.contactMethod}
+              name="contactMethod"
+              value={formik.values.contactMethod}
+              onChange={formik.handleChange}
             >
               <FormControlLabel value="sms" control={<Radio />} label="SMS" />
               <FormControlLabel

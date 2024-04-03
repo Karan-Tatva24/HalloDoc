@@ -10,17 +10,30 @@ import {
   adminProfile,
   editAdminProfile,
 } from "../../redux/halloAPIs/adminProfileAPI";
+import {
+  editProviderProfile,
+  physicianProfile,
+} from "../../redux/halloAPIs/providerInfoAPI";
 
 const INITIAL_VALUE = {
   address1: "",
   address2: "",
   city: "",
   state: "",
-  zip: "",
-  mailingPhone: "",
+  zipCode: "",
+  altPhone: "",
 };
 
-const AddressInfo = ({ address1, address2, city, state, zip, altPhone }) => {
+const AddressInfo = ({
+  index,
+  name,
+  address1,
+  address2,
+  city,
+  state,
+  zipCode,
+  altPhone,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const { id } = useSelector((state) => state.root.loggedUserData);
@@ -40,10 +53,10 @@ const AddressInfo = ({ address1, address2, city, state, zip, altPhone }) => {
       address2,
       city,
       state,
-      zip,
-      mailingPhone: altPhone,
+      zipCode,
+      altPhone,
     });
-  }, [address1, address2, altPhone, city, state, zip]);
+  }, [address1, address2, altPhone, city, state, zipCode]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -116,33 +129,29 @@ const AddressInfo = ({ address1, address2, city, state, zip, altPhone }) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="zip"
-            label="Zip"
+            name="zipCode"
+            label="zipCode"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.zip}
+            value={formik.values.zipCode}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.zip && Boolean(formik.errors.zip)}
-            helperText={formik.touched.zip && formik.errors.zip}
+            error={formik.touched.zipCode && Boolean(formik.errors.zipCode)}
+            helperText={formik.touched.zipCode && formik.errors.zipCode}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <PhoneInput
             label="Phone Number"
-            name="mailingPhone"
+            name="altPhone"
             country={"us"}
             disabled={isDisabled}
             inputStyle={{ width: "100%", height: "3.438rem" }}
-            value={formik.values.mailingPhone}
+            value={formik.values.altPhone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={
-              formik.touched.mailingPhone && Boolean(formik.errors.mailingPhone)
-            }
-            helperText={
-              formik.touched.mailingPhone && formik.errors.mailingPhone
-            }
+            error={formik.touched.altPhone && Boolean(formik.errors.altPhone)}
+            helperText={formik.touched.altPhone && formik.errors.altPhone}
           />
         </Grid>
       </Grid>
@@ -162,17 +171,30 @@ const AddressInfo = ({ address1, address2, city, state, zip, altPhone }) => {
               name="Save"
               type="submit"
               onClick={() => {
-                dispatch(
-                  editAdminProfile({
-                    id,
-                    section: "billing",
-                    updatedData: formik.values,
-                  }),
-                ).then((response) => {
-                  if (response.type === "editAdminProfile/fulfilled") {
-                    dispatch(adminProfile(id));
-                  }
-                });
+                if (name === "EditProvider") {
+                  dispatch(
+                    editProviderProfile({ id: index, data: formik.values }),
+                  ).then((response) => {
+                    if (response.type === "editProviderProfile/fulfilled") {
+                      dispatch(physicianProfile(index));
+                    }
+                  });
+                }
+
+                if (name === "MyProfile") {
+                  dispatch(
+                    editAdminProfile({
+                      id,
+                      section: "billing",
+                      updatedData: formik.values,
+                    }),
+                  ).then((response) => {
+                    if (response.type === "editAdminProfile/fulfilled") {
+                      dispatch(adminProfile(id));
+                    }
+                  });
+                }
+
                 setIsDisabled(true);
               }}
             />

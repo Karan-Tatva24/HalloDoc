@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createRequestByAdminProvider } from "../../redux/halloAPIs/createRequestAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 import { AppRoutes } from "../../constants/routes";
+import { verifyState } from "../../redux/halloAPIs/verifyStateAPI";
+import { toast } from "react-toastify";
 
 const initialValues = {
   firstName: "",
@@ -35,28 +37,36 @@ const CreateRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
-      dispatch(
-        createRequestByAdminProvider({
-          patientFirstName: values.firstName,
-          patientLastName: values.lastName,
-          patientEmail: values.email,
-          patientPhoneNumber: values.phoneNumber,
-          street: values.street,
-          city: values.city,
-          state: values.state,
-          zipCode: values.zipCode,
-          dob: values.dob,
-          roomNumber: values.room,
-          patientNote: values.adminNotes,
-          requestType: accountType,
-        }),
-      ).then((response) => {
-        if (response.type === "createRequestByAdminProvider/fulfilled") {
-          dispatch(dashboardCount());
-          navigate(AppRoutes.DASHBOARD);
+      dispatch(verifyState(values.state)).then((response) => {
+        if (response.type === "verifyState/fulfilled") {
+          dispatch(
+            createRequestByAdminProvider({
+              patientFirstName: values.firstName,
+              patientLastName: values.lastName,
+              patientEmail: values.email,
+              patientPhoneNumber: values.phoneNumber,
+              street: values.street,
+              city: values.city,
+              state: values.state,
+              zipCode: values.zipCode,
+              dob: values.dob,
+              roomNumber: values.room,
+              patientNote: values.adminNotes,
+              requestType: accountType,
+            }),
+          ).then((response) => {
+            if (response.type === "createRequestByAdminProvider/fulfilled") {
+              dispatch(dashboardCount());
+              navigate(AppRoutes.DASHBOARD);
+            }
+          });
+          onSubmitProps.resetForm();
+        } else {
+          formik.setErrors({
+            state: response.payload?.data.message,
+          });
         }
       });
-      onSubmitProps.resetForm();
     },
     validationSchema: createRequestSchema,
   });
@@ -246,7 +256,24 @@ const CreateRequest = () => {
                     gap={2}
                     alignItems="center"
                   >
-                    <Button name="verify" variant="outlined" size="large" />
+                    <Button
+                      name="verify"
+                      variant="outlined"
+                      size="large"
+                      onClick={() => {
+                        dispatch(verifyState(formik.values.state)).then(
+                          (response) => {
+                            if (response.type === "verifyState/fulfilled") {
+                              toast.success(response.payload?.message);
+                            } else {
+                              formik.setErrors({
+                                state: response.payload?.data.message,
+                              });
+                            }
+                          },
+                        );
+                      }}
+                    />
                     <Button
                       name="Map"
                       variant="outlined"
@@ -283,7 +310,12 @@ const CreateRequest = () => {
                 mt={4}
               >
                 <Button name="Save" type="submit" />
-                <Button name="Cancel" variant="outlined" type="reset" />
+                <Button
+                  name="Cancel"
+                  variant="outlined"
+                  type="reset"
+                  onClick={() => navigate(-1)}
+                />
               </Box>
             </form>
           </Paper>

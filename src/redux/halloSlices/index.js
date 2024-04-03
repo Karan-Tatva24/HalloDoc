@@ -12,6 +12,7 @@ import closeCaseSliceReducer from "./closeCaseSlice";
 import loggedUserDataSliceReducer from "./loggedUserDataSlice";
 import adminProfileSliceReducer from "./adminProfileSlice";
 import accountAccessSliceReducer from "./accountAccessSlice";
+import providerInfoSliceReducer from "./providerInfoSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -27,4 +28,5 @@ export const rootReducer = combineReducers({
   loggedUserData: loggedUserDataSliceReducer,
   adminProfile: adminProfileSliceReducer,
   accountAccess: accountAccessSliceReducer,
+  providerInfo: providerInfoSliceReducer,
 });

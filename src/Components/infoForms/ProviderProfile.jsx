@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,19 +7,25 @@ import { Button } from "../Button";
 import { useFormik } from "formik";
 import { providerProfileSchema } from "../../ValidationSchema";
 import SignatureCanvas from "react-signature-canvas";
+import {
+  editProviderProfile,
+  physicianProfile,
+} from "../../redux/halloAPIs/providerInfoAPI";
+import { useDispatch } from "react-redux";
 
 const INITIAL_VALUE = {
-  businessName: "hbsdjcsdhbvsfbgfhgdfg",
-  businessWebsite: "dvgbjksfvbsh",
-  adminNotes: "hello",
+  businessName: "",
+  businessWebsite: "",
+  adminNotes: "Hello",
 };
 
-const ProviderProfile = () => {
+const ProviderProfile = ({ id, businessName, businessWebsite }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const [openModel, setOpenModal] = useState(false);
   const [imageURL, setImageURL] = useState(null);
   const sigCanvas = useRef();
+  const dispatch = useDispatch();
 
   const create = () => {
     const URL = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
@@ -42,6 +48,13 @@ const ProviderProfile = () => {
     validationSchema: providerProfileSchema,
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    setInitialValues({
+      businessName,
+      businessWebsite,
+    });
+  }, [businessName, businessWebsite]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -91,45 +104,73 @@ const ProviderProfile = () => {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box>
-            <Box display="flex">
-              <Button
-                fullWidth
-                variant="outlined"
-                component="label"
-                title="Upload-files"
-              >
-                <input accept="image/*" type="file" />
-              </Button>
-
-              <Button
-                name="Upload"
-                variant="contained"
-                size="large"
-                startIcon={<CloudUploadOutlinedIcon />}
+          <Box display="flex" position="relative" mb={2} mt={2}>
+            <Button
+              style={{
+                color: "#000000",
+                display: "flex",
+                justifyContent: "flex-start",
+                backgroundColor: "#f6f6f6",
+              }}
+              fullWidth
+              variant="outlined"
+              component="label"
+              title="Upload-files"
+            >
+              <input
+                // onChange={handleFileChange}
+                type="file"
+                id="photo"
+                hidden
               />
-            </Box>
+              <label htmlFor="photo">
+                {/* {selectedFile !== null ? selectedFile.name : "Select File"} */}
+                Select File
+              </label>
+            </Button>
+
+            <Button
+              name="Upload"
+              variant="contained"
+              size="large"
+              startIcon={<CloudUploadOutlinedIcon />}
+              type="submit"
+            />
           </Box>
         </Grid>
         <Grid item xs={10} md={4}>
-          <Box>
-            <Box display="flex">
-              <Button
-                fullWidth
-                variant="outlined"
-                component="label"
-                title="Upload-files"
-              >
-                <input accept="image/*" type="file" />
-              </Button>
-
-              <Button
-                name="Upload"
-                variant="contained"
-                size="large"
-                startIcon={<CloudUploadOutlinedIcon />}
+          <Box display="flex" position="relative" mb={2} mt={2}>
+            <Button
+              style={{
+                color: "#000000",
+                display: "flex",
+                justifyContent: "flex-start",
+                backgroundColor: "#f6f6f6",
+              }}
+              fullWidth
+              variant="outlined"
+              component="label"
+              title="Upload-files"
+            >
+              <input
+                // onChange={handleFileChange}
+                type="file"
+                id="signature"
+                hidden
               />
-            </Box>
+              <label htmlFor="signature">
+                {/* {selectedFile !== null ? selectedFile.name : "Select File"} */}
+                Select File
+              </label>
+            </Button>
+
+            <Button
+              name="Upload"
+              variant="contained"
+              size="large"
+              startIcon={<CloudUploadOutlinedIcon />}
+              type="submit"
+            />
           </Box>
         </Grid>
         <Grid item xs={2}>
@@ -212,7 +253,13 @@ const ProviderProfile = () => {
               name="Save"
               type="submit"
               onClick={() => {
-                setInitialValues(formik.values);
+                dispatch(editProviderProfile({ id, data: formik.values })).then(
+                  (response) => {
+                    if (response.type === "editProviderProfile/fulfilled") {
+                      dispatch(physicianProfile(id));
+                    }
+                  },
+                );
                 setIsDisabled(true);
               }}
             />

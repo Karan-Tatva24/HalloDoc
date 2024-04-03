@@ -20,6 +20,7 @@ import { loginHeading } from "../../assets/Images";
 import "./header.css";
 import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
 import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
+import { providerInfo } from "../../redux/halloAPIs/providerInfoAPI";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
@@ -133,8 +134,12 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             >
               <MenuItem
                 onClick={() => {
-                  navigate(AppRoutes.PROVIDER);
-                  handleMenuClose();
+                  dispatch(providerInfo()).then((response) => {
+                    if (response.type === "providerInfo/fulfilled") {
+                      navigate(AppRoutes.PROVIDER);
+                      handleMenuClose();
+                    }
+                  });
                 }}
               >
                 Provider

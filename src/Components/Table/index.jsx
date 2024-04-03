@@ -412,7 +412,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={countData[0].count}
+          count={countData[0]?.count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -1,25 +1,30 @@
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "../../../Components/Button";
 
-const initialValue = {
-  IndConAgg: false,
-  BacCheck: false,
-  HIPAA: false,
-  nonDisAgg: false,
-  licDoc: false,
-};
+// const initialValue = {
+//   IndConAgg: false,
+//   BacCheck: false,
+//   HIPAA: false,
+//   nonDisAgg: false,
+//   licDoc: false,
+// };
 
-const OnBording = () => {
-  const [checked, setChecked] = useState(initialValue);
-  const handleCheckBox = (e) => {
-    const name = e.target.name;
-    const checked = e.target.checked;
-    setChecked((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  };
+const OnBording = ({
+  isAgreementDoc,
+  isBackgroundDoc,
+  isNonDisclosureDoc,
+  isLicenseDoc,
+}) => {
+  // const [checked, setChecked] = useState(initialValue);
+  // const handleCheckBox = (e) => {
+  //   const name = e.target.name;
+  //   const checked = e.target.checked;
+  //   setChecked((prev) => ({
+  //     ...prev,
+  //     [name]: checked,
+  //   }));
+  // };
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" gap={3}>
@@ -31,75 +36,75 @@ const OnBording = () => {
           control={
             <Checkbox
               name="IndConAgg"
-              checked={checked.IndConAgg}
-              onChange={handleCheckBox}
+              checked={isAgreementDoc}
+              // onChange={handleCheckBox}
             />
           }
           label="Independent Contractor Agreement"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.IndConAgg ? <Button name="View" /> : null}
+        {isAgreementDoc ? <Button name="View" /> : null}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
               name="BacCheck"
-              checked={checked.BacCheck}
-              onChange={handleCheckBox}
+              checked={isBackgroundDoc}
+              // onChange={handleCheckBox}
             />
           }
           label="Background Check"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.BacCheck ? <Button name="View" /> : null}
+        {isBackgroundDoc ? <Button name="View" /> : null}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
               name="HIPAA"
-              checked={checked.HIPAA}
-              onChange={handleCheckBox}
+              // checked={checked.HIPAA}
+              // onChange={handleCheckBox}
             />
           }
           label="HIPAA Compliance"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.HIPAA ? <Button name="View" /> : null}
+        {/* {checked.HIPAA ? <Button name="View" /> : null} */}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
               name="nonDisAgg"
-              checked={checked.nonDisAgg}
-              onChange={handleCheckBox}
+              checked={isNonDisclosureDoc}
+              // onChange={handleCheckBox}
             />
           }
           label="Non-Disclosure Agreement"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.nonDisAgg ? <Button name="View" /> : null}
+        {isNonDisclosureDoc ? <Button name="View" /> : null}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
           control={
             <Checkbox
               name="licDoc"
-              checked={checked.licDoc}
-              onChange={handleCheckBox}
+              checked={isLicenseDoc}
+              // onChange={handleCheckBox}
             />
           }
           label="License Document"
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {checked.licDoc ? <Button name="View" /> : null}
+        {isLicenseDoc ? <Button name="View" /> : null}
       </Box>
     </Box>
   );

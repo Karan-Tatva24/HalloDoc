@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
 import { deleteFile } from "../../redux/halloAPIs/deleteFileAPI";
+import { sendMail } from "../../redux/halloAPIs/sendMailAPI";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
@@ -33,8 +34,13 @@ const ViewUpload = () => {
   const state = useSelector((state) => state.root.viewUpload);
   const rows = state.viewUpload;
   const [filterData, setFilterData] = useState(rows);
-  const { patientFirstName, confirmationNumber, patientLastName, id } =
-    useSelector((state) => state.root.patientName);
+  const {
+    patientFirstName,
+    confirmationNumber,
+    patientLastName,
+    id,
+    patientEmail,
+  } = useSelector((state) => state.root.patientName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -122,6 +128,17 @@ const ViewUpload = () => {
     const selectedFiles = rows.filter((row) => selected.includes(row.id));
     const selectedFileNames = selectedFiles.map((file) => file.fileName);
     dispatch(deleteFile({ fileNames: selectedFileNames, id }));
+  };
+
+  const handleSendMail = () => {
+    const selectedFiles = rows.filter((row) => selected.includes(row.id));
+    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    dispatch(
+      sendMail({
+        email: patientEmail,
+        files: selectedFileNames,
+      }),
+    );
   };
 
   return (
@@ -217,9 +234,14 @@ const ViewUpload = () => {
                   name="Delete All"
                   variant="outlined"
                   color="primary"
-                  onClick={() => handleDeleteAll()}
+                  onClick={handleDeleteAll}
                 />
-                <Button name="Send Mail" variant="outlined" color="primary" />
+                <Button
+                  name="Send Mail"
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleSendMail}
+                />
               </Box>
             </Box>
             <TableContainer component={Paper}>
