@@ -106,14 +106,64 @@ const ViewUpload = () => {
     setSelectedFile(null);
   };
 
-  const handleDownload = (document) => {
-    dispatch(downloadFile({ fileNames: [document] }));
+  const handleDownload = (fileName) => {
+    dispatch(downloadFile({ fileNames: [fileName] }))
+      .then((response) => {
+        if (response.type === "downloadFile/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/zip",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `${fileName}.zip`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.zip`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          }
+        } else {
+          console.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
   };
 
   const handleDownloadAll = () => {
     const selectedFiles = rows.filter((row) => selected.includes(row.id));
     const selectedFileNames = selectedFiles.map((file) => file.fileName);
-    dispatch(downloadFile({ fileNames: selectedFileNames }));
+    dispatch(downloadFile({ fileNames: selectedFileNames }))
+      .then((response) => {
+        if (response.type === "downloadFile/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/zip",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `${selectedFileNames}.zip`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.zip`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          }
+        } else {
+          console.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
   };
 
   const handleDelete = (document) => {
@@ -127,7 +177,13 @@ const ViewUpload = () => {
   const handleDeleteAll = () => {
     const selectedFiles = rows.filter((row) => selected.includes(row.id));
     const selectedFileNames = selectedFiles.map((file) => file.fileName);
-    dispatch(deleteFile({ fileNames: selectedFileNames, id }));
+    dispatch(deleteFile({ fileNames: selectedFileNames, id })).then(
+      (response) => {
+        if (response.type === "deleteFile/fulfilled") {
+          dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        }
+      },
+    );
   };
 
   const handleSendMail = () => {

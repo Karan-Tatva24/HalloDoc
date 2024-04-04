@@ -8,27 +8,34 @@ import { sendLinkSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import { useDispatch } from "react-redux";
 import { sendLink } from "../../redux/halloAPIs/sendLinkAPI";
+import { toast } from "react-toastify";
 
 const SendLinkModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       phone: "",
       email: "",
     },
     onSubmit: (values, onSubmitProps) => {
       dispatch(
         sendLink({
-          firstName: values.firstname,
-          lastName: values.lastname,
+          firstName: values.firstName,
+          lastName: values.lastName,
           phoneNumber: values.phone,
           email: values.email,
         }),
-      );
-      onSubmitProps.resetForm();
-      handleClose();
+      ).then((response) => {
+        if (response.type === "sendLink/fulfilled") {
+          toast.success(response.payload.message);
+          handleClose();
+          onSubmitProps.resetForm();
+        } else if (response.type === "sendLink/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
     validationSchema: sendLinkSchema,
   });
@@ -42,24 +49,24 @@ const SendLinkModal = ({ open, handleClose }) => {
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Input
-            name="firstname"
-            label="Firstname"
+            name="firstName"
+            label="First Name"
             fullWidth
-            value={formik.values.firstname}
+            value={formik.values.firstName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.firstname && Boolean(formik.errors.firstname)}
-            helperText={formik.touched.firstname && formik.errors.firstname}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
           />
           <Input
-            name="lastname"
-            label="Lastname"
+            name="lastName"
+            label="Last Name"
             fullWidth
-            value={formik.values.lastname}
+            value={formik.values.lastName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.lastname && Boolean(formik.errors.lastname)}
-            helperText={formik.touched.lastname && formik.errors.lastname}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
           />
           <PhoneInput
             name="phone"

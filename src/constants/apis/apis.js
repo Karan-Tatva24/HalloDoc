@@ -42,3 +42,4 @@ export const PROVIDER_INFO = "/admin/provider/providerInformation";
 export const CONTACT_PROVIDER = "/admin/provider/contactProvider";
 export const PHYSICIAN_PROFILE = "/admin/provider/physicianProfile";
 export const EDIT_PROVIDER_PROFILE = "/admin/provider/providerProfile";
+export const CHANGE_PASSWORD = "/auth/changePassword";

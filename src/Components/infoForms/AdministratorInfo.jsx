@@ -16,6 +16,7 @@ import {
   editAdminProfile,
 } from "../../redux/halloAPIs/adminProfileAPI";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {
   firstName: "",
@@ -130,7 +131,9 @@ const AdministratorInfo = ({
             disabled={isDisabled}
             inputStyle={{ width: "100%", height: "3.438rem" }}
             value={formik.values.administratorPhone}
-            onChange={formik.handleChange}
+            onChange={(value) =>
+              formik.setFieldValue("administratorPhone", value)
+            }
             onBlur={formik.handleBlur}
             error={
               formik.touched.administratorPhone &&
@@ -184,6 +187,9 @@ const AdministratorInfo = ({
                 ).then((response) => {
                   if (response.type === "editAdminProfile/fulfilled") {
                     dispatch(adminProfile(id));
+                    toast.success(response.payload.message);
+                  } else if (response.type === "editAdminProfile/rejected") {
+                    toast.error(response.payload.data.validation.body.message);
                   }
                 });
                 setIsDisabled(true);

@@ -12,6 +12,7 @@ import {
   physicianProfile,
 } from "../../redux/halloAPIs/providerInfoAPI";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {
   businessName: "",
@@ -257,6 +258,13 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
                   (response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
+                      toast.success(response.payload.message);
+                    } else if (
+                      response.type === "editProviderProfile/rejected"
+                    ) {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
                     }
                   },
                 );

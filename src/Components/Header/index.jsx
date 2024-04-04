@@ -21,6 +21,7 @@ import "./header.css";
 import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
 import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
 import { providerInfo } from "../../redux/halloAPIs/providerInfoAPI";
+import { toast } from "react-toastify";
 
 const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
@@ -32,7 +33,13 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const { userName, id } = useSelector((state) => state?.root.loggedUserData);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout()).then((response) => {
+      if (response.type === "logout/fulfilled") {
+        toast.success(response.payload.message);
+      } else if (response.type === "logout/rejected") {
+        toast.error(response.payload.data.validation.body.message);
+      }
+    });
     navigate(AppRoutes.LOGIN);
   };
 

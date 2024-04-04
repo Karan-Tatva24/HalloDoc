@@ -14,6 +14,7 @@ import {
   editProviderProfile,
   physicianProfile,
 } from "../../redux/halloAPIs/providerInfoAPI";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {
   address1: "",
@@ -148,7 +149,7 @@ const AddressInfo = ({
             disabled={isDisabled}
             inputStyle={{ width: "100%", height: "3.438rem" }}
             value={formik.values.altPhone}
-            onChange={formik.handleChange}
+            onChange={(value) => formik.setFieldValue("altPhone", value)}
             onBlur={formik.handleBlur}
             error={formik.touched.altPhone && Boolean(formik.errors.altPhone)}
             helperText={formik.touched.altPhone && formik.errors.altPhone}
@@ -177,6 +178,13 @@ const AddressInfo = ({
                   ).then((response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(index));
+                      toast.success(response.payload.message);
+                    } else if (
+                      response.type === "editProviderProfile/rejected"
+                    ) {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
                     }
                   });
                 }
@@ -191,6 +199,11 @@ const AddressInfo = ({
                   ).then((response) => {
                     if (response.type === "editAdminProfile/fulfilled") {
                       dispatch(adminProfile(id));
+                      toast.success(response.payload.message);
+                    } else if (response.type === "editAdminProfile/rejected") {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
                     }
                   });
                 }

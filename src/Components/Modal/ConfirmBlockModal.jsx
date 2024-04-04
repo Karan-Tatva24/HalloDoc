@@ -8,6 +8,7 @@ import { blockModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { blockCase } from "../../redux/halloAPIs/blockCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { toast } from "react-toastify";
 
 const ConfirmBlockModal = ({ open, handleClose }) => {
   const { patientFirstName, patientLastName, id } = useSelector(
@@ -20,10 +21,18 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
     },
     validationSchema: blockModalSchema,
     onSubmit: (values, onSubmitProps) => {
-      dispatch(blockCase({ id, reasonForCancellation: values.blockRequest }));
-      dispatch(dashboardCount());
-      onSubmitProps.resetForm();
-      handleClose();
+      dispatch(
+        blockCase({ id, reasonForCancellation: values.blockRequest }),
+      ).then((response) => {
+        if (response.type === "sendLink/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          dispatch(dashboardCount());
+          handleClose();
+        } else if (response.type === "sendLink/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
   return (
@@ -55,7 +64,12 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Conform" variant="contained" type="submit" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

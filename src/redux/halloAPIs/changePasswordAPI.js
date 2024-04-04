@@ -1,14 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../config/axios";
-import { DELETE_FILE } from "../../constants/apis/apis";
+import { CHANGE_PASSWORD } from "../../constants/apis/apis";
 
-export const deleteFile = createAsyncThunk(
-  "deleteFile",
+export const changePassword = createAsyncThunk(
+  "changePassword",
   async (params, { rejectWithValue }) => {
-    const { fileNames, id } = params;
     try {
-      const response = await Axios.delete(`${DELETE_FILE}/${id}`, {
-        data: { fileNames },
+      const response = await Axios.post(CHANGE_PASSWORD, {
+        password: params,
       });
       return response?.data;
     } catch (error) {

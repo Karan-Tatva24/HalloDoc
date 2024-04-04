@@ -83,7 +83,7 @@ const EditPhysicianInfo = () => {
               phone={phoneNumber}
               medicalLicense={medicalLicense}
               npiNumber={NPINumber}
-              syncEmail={syncEmailAddress}
+              syncEmail={syncEmailAddress ? syncEmailAddress : ""}
               state={state}
               regions={regions}
             />

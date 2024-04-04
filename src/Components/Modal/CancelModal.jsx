@@ -8,15 +8,13 @@ import { cancelModalSchema as cancelModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
+import { toast } from "react-toastify";
 
 const CancelModal = ({ open, handleClose }) => {
   const { patientFirstName, patientLastName, id } = useSelector(
     (state) => state.root.patientName,
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -31,11 +29,17 @@ const CancelModal = ({ open, handleClose }) => {
           reasonForCancellation: values.cancelReason,
           adminNotes: values.additionalNotes,
         }),
-      );
-      dispatch(dashboardCount());
-      onSubmitProps.resetForm();
-      handleClose();
-      navigate(AppRoutes.DASHBOARD);
+      ).then((response) => {
+        if (response.type === "sendLink/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          dispatch(dashboardCount());
+          handleClose();
+          onSubmitProps.resetForm();
+        } else if (response.type === "sendLink/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
 
@@ -92,7 +96,12 @@ const CancelModal = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Conform" variant="contained" type="submit" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

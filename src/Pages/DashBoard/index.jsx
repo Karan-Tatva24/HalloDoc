@@ -182,7 +182,7 @@ const DashBoard = () => {
             >
               <Grid item xs={12} lg={5}>
                 <Typography variant="h5">
-                  Patients<span className="state">(New)</span>
+                  Patients<span className="state">({activeButton})</span>
                 </Typography>
               </Grid>
               <Grid item xs={12} lg={7}>
@@ -205,15 +205,57 @@ const DashBoard = () => {
                     name="Export"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    onClick={() =>
+                    onClick={() => {
                       dispatch(exportByState(activeButton.toLowerCase()))
-                    }
+                        .then((response) => {
+                          if (response.type === "exportByState/fulfilled") {
+                            const blob = new Blob([response.payload], {
+                              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            });
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = `${activeButton}State-patients.xlsx`;
+                            document.body.appendChild(link);
+                            link.click();
+                            window.URL.revokeObjectURL(url);
+                            link.remove();
+                          } else {
+                            console.error("File download failed.");
+                          }
+                        })
+                        .catch((error) => {
+                          console.error("Error downloading file:", error);
+                        });
+                    }}
                   />
                   <Button
                     name="Export All"
                     variant="contained"
                     startIcon={<SendOutlinedIcon />}
-                    onClick={() => dispatch(exportAll())}
+                    onClick={() =>
+                      dispatch(exportAll())
+                        .then((response) => {
+                          if (response.type === "exportAll/fulfilled") {
+                            const blob = new Blob([response.payload], {
+                              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            });
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = `all-patients.xlsx`;
+                            document.body.appendChild(link);
+                            link.click();
+                            window.URL.revokeObjectURL(url);
+                            link.remove();
+                          } else {
+                            console.error("File download failed.");
+                          }
+                        })
+                        .catch((error) => {
+                          console.error("Error downloading file:", error);
+                        })
+                    }
                   />
                   <Button
                     name="Request DTY Support"

@@ -7,7 +7,7 @@ export const viewReservationSchema = Yup.object({
   dateOfBirth: Yup.date().required("Date of birth is required"),
   phone: Yup.string()
     .required("Required!")
-    .matches(/^\d{10}$/, "Invalid phone number"),
+    .matches(/^\d{10,12}$/, "Invalid phone number"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   region: Yup.string().required("Region is required"),
   address: Yup.string().required("Address must be required"),

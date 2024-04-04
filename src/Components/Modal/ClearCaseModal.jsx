@@ -6,6 +6,7 @@ import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCase } from "../../redux/halloAPIs/clearCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { toast } from "react-toastify";
 
 const ClearCaseModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -34,9 +35,15 @@ const ClearCaseModal = ({ open, handleClose }) => {
             name="Clear"
             variant="contained"
             onClick={() => {
-              dispatch(clearCase(id));
-              dispatch(dashboardCount());
-              handleClose();
+              dispatch(clearCase(id)).then((response) => {
+                if (response.type === "sendLink/fulfilled") {
+                  toast.success(response.payload.message);
+                  dispatch(dashboardCount());
+                  handleClose();
+                } else if (response.type === "sendLink/rejected") {
+                  toast.error(response.payload.data.validation.body.message);
+                }
+              });
             }}
           />
           <Button name="Cancel" variant="outlined" onClick={handleClose} />

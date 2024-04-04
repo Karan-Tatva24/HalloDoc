@@ -16,6 +16,7 @@ import {
   editProviderProfile,
   physicianProfile,
 } from "../../redux/halloAPIs/providerInfoAPI";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {
   firstName: "",
@@ -58,8 +59,8 @@ const PhysiciansInformation = ({
       email: email,
       phoneNumber: phone,
       medicalLicense: medicalLicense,
-      npiNumber: npiNumber,
-      synEmail: syncEmail,
+      NPINumber: npiNumber,
+      syncEmailAddress: syncEmail,
     });
   }, [email, firstName, lastName, medicalLicense, npiNumber, phone, syncEmail]);
 
@@ -121,7 +122,7 @@ const PhysiciansInformation = ({
             fullWidth="true"
             disabled={isDisabled}
             value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
+            onChange={(value) => formik.setFieldValue("phoneNumber", value)}
             onBlur={formik.handleBlur}
             error={
               formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
@@ -166,7 +167,7 @@ const PhysiciansInformation = ({
             label="Synchronization Email Address"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.syncEmailAddress}
+            value={formik.values?.syncEmailAddress}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
@@ -216,6 +217,13 @@ const PhysiciansInformation = ({
                   (response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
+                      toast.success(response.payload.message);
+                    } else if (
+                      response.type === "editProviderProfile/rejected"
+                    ) {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
                     }
                   },
                 );

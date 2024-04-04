@@ -9,8 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { assignCase } from "../../redux/halloAPIs/assignCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../constants/routes";
+import { toast } from "react-toastify";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -19,7 +18,6 @@ const AssignModal = ({ open, handleClose }) => {
   );
   const { id } = useSelector((state) => state.root.patientName);
   const [phyId, setPhyId] = useState(-1);
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -35,11 +33,16 @@ const AssignModal = ({ open, handleClose }) => {
           physicianId: phyId,
           transferNote: values.description,
         }),
-      );
-      dispatch(dashboardCount());
-      onSubmitProps.resetForm();
-      handleClose();
-      navigate(AppRoutes.DASHBOARD);
+      ).then((response) => {
+        if (response.type === "sendLink/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          dispatch(dashboardCount());
+          handleClose();
+        } else if (response.type === "sendLink/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
   return (
@@ -116,7 +119,12 @@ const AssignModal = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Submit" type="submit" variant="contained" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

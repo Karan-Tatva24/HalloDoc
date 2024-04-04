@@ -7,9 +7,15 @@ export const downloadFile = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     const { fileNames } = params;
     try {
-      const response = await Axios.post(DOWNLOAD_FILE, {
-        fileNames,
-      });
+      const response = await Axios.post(
+        DOWNLOAD_FILE,
+        {
+          fileNames,
+        },
+        {
+          responseType: "blob",
+        },
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

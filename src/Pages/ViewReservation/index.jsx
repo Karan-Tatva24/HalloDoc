@@ -19,9 +19,10 @@ import { useFormik } from "formik";
 import { viewReservationSchema } from "../../ValidationSchema";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AssignModal from "../../Components/Modal/AssignModal";
 import CancelModal from "../../Components/Modal/CancelModal";
+import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
 
 const INITIAL_VALUE = {
   patientNotes: "",
@@ -42,6 +43,7 @@ const ViewReservation = () => {
   const state = useSelector((state) => state.root?.viewCase);
   const data = state?.viewCase;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -199,7 +201,7 @@ const ViewReservation = () => {
                     name="phone"
                     disabled
                     value={formik.values.phone}
-                    onChange={formik.handleChange}
+                    onChange={(value) => formik.setFieldValue("phone", value)}
                     onBlur={formik.handleBlur}
                     country={"in"}
                     helperText={formik.touched.phone && formik.errors.phone}
@@ -309,7 +311,13 @@ const ViewReservation = () => {
                   name="View Notes"
                   variant="contained"
                   color="primary"
-                  onClick={() => navigate(AppRoutes.VIEW_NOTES)}
+                  onClick={() => {
+                    dispatch(viewNotes(data.id)).then((response) => {
+                      if (response.type === "viewNotes/fulfilled") {
+                        navigate(AppRoutes.VIEW_NOTES);
+                      }
+                    });
+                  }}
                 />
                 <Button
                   name="Cancel"

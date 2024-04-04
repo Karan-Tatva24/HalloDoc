@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { Box, Grid, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  InputAdornment,
+  MenuItem,
+  Typography,
+} from "@mui/material";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { Button } from "../Button";
 import { Input } from "../TextField/Input";
-import { AppRoutes } from "../../constants/routes";
-import { useNavigate } from "react-router-dom";
 import { accountInfoSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
 import {
   editProviderProfile,
   physicianProfile,
 } from "../../redux/halloAPIs/providerInfoAPI";
+import { changePassword } from "../../redux/halloAPIs/changePasswordAPI";
+import { toast } from "react-toastify";
 
 const INITIAL_VALUES = {
   role: "masterAdmin",
   status: "",
+  password: "",
 };
 
 const AccountInfo = ({ id, name, userName, status }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
   const formik = useFormik({
@@ -59,10 +69,29 @@ const AccountInfo = ({ id, name, userName, status }) => {
           <Input
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
-            disabled
-            value=""
+            disabled={isDisabled}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword((show) => !show)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                  >
+                    {showPassword ? (
+                      <VisibilityOffOutlinedIcon />
+                    ) : (
+                      <VisibilityOutlinedIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -71,7 +100,7 @@ const AccountInfo = ({ id, name, userName, status }) => {
             name="status"
             label="Status"
             fullWidth
-            disabled={isDisabled}
+            disabled={name === "MyProfile" ? true : isDisabled}
             value={formik.values.status}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -80,6 +109,7 @@ const AccountInfo = ({ id, name, userName, status }) => {
           >
             <MenuItem value="Active">Active</MenuItem>
             <MenuItem value="Inactive">Inactive</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
           </Input>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -88,7 +118,7 @@ const AccountInfo = ({ id, name, userName, status }) => {
             name="role"
             label="Role"
             fullWidth
-            disabled={isDisabled}
+            disabled={name === "MyProfile" ? true : isDisabled}
             value={formik.values.role}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -124,6 +154,13 @@ const AccountInfo = ({ id, name, userName, status }) => {
                   ).then((response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
+                      toast.success(response.payload.message);
+                    } else if (
+                      response.type === "editProviderProfile/rejected"
+                    ) {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
                     }
                   });
                   setIsDisabled(true);
@@ -142,8 +179,26 @@ const AccountInfo = ({ id, name, userName, status }) => {
         ) : null}
         <Button
           variant="outlined"
-          name="Reset Password"
-          onClick={() => navigate(AppRoutes.RESETPASSWORD)}
+          name={isDisabled ? "Reset Password" : "Change Password"}
+          onClick={
+            isDisabled
+              ? () => setIsDisabled(false)
+              : () => {
+                  dispatch(changePassword(formik.values.password)).then(
+                    (response) => {
+                      if (response.type === "changePassword/fulfilled") {
+                        formik.setFieldValue("password", "");
+                        setIsDisabled(true);
+                        toast.success(response.payload.message);
+                      } else if (response.type === "changePassword/rejected") {
+                        toast.error(
+                          response.payload.data.validation.body.message,
+                        );
+                      }
+                    },
+                  );
+                }
+          }
         />
       </Box>
     </form>

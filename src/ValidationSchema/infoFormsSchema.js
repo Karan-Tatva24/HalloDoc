@@ -14,7 +14,7 @@ export const administratorInfoSchema = Yup.object({
     .oneOf([Yup.ref("email"), null], "Confirm email must match with email"),
   administratorPhone: Yup.string()
     .required("Required!")
-    .matches(/^\d{10}$/, "Invalid phone number"),
+    .matches(/^\d{10,12}$/, "Invalid phone number"),
 });
 
 export const addressInfoSchema = Yup.object({
@@ -27,7 +27,7 @@ export const addressInfoSchema = Yup.object({
     .matches(/^\d{5,6}$/, "Invalid zip code"),
   altPhone: Yup.string()
     .required("Required!")
-    .matches(/^\d{10}$/, "Invalid phone number"),
+    .matches(/^\d{10,12}$/, "Invalid phone number"),
 });
 
 export const physicianInformationSchema = Yup.object({
@@ -36,12 +36,10 @@ export const physicianInformationSchema = Yup.object({
   email: Yup.string().email("Invalid email!").required("Email required!"),
   phoneNumber: Yup.string()
     .required("Required!")
-    .matches(/^\d{10}$/, "Invalid phone number"),
+    .matches(/^\d{10,12}$/, "Invalid phone number"),
   medicalLicense: Yup.string().required("Require!"),
   NPINumber: Yup.string().required("Require!"),
-  syncEmailAddress: Yup.string()
-    .email("Invalid email!")
-    .required("Synchronization email required!"),
+  syncEmailAddress: Yup.string().email("Invalid email!"),
 });
 
 export const providerProfileSchema = Yup.object({
