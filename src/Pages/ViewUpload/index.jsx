@@ -25,6 +25,7 @@ import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
 import { deleteFile } from "../../redux/halloAPIs/deleteFileAPI";
 import { sendMail } from "../../redux/halloAPIs/sendMailAPI";
+import { toast } from "react-toastify";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
@@ -100,7 +101,10 @@ const ViewUpload = () => {
     formData.append("document", selectedFile);
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
+        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+      } else if (response.type === "uploadFile/rejected") {
+        toast.error(response.payload.data.validation.body.message);
       }
     });
     setSelectedFile(null);
@@ -126,12 +130,13 @@ const ViewUpload = () => {
             URL.revokeObjectURL(url);
             document.body.removeChild(link);
           }
+          toast.success(response.payload.message);
         } else {
-          console.error("File download failed.");
+          toast.error("File download failed.");
         }
       })
       .catch((error) => {
-        console.error("Error downloading file:", error);
+        toast.error("Error downloading file:", error);
       });
   };
 
@@ -157,19 +162,23 @@ const ViewUpload = () => {
             URL.revokeObjectURL(url);
             document.body.removeChild(link);
           }
+          toast.success(response.payload.message);
         } else {
-          console.error("File download failed.");
+          toast.error("File download failed.");
         }
       })
       .catch((error) => {
-        console.error("Error downloading file:", error);
+        toast.error("Error downloading file:", error);
       });
   };
 
   const handleDelete = (document) => {
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
+        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+      } else if (response.type === "deleteFile/rejected") {
+        toast.error(response.payload.data.validation.body.message);
       }
     });
   };
@@ -180,7 +189,10 @@ const ViewUpload = () => {
     dispatch(deleteFile({ fileNames: selectedFileNames, id })).then(
       (response) => {
         if (response.type === "deleteFile/fulfilled") {
+          toast.success(response.payload.message);
           dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        } else if (response.type === "deleteFile/rejected") {
+          toast.error(response.payload.data.validation.body.message);
         }
       },
     );
@@ -194,7 +206,13 @@ const ViewUpload = () => {
         email: patientEmail,
         files: selectedFileNames,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "sendMail/fulfilled") {
+        toast.success(response.payload.message);
+      } else if (response.type === "sendMail/rejected") {
+        toast.error(response.payload.data.validation.body.message);
+      }
+    });
   };
 
   return (

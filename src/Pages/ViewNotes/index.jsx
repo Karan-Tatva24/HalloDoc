@@ -30,7 +30,7 @@ const ViewNotes = () => {
       dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
         (response) => {
           if (response.type === "viewNotesPost/fulfilled") {
-            toast.success("You are successfully save changes");
+            toast.success(response.payload.message);
             onSubmitProps.resetForm();
             dispatch(viewNotes(id));
           } else {

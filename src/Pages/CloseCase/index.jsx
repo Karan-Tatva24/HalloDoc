@@ -20,7 +20,7 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
-import "./closecase.css";
+import "./closeCase.css";
 import { Input } from "../../Components/TextField/Input";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -31,6 +31,8 @@ import {
   closeCaseEdit,
   closeCaseView,
 } from "../../redux/halloAPIs/closeCaseAPI";
+import { toast } from "react-toastify";
+import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
 
 const INITIAL_VALUES = {
   phone: "",
@@ -76,7 +78,13 @@ const CloseCase = () => {
         patientPhoneNumber: formik.values.phone,
         patientEmail: formik.values.email,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "closeCaseEdit/fulfilled") {
+        toast.success(response.payload.message);
+      } else if (response.type === "closeCaseEdit/rejected") {
+        toast.error(response.payload.data.validation.body.message);
+      }
+    });
   };
 
   const handleCancel = () => {
@@ -84,8 +92,34 @@ const CloseCase = () => {
     setIsDisabled(true);
   };
 
-  const handleDownload = (document) => {
-    console.log(`Downloading ${document}`);
+  const handleDownload = (fileName) => {
+    dispatch(downloadFile({ fileNames: [fileName] }))
+      .then((response) => {
+        if (response.type === "downloadFile/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/zip",
+          });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, `${fileName}.zip`);
+          } else {
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `downloaded-files.zip`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          }
+          toast.success(response.payload.message);
+        } else {
+          toast.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        toast.error("Error downloading file:", error);
+      });
   };
 
   useEffect(() => {
@@ -101,8 +135,8 @@ const CloseCase = () => {
   };
   return (
     <>
-      <Box className="closecase-main-container">
-        <Container maxWidth="lg" className="closecase-main-wrapper">
+      <Box className="closeCase-main-container">
+        <Container maxWidth="lg" className="closeCase-main-wrapper">
           <Box
             display="flex"
             justifyContent="space-between"
@@ -124,7 +158,7 @@ const CloseCase = () => {
               className="back-btn"
             />
           </Box>
-          <Paper className="closecase-container">
+          <Paper className="closeCase-container">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -175,7 +209,7 @@ const CloseCase = () => {
                       <TableCell>
                         <Button
                           variant="outlined"
-                          onClick={() => handleDownload(row.document)}
+                          onClick={() => handleDownload(row.fileName)}
                           size="large"
                           className="icon-btn"
                         >

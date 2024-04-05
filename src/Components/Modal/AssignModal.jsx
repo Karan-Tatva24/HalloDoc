@@ -34,12 +34,12 @@ const AssignModal = ({ open, handleClose }) => {
           transferNote: values.description,
         }),
       ).then((response) => {
-        if (response.type === "sendLink/fulfilled") {
+        if (response.type === "assignCase/fulfilled") {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
           handleClose();
-        } else if (response.type === "sendLink/rejected") {
+        } else if (response.type === "assignCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
         }
       });

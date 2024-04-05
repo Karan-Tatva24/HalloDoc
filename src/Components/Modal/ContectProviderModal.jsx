@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import { contectProviderSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
 import { contactProvider } from "../../redux/halloAPIs/providerInfoAPI";
+import { toast } from "react-toastify";
 
 const ContectProviderModal = ({ open, handleClose, id }) => {
   const dispatch = useDispatch();
@@ -29,14 +30,20 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
           contactMethod: values.contactMethod,
           messageBody: values.message,
         }),
-      );
-      onSubmitProps.resetForm();
-      handleClose();
+      ).then((response) => {
+        if (response.type === "contactProvider/fulfilled") {
+          toast.success(response.payload.message);
+          handleClose();
+          onSubmitProps.resetForm();
+        } else if (response.type === "contactProvider/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
     validationSchema: contectProviderSchema,
   });
   return (
-    <Modal open={open} handleClose={handleClose} header="Contect Your Provider">
+    <Modal open={open} handleClose={handleClose} header="Contact Your Provider">
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <FormControl>
@@ -73,7 +80,12 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" type="submit" variant="contained" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

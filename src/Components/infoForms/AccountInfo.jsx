@@ -30,6 +30,7 @@ const INITIAL_VALUES = {
 const AccountInfo = ({ id, name, userName, status }) => {
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(true);
+  const [passwordDisable, setPasswordDisable] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
 
@@ -71,7 +72,7 @@ const AccountInfo = ({ id, name, userName, status }) => {
             label="Password"
             type={showPassword ? "text" : "password"}
             fullWidth
-            disabled={isDisabled}
+            disabled={passwordDisable}
             value={formik.values.password}
             onChange={formik.handleChange}
             InputProps={{
@@ -179,27 +180,37 @@ const AccountInfo = ({ id, name, userName, status }) => {
         ) : null}
         <Button
           variant="outlined"
-          name={isDisabled ? "Reset Password" : "Change Password"}
+          name={passwordDisable ? "Reset Password" : "Change Password"}
           onClick={
-            isDisabled
-              ? () => setIsDisabled(false)
+            passwordDisable
+              ? () => setPasswordDisable(false)
               : () => {
-                  dispatch(changePassword(formik.values.password)).then(
-                    (response) => {
-                      if (response.type === "changePassword/fulfilled") {
-                        formik.setFieldValue("password", "");
-                        setIsDisabled(true);
-                        toast.success(response.payload.message);
-                      } else if (response.type === "changePassword/rejected") {
-                        toast.error(
-                          response.payload.data.validation.body.message,
-                        );
-                      }
-                    },
-                  );
+                  dispatch(
+                    changePassword({ id, password: formik.values.password }),
+                  ).then((response) => {
+                    if (response.type === "changePassword/fulfilled") {
+                      formik.setFieldValue("password", "");
+                      setPasswordDisable(true);
+                      toast.success(response.payload.message);
+                    } else if (response.type === "changePassword/rejected") {
+                      toast.error(
+                        response.payload.data.validation.body.message,
+                      );
+                    }
+                  });
                 }
           }
         />
+        {!passwordDisable && (
+          <Button
+            name="Cancel"
+            variant="outlined"
+            onClick={() => {
+              formik.setFieldValue("password", "");
+              setPasswordDisable(true);
+            }}
+          />
+        )}
       </Box>
     </form>
   );

@@ -165,7 +165,12 @@ const CreateShiftModal = ({ open, handleClose }) => {
           </Grid>
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Save" type="submit" variant="contained" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

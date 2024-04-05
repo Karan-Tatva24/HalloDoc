@@ -36,11 +36,11 @@ const ClearCaseModal = ({ open, handleClose }) => {
             variant="contained"
             onClick={() => {
               dispatch(clearCase(id)).then((response) => {
-                if (response.type === "sendLink/fulfilled") {
+                if (response.type === "clearCase/fulfilled") {
                   toast.success(response.payload.message);
                   dispatch(dashboardCount());
                   handleClose();
-                } else if (response.type === "sendLink/rejected") {
+                } else if (response.type === "clearCase/rejected") {
                   toast.error(response.payload.data.validation.body.message);
                 }
               });

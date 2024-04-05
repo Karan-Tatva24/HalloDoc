@@ -323,41 +323,55 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                                 borderRadius: "4px",
                               }}
                             />
-                          ) : ["Phone", "Chat With", "Actions"].includes(
+                          ) : column.label === "Phone" ? (
+                            <>
+                              <Button
+                                className="phone-btn"
+                                name={row?.Phone}
+                                variant="outlined"
+                                color="inherit"
+                                startIcon={<LocalPhoneOutlinedIcon />}
+                                onClick={(e) => copyButtonText(e, row.id)}
+                              />
+                              <div>(Patient)</div>
+                              {row?.["Requestor Type"] !== "Patient" && (
+                                <>
+                                  <Button
+                                    className="phone-btn"
+                                    name={row?.requestorPhoneNumber}
+                                    variant="outlined"
+                                    color="inherit"
+                                    startIcon={<LocalPhoneOutlinedIcon />}
+                                    onClick={(e) => copyButtonText(e, row.id)}
+                                  />
+                                  <div>({row?.["Requestor Type"]})</div>
+                                </>
+                              )}
+                              {copiedStates[row.id]}
+                            </>
+                          ) : ["Chat With", "Actions"].includes(
                               column.label,
                             ) ? (
                             <>
                               <Button
                                 className="phone-btn"
                                 name={
-                                  column.label === "Phone"
-                                    ? row[column.label]
-                                    : column.id === "chatWith"
-                                      ? "Provider"
-                                      : column.label
+                                  column.id === "chatWith"
+                                    ? "Provider"
+                                    : column.label
                                 }
                                 startIcon={
-                                  (column.id === "phoneNumber" && (
-                                    <LocalPhoneOutlinedIcon />
-                                  )) ||
-                                  (column.id === "chatWith" && (
+                                  column.id === "chatWith" && (
                                     <PersonOutlineOutlinedIcon />
-                                  ))
+                                  )
                                 }
                                 variant="outlined"
                                 color="inherit"
                                 onClick={(e) => {
-                                  column.id === "phoneNumber" &&
-                                    copyButtonText(row.id, e);
                                   column.id === "action" &&
                                     handleClick(e, row.id);
                                 }}
                               />
-                              {column.id === "phoneNumber" && (
-                                <div>({row.Requestor.split(" ")[0]})</div>
-                              )}
-                              {column.id === "phoneNumber" &&
-                                copiedStates[row.id]}
                               {column.id === "action" && (
                                 <Menu
                                   id="fade-menu"

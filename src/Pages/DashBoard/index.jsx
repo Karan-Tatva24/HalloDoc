@@ -37,6 +37,7 @@ import { getProfession } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { exportAll, exportByState } from "../../redux/halloAPIs/exportAPI";
+import { toast } from "react-toastify";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -220,12 +221,13 @@ const DashBoard = () => {
                             link.click();
                             window.URL.revokeObjectURL(url);
                             link.remove();
+                            toast.success(response.payload.message);
                           } else {
-                            console.error("File download failed.");
+                            toast.error("File download failed.");
                           }
                         })
                         .catch((error) => {
-                          console.error("Error downloading file:", error);
+                          toast.error("Error downloading file:", error);
                         });
                     }}
                   />
@@ -248,12 +250,13 @@ const DashBoard = () => {
                             link.click();
                             window.URL.revokeObjectURL(url);
                             link.remove();
+                            toast.success(response.payload.message);
                           } else {
-                            console.error("File download failed.");
+                            toast.error("File download failed.");
                           }
                         })
                         .catch((error) => {
-                          console.error("Error downloading file:", error);
+                          toast.error("Error downloading file:", error);
                         })
                     }
                   />

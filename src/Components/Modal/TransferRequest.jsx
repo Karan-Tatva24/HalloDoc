@@ -9,6 +9,7 @@ import { transferRequest } from "../../redux/halloAPIs/transferRequestAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const TransferRequest = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -32,10 +33,16 @@ const TransferRequest = ({ open, handleClose }) => {
           physicianId: phyId,
           transferNote: values.description,
         }),
-      );
-      dispatch(dashboardCount());
-      onSubmitProps.resetForm();
-      handleClose();
+      ).then((response) => {
+        if (response.type === "transferRequest/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          dispatch(dashboardCount());
+          handleClose();
+        } else if (response.type === "transferRequest/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
   return (
@@ -112,7 +119,12 @@ const TransferRequest = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Submit" type="submit" variant="contained" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

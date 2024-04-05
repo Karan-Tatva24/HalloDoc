@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { sendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
+import { toast } from "react-toastify";
 
 const SendAgreementModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -44,11 +45,22 @@ const SendAgreementModal = ({ open, handleClose }) => {
               name="Send"
               variant="contained"
               onClick={() => {
-                dispatch(sendAgreement(id));
-                handleClose();
+                dispatch(sendAgreement(id)).then((response) => {
+                  if (response.type === "sendAgreement/fulfilled") {
+                    toast.success(response.payload.message);
+                    handleClose();
+                  } else if (response.type === "sendAgreement/rejected") {
+                    toast.error(response.payload.data.validation.body.message);
+                  }
+                });
               }}
             />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

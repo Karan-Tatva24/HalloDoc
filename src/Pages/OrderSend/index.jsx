@@ -12,6 +12,7 @@ import { AppRoutes } from "../../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getBusiness } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
 import { sendOrder, viewSendOrder } from "../../redux/halloAPIs/sendOrderAPI";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -37,9 +38,15 @@ const Order = () => {
           prescription: values.orderDetail,
           noOfRefill: values.refillNumber,
         }),
-      );
-      onSubmitProps.resetForm();
-      navigate(AppRoutes.DASHBOARD);
+      ).then((response) => {
+        if (response.type === "sendOrder/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          navigate(AppRoutes.DASHBOARD);
+        } else if (response.type === "sendOrder/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
   return (

@@ -7,6 +7,7 @@ import { requestSupportSchema } from "../../ValidationSchema";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
 import { requestSupport } from "../../redux/halloAPIs/requestSupportAPI";
+import { toast } from "react-toastify";
 
 const RequestSupportModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -16,9 +17,15 @@ const RequestSupportModal = ({ open, handleClose }) => {
     },
     validationSchema: requestSupportSchema,
     onSubmit: (values, onSubmitProps) => {
-      dispatch(requestSupport(values.message));
-      onSubmitProps.resetForm();
-      handleClose();
+      dispatch(requestSupport(values.message)).then((response) => {
+        if (response.type === "requestSupport/fulfilled") {
+          toast.success(response.payload.message);
+          handleClose();
+          onSubmitProps.resetForm();
+        } else if (response.type === "requestSupport/rejected") {
+          toast.error(response.payload.data.validation.body.message);
+        }
+      });
     },
   });
   return (
@@ -43,7 +50,12 @@ const RequestSupportModal = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" type="submit" variant="contained" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

@@ -30,13 +30,13 @@ const CancelModal = ({ open, handleClose }) => {
           adminNotes: values.additionalNotes,
         }),
       ).then((response) => {
-        if (response.type === "sendLink/fulfilled") {
+        if (response.type === "cancelCase/fulfilled") {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
           handleClose();
           onSubmitProps.resetForm();
-        } else if (response.type === "sendLink/rejected") {
+        } else if (response.type === "cancelCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
         }
       });

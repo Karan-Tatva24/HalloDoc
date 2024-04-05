@@ -24,12 +24,12 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
       dispatch(
         blockCase({ id, reasonForCancellation: values.blockRequest }),
       ).then((response) => {
-        if (response.type === "sendLink/fulfilled") {
+        if (response.type === "blockCase/fulfilled") {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
           handleClose();
-        } else if (response.type === "sendLink/rejected") {
+        } else if (response.type === "blockCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
         }
       });

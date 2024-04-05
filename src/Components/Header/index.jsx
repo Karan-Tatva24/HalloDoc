@@ -33,14 +33,9 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const { userName, id } = useSelector((state) => state?.root.loggedUserData);
 
   const handleLogout = () => {
-    dispatch(logout()).then((response) => {
-      if (response.type === "logout/fulfilled") {
-        toast.success(response.payload.message);
-      } else if (response.type === "logout/rejected") {
-        toast.error(response.payload.data.validation.body.message);
-      }
-    });
+    dispatch(logout());
     navigate(AppRoutes.LOGIN);
+    toast.success("You Are Successfully Logout");
   };
 
   const handleMenuClose = () => {

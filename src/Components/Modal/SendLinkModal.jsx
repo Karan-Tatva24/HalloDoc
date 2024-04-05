@@ -90,7 +90,12 @@ const SendLinkModal = ({ open, handleClose }) => {
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Send" variant="contained" type="submit" />
-            <Button name="Cancel" variant="outlined" onClick={handleClose} />
+            <Button
+              name="Cancel"
+              variant="outlined"
+              onClick={handleClose}
+              type="reset"
+            />
           </Box>
         </Box>
       </form>

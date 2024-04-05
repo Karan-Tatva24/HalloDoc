@@ -14,6 +14,7 @@ const MyProfile = () => {
 
   const { profileData } = useSelector((state) => state.root.adminProfile);
   const {
+    id,
     userName,
     status,
     firstName,
@@ -55,7 +56,12 @@ const MyProfile = () => {
             />
           </Box>
           <Paper className="profile-form-container">
-            <AccountInfo name="MyProfile" userName={userName} status={status} />
+            <AccountInfo
+              name="MyProfile"
+              id={id}
+              userName={userName}
+              status={status}
+            />
             <AdministratorInfo
               firstName={firstName}
               lastName={lastName}
