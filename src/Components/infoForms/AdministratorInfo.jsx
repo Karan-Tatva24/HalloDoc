@@ -22,21 +22,14 @@ const INITIAL_VALUE = {
   firstName: "",
   lastName: "",
   email: "",
-  confirmemail: "",
+  confirmEmail: "",
   administratorPhone: "",
+  regions: [],
 };
 
-const AdministratorInfo = ({
-  firstName,
-  lastName,
-  email,
-  phone,
-  state,
-  regions,
-}) => {
+const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
-  const { id } = useSelector((state) => state.root.loggedUserData);
   const data = useSelector((state) => state.root.getRegionPhysician);
   const dispatch = useDispatch();
 
@@ -52,10 +45,18 @@ const AdministratorInfo = ({
       firstName: firstName,
       lastName: lastName,
       email: email,
-      confirmemail: email,
+      confirmEmail: email,
       administratorPhone: phone,
+      regions: regions.map((region) => region.id),
     });
-  }, [email, firstName, lastName, phone]);
+  }, [email, firstName, lastName, phone, regions]);
+
+  const handleChangeRegions = (id) => {
+    const newRegions = formik.values.regions.includes(id)
+      ? formik.values.regions.filter((selectedId) => selectedId !== id)
+      : [...formik.values.regions, id];
+    formik.setFieldValue("regions", newRegions);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -108,18 +109,18 @@ const AdministratorInfo = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <Input
-            name="confirmemail"
+            name="confirmEmail"
             label="Confirm Email"
             fullWidth
             disabled={isDisabled}
-            value={formik.values.confirmemail}
+            value={formik.values.confirmEmail}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.confirmemail && Boolean(formik.errors.confirmemail)
+              formik.touched.confirmEmail && Boolean(formik.errors.confirmEmail)
             }
             helperText={
-              formik.touched.confirmemail && formik.errors.confirmemail
+              formik.touched.confirmEmail && formik.errors.confirmEmail
             }
           />
         </Grid>
@@ -147,15 +148,18 @@ const AdministratorInfo = ({
         </Grid>
         <Grid item xs={12} md={6}>
           {data?.regions.map((region) => {
-            const isChecked = regions?.some(
-              (selectedRegion) => selectedRegion.name === region.name,
-            );
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
                 key={region.id}
-                control={<Checkbox size="small" checked={isChecked} />}
+                control={
+                  <Checkbox
+                    size="small"
+                    checked={formik.values.regions.includes(region.id)}
+                    onChange={() => handleChangeRegions(region.id)}
+                  />
+                }
                 label={region.name}
               />
             );
@@ -180,13 +184,12 @@ const AdministratorInfo = ({
               onClick={() => {
                 dispatch(
                   editAdminProfile({
-                    id,
                     section: "administration",
                     updatedData: formik.values,
                   }),
                 ).then((response) => {
                   if (response.type === "editAdminProfile/fulfilled") {
-                    dispatch(adminProfile(id));
+                    dispatch(adminProfile());
                     toast.success(response.payload.message);
                   } else if (response.type === "editAdminProfile/rejected") {
                     toast.error(response.payload.data.validation.body.message);

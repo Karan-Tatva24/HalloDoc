@@ -39,6 +39,7 @@ export const ACCOUNT_ACCESS = "/admin/access/accountAccess";
 export const VERIFY_STATE = "/admin/common/verifyRegion";
 export const SEND_MAIL = "/admin/dashboard/sendFilesByEmail";
 export const PROVIDER_INFO = "/admin/provider/providerInformation";
+export const UPDATE_NOTIFICATION = "/admin/provider/updateNotification";
 export const CONTACT_PROVIDER = "/admin/provider/contactProvider";
 export const PHYSICIAN_PROFILE = "/admin/provider/physicianProfile";
 export const EDIT_PROVIDER_PROFILE = "/admin/provider/providerProfile";

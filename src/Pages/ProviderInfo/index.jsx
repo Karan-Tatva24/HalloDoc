@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   physicianProfile,
   providerInfo,
+  updateNotification,
 } from "../../redux/halloAPIs/providerInfoAPI";
 import "./providerInfo.css";
 
@@ -36,19 +37,18 @@ const ProviderInfo = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("providerName");
+  const [orderBy, setOrderBy] = useState("firstName");
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(-1);
+  const [showSaveButton, setShowSaveButton] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [pageNo, setPageNo] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { providerInfoData } = useSelector((state) => state.root.providerInfo);
 
   useEffect(() => setTableData(providerInfoData), [providerInfoData]);
-
-  useEffect(() => {
-    dispatch(providerInfo(searchTerm));
-  }, [dispatch, searchTerm]);
 
   const handleOpen = (id) => {
     setId(id);
@@ -59,29 +59,31 @@ const ProviderInfo = () => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const initialSelectedIds = providerInfoData
+      .filter((data) => data.stopNotification)
+      .map((data) => data.id);
+    setSelectedIds(initialSelectedIds);
+  }, [providerInfoData]);
+
+  const handleCheckboxChange = (id) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+    setShowSaveButton(true);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
   };
 
   const handleRequestSort = (property) => {
@@ -90,15 +92,17 @@ const ProviderInfo = () => {
     setOrderBy(property);
   };
 
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
-  };
+  useEffect(() => {
+    dispatch(
+      providerInfo({
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        regions: searchTerm,
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, order, orderBy, pageNo, rowsPerPage, searchTerm]);
 
   return (
     <>
@@ -138,88 +142,116 @@ const ProviderInfo = () => {
                   );
                 })}
               </Input>
-              <Button
-                name="Create Provider Account"
-                onClick={() => navigate(AppRoutes.CREATE_PROVIDER_ACCOUNT)}
-              />
+              <Box display="flex" gap={2}>
+                <Button
+                  name="Create Provider Account"
+                  onClick={() => navigate(AppRoutes.CREATE_PROVIDER_ACCOUNT)}
+                />
+                {showSaveButton && (
+                  <Button
+                    name="Save"
+                    onClick={() => {
+                      dispatch(updateNotification(selectedIds)).then(
+                        (response) => {
+                          if (
+                            response.type === "updateNotification/fulfilled"
+                          ) {
+                            dispatch(providerInfo({ regions: searchTerm }));
+                            setShowSaveButton(false);
+                          }
+                        },
+                      );
+                    }}
+                  />
+                )}
+              </Box>
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                   <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align="center"
-                        style={{ maxWidth: column.maxWidth }}
-                      >
-                        <TableSortLabel
-                          active={orderBy === column.id}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.id)}
+                    {columns.map((column) =>
+                      column.id === "providerName" ? (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
+                        >
+                          <TableSortLabel
+                            active={orderBy === "firstName"}
+                            direction={order}
+                            onClick={() => handleRequestSort("firstName")}
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        </TableCell>
+                      ) : (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
                         >
                           {column.label}
-                        </TableSortLabel>
-                      </TableCell>
-                    ))}
+                        </TableCell>
+                      ),
+                    )}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    ?.map((row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.id === "stopNotification" ? (
-                                  <Checkbox checked={row.notification} />
-                                ) : column.id === "actions" ? (
-                                  <Box
-                                    display="flex"
-                                    gap={1}
-                                    alignItems="center"
-                                    justifyContent="center"
-                                  >
-                                    <Button
-                                      name="Contact"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={() => handleOpen(row.id)}
-                                    />
-                                    <Button
-                                      name="Edit"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={() => {
-                                        dispatch(physicianProfile(row.id)).then(
-                                          (response) => {
-                                            if (
-                                              response.type ===
-                                              "physicianProfile/fulfilled"
-                                            ) {
-                                              navigate(
-                                                AppRoutes.EDIT_PHYSICIAN,
-                                              );
-                                            }
-                                          },
-                                        );
-                                      }}
-                                    />
-                                  </Box>
-                                ) : column.id === "providerName" ? (
-                                  `${row["firstName"]} ${row["lastName"]}`
-                                ) : (
-                                  row[column.id]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "stopNotification" ? (
+                                <Checkbox
+                                  checked={selectedIds.includes(row.id)}
+                                  onChange={() => handleCheckboxChange(row.id)}
+                                />
+                              ) : column.id === "actions" ? (
+                                <Box
+                                  display="flex"
+                                  gap={1}
+                                  alignItems="center"
+                                  justifyContent="center"
+                                >
+                                  <Button
+                                    name="Contact"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => handleOpen(row.id)}
+                                  />
+                                  <Button
+                                    name="Edit"
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => {
+                                      dispatch(physicianProfile(row.id)).then(
+                                        (response) => {
+                                          if (
+                                            response.type ===
+                                            "physicianProfile/fulfilled"
+                                          ) {
+                                            navigate(AppRoutes.EDIT_PHYSICIAN);
+                                          }
+                                        },
+                                      );
+                                    }}
+                                  />
+                                </Box>
+                              ) : column.id === "providerName" ? (
+                                `${row["firstName"]} ${row["lastName"]}`
+                              ) : (
+                                row[column.id]
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

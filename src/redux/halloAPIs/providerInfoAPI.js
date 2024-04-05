@@ -5,6 +5,7 @@ import {
   EDIT_PROVIDER_PROFILE,
   PHYSICIAN_PROFILE,
   PROVIDER_INFO,
+  UPDATE_NOTIFICATION,
 } from "../../constants/apis/apis";
 
 export const providerInfo = createAsyncThunk(
@@ -12,7 +13,11 @@ export const providerInfo = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       let url = PROVIDER_INFO;
-      if (params !== "all") url += `?regions=${params}`;
+      if (params?.regions) url += `?regions=${params.regions}`;
+      if (params?.sortBy) url += `&sortBy=${params.sortBy}`;
+      if (params?.orderBy) url += `&orderBy=${params.orderBy}`;
+      if (params?.page) url += `&page=${params.page}`;
+      if (params?.pageSize) url += `&pageSize=${params.pageSize}`;
 
       const response = await Axios.get(url);
       return response?.data;
@@ -73,6 +78,22 @@ export const editProviderProfile = createAsyncThunk(
         businessName: data?.businessName,
         signature: data?.signature,
         photo: data?.photo,
+        regions: data?.regions,
+        syncEmailAddress: data?.syncEmailAddress,
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const updateNotification = createAsyncThunk(
+  "updateNotification",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.patch(UPDATE_NOTIFICATION, {
+        physicianIds: params,
       });
       return response?.data;
     } catch (error) {

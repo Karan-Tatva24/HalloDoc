@@ -17,9 +17,9 @@ export const adminProfile = createAsyncThunk(
 export const editAdminProfile = createAsyncThunk(
   "editAdminProfile",
   async (params, { rejectWithValue }) => {
-    const { id, section, updatedData } = params;
+    const { section, updatedData } = params;
     try {
-      const response = await Axios.patch(`${EDIT_ADMIN_PROFILE}/${id}`, {
+      const response = await Axios.patch(`${EDIT_ADMIN_PROFILE}`, {
         section,
         updatedData,
       });

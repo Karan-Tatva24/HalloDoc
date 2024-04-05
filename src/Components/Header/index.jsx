@@ -136,7 +136,11 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             >
               <MenuItem
                 onClick={() => {
-                  dispatch(providerInfo()).then((response) => {
+                  dispatch(
+                    providerInfo({
+                      regions: "all",
+                    }),
+                  ).then((response) => {
                     if (response.type === "providerInfo/fulfilled") {
                       navigate(AppRoutes.PROVIDER);
                       handleMenuClose();

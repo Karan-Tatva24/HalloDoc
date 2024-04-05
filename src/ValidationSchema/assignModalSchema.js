@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const assignModalSchema = Yup.object({
-  searchRegion: Yup.string().required("Search Region must be required"),
-  description: Yup.string().required("Description must be required"),
-  physician: Yup.string().required("Physician must be required"),
+  searchRegion: Yup.string().required("Search Region is Required!"),
+  description: Yup.string().required("Description is Required!"),
+  physician: Yup.string().required("Physician is Required!"),
 });

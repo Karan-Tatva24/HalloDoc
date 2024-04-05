@@ -26,6 +26,7 @@ const INITIAL_VALUE = {
   medicalLicense: "",
   NPINumber: "",
   syncEmailAddress: "",
+  regions: [],
 };
 
 const PhysiciansInformation = ({
@@ -37,7 +38,6 @@ const PhysiciansInformation = ({
   medicalLicense,
   npiNumber,
   syncEmail,
-  state,
   regions,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -61,8 +61,25 @@ const PhysiciansInformation = ({
       medicalLicense: medicalLicense,
       NPINumber: npiNumber,
       syncEmailAddress: syncEmail,
+      regions: regions.map((region) => region.id),
     });
-  }, [email, firstName, lastName, medicalLicense, npiNumber, phone, syncEmail]);
+  }, [
+    email,
+    firstName,
+    lastName,
+    medicalLicense,
+    npiNumber,
+    phone,
+    regions,
+    syncEmail,
+  ]);
+
+  const handleChangeRegions = (id) => {
+    const newRegions = formik.values.regions.includes(id)
+      ? formik.values.regions.filter((selectedId) => selectedId !== id)
+      : [...formik.values.regions, id];
+    formik.setFieldValue("regions", newRegions);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -109,7 +126,7 @@ const PhysiciansInformation = ({
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.lastname)}
+            error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
           />
         </Grid>
@@ -182,15 +199,18 @@ const PhysiciansInformation = ({
 
         <Grid item xs={12} md={6}>
           {data?.regions.map((region) => {
-            const isChecked = regions?.some(
-              (selectedRegion) => selectedRegion.name === region.name,
-            );
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
                 key={region.id}
-                control={<Checkbox size="small" checked={isChecked} />}
+                control={
+                  <Checkbox
+                    size="small"
+                    checked={formik.values.regions.includes(region.id)}
+                    onChange={() => handleChangeRegions(region.id)}
+                  />
+                }
                 label={region.name}
               />
             );
@@ -221,9 +241,7 @@ const PhysiciansInformation = ({
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
-                      toast.error(
-                        response.payload.data.validation.body.message,
-                      );
+                      toast.error(response.payload.data?.message);
                     }
                   },
                 );

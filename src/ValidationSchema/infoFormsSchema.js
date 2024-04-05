@@ -5,12 +5,12 @@ export const accountInfoSchema = Yup.object({
 });
 
 export const administratorInfoSchema = Yup.object({
-  firstName: Yup.string().required("First name required!"),
-  lastName: Yup.string().required("Last name required!"),
-  email: Yup.string().email("Invalid email!").required("Email required!"),
-  confirmemail: Yup.string()
+  firstName: Yup.string().required("First name Required!"),
+  lastName: Yup.string().required("Last name Required!"),
+  email: Yup.string().email("Invalid email!").required("Email Required!"),
+  confirmEmail: Yup.string()
     .email("Invalid email!")
-    .required("Confirm email required!")
+    .required("Confirm email Required!")
     .oneOf([Yup.ref("email"), null], "Confirm email must match with email"),
   administratorPhone: Yup.string()
     .required("Required!")
@@ -18,12 +18,12 @@ export const administratorInfoSchema = Yup.object({
 });
 
 export const addressInfoSchema = Yup.object({
-  address1: Yup.string().required("Address required!"),
-  address2: Yup.string().required("Address required!"),
-  city: Yup.string().required("City required!"),
-  state: Yup.string().required("State required!"),
+  address1: Yup.string().required("Address Required!"),
+  address2: Yup.string().required("Address Required!"),
+  city: Yup.string().required("City Required!"),
+  state: Yup.string().required("State Required!"),
   zipCode: Yup.string()
-    .required("Zip required!")
+    .required("Zip Required!")
     .matches(/^\d{5,6}$/, "Invalid zip code"),
   altPhone: Yup.string()
     .required("Required!")
@@ -31,9 +31,9 @@ export const addressInfoSchema = Yup.object({
 });
 
 export const physicianInformationSchema = Yup.object({
-  firstName: Yup.string().required("First name required!"),
-  lastName: Yup.string().required("Last name required!"),
-  email: Yup.string().email("Invalid email!").required("Email required!"),
+  firstName: Yup.string().required("First name Required!"),
+  lastName: Yup.string().required("Last name Required!"),
+  email: Yup.string().email("Invalid email!").required("Email Required!"),
   phoneNumber: Yup.string()
     .required("Required!")
     .matches(/^\d{10,12}$/, "Invalid phone number"),
