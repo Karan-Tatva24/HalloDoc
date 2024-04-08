@@ -331,7 +331,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                                 variant="outlined"
                                 color="inherit"
                                 startIcon={<LocalPhoneOutlinedIcon />}
-                                onClick={(e) => copyButtonText(e, row.id)}
+                                onClick={(e) => copyButtonText(row.id, e)}
                               />
                               <div>(Patient)</div>
                               {row?.["Requestor Type"] !== "Patient" && (
@@ -342,7 +342,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                                     variant="outlined"
                                     color="inherit"
                                     startIcon={<LocalPhoneOutlinedIcon />}
-                                    onClick={(e) => copyButtonText(e, row.id)}
+                                    onClick={(e) => copyButtonText(row.id, e)}
                                   />
                                   <div>({row?.["Requestor Type"]})</div>
                                 </>
