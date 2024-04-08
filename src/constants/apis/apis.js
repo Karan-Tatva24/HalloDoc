@@ -36,6 +36,12 @@ export const CREATE_ADMIN_REQUEST = "/user/createAdminRequest";
 export const EXPORT = "/admin/common/export";
 export const EXPORT_ALL = "/admin/common/exportAll";
 export const ACCOUNT_ACCESS = "/admin/access/accountAccess";
+export const GET_ROLE_BY_ACCOUNT_TYPE =
+  "/admin/access/accountAccessByAccountType";
+export const CREATE_ACCESS = "/admin/access/createRole";
+export const VIEW_ROLE = "/admin/access/viewRole";
+export const UPDATE_ROLE = "/admin/access/updateRole";
+export const USER_ACCESS = "/admin/access/userAccess";
 export const VERIFY_STATE = "/admin/common/verifyRegion";
 export const SEND_MAIL = "/admin/dashboard/sendFilesByEmail";
 export const PROVIDER_INFO = "/admin/provider/providerInformation";

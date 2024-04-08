@@ -107,7 +107,7 @@ const CreateProviderAccount = () => {
                 <Grid item xs={12} md={4}>
                   <Input
                     name="userName"
-                    label="User Name(MD.Lastname.F)"
+                    label="User Name(MD.LastName.F)"
                     fullWidth
                     value={formik.values.userName}
                     onChange={formik.handleChange}
@@ -422,24 +422,35 @@ const CreateProviderAccount = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box>
-                    <Box display="flex">
-                      <Button
-                        fullWidth
-                        variant="outlined"
-                        component="label"
-                        title="Upload-files"
-                      >
-                        <input accept="image/*" type="file" />
-                      </Button>
-
-                      <Button
-                        name="Upload"
-                        variant="contained"
-                        size="large"
-                        startIcon={<CloudUploadOutlinedIcon />}
+                  <Box display="flex" position="relative" mb={2} mt={2}>
+                    <Button
+                      style={{
+                        color: "#000000",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        backgroundColor: "#f6f6f6",
+                      }}
+                      fullWidth
+                      variant="outlined"
+                      component="label"
+                      title="Upload-files"
+                    >
+                      <input
+                        // onChange={handleFileChange}
+                        type="file"
+                        id="selectFile"
+                        hidden
                       />
-                    </Box>
+                      <label htmlFor="selectFile">Select File</label>
+                    </Button>
+
+                    <Button
+                      name="Upload"
+                      variant="contained"
+                      size="large"
+                      startIcon={<CloudUploadOutlinedIcon />}
+                      type="submit"
+                    />
                   </Box>
                 </Grid>
                 <Grid item xs={12}>

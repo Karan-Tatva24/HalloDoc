@@ -18,53 +18,37 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { Input } from "../../Components/TextField/Input";
-import { columns, rows } from "../../constants/userAccess";
+import { columns } from "../../constants/userAccess";
 import { Button } from "../../Components/Button";
 import "./userAccess.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userAccess } from "../../redux/halloAPIs/userAccessAPI";
 
 const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
   const [order, setOrder] = useState("asc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
   const [tableData, setTableData] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("all");
-  useEffect(() => setTableData(rows), [tableData]);
+  const [selectedRole, setSelectedRole] = useState("All");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { userAccount } = useSelector((state) => state.root.userAccess);
+
+  useEffect(() => setTableData(userAccount), [userAccount]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
-
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
   };
 
   const handleRequestSort = (property) => {
@@ -72,6 +56,18 @@ const UserAccess = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  useEffect(() => {
+    dispatch(
+      userAccess({
+        accountType: selectedRole,
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, order, orderBy, pageNo, rowsPerPage, selectedRole]);
 
   return (
     <>
@@ -113,10 +109,10 @@ const UserAccess = () => {
                   ),
                 }}
               >
-                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="All">All</MenuItem>
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="physician">Physician</MenuItem>
-                <MenuItem value="patient">Patient</MenuItem>
+                <MenuItem value="user">User</MenuItem>
               </Input>
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
@@ -141,35 +137,35 @@ const UserAccess = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody align="left">
-                  {stableSort(tableData, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    ?.map((row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.id === "actions" ? (
-                                  <Box
-                                    display="flex"
-                                    gap={1}
-                                    justifyContent="center"
-                                  >
-                                    <Button
-                                      name="Edit"
-                                      variant="outlined"
-                                      size="small"
-                                    />
-                                  </Box>
-                                ) : (
-                                  row[column.label]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "actions" ? (
+                                <Box
+                                  display="flex"
+                                  gap={1}
+                                  justifyContent="center"
+                                >
+                                  <Button
+                                    name="Edit"
+                                    variant="outlined"
+                                    size="small"
+                                  />
+                                </Box>
+                              ) : column.id === "accountPOC" ? (
+                                `${row.firstName}, ${row.accountType}`
+                              ) : (
+                                row[column.id]
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -8,7 +8,7 @@ export const columns = [
     label: "Account POC",
   },
   {
-    id: "phone",
+    id: "phoneNumber",
     label: "Phone",
   },
   {

@@ -19,7 +19,6 @@ import { logout } from "../../redux/halloSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
 import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
-import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
 import { providerInfo } from "../../redux/halloAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 
@@ -27,6 +26,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const [open, setOpen] = useState(false);
   const [providerMenuOpen, setProviderMenuOpen] = useState(false);
   const [recordsMenuOpen, setRecordsMenuOpen] = useState(false);
+  const [accessMenuOpen, setAccessMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
     setAnchorEl(null);
     setProviderMenuOpen(false);
     setRecordsMenuOpen(false);
+    setAccessMenuOpen(false);
   };
 
   const handleNavLinkHover = (event, menuType) => {
@@ -49,9 +50,15 @@ const Header = ({ onClickDarkTheme, toggle }) => {
     if (menuType === "provider") {
       setProviderMenuOpen(true);
       setRecordsMenuOpen(false);
+      setAccessMenuOpen(false);
     } else if (menuType === "records") {
       setProviderMenuOpen(false);
       setRecordsMenuOpen(true);
+      setAccessMenuOpen(false);
+    } else if (menuType === "access") {
+      setProviderMenuOpen(false);
+      setRecordsMenuOpen(false);
+      setAccessMenuOpen(true);
     }
   };
 
@@ -158,7 +165,14 @@ const Header = ({ onClickDarkTheme, toggle }) => {
               >
                 Scheduling
               </MenuItem>
-              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(-1);
+                  handleMenuClose();
+                }}
+              >
+                Invoicing
+              </MenuItem>
             </Menu>
           )}
         </li>
@@ -170,14 +184,40 @@ const Header = ({ onClickDarkTheme, toggle }) => {
             Partners
           </NavLink>
         </li>
-        <li>
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "access")}
+          onMouseLeave={handleMenuClose}
+        >
           <NavLink
             to={AppRoutes.ACCOUNT_ACCESS}
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => dispatch(accountAccess())}
           >
             Access
           </NavLink>
+          {accessMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.ACCOUNT_ACCESS);
+                  handleMenuClose();
+                }}
+              >
+                Account Access
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.USER_ACCESS);
+                  handleMenuClose();
+                }}
+              >
+                User Access
+              </MenuItem>
+            </Menu>
+          )}
         </li>
         <li
           onMouseEnter={(e) => handleNavLinkHover(e, "records")}
@@ -211,13 +251,28 @@ const Header = ({ onClickDarkTheme, toggle }) => {
               >
                 Email Logs
               </MenuItem>
-              <MenuItem onClick={() => navigate(AppRoutes.SMS_LOGS)}>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.SMS_LOGS);
+                  handleMenuClose();
+                }}
+              >
                 SMS Logs
               </MenuItem>
-              <MenuItem onClick={() => navigate(AppRoutes.PATIENT_HISTORY)}>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.PATIENT_HISTORY);
+                  handleMenuClose();
+                }}
+              >
                 Patients Records
               </MenuItem>
-              <MenuItem onClick={() => navigate(AppRoutes.BLOCKED_HISTORY)}>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.BLOCKED_HISTORY);
+                  handleMenuClose();
+                }}
+              >
                 Blocked History
               </MenuItem>
             </Menu>
@@ -286,20 +341,52 @@ const Header = ({ onClickDarkTheme, toggle }) => {
               >
                 Scheduling
               </MenuItem>
-              <MenuItem onClick={() => navigate(-1)}>Invoicing</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(-1);
+                  handleMenuClose();
+                }}
+              >
+                Invoicing
+              </MenuItem>
             </Menu>
           )}
         </li>
         <NavLink to={AppRoutes.PARTNERS} className="sidelinks">
           Partners
         </NavLink>
-        <NavLink
-          to={AppRoutes.ACCOUNT_ACCESS}
-          className="sidelinks"
-          onClick={() => dispatch(accountAccess())}
+        <li
+          onMouseEnter={(e) => handleNavLinkHover(e, "access")}
+          onMouseLeave={handleMenuClose}
         >
-          Access
-        </NavLink>
+          <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sidelinks">
+            Access
+          </NavLink>
+          {accessMenuOpen && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.ACCOUNT_ACCESS);
+                  handleMenuClose();
+                }}
+              >
+                Account Access
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate(AppRoutes.USER_ACCESS);
+                  handleMenuClose();
+                }}
+              >
+                User Access
+              </MenuItem>
+            </Menu>
+          )}
+        </li>
         <li
           onMouseEnter={(e) => handleNavLinkHover(e, "records")}
           onMouseLeave={handleMenuClose}
