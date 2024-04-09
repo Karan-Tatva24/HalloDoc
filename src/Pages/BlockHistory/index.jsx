@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { columns, rows } from "../../constants/blockHistoryData";
+import { columns } from "../../constants/blockHistoryData";
 import "./blockHistory.css";
 import {
   Box,
@@ -11,36 +11,67 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableHead,
   TableRow,
   TableSortLabel,
   Typography,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
+import {
+  blockHistory,
+  unblockPatient,
+} from "../../redux/halloAPIs/blockHistoryAPI";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
 
 const BlockHistory = () => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("");
+  const [orderBy, setOrderBy] = useState("createdAt");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const dispatch = useDispatch();
+  const { blockHistoryData } = useSelector((state) => state.root.records);
 
-  useEffect(() => setTableData(rows), []);
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      date: "",
+      email: "",
+      phone: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        blockHistory({
+          name: values.name,
+          date: values.date,
+          email: values.email,
+          phone: values.phone,
+          sortBy: orderBy,
+          orderBy: order.toUpperCase(),
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+    },
+  });
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
+  useEffect(() => {
+    dispatch(
+      blockHistory({
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
+  useEffect(() => setTableData(blockHistoryData.rows), [blockHistoryData.rows]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -48,14 +79,15 @@ const BlockHistory = () => {
     setOrderBy(property);
   };
 
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -66,82 +98,164 @@ const BlockHistory = () => {
             <b>Block History</b>
           </Typography>
           <Paper className="block-history-paper">
-            <Grid container spacing={{ xs: 1, md: 2 }}>
-              <Grid item xs={12} md={3}>
-                <Input label="Name" name="name" fullWidth />
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={{ xs: 1, md: 2 }}>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Name"
+                    name="name"
+                    fullWidth
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Date"
+                    name="date"
+                    type="date"
+                    fullWidth
+                    value={formik.values.date}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Phone Number"
+                    name="phone"
+                    fullWidth
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Date" name="date" type="date" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Email" name="email" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Phone Number" name="phoneNumber" fullWidth />
-              </Grid>
-            </Grid>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={2}
-              pt={2}
-              pb={2}
-            >
-              <Button name="Clear" variant="outlined" />
-              <Button name="Search" />
-            </Box>
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+                gap={2}
+                pt={2}
+                pb={2}
+              >
+                <Button
+                  name="Clear"
+                  variant="outlined"
+                  onClick={() => {
+                    formik.resetForm();
+                    dispatch(
+                      blockHistory({
+                        sortBy: orderBy,
+                        orderBy: order.toUpperCase(),
+                        page: pageNo,
+                        pageSize: rowsPerPage,
+                      }),
+                    );
+                  }}
+                />
+                <Button name="Search" type="submit" />
+              </Box>
+            </form>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                   <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align="center"
-                        style={{ maxWidth: column.maxWidth }}
-                      >
-                        <TableSortLabel
-                          active={orderBy === column.label}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.label)}
+                    {columns.map((column) =>
+                      column.id === "createdAt" ? (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
+                        >
+                          <TableSortLabel
+                            active={orderBy === column.label}
+                            direction={order}
+                            onClick={() => handleRequestSort(column.id)}
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        </TableCell>
+                      ) : (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
                         >
                           {column.label}
-                        </TableSortLabel>
-                      </TableCell>
-                    ))}
+                        </TableCell>
+                      ),
+                    )}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))?.map(
-                    (row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.id === "action" ? (
-                                  <Button name="Unblock" variant="outlined" />
-                                ) : column.id === "isActive" ? (
-                                  <Checkbox
-                                    size="large"
-                                    color="primary"
-                                    checked={row.isActive}
-                                  />
-                                ) : (
-                                  row[column.id]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    },
-                  )}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "patientName" ? (
+                                `${row.patientFirstName} ${row.patientLastName}`
+                              ) : column.id === "action" ? (
+                                <Button
+                                  name="Unblock"
+                                  variant="outlined"
+                                  onClick={() => {
+                                    dispatch(unblockPatient(row.id)).then(
+                                      (response) => {
+                                        if (
+                                          response.type ===
+                                          "unblockPatient/fulfilled"
+                                        ) {
+                                          toast.success(
+                                            response.payload.message,
+                                          );
+                                          dispatch(blockHistory());
+                                        }
+                                      },
+                                    );
+                                  }}
+                                />
+                              ) : column.id === "isActive" ? (
+                                <Checkbox
+                                  size="medium"
+                                  color="primary"
+                                  checked={row?.isActive}
+                                />
+                              ) : (
+                                row[column.id]
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={blockHistoryData.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>

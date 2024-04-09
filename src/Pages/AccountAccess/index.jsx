@@ -19,7 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useSelector, useDispatch } from "react-redux";
 import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
-import { viewRole } from "../../redux/halloAPIs/createAccessAPI";
+import { deleteRole, viewRole } from "../../redux/halloAPIs/createAccessAPI";
+import { toast } from "react-toastify";
 
 const columns = [
   {
@@ -48,7 +49,7 @@ const AccountAccess = () => {
   const dispatch = useDispatch();
 
   const { accessAccount } = useSelector((state) => state.root.accountAccess);
-  useEffect(() => setTableData(accessAccount), [accessAccount]);
+  useEffect(() => setTableData(accessAccount.rows), [accessAccount.rows]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -143,6 +144,21 @@ const AccountAccess = () => {
                                     name="Delete"
                                     variant="outlined"
                                     size="small"
+                                    onClick={() => {
+                                      dispatch(deleteRole(row.id)).then(
+                                        (response) => {
+                                          if (
+                                            response.type ===
+                                            "deleteRole/fulfilled"
+                                          ) {
+                                            dispatch(accountAccess());
+                                            toast.success(
+                                              response.payload.message,
+                                            );
+                                          }
+                                        },
+                                      );
+                                    }}
                                   />
                                 </Box>
                               ) : (
@@ -160,7 +176,7 @@ const AccountAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData.length}
+              count={accessAccount.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

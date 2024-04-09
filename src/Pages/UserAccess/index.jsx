@@ -38,7 +38,7 @@ const UserAccess = () => {
 
   const { userAccount } = useSelector((state) => state.root.userAccess);
 
-  useEffect(() => setTableData(userAccount), [userAccount]);
+  useEffect(() => setTableData(userAccount.rows), [userAccount.rows]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -172,7 +172,7 @@ const UserAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData.length}
+              count={userAccount.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

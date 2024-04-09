@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { userAccess } from "../halloAPIs/userAccessAPI";
 
 const initialState = {
-  userAccount: [],
+  userAccount: {},
 };
 
 export const userAccessSlice = createSlice({

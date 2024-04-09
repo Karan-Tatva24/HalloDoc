@@ -15,6 +15,7 @@ import accountAccessSliceReducer from "./accountAccessSlice";
 import providerInfoSliceReducer from "./providerInfoSlice";
 import userAccessSliceReducer from "./userAccessSlice";
 import createAccessSliceReducer from "./createAccessSlice";
+import recordsSliceReducer from "./recordsSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -33,4 +34,5 @@ export const rootReducer = combineReducers({
   createAccess: createAccessSliceReducer,
   userAccess: userAccessSliceReducer,
   providerInfo: providerInfoSliceReducer,
+  records: recordsSliceReducer,
 });

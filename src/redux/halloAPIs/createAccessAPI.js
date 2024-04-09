@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../config/axios";
 import {
   CREATE_ACCESS,
+  DELETE_ROLE,
   GET_ROLE_BY_ACCOUNT_TYPE,
   UPDATE_ROLE,
   VIEW_ROLE,
@@ -60,6 +61,18 @@ export const updateRole = createAsyncThunk(
         roleName: data.roleName,
         permissionIds: data.permissionIds,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const deleteRole = createAsyncThunk(
+  "deleteRole",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.delete(`${DELETE_ROLE}/${params}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

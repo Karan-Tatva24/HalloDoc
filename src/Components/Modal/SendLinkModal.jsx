@@ -93,8 +93,10 @@ const SendLinkModal = ({ open, handleClose }) => {
             <Button
               name="Cancel"
               variant="outlined"
-              onClick={handleClose}
-              type="reset"
+              onClick={() => {
+                formik.resetForm();
+                handleClose();
+              }}
             />
           </Box>
         </Box>

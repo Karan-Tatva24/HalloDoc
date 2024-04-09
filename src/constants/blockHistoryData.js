@@ -52,19 +52,19 @@ export const columns = [
     label: "Patient Name",
   },
   {
-    id: "phoneNumber",
+    id: "patientPhoneNumber",
     label: "Phone Number",
   },
   {
-    id: "email",
+    id: "patientEmail",
     label: "Email",
   },
   {
-    id: "createDate",
+    id: "createdAt",
     label: "Create Date",
   },
   {
-    id: "notes",
+    id: "patientNote",
     label: "Notes",
   },
   {

@@ -10,7 +10,7 @@ export const editRoleAccessSlice = createSlice({
   initialState,
   reducers: {
     clearViewRole: (state) => {
-      state.viewRole = initialState.viewRole;
+      state.viewRole = {};
     },
   },
   extraReducers: (builder) => {

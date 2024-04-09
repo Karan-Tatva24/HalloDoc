@@ -8,56 +8,55 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableHead,
   TableRow,
-  TableSortLabel,
   Typography,
 } from "@mui/material";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
-import "./patientHistory.css";
-import { columns, rows } from "../../constants/patientHistoryData";
+import { columns } from "../../constants/patientHistoryData";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import "./patientHistory.css";
+import {
+  patientHistory,
+  patientRecord,
+} from "../../redux/halloAPIs/patientRecordsAPI";
 
 const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const dispatch = useDispatch();
+  const { patientHistoryData } = useSelector((state) => state.root.records);
   const navigate = useNavigate();
 
-  useEffect(() => setTableData(rows), []);
+  useEffect(
+    () => setTableData(patientHistoryData.rows),
+    [patientHistoryData.rows],
+  );
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
+  useEffect(() => {
+    dispatch(
+      patientHistory({
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, pageNo, rowsPerPage]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
-
-  const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -103,47 +102,59 @@ const PatientHistory = () => {
                         align="center"
                         style={{ maxWidth: column.maxWidth }}
                       >
-                        <TableSortLabel
-                          active={orderBy === column.label}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.label)}
-                        >
-                          {column.label}
-                        </TableSortLabel>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))?.map(
-                    (row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.label === "Actions" ? (
-                                  <Button
-                                    name="Explore"
-                                    variant="outlined"
-                                    onClick={() =>
-                                      navigate(AppRoutes.PATIENTS_RECORDS)
-                                    }
-                                  />
-                                ) : (
-                                  row[column.id]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    },
-                  )}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "address" ? (
+                                `${row.street} ,${row.city} ,${row.state} ,${row.zipCode}`
+                              ) : column.id === "actions" ? (
+                                <Button
+                                  name="Explore"
+                                  variant="outlined"
+                                  onClick={() => {
+                                    dispatch(
+                                      patientRecord({ id: row.userId }),
+                                    ).then((response) => {
+                                      if (
+                                        response.type ===
+                                        "patientRecord/fulfilled"
+                                      ) {
+                                        navigate(AppRoutes.PATIENTS_RECORDS);
+                                      }
+                                    });
+                                  }}
+                                />
+                              ) : (
+                                row[column.id]
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={patientHistoryData?.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>
