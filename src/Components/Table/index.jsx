@@ -47,11 +47,17 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const [copiedStates, setCopiedStates] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const [rowId, setRowId] = useState(null);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("Requested Date");
   const [pageNo, setPageNo] = useState(1);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setPage(0);
+    setPageNo(1);
+    setRowsPerPage(10);
+  }, [activeState]);
 
   const { dashboardCount } = useSelector((state) => state.root.dashboardCount);
   const countData = dashboardCount?.filter((count) => {
@@ -150,7 +156,8 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     if (newPage > page) setPageNo(pageNo + 1);
-    else setPageNo(pageNo - 1);
+    else if (newPage < page) setPageNo(pageNo - 1);
+    else setPageNo(1);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -281,7 +288,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.minWidth }}
+                      style={{ maxWidth: column.maxWidth }}
                     >
                       <TableSortLabel
                         key={column.id}
@@ -296,7 +303,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.minWidth }}
+                      style={{ minWidth: column.maxWidth }}
                     >
                       {column.label}
                     </TableCell>
@@ -313,7 +320,11 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                   >
                     {columns.map((column) => {
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          className={`${column.id}`}
+                        >
                           {column.id === "mail" ? (
                             <EmailOutlinedIcon
                               fontSize="medium"
@@ -398,7 +409,12 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                               )}
                             </>
                           ) : column.label === "Physician Name" ? (
-                            row?.physician?.["Physician Name"]
+                            row?.physician?.["Physician Name"] ===
+                            "null null" ? (
+                              " - "
+                            ) : (
+                              row?.physician?.["Physician Name"]
+                            )
                           ) : column.label === "Notes" ? (
                             activeState === "new" ? (
                               row["Patient Note"] === null ? (

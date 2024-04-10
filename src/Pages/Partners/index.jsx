@@ -28,7 +28,7 @@ const Partners = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [professionFilter, setProfessionFilter] = useState("all");
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("");
   const navigate = useNavigate();
   const { professions } = useSelector(

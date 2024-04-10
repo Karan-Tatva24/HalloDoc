@@ -36,7 +36,7 @@ const ProviderInfo = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("firstName");
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(-1);
@@ -48,7 +48,7 @@ const ProviderInfo = () => {
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { providerInfoData } = useSelector((state) => state.root.providerInfo);
 
-  useEffect(() => setTableData(providerInfoData), [providerInfoData]);
+  useEffect(() => setTableData(providerInfoData.rows), [providerInfoData.rows]);
 
   const handleOpen = (id) => {
     setId(id);
@@ -60,11 +60,11 @@ const ProviderInfo = () => {
   };
 
   useEffect(() => {
-    const initialSelectedIds = providerInfoData
-      .filter((data) => data.stopNotification)
-      .map((data) => data.id);
+    const initialSelectedIds = providerInfoData.rows
+      ?.filter((data) => data.stopNotification)
+      ?.map((data) => data.id);
     setSelectedIds(initialSelectedIds);
-  }, [providerInfoData]);
+  }, [providerInfoData.rows]);
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -258,7 +258,7 @@ const ProviderInfo = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={tableData.length}
+              count={providerInfoData.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

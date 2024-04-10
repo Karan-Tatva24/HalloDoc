@@ -43,7 +43,7 @@ const CloseCase = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const [orderBy, setOrderBy] = useState("createdAt");
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const { id } = useSelector((state) => state.root.patientName);
   const { closeCaseData } = useSelector((state) => state.root.closeCase);

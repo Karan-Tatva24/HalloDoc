@@ -1,3 +1,8 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import {
   Box,
   Checkbox,
@@ -5,21 +10,23 @@ import {
   Divider,
   FormControlLabel,
   Grid,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Paper,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Button } from "../../Components/Button";
-import { useNavigate } from "react-router-dom";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import "./createProviderAccount.css";
-import { Input } from "../../Components/TextField/Input";
 import PhoneInput from "react-phone-input-2";
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
+import { Button } from "../../Components/Button";
+import { Input } from "../../Components/TextField/Input";
+import { createProviderAccount } from "../../redux/halloAPIs/createProviderAccountAPI";
 import { createProviderAccountSchema } from "../../ValidationSchema";
+import "./createProviderAccount.css";
+import { AppRoutes } from "../../constants/routes";
 
 const initialValues = {
   userName: "",
@@ -49,15 +56,58 @@ const initialValues = {
 
 const CreateProviderAccount = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
-      console.log(values);
-      onSubmitProps.resetForm();
+      const formData = new FormData();
+      formData.append("files", selectedFile);
+      dispatch(
+        createProviderAccount({
+          accountType: "Physician",
+          userName: values.userName,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phoneNumber: values.administratorPhone,
+          medicalLicense: values.medicalLicense,
+          NPINumber: values.npiNumber,
+          regions: values.selectedRegions,
+          address1: values.address1,
+          address2: values.address2,
+          city: values.city,
+          state: values.state,
+          zipCode: values.zip,
+          altPhone: values.mailingPhone,
+          businessName: values.businessName,
+          businessWebsite: values.businessWebsite,
+          files: formData,
+        }),
+      ).then((response) => {
+        console.log(response);
+        if (response.type === "createProviderAccount/fulfilled") {
+          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
+          setSelectedFile(null);
+          navigate(AppRoutes.PROVIDER);
+        } else if (response.type === "createProviderAccount/rejected") {
+          toast.error(response.payload.data.message);
+        }
+      });
     },
     validationSchema: createProviderAccountSchema,
   });
+
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    setSelectedFile(event.target.files[0]);
+  };
 
   const handleRegionChange = (regionId) => {
     const index = formik.values.selectedRegions.indexOf(regionId);
@@ -125,7 +175,25 @@ const CreateProviderAccount = () => {
                     name="password"
                     label="Password"
                     fullWidth
-                    type="password"
+                    type={showPassword ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() => setShowPassword((show) => !show)}
+                            onMouseDown={(e) => e.preventDefault()}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOffOutlinedIcon />
+                            ) : (
+                              <VisibilityOutlinedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -436,12 +504,16 @@ const CreateProviderAccount = () => {
                       title="Upload-files"
                     >
                       <input
-                        // onChange={handleFileChange}
+                        onChange={handleFileChange}
                         type="file"
                         id="selectFile"
                         hidden
                       />
-                      <label htmlFor="selectFile">Select File</label>
+                      <label htmlFor="selectFile">
+                        {selectedFile !== null
+                          ? selectedFile.name
+                          : "Select File"}
+                      </label>
                     </Button>
 
                     <Button
@@ -449,7 +521,6 @@ const CreateProviderAccount = () => {
                       variant="contained"
                       size="large"
                       startIcon={<CloudUploadOutlinedIcon />}
-                      type="submit"
                     />
                   </Box>
                 </Grid>

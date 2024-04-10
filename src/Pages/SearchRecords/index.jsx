@@ -9,6 +9,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableHead,
   TableRow,
   TableSortLabel,
@@ -17,30 +18,94 @@ import {
 import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
-import { columns, rows } from "../../constants/searchRecordsData";
+import { columns } from "../../constants/searchRecordsData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteRecord,
+  exportRecord,
+  searchRecord,
+} from "../../redux/halloAPIs/searchRecordsAPI";
 import "./searchRecords.css";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
 
 const SearchRecords = () => {
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("desc");
+  const [orderBy, setOrderBy] = useState("acceptedDate");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const dispatch = useDispatch();
+  const { searchRecordData } = useSelector((state) => state.root.records);
 
-  useEffect(() => setTableData(rows), []);
+  const formik = useFormik({
+    initialValues: {
+      requestStatus: "",
+      name: "",
+      requestType: "",
+      fromDate: "",
+      toDate: "",
+      providerName: "",
+      email: "",
+      phoneNumber: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        searchRecord({
+          requestStatus: values.requestStatus,
+          name: values.name,
+          requestType: values.requestType,
+          fromDate: values.fromDate,
+          toDate: values.toDate,
+          providerName: values.providerName,
+          email: values.email,
+          phoneNumber: values.phoneNumber,
+          sortBy: orderBy,
+          orderBy: order.toUpperCase(),
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+    },
+  });
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
+  useEffect(() => {
+    dispatch(
+      searchRecord({
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+  useEffect(() => setTableData(searchRecordData.rows), [searchRecordData.rows]);
+
+  const handleExportToExcel = () => {
+    dispatch(exportRecord())
+      .then((response) => {
+        if (response.type === "exportRecord/fulfilled") {
+          const blob = new Blob([response.payload], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `Search-Records.xlsx`;
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+          link.remove();
+          toast.success(response.payload.message);
+        } else {
+          toast.error("File download failed.");
+        }
+      })
+      .catch((error) => {
+        toast.error("Error downloading file:", error);
+      });
   };
 
   const handleRequestSort = (property) => {
@@ -49,14 +114,15 @@ const SearchRecords = () => {
     setOrderBy(property);
   };
 
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -79,123 +145,233 @@ const SearchRecords = () => {
               name="Export Data To Excel"
               startIcon={<RedoOutlinedIcon />}
               color="primary"
+              onClick={handleExportToExcel}
             />
           </Box>
           <Paper className="search-record-paper">
-            <Grid container spacing={{ xs: 1, md: 2 }}>
-              <Grid item xs={12} md={3}>
-                <Input
-                  label="Select Request Status"
-                  name="requestStatus"
-                  select
-                  fullWidth
-                >
-                  <MenuItem value="active">Active</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="closed">Closed</MenuItem>
-                </Input>
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={{ xs: 1, md: 2 }}>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Select Request Status"
+                    name="requestStatus"
+                    select
+                    fullWidth
+                    value={formik.values.requestStatus}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  >
+                    <MenuItem value="active">Active</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="closed">Closed</MenuItem>
+                  </Input>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Patient Name"
+                    name="name"
+                    fullWidth
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Select Request Type"
+                    name="requestType"
+                    select
+                    fullWidth
+                    value={formik.values.requestType}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  >
+                    <MenuItem value="patient">Patient</MenuItem>
+                    <MenuItem value="family/friend">Family/Friend</MenuItem>
+                    <MenuItem value="business">Business</MenuItem>
+                  </Input>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="From Date Of Service"
+                    name="fromDate"
+                    type="date"
+                    fullWidth
+                    value={formik.values.fromDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="To Date Of Service"
+                    name="toDate"
+                    type="date"
+                    fullWidth
+                    value={formik.values.toDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Provider Name"
+                    name="providerName"
+                    fullWidth
+                    value={formik.values.providerName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Phone Number"
+                    name="phoneNumber"
+                    fullWidth
+                    value={formik.values.phoneNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Patient Name" name="patientName" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input
-                  label="Select Request Type"
-                  name="requestType"
-                  select
-                  fullWidth
-                >
-                  <MenuItem value="patient">Patient</MenuItem>
-                  <MenuItem value="family/friend">Family/Friend</MenuItem>
-                  <MenuItem value="business">Business</MenuItem>
-                </Input>
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input
-                  label="From Date Of Service"
-                  name="fromDOS"
-                  type="date"
-                  fullWidth
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+                gap={2}
+                pt={2}
+                pb={2}
+              >
+                <Button
+                  name="Clear"
+                  variant="outlined"
+                  onClick={() => {
+                    formik.resetForm();
+                    dispatch(
+                      searchRecord({
+                        sortBy: orderBy,
+                        orderBy: order.toUpperCase(),
+                        page: pageNo,
+                        pageSize: rowsPerPage,
+                      }),
+                    );
+                  }}
                 />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input
-                  label="To Date Of Service"
-                  name="toDOS"
-                  type="date"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Provider Name" name="providerName" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Email" name="email" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Phone Number" name="phoneNumber" fullWidth />
-              </Grid>
-            </Grid>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={2}
-              pt={2}
-              pb={2}
-            >
-              <Button name="Clear" variant="outlined" />
-              <Button name="Search" />
-            </Box>
+                <Button name="Search" type="submit" />
+              </Box>
+            </form>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                   <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align="center"
-                        style={{ maxWidth: column.maxWidth }}
-                      >
-                        <TableSortLabel
-                          active={orderBy === column.id}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.id)}
+                    {columns.map((column) =>
+                      column.id === "acceptedDate" ||
+                      column.id === "updatedAt" ? (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
+                        >
+                          <TableSortLabel
+                            active={orderBy === column.label}
+                            direction={order}
+                            onClick={() => handleRequestSort(column.id)}
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        </TableCell>
+                      ) : (
+                        <TableCell
+                          key={column.id}
+                          align="center"
+                          style={{ maxWidth: column.maxWidth }}
                         >
                           {column.label}
-                        </TableSortLabel>
-                      </TableCell>
-                    ))}
+                        </TableCell>
+                      ),
+                    )}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))?.map(
-                    (row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.id === "delete" ? (
-                                  <Button
-                                    name="Delete"
-                                    variant="outlined"
-                                    size="small"
-                                  />
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "patientName" ? (
+                                `${row.patientFirstName} ${row.patientLastName}`
+                              ) : column.id === "physician" ? (
+                                row.physician?.firstName === "null" ||
+                                row.physician?.lastName === "null" ? (
+                                  " - "
                                 ) : (
-                                  row[column.id]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    },
-                  )}
+                                  `${row.physician?.firstName} ${row.physician.lastName}`
+                                )
+                              ) : column.id === "address" ? (
+                                `${row.street}, ${row.city}, ${row.state}`
+                              ) : column.id === "delete" ? (
+                                <Button
+                                  name="Delete"
+                                  variant="outlined"
+                                  size="small"
+                                  onClick={() => {
+                                    dispatch(deleteRecord(row.id)).then(
+                                      (response) => {
+                                        if (
+                                          response.type ===
+                                          "deleteRecord/fulfilled"
+                                        ) {
+                                          dispatch(
+                                            searchRecord({
+                                              sortBy: orderBy,
+                                              orderBy: order.toUpperCase(),
+                                              page: pageNo,
+                                              pageSize: rowsPerPage,
+                                            }),
+                                          );
+                                          toast.success(
+                                            response.payload.message,
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }}
+                                />
+                              ) : row[column.id] ? (
+                                row[column.id]
+                              ) : (
+                                " - "
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={searchRecordData.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>

@@ -12,15 +12,40 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Input } from "../../Components/TextField/Input";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { userDefault } from "../../assets/Images";
 import "./providerOnCall.css";
+import { providerOnCall } from "../../redux/halloAPIs/providerOnCallAPI";
+import { AppRoutes } from "../../constants/routes";
 
 const ProviderOnCall = () => {
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState("all");
+  const [onCallProviders, setOnCallProviders] = useState([]);
+  const [offDutyProviders, setOffDutyProviders] = useState([]);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(selectedRegion);
+    dispatch(providerOnCall({ regions: selectedRegion }));
+  }, [dispatch, selectedRegion]);
+
+  const { providerOnCallData } = useSelector(
+    (state) => state.root.providerOnCall,
+  );
+
+  useEffect(() => {
+    setOnCallProviders(
+      providerOnCallData?.filter((data) => data.onCallStatus === "OnCall"),
+    );
+
+    setOffDutyProviders(
+      providerOnCallData?.filter((data) => data.onCallStatus === "Unavailable"),
+    );
+  }, [providerOnCallData]);
+
   return (
     <>
       <Box className="provider-call-main-container">
@@ -81,14 +106,32 @@ const ProviderOnCall = () => {
               alignItems="center"
               gap={2}
             >
-              <Button name="Calender View" />
-              <Button name="Shifts For Review" />
+              <Button
+                name="Calender View"
+                onClick={() => navigate(AppRoutes.SCHEDULING)}
+              />
+              <Button
+                name="Shifts For Review"
+                onClick={() => navigate(AppRoutes.REQUESTED_SHIFTS)}
+              />
             </Box>
           </Box>
           <Paper className="provider-call-full-paper">
-            <Typography>
-              <b>Mds On Call</b>
-            </Typography>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
+              <Grid item xs={12}>
+                <Typography>
+                  <b>MDs On Call</b>
+                </Typography>
+              </Grid>
+              {onCallProviders.map((onCallProvider) => (
+                <Grid key={onCallProvider.id} item xs={12} md={4}>
+                  <Box display="flex">
+                    <img src={userDefault} alt="user" height={70} />
+                    {`${onCallProvider.firstName} ${onCallProvider.lastName}`}
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
 
             <Grid container spacing={{ xs: 2, md: 3 }}>
               <Grid item xs={12}>
@@ -96,66 +139,14 @@ const ProviderOnCall = () => {
                   <b>Physicians Off Duty</b>
                 </Typography>
               </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Green
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Brown
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr John
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Test
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Physician
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Blue
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Patient
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Black
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Man
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex">
-                  <img src={userDefault} alt="user" height={70} />
-                  Dr Woman
-                </Box>
-              </Grid>
+              {offDutyProviders.map((offDutyProvider) => (
+                <Grid key={offDutyProvider.id} item xs={12} md={4}>
+                  <Box display="flex">
+                    <img src={userDefault} alt="user" height={70} />
+                    {`${offDutyProvider.firstName} ${offDutyProvider.lastName}`}
+                  </Box>
+                </Grid>
+              ))}
             </Grid>
           </Paper>
         </Container>

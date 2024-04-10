@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../config/axios";
 import {
   CONTACT_PROVIDER,
+  DELETE_PROVIDER_ACCOUNT,
   EDIT_PROVIDER_PROFILE,
   PHYSICIAN_PROFILE,
   PROVIDER_INFO,
@@ -95,6 +96,20 @@ export const updateNotification = createAsyncThunk(
       const response = await Axios.patch(UPDATE_NOTIFICATION, {
         physicianIds: params,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const deleteProviderAccount = createAsyncThunk(
+  "deleteProviderAccount",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.delete(
+        `${DELETE_PROVIDER_ACCOUNT}/${params}`,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

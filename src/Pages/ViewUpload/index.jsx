@@ -29,7 +29,7 @@ import { toast } from "react-toastify";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("createdAt");
   const [selectedFile, setSelectedFile] = useState(null);
   const state = useSelector((state) => state.root.viewUpload);
@@ -104,7 +104,7 @@ const ViewUpload = () => {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
       } else if (response.type === "uploadFile/rejected") {
-        toast.error(response.payload.data.validation.body.message);
+        toast.error(response.payload?.data?.error);
       }
     });
     setSelectedFile(null);
@@ -132,7 +132,7 @@ const ViewUpload = () => {
           }
           toast.success(response.payload.message);
         } else {
-          toast.error("File download failed.");
+          toast.error("No files selected!");
         }
       })
       .catch((error) => {
@@ -164,7 +164,7 @@ const ViewUpload = () => {
           }
           toast.success(response.payload.message);
         } else {
-          toast.error("File download failed.");
+          toast.error("No files selected!");
         }
       })
       .catch((error) => {
@@ -192,7 +192,7 @@ const ViewUpload = () => {
           toast.success(response.payload.message);
           dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
         } else if (response.type === "deleteFile/rejected") {
-          toast.error(response.payload.data.validation.body.message);
+          toast.error(response?.error);
         }
       },
     );
@@ -299,13 +299,13 @@ const ViewUpload = () => {
               </Box>
               <Box display="flex" gap={1}>
                 <Button
-                  name="Download All"
+                  name="Download Selected"
                   variant="outlined"
                   color="primary"
                   onClick={handleDownloadAll}
                 />
                 <Button
-                  name="Delete All"
+                  name="Delete Selected"
                   variant="outlined"
                   color="primary"
                   onClick={handleDeleteAll}

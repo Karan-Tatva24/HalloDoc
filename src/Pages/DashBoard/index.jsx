@@ -79,7 +79,7 @@ const DashBoard = () => {
         state: activeButton.toLowerCase(),
         search: "",
         sortBy: "id",
-        orderBy: "ASC",
+        orderBy: "DESC",
         region: "all",
         page: 1,
         pageSize: 10,

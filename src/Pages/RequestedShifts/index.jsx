@@ -50,7 +50,7 @@ const rows = [
 
 const RequestedShifts = () => {
   const [selected, setSelected] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("staff");
   const [selectRegion, setSelectRegion] = useState("all");
   const [page, setPage] = React.useState(0);

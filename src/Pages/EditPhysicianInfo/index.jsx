@@ -9,11 +9,15 @@ import AddressInfo from "../../Components/infoForms/AddressInfo";
 import "./editPhysicianInfo.css";
 import ProviderProfile from "../../Components/infoForms/ProviderProfile";
 import OnBording from "./components/OnBording";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteProviderAccount } from "../../redux/halloAPIs/providerInfoAPI";
+import { toast } from "react-toastify";
+import { AppRoutes } from "../../constants/routes";
 
 const EditPhysicianInfo = () => {
   const { physicianData } = useSelector((state) => state.root.providerInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     id,
@@ -42,6 +46,15 @@ const EditPhysicianInfo = () => {
   } = physicianData.physicianProfile[0];
 
   const { businessName, businessWebsite } = physicianData.businessDetails[0];
+
+  const handelDeleteAccount = () => {
+    dispatch(deleteProviderAccount(id)).then((response) => {
+      if (response.type === "deleteProviderAccount/fulfilled") {
+        toast.success(response.payload.message);
+        navigate(AppRoutes.PROVIDER);
+      }
+    });
+  };
 
   return (
     <>
@@ -122,7 +135,11 @@ const EditPhysicianInfo = () => {
               mt={3}
             >
               <Button name="Save" />
-              <Button color="error" name="Delete Account" />
+              <Button
+                color="error"
+                name="Delete Account"
+                onClick={handelDeleteAccount}
+              />
             </Box>
           </Paper>
         </Container>

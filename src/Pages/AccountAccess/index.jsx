@@ -40,7 +40,7 @@ const columns = [
 
 const AccountAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);

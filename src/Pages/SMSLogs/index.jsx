@@ -10,40 +10,43 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableHead,
   TableRow,
   TableSortLabel,
   Typography,
 } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
-import { columns, rows } from "../../constants/smsLogsData";
+import { columns } from "../../constants/smsLogsData";
 import "./smsLogs.css";
+import { smsLog } from "../../redux/halloAPIs/emailAndsmsLogAPI";
 
 const SMSLogs = () => {
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("desc");
+  const [orderBy, setOrderBy] = useState("createdAt");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const dispatch = useDispatch();
+  const { smsLogData } = useSelector((state) => state.root.records);
   const navigate = useNavigate();
 
-  useEffect(() => setTableData(rows), []);
+  useEffect(() => {
+    dispatch(
+      smsLog({
+        sortBy: orderBy,
+        orderBy: order.toUpperCase(),
+        page: pageNo,
+        pageSize: rowsPerPage,
+      }),
+    );
+  }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
-  };
+  useEffect(() => setTableData(smsLogData?.rows), [smsLogData?.rows]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -51,14 +54,15 @@ const SMSLogs = () => {
     setOrderBy(property);
   };
 
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -155,26 +159,31 @@ const SMSLogs = () => {
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))?.map(
-                    (row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {row[column.id] !== null
-                                  ? row[column.id]
-                                  : " - "}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    },
-                  )}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {row[column.id] !== null ? row[column.id] : " - "}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={smsLogData?.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>

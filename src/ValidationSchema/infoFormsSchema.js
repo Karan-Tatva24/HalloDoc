@@ -2,6 +2,12 @@ import * as Yup from "yup";
 
 export const accountInfoSchema = Yup.object({
   role: Yup.string().required("Must select role"),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/,
+      "Invalid Password Formate",
+    )
+    .required("Required!"),
 });
 
 export const administratorInfoSchema = Yup.object({

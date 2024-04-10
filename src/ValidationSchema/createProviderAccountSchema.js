@@ -2,7 +2,12 @@ import * as Yup from "yup";
 
 export const createProviderAccountSchema = Yup.object().shape({
   userName: Yup.string().required("Required!"),
-  password: Yup.string().required("Required!"),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,16}$/,
+      "Invalid Password Formate",
+    )
+    .required("Required!"),
   role: Yup.string().required("Required!"),
   firstName: Yup.string().required("Required!"),
   lastName: Yup.string().required("Required!"),

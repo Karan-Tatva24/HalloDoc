@@ -28,7 +28,7 @@ const PatientRecord = () => {
   const [tableData, setTableData] = useState([]);
   const [rowId, setRowId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("createdAt");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

@@ -35,7 +35,7 @@ const Header = ({ onClickDarkTheme, toggle }) => {
   const handleLogout = () => {
     dispatch(logout());
     navigate(AppRoutes.LOGIN);
-    toast.success("You Are Successfully Logout");
+    toast.success("You are successfully logout");
   };
 
   const handleMenuClose = () => {
