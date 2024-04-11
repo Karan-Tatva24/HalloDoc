@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { Button } from "../../Components/Button";
@@ -7,12 +7,20 @@ import "./myProfile.css";
 import AccountInfo from "../../Components/infoForms/AccountInfo";
 import AdministratorInfo from "../../Components/infoForms/AdministratorInfo";
 import AddressInfo from "../../Components/infoForms/AddressInfo";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
 
 const MyProfile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { profileData } = useSelector((state) => state.root.adminProfile);
+  const { roles } = useSelector((state) => state.root.getRoles);
+
+  useEffect(() => {
+    dispatch(getRoles({ accountType: "admin" }));
+  }, [dispatch]);
+
   const {
     id,
     userName,
@@ -61,6 +69,7 @@ const MyProfile = () => {
               id={id}
               userName={userName}
               status={status}
+              roles={roles}
             />
             <AdministratorInfo
               firstName={firstName}

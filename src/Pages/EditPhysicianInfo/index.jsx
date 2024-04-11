@@ -1,5 +1,5 @@
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { useNavigate } from "react-router-dom";
@@ -13,11 +13,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteProviderAccount } from "../../redux/halloAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 import { AppRoutes } from "../../constants/routes";
+import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
 
 const EditPhysicianInfo = () => {
-  const { physicianData } = useSelector((state) => state.root.providerInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { physicianData } = useSelector((state) => state.root.providerInfo);
+  const { roles } = useSelector((state) => state.root.getRoles);
+
+  useEffect(() => {
+    dispatch(getRoles({ accountType: "physician" }));
+  }, [dispatch]);
 
   const {
     id,
@@ -87,6 +94,7 @@ const EditPhysicianInfo = () => {
               userName={userName}
               status={status}
               id={id}
+              roles={roles}
             />
             <PhysiciansInformation
               id={id}

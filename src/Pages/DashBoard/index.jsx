@@ -81,6 +81,7 @@ const DashBoard = () => {
         sortBy: "id",
         orderBy: "DESC",
         region: "all",
+        requestType: "all",
         page: 1,
         pageSize: 10,
       }),

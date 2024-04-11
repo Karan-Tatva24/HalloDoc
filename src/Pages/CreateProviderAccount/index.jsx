@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
@@ -27,6 +27,7 @@ import { createProviderAccount } from "../../redux/halloAPIs/createProviderAccou
 import { createProviderAccountSchema } from "../../ValidationSchema";
 import "./createProviderAccount.css";
 import { AppRoutes } from "../../constants/routes";
+import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
 
 const initialValues = {
   userName: "",
@@ -61,6 +62,11 @@ const CreateProviderAccount = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { roles } = useSelector((state) => state.root.getRoles);
+
+  useEffect(() => {
+    dispatch(getRoles({ accountType: "physician" }));
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues,
@@ -217,10 +223,11 @@ const CreateProviderAccount = () => {
                     error={formik.touched.role && Boolean(formik.errors.role)}
                     helperText={formik.touched.role && formik.errors.role}
                   >
-                    <MenuItem value="masterAdmin">Master Admin</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
-                    <MenuItem value="provider">Provider</MenuItem>
-                    <MenuItem value="patient">Patient</MenuItem>
+                    {roles.map((role) => (
+                      <MenuItem key={role.id} value={role.Name}>
+                        {role.Name}
+                      </MenuItem>
+                    ))}
                   </Input>
                 </Grid>
               </Grid>

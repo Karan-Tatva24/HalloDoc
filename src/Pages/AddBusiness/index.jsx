@@ -15,13 +15,17 @@ import { Input } from "../../Components/TextField/Input";
 import PhoneInput from "react-phone-input-2";
 import { addBusinessSchema } from "../../ValidationSchema";
 import "./addBusiness.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearBusiness } from "../../redux/halloSlices/partnersSlice";
+import { AppRoutes } from "../../constants/routes";
+import { toast } from "react-toastify";
+import { addBusiness, updateBusiness } from "../../redux/halloAPIs/partnersAPI";
 
 const INITIAL_VALUE = {
   businessName: "",
   profession: "",
   faxNumber: "",
-  phone: "",
+  phoneNumber: "",
   email: "",
   businessContact: "",
   street: "",
@@ -31,11 +35,15 @@ const INITIAL_VALUE = {
 };
 
 const AddBusiness = () => {
-  const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { professions } = useSelector(
     (state) => state.root.getProfessionsBusiness,
   );
+  const { business } = useSelector((state) => state.root.partners);
+
   const formik = useFormik({
     initialValues,
     validationSchema: addBusinessSchema,
@@ -44,19 +52,40 @@ const AddBusiness = () => {
 
   useEffect(() => {
     setInitialValues({
-      businessName: "",
-      profession: "",
-      faxNumber: "",
-      phone: "",
-      email: "",
-      businessContact: "",
-      street: "",
-      city: "",
-      state: "",
-      zipCode: "",
+      businessName: business.businessName || "",
+      profession: business.profession || "",
+      faxNumber: business.faxNumber || "",
+      phoneNumber: business.phoneNumber || "",
+      email: business.email || "",
+      businessContact: business.businessContact || "",
+      street: business.street || "",
+      city: business.city || "",
+      state: business.state || "",
+      zipCode: business.zipCode || "",
     });
-  }, []);
-  console.log("formik", formik);
+  }, [business]);
+
+  const handleSave = () => {
+    if (business?.id) {
+      dispatch(updateBusiness({ id: business.id, data: formik.values })).then(
+        (response) => {
+          if (response.type === "updateBusiness/fulfilled") {
+            toast.success(response.payload.message);
+            dispatch(clearBusiness());
+            navigate(AppRoutes.PARTNERS);
+          }
+        },
+      );
+    } else {
+      dispatch(addBusiness(formik.values)).then((response) => {
+        if (response.type === "addBusiness/fulfilled") {
+          toast.success(response.payload.message);
+          dispatch(clearBusiness());
+          navigate(AppRoutes.PARTNERS);
+        }
+      });
+    }
+  };
 
   return (
     <>
@@ -71,7 +100,7 @@ const AddBusiness = () => {
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
-                <b>Add Business</b>
+                <b>{business.id ? "Update Business" : "Add Business"}</b>
               </Typography>
             </Box>
             <Button
@@ -80,7 +109,10 @@ const AddBusiness = () => {
               size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                dispatch(clearBusiness());
+                navigate(-1);
+              }}
               className="back-btn"
             />
           </Box>
@@ -153,14 +185,19 @@ const AddBusiness = () => {
                 <Grid item xs={12} md={6}>
                   <PhoneInput
                     label="Phone Number"
-                    name="phone"
-                    value={formik.values.phone}
-                    onChange={(value) => formik.setFieldValue("phone", value)}
+                    name="phoneNumber"
+                    value={formik.values.phoneNumber}
+                    onChange={(value) =>
+                      formik.setFieldValue("phoneNumber", value)
+                    }
                     onBlur={formik?.handleBlur}
                     country={"in"}
-                    helperText={formik?.touched.phone && formik?.errors.phone}
+                    helperText={
+                      formik?.touched.phoneNumber && formik?.errors.phoneNumber
+                    }
                     error={
-                      formik?.touched.phone && Boolean(formik?.errors.phone)
+                      formik?.touched.phoneNumber &&
+                      Boolean(formik?.errors.phoneNumber)
                     }
                     inputStyle={{ width: "100%", height: "3.438rem" }}
                   />
@@ -255,8 +292,16 @@ const AddBusiness = () => {
                 gap={2}
                 pt={4}
               >
-                <Button name="Save" size="large" />
-                <Button name="Cancel" variant="outlined" size="large" />
+                <Button name="Save" size="large" onClick={handleSave} />
+                <Button
+                  name="Cancel"
+                  variant="outlined"
+                  size="large"
+                  onClick={() => {
+                    dispatch(clearBusiness());
+                    navigate(AppRoutes.PARTNERS);
+                  }}
+                />
               </Box>
             </form>
           </Paper>

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { newState } from "../halloAPIs/newStateAPI";
 
 const initialState = {
-  stateData: [],
+  stateData: {},
 };
 
 export const newStateSlice = createSlice({

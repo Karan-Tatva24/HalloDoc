@@ -43,7 +43,6 @@ const CreateAccess = () => {
   });
 
   useEffect(() => {
-    // dispatch(clearViewRole());
     setInitialValues({
       roleName: viewRole.Name || "",
       accountType: viewRole.accountType || "All",

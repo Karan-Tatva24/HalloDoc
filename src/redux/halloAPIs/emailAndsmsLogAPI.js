@@ -10,6 +10,7 @@ export const emailLog = createAsyncThunk(
     if (params.email) newParams.email = params.email;
     if (params.createdDate) newParams.createdDate = params.createdDate;
     if (params.sentDate) newParams.sentDate = params.sentDate;
+    if (params.roleName !== "all") newParams.roleName = params.roleName;
     if (params.sortBy) newParams.sortBy = params.sortBy;
     if (params.orderBy) newParams.orderBy = params.orderBy;
     if (params.page) newParams.page = params.page;
@@ -34,6 +35,7 @@ export const smsLog = createAsyncThunk(
     if (params.email) newParams.email = params.email;
     if (params.createdDate) newParams.createdDate = params.createdDate;
     if (params.sentDate) newParams.sentDate = params.sentDate;
+    if (params.roleName !== "all") newParams.roleName = params.roleName;
     if (params.sortBy) newParams.sortBy = params.sortBy;
     if (params.orderBy) newParams.orderBy = params.orderBy;
     if (params.page) newParams.page = params.page;

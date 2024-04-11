@@ -9,63 +9,76 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableHead,
   TableRow,
-  TableSortLabel,
   Typography,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
-import { useSelector } from "react-redux";
-import { columns, rows } from "../../constants/partnersDummyData";
+import { useDispatch, useSelector } from "react-redux";
+import { columns } from "../../constants/partnersDummyData";
 import "./partners.css";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
+import {
+  deleteBusiness,
+  getVendor,
+  viewBusiness,
+} from "../../redux/halloAPIs/partnersAPI";
+import { toast } from "react-toastify";
 
 const Partners = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [professionFilter, setProfessionFilter] = useState("all");
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("desc");
-  const [orderBy, setOrderBy] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(
+      getVendor({
+        page: pageNo,
+        pageSize: rowsPerPage,
+        search: searchTerm,
+        professions: professionFilter,
+      }),
+    );
+  }, [dispatch, pageNo, professionFilter, rowsPerPage, searchTerm]);
+
+  const { vendorData } = useSelector((state) => state.root.partners);
   const { professions } = useSelector(
     (state) => state.root.getProfessionsBusiness,
   );
-  useEffect(() => setTableData(rows), []);
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
+
+  useEffect(() => setTableData(vendorData.rows), [vendorData.rows]);
+
+  const handleDeleteBusiness = (id) => {
+    dispatch(deleteBusiness(id)).then((response) => {
+      if (response.type === "deleteBusiness/fulfilled") {
+        dispatch(getVendor({ page: pageNo, pageSize: rowsPerPage }));
+        toast.success(response.payload.message);
+      }
     });
-    return stabilizedThis.map((el) => el[0]);
   };
 
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
-      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) setPageNo(pageNo + 1);
+    else setPageNo(pageNo - 1);
   };
 
-  const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
-  const descendingComparator = (a, b) => {
-    if (b < a) {
-      return -1;
-    }
-    if (b > a) {
-      return 1;
-    }
-    return 0;
-  };
   return (
     <>
       <Box className="partner-main-container">
@@ -139,50 +152,56 @@ const Partners = () => {
                         align="center"
                         style={{ maxWidth: column.maxWidth }}
                       >
-                        <TableSortLabel
-                          active={orderBy === column.label}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.label)}
-                        >
-                          {column.label}
-                        </TableSortLabel>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {stableSort(tableData, getComparator(order, orderBy))?.map(
-                    (row) => {
-                      return (
-                        <TableRow key={row.id}>
-                          {columns?.map((column) => {
-                            return (
-                              <TableCell key={column.id} align="center">
-                                {column.label === "Actions" ? (
-                                  <Box display="flex" gap={1}>
-                                    <Button
-                                      name="Edit"
-                                      variant="outlined"
-                                      onClick={() =>
-                                        navigate(AppRoutes.ADD_BUSINESS)
-                                      }
-                                    />
-                                    <Button name="Delete" variant="outlined" />
-                                  </Box>
-                                ) : (
-                                  row[column.label]
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    },
-                  )}
+                  {tableData?.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        {columns?.map((column) => {
+                          return (
+                            <TableCell key={column.id} align="center">
+                              {column.id === "actions" ? (
+                                <Box display="flex" gap={1}>
+                                  <Button
+                                    name="Edit"
+                                    variant="outlined"
+                                    onClick={() => {
+                                      dispatch(viewBusiness(row.id));
+                                      navigate(AppRoutes.ADD_BUSINESS);
+                                    }}
+                                  />
+                                  <Button
+                                    name="Delete"
+                                    variant="outlined"
+                                    onClick={() => handleDeleteBusiness(row.id)}
+                                  />
+                                </Box>
+                              ) : (
+                                row[column.id]
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={vendorData.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Paper>
         </Container>
       </Box>

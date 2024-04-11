@@ -42,6 +42,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
+  const [requestType, setRequestType] = useState("all");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [copiedStates, setCopiedStates] = useState({});
@@ -59,19 +60,13 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
     setRowsPerPage(10);
   }, [activeState]);
 
-  const { dashboardCount } = useSelector((state) => state.root.dashboardCount);
-  const countData = dashboardCount?.filter((count) => {
-    return count.caseTag?.toLowerCase() === activeState;
-  });
-
-  const state = useSelector((state) => state.root.newState);
-  const rows = state?.stateData;
+  const { stateData } = useSelector((state) => state.root.newState);
 
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
 
   useEffect(() => {
-    setTableData(rows);
-  }, [rows]);
+    setTableData(stateData.rows);
+  }, [stateData.rows]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -173,6 +168,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         sortBy: orderBy,
         orderBy: order.toUpperCase(),
         region: regionFilter,
+        requestType: requestType,
         page: pageNo,
         pageSize: rowsPerPage,
       }),
@@ -184,22 +180,10 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
     orderBy,
     pageNo,
     regionFilter,
+    requestType,
     rowsPerPage,
     searchTerm,
   ]);
-
-  const filterByIndicator = (indicatorValue) => {
-    if (indicatorValue === "all") return setTableData(rows);
-    else {
-      const filteredData = rows.filter((row) => {
-        const lowerCaseString = row.Requestor.toLowerCase();
-        return lowerCaseString.includes(indicatorValue.toLowerCase())
-          ? true
-          : false;
-      });
-      setTableData(filteredData);
-    }
-  };
 
   return (
     <div className="my-table-container">
@@ -255,14 +239,14 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
             <Button
               name="All"
               variant="outlined"
-              onClick={() => filterByIndicator("all")}
+              onClick={() => setRequestType("all")}
             />
             {indicator.map((value, index) => {
               return (
                 <Box
                   key={index}
                   className="indicators"
-                  onClick={() => filterByIndicator(value.name)}
+                  onClick={() => setRequestType(value.name)}
                 >
                   <span
                     className="indicator-point"
@@ -442,7 +426,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={countData[0]?.count}
+          count={stateData.count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

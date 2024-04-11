@@ -27,7 +27,7 @@ const INITIAL_VALUES = {
   password: "",
 };
 
-const AccountInfo = ({ id, name, userName, status }) => {
+const AccountInfo = ({ id, name, userName, status, roles }) => {
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(true);
   const [passwordDisable, setPasswordDisable] = useState(true);
@@ -42,7 +42,7 @@ const AccountInfo = ({ id, name, userName, status }) => {
 
   useEffect(() => {
     setInitialValues({
-      role: "masterAdmin",
+      role: "",
       status: status,
     });
   }, [status]);
@@ -126,10 +126,11 @@ const AccountInfo = ({ id, name, userName, status }) => {
             error={formik.touched.role && Boolean(formik.errors.role)}
             helperText={formik.touched.role && formik.errors.role}
           >
-            <MenuItem value="masterAdmin">Master Admin</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
-            <MenuItem value="provider">Provider</MenuItem>
-            <MenuItem value="patient">Patient</MenuItem>
+            {roles.map((role) => (
+              <MenuItem key={role.id} value={role.Name}>
+                {role.Name}
+              </MenuItem>
+            ))}
           </Input>
         </Grid>
       </Grid>

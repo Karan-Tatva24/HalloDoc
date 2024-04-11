@@ -23,6 +23,8 @@ import "./emailLogs.css";
 import { Input } from "../../Components/TextField/Input";
 import { columns } from "../../constants/emailLogsData";
 import { emailLog } from "../../redux/halloAPIs/emailAndsmsLogAPI";
+import { useFormik } from "formik";
+import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
 
 const EmailLogs = () => {
   const [tableData, setTableData] = useState([]);
@@ -32,8 +34,39 @@ const EmailLogs = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const dispatch = useDispatch();
-  const { emailLogData } = useSelector((state) => state.root.records);
   const navigate = useNavigate();
+  const { emailLogData } = useSelector((state) => state.root.records);
+  const { roles } = useSelector((state) => state.root.getRoles);
+
+  useEffect(() => {
+    dispatch(getRoles({ accountType: "all" }));
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: {
+      role: "all",
+      receiverName: "",
+      email: "",
+      createDate: "",
+      sentDate: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        emailLog({
+          receiverName: values.receiverName,
+          createDate: values.createDate,
+          sentDate: values.sentDate,
+          email: values.email,
+          roleName: values.role,
+          sortBy: orderBy,
+          orderBy: order.toUpperCase(),
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+      formik.resetForm();
+    },
+  });
 
   useEffect(() => {
     dispatch(
@@ -92,50 +125,90 @@ const EmailLogs = () => {
             />
           </Box>
           <Paper className="email-logs-paper">
-            <Grid container spacing={{ xs: 1, md: 2 }} pb={5}>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Input
-                  label="Search By Role"
-                  select
-                  name="role"
-                  value="all"
-                  fullWidth
-                >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="provider">Provider</MenuItem>
-                  <MenuItem value="patient">Patient</MenuItem>
-                </Input>
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={{ xs: 1, md: 2 }} pb={5}>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Input
+                    label="Search By Role"
+                    select
+                    name="role"
+                    fullWidth
+                    value={formik.values.role}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  >
+                    <MenuItem value="all">All</MenuItem>
+                    {roles.map((role) => (
+                      <MenuItem key={role.id} value={role.Name}>
+                        {role.Name}
+                      </MenuItem>
+                    ))}
+                  </Input>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Input
+                    label="Receiver Name"
+                    name="receiverName"
+                    fullWidth
+                    value={formik.values.receiverName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Input
+                    label="Email id"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Input
+                    label="Created Date"
+                    name="createDate"
+                    type="date"
+                    fullWidth
+                    value={formik.values.createDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Input
+                    label="Sent Date"
+                    name="sentDate"
+                    type="Date"
+                    fullWidth
+                    value={formik.values.sentDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
+                  <Box display="flex" justifyContent="flex-end" gap={2} pt={1}>
+                    <Button name="Search" type="submit" />
+                    <Button
+                      name="Clear"
+                      variant="outlined"
+                      onClick={() => {
+                        formik.resetForm();
+                        dispatch(
+                          emailLog({
+                            sortBy: orderBy,
+                            orderBy: order.toUpperCase(),
+                            page: pageNo,
+                            pageSize: rowsPerPage,
+                          }),
+                        );
+                      }}
+                    />
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Input label="Receiver Name" name="receiverName" fullWidth />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Input label="Email id" name="email" fullWidth />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Input
-                  label="Created Date"
-                  name="createdDate"
-                  type="date"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Input
-                  label="Sent Date"
-                  name="sentDate"
-                  type="Date"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                <Box display="flex" justifyContent="flex-end" gap={2} pt={1}>
-                  <Button name="Search" />
-                  <Button name="Clear" variant="outlined" />
-                </Box>
-              </Grid>
-            </Grid>
+            </form>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
@@ -168,7 +241,13 @@ const EmailLogs = () => {
                               {row[column.id] !== null
                                 ? column.id === "recipient"
                                   ? `${row.receiver.firstName} ${row.receiver.lastName}`
-                                  : row[column.id]
+                                  : column.id === "roleName"
+                                    ? row.receiver.role.Name
+                                    : column.id === "sent"
+                                      ? row.isEmailSent
+                                        ? "Yes"
+                                        : "No"
+                                      : row[column.id]
                                 : " - "}
                             </TableCell>
                           );
