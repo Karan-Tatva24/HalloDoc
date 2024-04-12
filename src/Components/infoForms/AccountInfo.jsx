@@ -27,7 +27,7 @@ const INITIAL_VALUES = {
   password: "",
 };
 
-const AccountInfo = ({ id, name, userName, status, roles }) => {
+const AccountInfo = ({ id, name, userName, status, role, roles }) => {
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(true);
   const [passwordDisable, setPasswordDisable] = useState(true);
@@ -42,10 +42,10 @@ const AccountInfo = ({ id, name, userName, status, roles }) => {
 
   useEffect(() => {
     setInitialValues({
-      role: "",
+      role: role.id,
       status: status,
     });
-  }, [status]);
+  }, [role, status]);
 
   return (
     <form>
@@ -127,7 +127,7 @@ const AccountInfo = ({ id, name, userName, status, roles }) => {
             helperText={formik.touched.role && formik.errors.role}
           >
             {roles.map((role) => (
-              <MenuItem key={role.id} value={role.Name}>
+              <MenuItem key={role.id} value={role.id}>
                 {role.Name}
               </MenuItem>
             ))}

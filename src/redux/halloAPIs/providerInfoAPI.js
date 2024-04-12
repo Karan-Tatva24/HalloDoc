@@ -64,6 +64,7 @@ export const editProviderProfile = createAsyncThunk(
       const response = await Axios.patch(`${EDIT_PROVIDER_PROFILE}/${id}`, {
         password: data?.password,
         email: data?.email,
+        roleId: data?.role.toString(),
         firstName: data?.firstName,
         lastName: data?.lastName,
         phoneNumber: data?.phoneNumber,

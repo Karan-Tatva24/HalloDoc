@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getBusiness,
   getProfession,
-} from "../halloAPIs/getProfessionsBusinessAPI";
+} from "../../halloAPIs/getProfessionsBusinessAPI";
 
 const initialState = {
   professions: [],

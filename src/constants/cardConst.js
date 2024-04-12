@@ -20,6 +20,7 @@ export const cards = [
     icon: <NewReleasesOutlinedIcon />,
     color: "primary",
     toolTip: primaryTriangle,
+    accountTypes: ["Admin", "Physician"],
   },
   {
     applicationState: "Pending",
@@ -27,6 +28,7 @@ export const cards = [
     icon: <PendingOutlinedIcon />,
     color: "secondary",
     toolTip: secondaryTriangle,
+    accountTypes: ["Admin", "Physician"],
   },
   {
     applicationState: "Active",
@@ -34,6 +36,7 @@ export const cards = [
     icon: <CheckCircleOutlineOutlinedIcon />,
     color: "success",
     toolTip: successTriangle,
+    accountTypes: ["Admin", "Physician"],
   },
   {
     applicationState: "Conclude",
@@ -41,6 +44,7 @@ export const cards = [
     icon: <CodeOutlinedIcon />,
     color: "error",
     toolTip: errorTriangle,
+    accountTypes: ["Admin", "Physician"],
   },
   {
     applicationState: "To Close",
@@ -48,6 +52,7 @@ export const cards = [
     icon: <CancelOutlinedIcon />,
     color: "info",
     toolTip: infoTriangle,
+    accountTypes: ["Admin"],
   },
   {
     applicationState: "UnPaid",
@@ -55,5 +60,6 @@ export const cards = [
     icon: <PaidOutlinedIcon />,
     color: "warning",
     toolTip: warningTriangle,
+    accountTypes: ["Admin"],
   },
 ];

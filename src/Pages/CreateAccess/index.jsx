@@ -23,7 +23,7 @@ import {
 } from "../../redux/halloAPIs/createAccessAPI";
 import { AppRoutes } from "../../constants/routes";
 import { toast } from "react-toastify";
-import { clearViewRole } from "../../redux/halloSlices/editRoleAccessSlice";
+import { clearViewRole } from "../../redux/halloSlices/adminSlices/editRoleAccessSlice";
 
 const INITIAL_VALUES = {
   roleName: "",

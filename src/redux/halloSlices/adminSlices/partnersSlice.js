@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getVendor, viewBusiness } from "../halloAPIs/partnersAPI";
+import { getVendor, viewBusiness } from "../../halloAPIs/partnersAPI";
 
 const initialState = {
   vendorData: {},

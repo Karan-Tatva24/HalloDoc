@@ -97,7 +97,7 @@ const Partners = () => {
               <Box display="flex" alignItems="center" gap={3}>
                 <Input
                   className="search-text"
-                  placeholder="Search"
+                  placeholder="Vendor"
                   variant="outlined"
                   value={searchTerm}
                   InputProps={{

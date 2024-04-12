@@ -3,9 +3,9 @@ import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 import { rootReducer } from "./halloSlices";
-import sendOrderSliceReducer from "./halloSlices/sendOrderSlice";
-import sendAgreementSliceReducer from "./halloSlices/sendAgreementSlice";
-import editRoleAccessSliceReducer from "./halloSlices/editRoleAccessSlice";
+import sendOrderSliceReducer from "./halloSlices/adminSlices/sendOrderSlice";
+import sendAgreementSliceReducer from "./halloSlices/adminSlices/sendAgreementSlice";
+import editRoleAccessSliceReducer from "./halloSlices/adminSlices/editRoleAccessSlice";
 
 const persistConfig = {
   key: "root",

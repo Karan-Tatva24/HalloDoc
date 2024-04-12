@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { physicianProfile, providerInfo } from "../halloAPIs/providerInfoAPI";
+import {
+  physicianProfile,
+  providerInfo,
+} from "../../halloAPIs/providerInfoAPI";
 
 const initialState = {
   providerInfoData: [],

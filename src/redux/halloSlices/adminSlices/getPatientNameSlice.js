@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPatientName } from "../halloAPIs/getPatientNameAPI";
+import { getPatientName } from "../../halloAPIs/getPatientNameAPI";
 
 const initialState = {
   patientFirstName: "",

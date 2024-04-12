@@ -16,7 +16,7 @@ import PhoneInput from "react-phone-input-2";
 import { addBusinessSchema } from "../../ValidationSchema";
 import "./addBusiness.css";
 import { useSelector, useDispatch } from "react-redux";
-import { clearBusiness } from "../../redux/halloSlices/partnersSlice";
+import { clearBusiness } from "../../redux/halloSlices/adminSlices/partnersSlice";
 import { AppRoutes } from "../../constants/routes";
 import { toast } from "react-toastify";
 import { addBusiness, updateBusiness } from "../../redux/halloAPIs/partnersAPI";

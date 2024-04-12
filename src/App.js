@@ -36,6 +36,7 @@ import EmailLogs from "./Pages/EmailLogs";
 import SMSLogs from "./Pages/SMSLogs";
 import BlockHistory from "./Pages/BlockHistory";
 import CreateRequest from "./Pages/CreateRequest";
+import "react-phone-input-2/lib/style.css";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);

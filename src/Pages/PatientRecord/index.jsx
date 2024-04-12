@@ -150,7 +150,7 @@ const PatientRecord = () => {
                               {column.id === "client" ? (
                                 `${row.patientFirstName} ${row.patientLastName}`
                               ) : column.id === "providerName" ? (
-                                `${row.physician.firstName} ${row.physician.lastName}`
+                                `${row.physician?.firstName} ${row.physician?.lastName}`
                               ) : column.id === "actions" ? (
                                 <>
                                   <Button

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { closeCaseView } from "../halloAPIs/closeCaseAPI";
+import { closeCaseView } from "../../halloAPIs/closeCaseAPI";
 
 const initialState = {
   closeCaseData: {},

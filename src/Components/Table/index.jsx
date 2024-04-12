@@ -36,8 +36,17 @@ import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
 import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getSendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
 import { closeCaseView } from "../../redux/halloAPIs/closeCaseAPI";
+import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/getDashboardByStateAPI";
 
-const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
+const MyTable = ({
+  accountType,
+  counts,
+  columns,
+  dropDown,
+  indicator,
+  onClick,
+  activeState,
+}) => {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,12 +70,17 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   }, [activeState]);
 
   const { stateData } = useSelector((state) => state.root.newState);
+  const { providerStateData } = useSelector(
+    (state) => state.root.dashboardByState,
+  );
 
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
 
   useEffect(() => {
-    setTableData(stateData.rows);
-  }, [stateData.rows]);
+    accountType === "Admin"
+      ? setTableData(stateData?.rows)
+      : setTableData(providerStateData?.rows);
+  }, [accountType, providerStateData, stateData]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -161,20 +175,34 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
   };
 
   useEffect(() => {
-    dispatch(
-      newState({
-        state: activeState,
-        search: searchTerm,
-        sortBy: orderBy,
-        orderBy: order.toUpperCase(),
-        region: regionFilter,
-        requestType: requestType,
-        page: pageNo,
-        pageSize: rowsPerPage,
-      }),
-    );
+    if (accountType === "Admin") {
+      dispatch(
+        newState({
+          state: activeState,
+          search: searchTerm,
+          sortBy: orderBy,
+          orderBy: order.toUpperCase(),
+          region: regionFilter,
+          requestType: requestType,
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+    } else if (accountType === "Physician") {
+      dispatch(
+        getDashboardByState({
+          state: activeState,
+          search: searchTerm,
+          requestType: requestType,
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+    }
   }, [
+    accountType,
     activeState,
+    counts,
     dispatch,
     order,
     orderBy,
@@ -210,28 +238,30 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
               }}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Input
-              className="search-text drop-list"
-              select
-              value={regionFilter}
-              onChange={(e) => setRegionFilter(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchOutlinedIcon />
-                  </InputAdornment>
-                ),
-              }}
-            >
-              <MenuItem value="all">All Regions</MenuItem>
-              {regions?.map((region) => {
-                return (
-                  <MenuItem key={region.id} value={region.name}>
-                    {region.name}
-                  </MenuItem>
-                );
-              })}
-            </Input>
+            {accountType === "Admin" ? (
+              <Input
+                className="search-text drop-list"
+                select
+                value={regionFilter}
+                onChange={(e) => setRegionFilter(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchOutlinedIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                <MenuItem value="all">All Regions</MenuItem>
+                {regions?.map((region) => {
+                  return (
+                    <MenuItem key={region.id} value={region.name}>
+                      {region.name}
+                    </MenuItem>
+                  );
+                })}
+              </Input>
+            ) : null}
           </Box>
         </Grid>
         <Grid container justifyContent="flex-end" item xs={12} md={8} lg={6}>
@@ -267,31 +297,33 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
             <TableHead>
               <TableRow>
                 {columns.map((column) =>
-                  column.id === "requestedDate" ||
-                  column.id === "dateOfService" ? (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ maxWidth: column.maxWidth }}
-                    >
-                      <TableSortLabel
+                  column.accountTypes.includes(accountType) ? (
+                    column.id === "requestedDate" ||
+                    column.id === "dateOfService" ? (
+                      <TableCell
                         key={column.id}
-                        active={orderBy === column.label}
-                        direction={order}
-                        onClick={() => handleRequestSort(column.label)}
+                        align={column.align}
+                        style={{ maxWidth: column.maxWidth }}
+                      >
+                        <TableSortLabel
+                          key={column.id}
+                          active={orderBy === column.label}
+                          direction={order}
+                          onClick={() => handleRequestSort(column.label)}
+                        >
+                          {column.label}
+                        </TableSortLabel>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.maxWidth }}
                       >
                         {column.label}
-                      </TableSortLabel>
-                    </TableCell>
-                  ) : (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.maxWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ),
+                      </TableCell>
+                    )
+                  ) : null,
                 )}
               </TableRow>
             </TableHead>
@@ -300,7 +332,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                 return (
                   <TableRow
                     key={row.id}
-                    className={`requestor-${row.Requestor.toLowerCase()}`}
+                    className={`requestor-${row.Requestor?.toLowerCase()}`}
                   >
                     {columns.map((column) => {
                       return (
@@ -344,9 +376,7 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                               )}
                               {copiedStates[row.id]}
                             </>
-                          ) : ["Chat With", "Actions"].includes(
-                              column.label,
-                            ) ? (
+                          ) : ["Actions"].includes(column.label) ? (
                             <>
                               <Button
                                 className="phone-btn"
@@ -393,11 +423,10 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
                               )}
                             </>
                           ) : column.label === "Physician Name" ? (
-                            row?.physician?.["Physician Name"] ===
-                            "null null" ? (
-                              " - "
-                            ) : (
+                            row?.physician ? (
                               row?.physician?.["Physician Name"]
+                            ) : (
+                              " - "
                             )
                           ) : column.label === "Notes" ? (
                             activeState === "new" ? (
@@ -426,7 +455,9 @@ const MyTable = ({ columns, dropDown, indicator, onClick, activeState }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={stateData.count}
+          count={
+            accountType === "Admin" ? stateData.count : providerStateData.count
+          }
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

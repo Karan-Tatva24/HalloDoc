@@ -220,10 +220,17 @@ const BlockHistory = () => {
                                           response.type ===
                                           "unblockPatient/fulfilled"
                                         ) {
+                                          dispatch(
+                                            blockHistory({
+                                              sortBy: orderBy,
+                                              orderBy: order.toUpperCase(),
+                                              page: pageNo,
+                                              pageSize: rowsPerPage,
+                                            }),
+                                          );
                                           toast.success(
                                             response.payload.message,
                                           );
-                                          dispatch(blockHistory());
                                         }
                                       },
                                     );

@@ -36,6 +36,7 @@ const MyProfile = () => {
     zipCode,
     altPhone,
     regions,
+    role,
   } = profileData;
 
   return (
@@ -69,6 +70,7 @@ const MyProfile = () => {
               id={id}
               userName={userName}
               status={status}
+              role={role}
               roles={roles}
             />
             <AdministratorInfo

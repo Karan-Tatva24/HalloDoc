@@ -15,7 +15,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Button } from "../Button";
 import { AppRoutes } from "../../constants/routes";
-import { logout } from "../../redux/halloSlices/loginSlice";
+import { logout } from "../../redux/halloSlices/adminSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
 import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";

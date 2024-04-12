@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSendAgreement } from "../halloAPIs/sendAgreementAPI";
+import { getSendAgreement } from "../../halloAPIs/sendAgreementAPI";
 
 const initialState = {
   details: {},

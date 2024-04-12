@@ -50,6 +50,7 @@ const EditPhysicianInfo = () => {
     isNonDisclosureDoc,
     isLicenseDoc,
     regions,
+    role,
   } = physicianData.physicianProfile[0];
 
   const { businessName, businessWebsite } = physicianData.businessDetails[0];
@@ -94,6 +95,7 @@ const EditPhysicianInfo = () => {
               userName={userName}
               status={status}
               id={id}
+              role={role}
               roles={roles}
             />
             <PhysiciansInformation

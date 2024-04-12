@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewCase } from "../halloAPIs/viewReservationAPI";
+import { viewCase } from "../../halloAPIs/viewReservationAPI";
 
 const initialState = {
   viewCase: {},

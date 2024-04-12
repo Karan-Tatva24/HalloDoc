@@ -30,7 +30,6 @@ import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 import SendLinkModal from "../../Components/Modal/SendLinkModal";
 import { useDispatch, useSelector } from "react-redux";
-import { newState } from "../../redux/halloAPIs/newStateAPI";
 import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
 import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
 import { getProfession } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
@@ -49,6 +48,9 @@ const DashBoard = () => {
   const [rowId, setRowId] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+
   const state = useSelector((state) => state.root.dashboardCount);
   const counts = state?.dashboardCount;
   const handleOpen = (name, id) => {
@@ -74,51 +76,65 @@ const DashBoard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(
-      newState({
-        state: activeButton.toLowerCase(),
-        search: "",
-        sortBy: "id",
-        orderBy: "DESC",
-        region: "all",
-        requestType: "all",
-        page: 1,
-        pageSize: 10,
-      }),
-    );
-  }, [activeButton, dispatch, counts]);
-
-  useEffect(() => {
-    switch (activeButton) {
-      case "New":
-        setColumns(newColumns);
-        setDropDown(newDropdown);
+    switch (accountType) {
+      case "Admin":
+        switch (activeButton) {
+          case "New":
+            setColumns(newColumns);
+            setDropDown(newDropdown);
+            break;
+          case "Pending":
+            setColumns(pendingColumns);
+            setDropDown(pendingDropdown);
+            break;
+          case "Active":
+            setColumns(activeColumns);
+            setDropDown(activeDropdown);
+            break;
+          case "Conclude":
+            setColumns(concludeColumns);
+            setDropDown(concludeDropdown);
+            break;
+          case "To Close":
+            setColumns(toCloseColumns);
+            setDropDown(toCloseDropdown);
+            break;
+          case "UnPaid":
+            setColumns(unpaidColumns);
+            setDropDown(unpaidDropdown);
+            break;
+          default:
+            setColumns(newColumns);
+            setDropDown(newDropdown);
+        }
         break;
-      case "Pending":
-        setColumns(pendingColumns);
-        setDropDown(pendingDropdown);
-        break;
-      case "Active":
-        setColumns(activeColumns);
-        setDropDown(activeDropdown);
-        break;
-      case "Conclude":
-        setColumns(concludeColumns);
-        setDropDown(concludeDropdown);
-        break;
-      case "To Close":
-        setColumns(toCloseColumns);
-        setDropDown(toCloseDropdown);
-        break;
-      case "UnPaid":
-        setColumns(unpaidColumns);
-        setDropDown(unpaidDropdown);
+      case "Physician":
+        switch (activeButton) {
+          case "New":
+            setColumns(newColumns);
+            setDropDown(newDropdown);
+            break;
+          case "Pending":
+            setColumns(pendingColumns);
+            setDropDown(pendingDropdown);
+            break;
+          case "Active":
+            setColumns(activeColumns);
+            setDropDown(activeDropdown);
+            break;
+          case "Conclude":
+            setColumns(concludeColumns);
+            setDropDown(concludeDropdown);
+            break;
+          default:
+            setColumns(newColumns);
+            setDropDown(newDropdown);
+        }
         break;
       default:
-        setColumns(newColumns);
-        setDropDown(newDropdown);
+        break;
     }
-  }, [activeButton]);
+  }, [accountType, activeButton]);
 
   return (
     <>
@@ -137,39 +153,44 @@ const DashBoard = () => {
                   md={4}
                   lg={2}
                 >
-                  <Button
-                    color={card.color}
-                    variant={
-                      isActive && activeButton === card.applicationState
-                        ? "contained"
-                        : "outlined"
-                    }
-                    className="card-btn"
-                    fullWidth
-                    onClick={() => handleClick(card.applicationState)}
-                  >
-                    <Box className="card-content-heading">
-                      {card.icon}
-                      <Typography variant="body1">
-                        {card.applicationState}
-                      </Typography>
-                    </Box>
-                    {counts?.map((count, index) => {
-                      return (
-                        <Typography variant="h5" key={index}>
-                          {count.caseTag === card.applicationState && (
-                            <b>{count.count}</b>
-                          )}
-                        </Typography>
-                      );
-                    })}
-                  </Button>
-                  {isActive && activeButton === card.applicationState ? (
-                    <img
-                      src={card.toolTip}
-                      alt="triangle"
-                      className="btn-triangle"
-                    />
+                  {card.accountTypes.includes(accountType) ? (
+                    <>
+                      {" "}
+                      <Button
+                        color={card.color}
+                        variant={
+                          isActive && activeButton === card.applicationState
+                            ? "contained"
+                            : "outlined"
+                        }
+                        className="card-btn"
+                        fullWidth
+                        onClick={() => handleClick(card.applicationState)}
+                      >
+                        <Box className="card-content-heading">
+                          {card.icon}
+                          <Typography variant="body1">
+                            {card.applicationState}
+                          </Typography>
+                        </Box>
+                        {counts?.map((count, index) => {
+                          return (
+                            <Typography variant="h5" key={index}>
+                              {count.caseTag === card.applicationState && (
+                                <b>{count.count}</b>
+                              )}
+                            </Typography>
+                          );
+                        })}
+                      </Button>
+                      {isActive && activeButton === card.applicationState ? (
+                        <img
+                          src={card.toolTip}
+                          alt="triangle"
+                          className="btn-triangle"
+                        />
+                      ) : null}
+                    </>
                   ) : null}
                 </Grid>
               );
@@ -272,6 +293,8 @@ const DashBoard = () => {
             </Grid>
           </Box>
           <MyTable
+            accountType={accountType}
+            counts={counts}
             columns={columns}
             dropDown={dropDown}
             indicator={indicator}

@@ -1,3 +1,5 @@
+// ................................................Admin Api..................................................
+
 export const COMMON_API = "/admin/common/getLoggedUser";
 export const LOGIN_API = "/auth/login";
 export const FORGOT_PASS = "/auth/forgotPassword";
@@ -72,3 +74,7 @@ export const GET_ROLE = "/admin/common/getRoles";
 export const UNAPPROVED_SHIFT = "/admin/provider/unApprovedShift";
 export const APPROVE_SHIFT = "/admin/provider/approveShift";
 export const DELETE_SHIFT = "/admin/provider/deleteShift";
+
+// ..............................................Provider Api.........................................
+
+export const PROVIDER_DASHBOARD_BY_STATE = "/provider/dashboard";

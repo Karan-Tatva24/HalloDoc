@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewUpload } from "../halloAPIs/viewUploadAPI";
+import { viewUpload } from "../../halloAPIs/viewUploadAPI";
 
 const initialState = {
   viewUpload: [],

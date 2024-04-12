@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { newState } from "../halloAPIs/newStateAPI";
+import { newState } from "../../halloAPIs/newStateAPI";
 
 const initialState = {
   stateData: {},

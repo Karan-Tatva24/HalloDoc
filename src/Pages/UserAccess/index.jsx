@@ -156,7 +156,7 @@ const UserAccess = () => {
                                   />
                                 </Box>
                               ) : column.id === "accountPOC" ? (
-                                `${row.firstName}, ${row.accountType}`
+                                `${row.firstName}, ${row.lastName}`
                               ) : (
                                 row[column.id]
                               )}
