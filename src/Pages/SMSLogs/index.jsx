@@ -54,7 +54,7 @@ const SMSLogs = () => {
       dispatch(
         smsLog({
           receiverName: values.receiverName,
-          createDate: values.createDate,
+          createdDate: values.createDate,
           sentDate: values.sentDate,
           phoneNumber: values.phoneNumber,
           roleName: values.role,

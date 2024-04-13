@@ -23,6 +23,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./patientRecord.css";
 import { patientRecord } from "../../redux/halloAPIs/patientRecordsAPI";
+import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
+import { AppRoutes } from "../../constants/routes";
+import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
+import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
 
 const PatientRecord = () => {
   const [tableData, setTableData] = useState([]);
@@ -150,7 +154,11 @@ const PatientRecord = () => {
                               {column.id === "client" ? (
                                 `${row?.patientFirstName} ${row?.patientLastName}`
                               ) : column.id === "providerName" ? (
-                                `${row?.physician?.firstName} ${row?.physician?.lastName}`
+                                row?.physician ? (
+                                  `${row?.physician?.firstName} ${row?.physician?.lastName}`
+                                ) : (
+                                  " - "
+                                )
                               ) : column.id === "actions" ? (
                                 <>
                                   <Button
@@ -170,7 +178,19 @@ const PatientRecord = () => {
                                   >
                                     <MenuItem
                                       disableRipple
-                                      onClick={handleClose}
+                                      onClick={() => {
+                                        dispatch(viewCase(row?.id)).then(
+                                          (response) => {
+                                            if (
+                                              response.type ===
+                                              "viewCase/fulfilled"
+                                            ) {
+                                              navigate(AppRoutes.VIEW_CASE);
+                                            }
+                                          },
+                                        );
+                                        handleClose();
+                                      }}
                                     >
                                       View Case
                                     </MenuItem>
@@ -182,7 +202,20 @@ const PatientRecord = () => {
                                     </MenuItem>
                                     <MenuItem
                                       disableRipple
-                                      onClick={handleClose}
+                                      onClick={() => {
+                                        dispatch(getPatientName(rowId));
+                                        dispatch(
+                                          viewUpload({ id: row?.id }),
+                                        ).then((response) => {
+                                          if (
+                                            response.type ===
+                                            "viewUpload/fulfilled"
+                                          ) {
+                                            navigate(AppRoutes.VIEW_UPLOAD);
+                                          }
+                                        });
+                                        handleClose();
+                                      }}
                                     >
                                       0 Documents
                                     </MenuItem>

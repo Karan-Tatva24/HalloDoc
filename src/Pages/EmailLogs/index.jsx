@@ -54,7 +54,7 @@ const EmailLogs = () => {
       dispatch(
         emailLog({
           receiverName: values.receiverName,
-          createDate: values.createDate,
+          createdDate: values.createDate,
           sentDate: values.sentDate,
           email: values.email,
           roleName: values.role,
@@ -220,9 +220,9 @@ const EmailLogs = () => {
                         style={{ maxWidth: column.maxWidth }}
                       >
                         <TableSortLabel
-                          active={orderBy === column.label}
+                          active={orderBy === column.id}
                           direction={order}
-                          onClick={() => handleRequestSort(column.label)}
+                          onClick={() => handleRequestSort(column.id)}
                         >
                           {column.label}
                         </TableSortLabel>

@@ -24,6 +24,7 @@ import {
   patientHistory,
   patientRecord,
 } from "../../redux/halloAPIs/patientRecordsAPI";
+import { useFormik } from "formik";
 
 const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);
@@ -35,6 +36,27 @@ const PatientHistory = () => {
   const navigate = useNavigate();
 
   useEffect(() => setTableData(patientHistoryData?.rows), [patientHistoryData]);
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        patientHistory({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phone: values.phoneNumber,
+          page: pageNo,
+          pageSize: rowsPerPage,
+        }),
+      );
+    },
+  });
 
   useEffect(() => {
     dispatch(
@@ -64,31 +86,73 @@ const PatientHistory = () => {
             <b>Patient History</b>
           </Typography>
           <Paper className="patient-history-paper">
-            <Grid container spacing={{ xs: 1, md: 2 }}>
-              <Grid item xs={12} md={3}>
-                <Input label="First Name" name="firstName" fullWidth />
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={{ xs: 1, md: 2 }}>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="First Name"
+                    name="firstName"
+                    fullWidth
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Last Name"
+                    name="lastName"
+                    fullWidth
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Email"
+                    name="email"
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Input
+                    label="Phone Number"
+                    name="phoneNumber"
+                    fullWidth
+                    value={formik.values.phoneNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Last Name" name="lastName" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Email" name="email" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Input label="Phone Number" name="phoneNumber" fullWidth />
-              </Grid>
-            </Grid>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={2}
-              pt={2}
-              pb={2}
-            >
-              <Button name="Clear" variant="outlined" />
-              <Button name="Search" />
-            </Box>
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+                gap={2}
+                pt={2}
+                pb={2}
+              >
+                <Button
+                  name="Clear"
+                  variant="outlined"
+                  onClick={() => {
+                    formik.resetForm();
+                    dispatch(
+                      patientHistory({
+                        page: pageNo,
+                        pageSize: rowsPerPage,
+                      }),
+                    );
+                  }}
+                />
+                <Button name="Search" type="submit" />
+              </Box>
+            </form>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
