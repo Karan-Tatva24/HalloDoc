@@ -76,65 +76,36 @@ const DashBoard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    switch (accountType) {
-      case "Admin":
-        switch (activeButton) {
-          case "New":
-            setColumns(newColumns);
-            setDropDown(newDropdown);
-            break;
-          case "Pending":
-            setColumns(pendingColumns);
-            setDropDown(pendingDropdown);
-            break;
-          case "Active":
-            setColumns(activeColumns);
-            setDropDown(activeDropdown);
-            break;
-          case "Conclude":
-            setColumns(concludeColumns);
-            setDropDown(concludeDropdown);
-            break;
-          case "To Close":
-            setColumns(toCloseColumns);
-            setDropDown(toCloseDropdown);
-            break;
-          case "UnPaid":
-            setColumns(unpaidColumns);
-            setDropDown(unpaidDropdown);
-            break;
-          default:
-            setColumns(newColumns);
-            setDropDown(newDropdown);
-        }
+    switch (activeButton) {
+      case "New":
+        setColumns(newColumns);
+        setDropDown(newDropdown);
         break;
-      case "Physician":
-        switch (activeButton) {
-          case "New":
-            setColumns(newColumns);
-            setDropDown(newDropdown);
-            break;
-          case "Pending":
-            setColumns(pendingColumns);
-            setDropDown(pendingDropdown);
-            break;
-          case "Active":
-            setColumns(activeColumns);
-            setDropDown(activeDropdown);
-            break;
-          case "Conclude":
-            setColumns(concludeColumns);
-            setDropDown(concludeDropdown);
-            break;
-          default:
-            setColumns(newColumns);
-            setDropDown(newDropdown);
-        }
+      case "Pending":
+        setColumns(pendingColumns);
+        setDropDown(pendingDropdown);
+        break;
+      case "Active":
+        setColumns(activeColumns);
+        setDropDown(activeDropdown);
+        break;
+      case "Conclude":
+        setColumns(concludeColumns);
+        setDropDown(concludeDropdown);
+        break;
+      case "To Close":
+        setColumns(toCloseColumns);
+        setDropDown(toCloseDropdown);
+        break;
+      case "UnPaid":
+        setColumns(unpaidColumns);
+        setDropDown(unpaidDropdown);
         break;
       default:
-        break;
+        setColumns(newColumns);
+        setDropDown(newDropdown);
     }
-  }, [accountType, activeButton]);
+  }, [activeButton]);
 
   return (
     <>
@@ -155,7 +126,6 @@ const DashBoard = () => {
                 >
                   {card.accountTypes.includes(accountType) ? (
                     <>
-                      {" "}
                       <Button
                         color={card.color}
                         variant={
@@ -295,7 +265,7 @@ const DashBoard = () => {
           <MyTable
             accountType={accountType}
             counts={counts}
-            columns={columns}
+            stateColumns={columns}
             dropDown={dropDown}
             indicator={indicator}
             activeState={activeButton.toLowerCase()}

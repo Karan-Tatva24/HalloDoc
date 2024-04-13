@@ -41,7 +41,7 @@ import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/getDashb
 const MyTable = ({
   accountType,
   counts,
-  columns,
+  stateColumns,
   dropDown,
   indicator,
   onClick,
@@ -49,6 +49,7 @@ const MyTable = ({
 }) => {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
+  const [columns, setColumns] = useState(stateColumns);
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [requestType, setRequestType] = useState("all");
@@ -68,6 +69,12 @@ const MyTable = ({
     setPageNo(1);
     setRowsPerPage(10);
   }, [activeState]);
+
+  useEffect(() => {
+    setColumns(
+      columns.filter((column) => column.accountTypes.includes(accountType)),
+    );
+  }, [accountType, columns]);
 
   const { stateData } = useSelector((state) => state.root.newState);
   const { providerStateData } = useSelector(
@@ -255,8 +262,8 @@ const MyTable = ({
                 <MenuItem value="all">All Regions</MenuItem>
                 {regions?.map((region) => {
                   return (
-                    <MenuItem key={region.id} value={region.name}>
-                      {region.name}
+                    <MenuItem key={region?.id} value={region?.name}>
+                      {region?.name}
                     </MenuItem>
                   );
                 })}
@@ -297,33 +304,31 @@ const MyTable = ({
             <TableHead>
               <TableRow>
                 {columns.map((column) =>
-                  column.accountTypes.includes(accountType) ? (
-                    column.id === "requestedDate" ||
-                    column.id === "dateOfService" ? (
-                      <TableCell
+                  column.id === "requestedDate" ||
+                  column.id === "dateOfService" ? (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ maxWidth: column.maxWidth }}
+                    >
+                      <TableSortLabel
                         key={column.id}
-                        align={column.align}
-                        style={{ maxWidth: column.maxWidth }}
-                      >
-                        <TableSortLabel
-                          key={column.id}
-                          active={orderBy === column.label}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.label)}
-                        >
-                          {column.label}
-                        </TableSortLabel>
-                      </TableCell>
-                    ) : (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.maxWidth }}
+                        active={orderBy === column.label}
+                        direction={order}
+                        onClick={() => handleRequestSort(column.label)}
                       >
                         {column.label}
-                      </TableCell>
-                    )
-                  ) : null,
+                      </TableSortLabel>
+                    </TableCell>
+                  ) : (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.maxWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ),
                 )}
               </TableRow>
             </TableHead>
@@ -331,8 +336,8 @@ const MyTable = ({
               {tableData?.map((row) => {
                 return (
                   <TableRow
-                    key={row.id}
-                    className={`requestor-${row.Requestor?.toLowerCase()}`}
+                    key={row?.id}
+                    className={`requestor-${row?.Requestor?.toLowerCase()}`}
                   >
                     {columns.map((column) => {
                       return (
@@ -343,7 +348,7 @@ const MyTable = ({
                         >
                           {column.id === "mail" ? (
                             <EmailOutlinedIcon
-                              fontSize="medium"
+                              fontSize="large"
                               sx={{
                                 border: "1px solid white",
                                 padding: "3px",
@@ -358,7 +363,7 @@ const MyTable = ({
                                 variant="outlined"
                                 color="inherit"
                                 startIcon={<LocalPhoneOutlinedIcon />}
-                                onClick={(e) => copyButtonText(row.id, e)}
+                                onClick={(e) => copyButtonText(row?.id, e)}
                               />
                               <div>(Patient)</div>
                               {row?.["Requestor Type"] !== "Patient" && (
@@ -369,12 +374,12 @@ const MyTable = ({
                                     variant="outlined"
                                     color="inherit"
                                     startIcon={<LocalPhoneOutlinedIcon />}
-                                    onClick={(e) => copyButtonText(row.id, e)}
+                                    onClick={(e) => copyButtonText(row?.id, e)}
                                   />
                                   <div>({row?.["Requestor Type"]})</div>
                                 </>
                               )}
-                              {copiedStates[row.id]}
+                              {copiedStates[row?.id]}
                             </>
                           ) : ["Actions"].includes(column.label) ? (
                             <>
@@ -404,7 +409,7 @@ const MyTable = ({
                                     "aria-labelledby": "fade-button",
                                   }}
                                   anchorEl={anchorEl}
-                                  open={open && row.id === rowId}
+                                  open={open && row?.id === rowId}
                                   onClose={handleClose}
                                   TransitionComponent={Fade}
                                 >
@@ -430,18 +435,18 @@ const MyTable = ({
                             )
                           ) : column.label === "Notes" ? (
                             activeState === "new" ? (
-                              row["Patient Note"] === null ? (
+                              row?.["Patient Note"] === null ? (
                                 " - "
                               ) : (
-                                row["Patient Note"]
+                                row?.["Patient Note"]
                               )
-                            ) : row["Transfer Note"] === null ? (
+                            ) : row?.["Transfer Note"] === null ? (
                               " - "
                             ) : (
-                              row["Transfer Note"]
+                              row?.["Transfer Note"]
                             )
                           ) : (
-                            row[column.label]
+                            row?.[column.label]
                           )}
                         </TableCell>
                       );
@@ -456,7 +461,9 @@ const MyTable = ({
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={
-            accountType === "Admin" ? stateData.count : providerStateData.count
+            accountType === "Admin"
+              ? stateData?.count
+              : providerStateData?.count
           }
           rowsPerPage={rowsPerPage}
           page={page}
