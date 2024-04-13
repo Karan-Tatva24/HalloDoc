@@ -47,11 +47,11 @@ const ViewShiftModal = ({ open, handleClose }) => {
             {regions?.map((region) => {
               return (
                 <MenuItem
-                  key={region.id}
-                  value={region.name}
-                  onClick={() => dispatch(getPhysician(region.id))}
+                  key={region?.id}
+                  value={region?.name}
+                  onClick={() => dispatch(getPhysician(region?.id))}
                 >
-                  {region.name}
+                  {region?.name}
                 </MenuItem>
               );
             })}

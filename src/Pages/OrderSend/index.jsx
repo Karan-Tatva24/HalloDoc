@@ -99,12 +99,12 @@ const Order = () => {
                       return (
                         <MenuItem
                           key={index}
-                          value={profession.profession}
+                          value={profession?.profession}
                           onClick={() =>
-                            dispatch(getBusiness(profession.profession))
+                            dispatch(getBusiness(profession?.profession))
                           }
                         >
-                          {profession.profession}
+                          {profession?.profession}
                         </MenuItem>
                       );
                     })}
@@ -130,14 +130,14 @@ const Order = () => {
                       businesses?.map((business) => {
                         return (
                           <MenuItem
-                            key={business.id}
-                            value={business.businessName}
+                            key={business?.id}
+                            value={business?.businessName}
                             onClick={() => {
-                              setBusinessId(business.id);
-                              dispatch(viewSendOrder(business.id));
+                              setBusinessId(business?.id);
+                              dispatch(viewSendOrder(business?.id));
                             }}
                           >
-                            {business.businessName}
+                            {business?.businessName}
                           </MenuItem>
                         );
                       })}
@@ -149,7 +149,7 @@ const Order = () => {
                     label="Business Contact"
                     fullWidth
                     disabled
-                    value={order[0]?.businessContact}
+                    value={order?.[0]?.businessContact}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -158,7 +158,7 @@ const Order = () => {
                     label="Email"
                     fullWidth
                     disabled
-                    value={order[0]?.email}
+                    value={order?.[0]?.email}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -167,7 +167,7 @@ const Order = () => {
                     label="Fax Number"
                     fullWidth
                     disabled
-                    value={order[0]?.faxNumber}
+                    value={order?.[0]?.faxNumber}
                   />
                 </Grid>
                 <Grid item xs={12}>

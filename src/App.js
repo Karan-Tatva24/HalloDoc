@@ -37,6 +37,7 @@ import SMSLogs from "./Pages/SMSLogs";
 import BlockHistory from "./Pages/BlockHistory";
 import CreateRequest from "./Pages/CreateRequest";
 import "react-phone-input-2/lib/style.css";
+import PageNotFound from "./Pages/PageNotFound";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -48,6 +49,7 @@ const App = () => {
       <ThemeProvider theme={halloDocTheme(toggleDarkMode)}>
         <CssBaseline />
         <Routes>
+          <Route path="*" element={<PageNotFound />} />
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<Login />} />
             <Route path={AppRoutes.LOGIN} element={<Login />} />

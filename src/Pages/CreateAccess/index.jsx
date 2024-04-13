@@ -44,11 +44,11 @@ const CreateAccess = () => {
 
   useEffect(() => {
     setInitialValues({
-      roleName: viewRole.Name || "",
-      accountType: viewRole.accountType || "All",
-      permissionIds: viewRole.permissions?.map((role) => role.id) || [],
+      roleName: viewRole?.Name || "",
+      accountType: viewRole?.accountType || "All",
+      permissionIds: viewRole?.permissions?.map((role) => role?.id) || [],
     });
-  }, [dispatch, viewRole.Name, viewRole.accountType, viewRole.permissions]);
+  }, [dispatch, viewRole]);
 
   useEffect(() => {
     dispatch(getRolesByAccountType(formik.values.accountType));
@@ -151,19 +151,19 @@ const CreateAccess = () => {
                   </Input>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                  {rolesByAccount.map((role) => {
+                  {rolesByAccount?.map((role) => {
                     return (
                       <FormControlLabel
-                        key={role.id}
+                        key={role?.id}
                         control={
                           <Checkbox
                             checked={formik.values.permissionIds.includes(
-                              role.id,
+                              role?.id,
                             )}
-                            onChange={() => handleChangeRoles(role.id)}
+                            onChange={() => handleChangeRoles(role?.id)}
                           />
                         }
-                        label={role.name}
+                        label={role?.name}
                       />
                     );
                   })}

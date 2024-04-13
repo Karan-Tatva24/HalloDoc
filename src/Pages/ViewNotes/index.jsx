@@ -78,7 +78,7 @@ const ViewNotes = () => {
                     <b>Transfer Notes</b>
                   </Typography>
                   <Typography className="caption-txt">
-                    {data["Transfer Notes"]}
+                    {data?.["Transfer Notes"]}
                   </Typography>
                 </Box>
               </Paper>
@@ -93,7 +93,7 @@ const ViewNotes = () => {
                     <b>Physician Notes</b>
                   </Typography>
                   <Typography className="caption-txt">
-                    {data["Physician Notes"]}
+                    {data?.["Physician Notes"]}
                   </Typography>
                 </Box>
               </Paper>
@@ -108,7 +108,7 @@ const ViewNotes = () => {
                     <b>Admin Notes</b>
                   </Typography>
                   <Typography className="caption-txt">
-                    {data["Admin Notes"]}
+                    {data?.["Admin Notes"]}
                   </Typography>
                 </Box>
               </Paper>

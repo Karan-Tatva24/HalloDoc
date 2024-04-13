@@ -60,10 +60,10 @@ const CloseCase = () => {
 
   useEffect(() => {
     setInitialValues({
-      phone: closeCaseData.patientPhoneNumber,
-      email: closeCaseData.patientEmail,
+      phone: closeCaseData?.patientPhoneNumber,
+      email: closeCaseData?.patientEmail,
     });
-  }, [closeCaseData.patientEmail, closeCaseData.patientPhoneNumber]);
+  }, [closeCaseData]);
 
   const handleEdit = () => {
     setIsDisabled(false);
@@ -133,6 +133,7 @@ const CloseCase = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
   return (
     <>
       <Box className="closeCase-main-container">
@@ -169,8 +170,8 @@ const CloseCase = () => {
                 <Typography variant="caption">Patient Name</Typography>
                 <Typography variant="h6">
                   <b className="patient-name">
-                    {closeCaseData.patientFirstName}
-                    {closeCaseData.patientLastName}
+                    {closeCaseData?.patientFirstName}
+                    {closeCaseData?.patientLastName}
                   </b>
                   ({closeCaseData.confirmationNumber})
                 </Typography>
@@ -204,12 +205,12 @@ const CloseCase = () => {
                 <TableBody>
                   {closeCaseData?.requestWiseFiles?.map((row, index) => (
                     <TableRow key={index} hover>
-                      <TableCell>{row.fileName}</TableCell>
-                      <TableCell>{row.createdAt}</TableCell>
+                      <TableCell>{row?.fileName}</TableCell>
+                      <TableCell>{row?.createdAt}</TableCell>
                       <TableCell>
                         <Button
                           variant="outlined"
-                          onClick={() => handleDownload(row.fileName)}
+                          onClick={() => handleDownload(row?.fileName)}
                           size="large"
                           className="icon-btn"
                         >
@@ -229,7 +230,7 @@ const CloseCase = () => {
                 <Grid item xs={12} md={6}>
                   <Input
                     label="First Name"
-                    value={closeCaseData.patientFirstName}
+                    value={closeCaseData?.patientFirstName}
                     fullWidth
                     disabled
                   />
@@ -237,7 +238,7 @@ const CloseCase = () => {
                 <Grid item xs={12} md={6}>
                   <Input
                     label="Last Name"
-                    value={closeCaseData.patientLastName}
+                    value={closeCaseData?.patientLastName}
                     fullWidth
                     disabled
                   />
@@ -248,7 +249,7 @@ const CloseCase = () => {
                     type="date"
                     fullWidth
                     disabled
-                    value={closeCaseData.dob}
+                    value={closeCaseData?.dob}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">

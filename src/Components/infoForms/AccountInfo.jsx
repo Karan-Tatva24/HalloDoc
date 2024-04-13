@@ -42,7 +42,7 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
 
   useEffect(() => {
     setInitialValues({
-      role: role.id,
+      role: role?.id,
       status: status,
     });
   }, [role, status]);
@@ -127,8 +127,8 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
             helperText={formik.touched.role && formik.errors.role}
           >
             {roles.map((role) => (
-              <MenuItem key={role.id} value={role.id}>
-                {role.Name}
+              <MenuItem key={role?.id} value={role?.id}>
+                {role?.Name}
               </MenuItem>
             ))}
           </Input>

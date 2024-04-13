@@ -77,8 +77,8 @@ const Scheduling = () => {
               <MenuItem value="all">All Regions</MenuItem>
               {regions?.map((region) => {
                 return (
-                  <MenuItem key={region.id} value={region.name}>
-                    {region.name}
+                  <MenuItem key={region?.id} value={region?.name}>
+                    {region?.name}
                   </MenuItem>
                 );
               })}

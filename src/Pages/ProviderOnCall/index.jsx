@@ -38,11 +38,13 @@ const ProviderOnCall = () => {
 
   useEffect(() => {
     setOnCallProviders(
-      providerOnCallData?.filter((data) => data.onCallStatus === "OnCall"),
+      providerOnCallData?.filter((data) => data?.onCallStatus === "OnCall"),
     );
 
     setOffDutyProviders(
-      providerOnCallData?.filter((data) => data.onCallStatus === "Unavailable"),
+      providerOnCallData?.filter(
+        (data) => data?.onCallStatus === "Unavailable",
+      ),
     );
   }, [providerOnCallData]);
 
@@ -94,8 +96,8 @@ const ProviderOnCall = () => {
               <MenuItem value="all">All Regions</MenuItem>
               {regions?.map((region) => {
                 return (
-                  <MenuItem key={region.id} value={region.name}>
-                    {region.name}
+                  <MenuItem key={region?.id} value={region?.name}>
+                    {region?.name}
                   </MenuItem>
                 );
               })}
@@ -123,11 +125,11 @@ const ProviderOnCall = () => {
                   <b>MDs On Call</b>
                 </Typography>
               </Grid>
-              {onCallProviders.map((onCallProvider) => (
-                <Grid key={onCallProvider.id} item xs={12} md={4}>
+              {onCallProviders?.map((onCallProvider) => (
+                <Grid key={onCallProvider?.id} item xs={12} md={4}>
                   <Box display="flex">
                     <img src={userDefault} alt="user" height={70} />
-                    {`${onCallProvider.firstName} ${onCallProvider.lastName}`}
+                    {`${onCallProvider?.firstName} ${onCallProvider?.lastName}`}
                   </Box>
                 </Grid>
               ))}
@@ -139,11 +141,11 @@ const ProviderOnCall = () => {
                   <b>Physicians Off Duty</b>
                 </Typography>
               </Grid>
-              {offDutyProviders.map((offDutyProvider) => (
-                <Grid key={offDutyProvider.id} item xs={12} md={4}>
+              {offDutyProviders?.map((offDutyProvider) => (
+                <Grid key={offDutyProvider?.id} item xs={12} md={4}>
                   <Box display="flex">
                     <img src={userDefault} alt="user" height={70} />
-                    {`${offDutyProvider.firstName} ${offDutyProvider.lastName}`}
+                    {`${offDutyProvider?.firstName} ${offDutyProvider?.lastName}`}
                   </Box>
                 </Grid>
               ))}

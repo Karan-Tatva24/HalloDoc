@@ -24,6 +24,9 @@ import "./userAccess.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userAccess } from "../../redux/halloAPIs/userAccessAPI";
+import { physicianProfile } from "../../redux/halloAPIs/providerInfoAPI";
+import { AppRoutes } from "../../constants/routes";
+import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
 
 const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -38,7 +41,23 @@ const UserAccess = () => {
 
   const { userAccount } = useSelector((state) => state.root.userAccess);
 
-  useEffect(() => setTableData(userAccount.rows), [userAccount.rows]);
+  useEffect(() => setTableData(userAccount?.rows), [userAccount]);
+
+  const handleEditClick = (id, accountType) => {
+    if (accountType === "Physician") {
+      dispatch(physicianProfile(id)).then((response) => {
+        if (response.type === "physicianProfile/fulfilled") {
+          navigate(AppRoutes.EDIT_PHYSICIAN);
+        }
+      });
+    } else if (accountType === "Admin") {
+      dispatch(adminProfile()).then((response) => {
+        if (response.type === "adminProfile/fulfilled") {
+          navigate(AppRoutes.MY_PROFILE);
+        }
+      });
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -112,7 +131,6 @@ const UserAccess = () => {
                 <MenuItem value="All">All</MenuItem>
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="physician">Physician</MenuItem>
-                <MenuItem value="user">User</MenuItem>
               </Input>
             </Box>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
@@ -139,7 +157,7 @@ const UserAccess = () => {
                 <TableBody align="left">
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
@@ -153,12 +171,15 @@ const UserAccess = () => {
                                     name="Edit"
                                     variant="outlined"
                                     size="small"
+                                    onClick={() =>
+                                      handleEditClick(row?.id, row?.accountType)
+                                    }
                                   />
                                 </Box>
                               ) : column.id === "accountPOC" ? (
-                                `${row.firstName}, ${row.lastName}`
+                                `${row?.firstName}, ${row?.lastName}`
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );
@@ -172,7 +193,7 @@ const UserAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={userAccount.count}
+              count={userAccount?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

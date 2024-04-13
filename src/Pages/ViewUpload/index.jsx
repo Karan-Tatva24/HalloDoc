@@ -33,7 +33,7 @@ const ViewUpload = () => {
   const [orderBy, setOrderBy] = useState("createdAt");
   const [selectedFile, setSelectedFile] = useState(null);
   const state = useSelector((state) => state.root.viewUpload);
-  const rows = state.viewUpload;
+  const rows = state?.viewUpload;
   const [filterData, setFilterData] = useState(rows);
   const {
     patientFirstName,
@@ -199,8 +199,8 @@ const ViewUpload = () => {
   };
 
   const handleSendMail = () => {
-    const selectedFiles = rows.filter((row) => selected.includes(row.id));
-    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    const selectedFiles = rows?.filter((row) => selected.includes(row?.id));
+    const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(
       sendMail({
         email: patientEmail,
@@ -273,7 +273,7 @@ const ViewUpload = () => {
                     hidden
                   />
                   <label htmlFor="selectFile">
-                    {selectedFile !== null ? selectedFile.name : "Select File"}
+                    {selectedFile !== null ? selectedFile?.name : "Select File"}
                   </label>
                 </Button>
 
@@ -325,9 +325,10 @@ const ViewUpload = () => {
                     <TableCell padding="checkbox">
                       <Checkbox
                         indeterminate={
-                          selected.length > 0 && selected.length < rows.length
+                          selected?.length > 0 &&
+                          selected?.length < rows?.length
                         }
-                        checked={selected.length === rows.length}
+                        checked={selected?.length === rows?.length}
                         onChange={handleSelectAllClick}
                       />
                     </TableCell>
@@ -346,19 +347,19 @@ const ViewUpload = () => {
                 </TableHead>
                 <TableBody>
                   {filterData.map((row) => (
-                    <TableRow key={row.id} hover>
+                    <TableRow key={row?.id} hover>
                       <TableCell padding="checkbox">
                         <Checkbox
-                          checked={isSelected(row.id)}
-                          onClick={(event) => handleClick(event, row.id)}
+                          checked={isSelected(row?.id)}
+                          onClick={(event) => handleClick(event, row?.id)}
                         />
                       </TableCell>
-                      <TableCell>{row.fileName}</TableCell>
-                      <TableCell>{row.createdAt}</TableCell>
+                      <TableCell>{row?.fileName}</TableCell>
+                      <TableCell>{row?.createdAt}</TableCell>
                       <TableCell>
                         <Button
                           variant="outlined"
-                          onClick={() => handleDownload(row.fileName)}
+                          onClick={() => handleDownload(row?.fileName)}
                           size="large"
                           className="icon-btn"
                         >
@@ -367,7 +368,7 @@ const ViewUpload = () => {
                         &nbsp;&nbsp;
                         <Button
                           variant="outlined"
-                          onClick={() => handleDelete(row.fileName)}
+                          onClick={() => handleDelete(row?.fileName)}
                           className="icon-btn"
                           size="large"
                         >

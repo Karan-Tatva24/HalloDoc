@@ -71,7 +71,7 @@ const BlockHistory = () => {
     );
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  useEffect(() => setTableData(blockHistoryData.rows), [blockHistoryData.rows]);
+  useEffect(() => setTableData(blockHistoryData?.rows), [blockHistoryData]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -203,18 +203,18 @@ const BlockHistory = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
                               {column.id === "patientName" ? (
-                                `${row.patientFirstName} ${row.patientLastName}`
+                                `${row?.patientFirstName} ${row?.patientLastName}`
                               ) : column.id === "action" ? (
                                 <Button
                                   name="Unblock"
                                   variant="outlined"
                                   onClick={() => {
-                                    dispatch(unblockPatient(row.id)).then(
+                                    dispatch(unblockPatient(row?.id)).then(
                                       (response) => {
                                         if (
                                           response.type ===
@@ -243,7 +243,7 @@ const BlockHistory = () => {
                                   checked={row?.isActive}
                                 />
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );
@@ -257,7 +257,7 @@ const BlockHistory = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={blockHistoryData.count}
+              count={blockHistoryData?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -79,7 +79,7 @@ const EmailLogs = () => {
     );
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  useEffect(() => setTableData(emailLogData?.rows), [emailLogData?.rows]);
+  useEffect(() => setTableData(emailLogData?.rows), [emailLogData]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -138,9 +138,9 @@ const EmailLogs = () => {
                     onBlur={formik.handleBlur}
                   >
                     <MenuItem value="all">All</MenuItem>
-                    {roles.map((role) => (
-                      <MenuItem key={role.id} value={role.Name}>
-                        {role.Name}
+                    {roles?.map((role) => (
+                      <MenuItem key={role?.id} value={role?.Name}>
+                        {role?.Name}
                       </MenuItem>
                     ))}
                   </Input>
@@ -234,20 +234,20 @@ const EmailLogs = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
-                            <TableCell key={column.id} align="center">
+                            <TableCell key={column?.id} align="center">
                               {row[column.id] !== null
                                 ? column.id === "recipient"
-                                  ? `${row.receiver.firstName} ${row.receiver.lastName}`
+                                  ? `${row.receiver.firstName} ${row?.receiver?.lastName}`
                                   : column.id === "roleName"
-                                    ? row.receiver.role.Name
+                                    ? row?.receiver?.role?.Name
                                     : column.id === "sent"
-                                      ? row.isEmailSent
+                                      ? row?.isEmailSent
                                         ? "Yes"
                                         : "No"
-                                      : row[column.id]
+                                      : row?.[column.id]
                                 : " - "}
                             </TableCell>
                           );

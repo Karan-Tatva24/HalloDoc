@@ -48,7 +48,7 @@ const ProviderInfo = () => {
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { providerInfoData } = useSelector((state) => state.root.providerInfo);
 
-  useEffect(() => setTableData(providerInfoData.rows), [providerInfoData.rows]);
+  useEffect(() => setTableData(providerInfoData?.rows), [providerInfoData]);
 
   const handleOpen = (id) => {
     setId(id);
@@ -60,11 +60,11 @@ const ProviderInfo = () => {
   };
 
   useEffect(() => {
-    const initialSelectedIds = providerInfoData.rows
-      ?.filter((data) => data.stopNotification)
-      ?.map((data) => data.id);
+    const initialSelectedIds = providerInfoData?.rows
+      ?.filter((data) => data?.stopNotification)
+      ?.map((data) => data?.id);
     setSelectedIds(initialSelectedIds);
-  }, [providerInfoData.rows]);
+  }, [providerInfoData]);
 
   const handleCheckboxChange = (id) => {
     if (selectedIds.includes(id)) {
@@ -136,8 +136,8 @@ const ProviderInfo = () => {
                 <MenuItem value="all">All</MenuItem>
                 {regions?.map((region) => {
                   return (
-                    <MenuItem key={region.id} value={region.name}>
-                      {region.name}
+                    <MenuItem key={region?.id} value={region?.name}>
+                      {region?.name}
                     </MenuItem>
                   );
                 })}
@@ -201,14 +201,14 @@ const ProviderInfo = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
                               {column.id === "stopNotification" ? (
                                 <Checkbox
-                                  checked={selectedIds.includes(row.id)}
-                                  onChange={() => handleCheckboxChange(row.id)}
+                                  checked={selectedIds.includes(row?.id)}
+                                  onChange={() => handleCheckboxChange(row?.id)}
                                 />
                               ) : column.id === "actions" ? (
                                 <Box
@@ -221,14 +221,14 @@ const ProviderInfo = () => {
                                     name="Contact"
                                     variant="outlined"
                                     size="small"
-                                    onClick={() => handleOpen(row.id)}
+                                    onClick={() => handleOpen(row?.id)}
                                   />
                                   <Button
                                     name="Edit"
                                     variant="outlined"
                                     size="small"
                                     onClick={() => {
-                                      dispatch(physicianProfile(row.id)).then(
+                                      dispatch(physicianProfile(row?.id)).then(
                                         (response) => {
                                           if (
                                             response.type ===
@@ -242,9 +242,9 @@ const ProviderInfo = () => {
                                   />
                                 </Box>
                               ) : column.id === "providerName" ? (
-                                `${row["firstName"]} ${row["lastName"]}`
+                                `${row?.["firstName"]} ${row?.["lastName"]}`
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );
@@ -258,7 +258,7 @@ const ProviderInfo = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={providerInfoData.count}
+              count={providerInfoData?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

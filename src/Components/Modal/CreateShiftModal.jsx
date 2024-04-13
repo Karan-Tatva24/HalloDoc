@@ -51,11 +51,11 @@ const CreateShiftModal = ({ open, handleClose }) => {
             {regions?.map((region) => {
               return (
                 <MenuItem
-                  key={region.id}
-                  value={region.name}
-                  onClick={() => dispatch(getPhysician(region.id))}
+                  key={region?.id}
+                  value={region?.name}
+                  onClick={() => dispatch(getPhysician(region?.id))}
                 >
-                  {region.name}
+                  {region?.name}
                 </MenuItem>
               );
             })}
@@ -75,10 +75,10 @@ const CreateShiftModal = ({ open, handleClose }) => {
               physicians?.map((physician) => {
                 return (
                   <MenuItem
-                    key={physician.id}
-                    value={`${physician.firstName} ${physician.lastName}`}
+                    key={physician?.id}
+                    value={`${physician?.firstName} ${physician?.lastName}`}
                   >
-                    {`${physician.firstName} ${physician.lastName}`}
+                    {`${physician?.firstName} ${physician?.lastName}`}
                   </MenuItem>
                 );
               })}

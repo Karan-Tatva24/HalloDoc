@@ -41,7 +41,7 @@ const PatientRecord = () => {
   useEffect(() => {
     dispatch(
       patientRecord({
-        id: patientRecordData.id,
+        id: patientRecordData?.id,
         sortBy: orderBy,
         orderBy: order.toUpperCase(),
         page: pageNo,
@@ -51,8 +51,8 @@ const PatientRecord = () => {
   }, [dispatch, order, orderBy, pageNo, patientRecordData?.id, rowsPerPage]);
 
   useEffect(
-    () => setTableData(patientRecordData.patients.rows),
-    [patientRecordData.patients.rows],
+    () => setTableData(patientRecordData?.patients?.rows),
+    [patientRecordData],
   );
 
   const handleClick = (event, id) => {
@@ -143,14 +143,14 @@ const PatientRecord = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
                               {column.id === "client" ? (
-                                `${row.patientFirstName} ${row.patientLastName}`
+                                `${row?.patientFirstName} ${row?.patientLastName}`
                               ) : column.id === "providerName" ? (
-                                `${row.physician?.firstName} ${row.physician?.lastName}`
+                                `${row?.physician?.firstName} ${row?.physician?.lastName}`
                               ) : column.id === "actions" ? (
                                 <>
                                   <Button
@@ -164,7 +164,7 @@ const PatientRecord = () => {
                                       "aria-labelledby": "fade-button",
                                     }}
                                     anchorEl={anchorEl}
-                                    open={open && row.id === rowId}
+                                    open={open && row?.id === rowId}
                                     onClose={handleClose}
                                     TransitionComponent={Fade}
                                   >
@@ -194,8 +194,8 @@ const PatientRecord = () => {
                                 ) : (
                                   " - "
                                 )
-                              ) : row[column.id] ? (
-                                row[column.id]
+                              ) : row?.[column.id] ? (
+                                row?.[column.id]
                               ) : (
                                 " - "
                               )}
@@ -211,7 +211,7 @@ const PatientRecord = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={patientRecordData.patients.count}
+              count={patientRecordData?.patients?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -49,7 +49,7 @@ const AccountAccess = () => {
   const dispatch = useDispatch();
 
   const { accessAccount } = useSelector((state) => state.root.accountAccess);
-  useEffect(() => setTableData(accessAccount.rows), [accessAccount.rows]);
+  useEffect(() => setTableData(accessAccount?.rows), [accessAccount]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -121,7 +121,7 @@ const AccountAccess = () => {
                 <TableBody align="left">
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
@@ -136,7 +136,7 @@ const AccountAccess = () => {
                                     variant="outlined"
                                     size="small"
                                     onClick={() => {
-                                      dispatch(viewRole(row.id));
+                                      dispatch(viewRole(row?.id));
                                       navigate(AppRoutes.CREATE_ROLE);
                                     }}
                                   />
@@ -162,7 +162,7 @@ const AccountAccess = () => {
                                   />
                                 </Box>
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );
@@ -176,7 +176,7 @@ const AccountAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={accessAccount.count}
+              count={accessAccount?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

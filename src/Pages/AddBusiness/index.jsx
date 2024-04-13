@@ -52,16 +52,16 @@ const AddBusiness = () => {
 
   useEffect(() => {
     setInitialValues({
-      businessName: business.businessName || "",
-      profession: business.profession || "",
-      faxNumber: business.faxNumber || "",
-      phoneNumber: business.phoneNumber || "",
-      email: business.email || "",
-      businessContact: business.businessContact || "",
-      street: business.street || "",
-      city: business.city || "",
-      state: business.state || "",
-      zipCode: business.zipCode || "",
+      businessName: business?.businessName || "",
+      profession: business?.profession || "",
+      faxNumber: business?.faxNumber || "",
+      phoneNumber: business?.phoneNumber || "",
+      email: business?.email || "",
+      businessContact: business?.businessContact || "",
+      street: business?.street || "",
+      city: business?.city || "",
+      state: business?.state || "",
+      zipCode: business?.zipCode || "",
     });
   }, [business]);
 
@@ -100,7 +100,7 @@ const AddBusiness = () => {
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
-                <b>{business.id ? "Update Business" : "Add Business"}</b>
+                <b>{business?.id ? "Update Business" : "Add Business"}</b>
               </Typography>
             </Box>
             <Button

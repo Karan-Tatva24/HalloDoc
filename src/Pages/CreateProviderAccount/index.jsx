@@ -337,21 +337,21 @@ const CreateProviderAccount = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  {regions.map((region) => {
+                  {regions?.map((region) => {
                     return (
                       <FormControlLabel
-                        key={region.id}
+                        key={region?.id}
                         control={
                           <Checkbox
                             size="medium"
                             checked={formik.values.selectedRegions.includes(
-                              region.id,
+                              region?.id,
                             )}
-                            onChange={() => handleRegionChange(region.id)}
-                            value={region.name}
+                            onChange={() => handleRegionChange(region?.id)}
+                            value={region?.name}
                           />
                         }
-                        label={region.name}
+                        label={region?.name}
                       />
                     );
                   })}
@@ -417,9 +417,9 @@ const CreateProviderAccount = () => {
                     error={formik.touched.state && Boolean(formik.errors.state)}
                     helperText={formik.touched.state && formik.errors.state}
                   >
-                    {regions.map((region) => (
-                      <MenuItem key={region.id} value={region.name}>
-                        {region.name}
+                    {regions?.map((region) => (
+                      <MenuItem key={region?.id} value={region?.name}>
+                        {region?.name}
                       </MenuItem>
                     ))}
                   </Input>

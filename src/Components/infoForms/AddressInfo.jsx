@@ -122,8 +122,8 @@ const AddressInfo = ({
             helperText={formik.touched.state && formik.errors.state}
           >
             {regions?.map((region) => (
-              <MenuItem key={region.id} value={region.name}>
-                {region.name}
+              <MenuItem key={region?.id} value={region?.name}>
+                {region?.name}
               </MenuItem>
             ))}
           </Input>

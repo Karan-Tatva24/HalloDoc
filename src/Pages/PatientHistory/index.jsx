@@ -34,10 +34,7 @@ const PatientHistory = () => {
   const { patientHistoryData } = useSelector((state) => state.root.records);
   const navigate = useNavigate();
 
-  useEffect(
-    () => setTableData(patientHistoryData.rows),
-    [patientHistoryData.rows],
-  );
+  useEffect(() => setTableData(patientHistoryData?.rows), [patientHistoryData]);
 
   useEffect(() => {
     dispatch(
@@ -111,22 +108,22 @@ const PatientHistory = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
                               {column.id === "address" ? (
-                                `${row.street} ,${row.city} ,${row.state} ,${row.zipCode}`
+                                `${row?.street} ,${row?.city} ,${row?.state} ,${row?.zipCode}`
                               ) : column.id === "actions" ? (
                                 <Button
                                   name="Explore"
                                   variant="outlined"
                                   onClick={() => {
                                     dispatch(
-                                      patientRecord({ id: row.userId }),
+                                      patientRecord({ id: row?.userId }),
                                     ).then((response) => {
                                       if (
-                                        response.type ===
+                                        response?.type ===
                                         "patientRecord/fulfilled"
                                       ) {
                                         navigate(AppRoutes.PATIENTS_RECORDS);
@@ -135,7 +132,7 @@ const PatientHistory = () => {
                                   }}
                                 />
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );

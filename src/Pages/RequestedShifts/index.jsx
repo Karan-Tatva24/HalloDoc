@@ -57,7 +57,7 @@ const RequestedShifts = () => {
 
   const { unApprovedShiftData } = useSelector((state) => state.root.scheduling);
   useEffect(
-    () => setTableData(unApprovedShiftData.rows),
+    () => setTableData(unApprovedShiftData?.rows),
     [unApprovedShiftData],
   );
 
@@ -67,7 +67,7 @@ const RequestedShifts = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = tableData.map((row) => row.id);
+      const newSelected = tableData?.map((row) => row?.id);
       setSelected(newSelected);
       return;
     }
@@ -158,8 +158,8 @@ const RequestedShifts = () => {
                 <MenuItem value="all">All Regions</MenuItem>
                 {regions?.map((region) => {
                   return (
-                    <MenuItem key={region.id} value={region.name}>
-                      {region.name}
+                    <MenuItem key={region?.id} value={region?.name}>
+                      {region?.name}
                     </MenuItem>
                   );
                 })}
@@ -222,10 +222,10 @@ const RequestedShifts = () => {
                     <TableCell padding="checkbox">
                       <Checkbox
                         indeterminate={
-                          selected.length > 0 &&
-                          selected.length < tableData.length
+                          selected?.length > 0 &&
+                          selected?.length < tableData?.length
                         }
-                        checked={selected.length === tableData.length}
+                        checked={selected?.length === tableData?.length}
                         onChange={handleSelectAllClick}
                       />
                     </TableCell>
@@ -245,19 +245,19 @@ const RequestedShifts = () => {
                 </TableHead>
                 <TableBody>
                   {tableData?.map((row) => (
-                    <TableRow key={row.id} hover>
+                    <TableRow key={row?.id} hover>
                       <TableCell padding="checkbox">
                         <Checkbox
-                          checked={isSelected(row.id)}
-                          onClick={(event) => handleClick(event, row.id)}
+                          checked={isSelected(row?.id)}
+                          onClick={(event) => handleClick(event, row?.id)}
                         />
                       </TableCell>
-                      <TableCell>{row.physician["Physician Name"]}</TableCell>
-                      <TableCell>{row.shiftDate}</TableCell>
+                      <TableCell>{row?.physician["Physician Name"]}</TableCell>
+                      <TableCell>{row?.shiftDate}</TableCell>
                       <TableCell>
-                        {`${row.startTime} - ${row.endTime}`}
+                        {`${row?.startTime} - ${row?.endTime}`}
                       </TableCell>
-                      <TableCell>{row.region}</TableCell>
+                      <TableCell>{row?.region}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -266,7 +266,7 @@ const RequestedShifts = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={unApprovedShiftData.count}
+              count={unApprovedShiftData?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

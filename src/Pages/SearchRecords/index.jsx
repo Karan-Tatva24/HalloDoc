@@ -81,7 +81,7 @@ const SearchRecords = () => {
     );
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
-  useEffect(() => setTableData(searchRecordData.rows), [searchRecordData.rows]);
+  useEffect(() => setTableData(searchRecordData?.rows), [searchRecordData]);
 
   const handleExportToExcel = () => {
     dispatch(exportRecord())
@@ -306,28 +306,27 @@ const SearchRecords = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
                               {column.id === "patientName" ? (
-                                `${row.patientFirstName} ${row.patientLastName}`
+                                `${row?.patientFirstName} ${row?.patientLastName}`
                               ) : column.id === "physician" ? (
-                                row.physician?.firstName === "null" ||
-                                row.physician?.lastName === "null" ? (
+                                row?.physician === null ? (
                                   " - "
                                 ) : (
-                                  `${row.physician?.firstName} ${row.physician.lastName}`
+                                  `${row?.physician?.firstName} ${row?.physician?.lastName}`
                                 )
                               ) : column.id === "address" ? (
-                                `${row.street}, ${row.city}, ${row.state}`
+                                `${row?.street}, ${row?.city}, ${row?.state}`
                               ) : column.id === "delete" ? (
                                 <Button
                                   name="Delete"
                                   variant="outlined"
                                   size="small"
                                   onClick={() => {
-                                    dispatch(deleteRecord(row.id)).then(
+                                    dispatch(deleteRecord(row?.id)).then(
                                       (response) => {
                                         if (
                                           response.type ===
@@ -349,8 +348,8 @@ const SearchRecords = () => {
                                     );
                                   }}
                                 />
-                              ) : row[column.id] ? (
-                                row[column.id]
+                              ) : row?.[column.id] ? (
+                                row?.[column.id]
                               ) : (
                                 " - "
                               )}
@@ -366,7 +365,7 @@ const SearchRecords = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={searchRecordData.count}
+              count={searchRecordData?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

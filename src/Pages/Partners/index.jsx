@@ -57,7 +57,7 @@ const Partners = () => {
     (state) => state.root.getProfessionsBusiness,
   );
 
-  useEffect(() => setTableData(vendorData.rows), [vendorData.rows]);
+  useEffect(() => setTableData(vendorData?.rows), [vendorData]);
 
   const handleDeleteBusiness = (id) => {
     dispatch(deleteBusiness(id)).then((response) => {
@@ -127,8 +127,8 @@ const Partners = () => {
                   <MenuItem value="all">All Professions</MenuItem>
                   {professions?.map((profession, index) => {
                     return (
-                      <MenuItem key={index} value={profession.profession}>
-                        {profession.profession}
+                      <MenuItem key={index} value={profession?.profession}>
+                        {profession?.profession}
                       </MenuItem>
                     );
                   })}
@@ -161,7 +161,7 @@ const Partners = () => {
                 <TableBody>
                   {tableData?.map((row) => {
                     return (
-                      <TableRow key={row.id}>
+                      <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
                             <TableCell key={column.id} align="center">
@@ -171,18 +171,20 @@ const Partners = () => {
                                     name="Edit"
                                     variant="outlined"
                                     onClick={() => {
-                                      dispatch(viewBusiness(row.id));
+                                      dispatch(viewBusiness(row?.id));
                                       navigate(AppRoutes.ADD_BUSINESS);
                                     }}
                                   />
                                   <Button
                                     name="Delete"
                                     variant="outlined"
-                                    onClick={() => handleDeleteBusiness(row.id)}
+                                    onClick={() =>
+                                      handleDeleteBusiness(row?.id)
+                                    }
                                   />
                                 </Box>
                               ) : (
-                                row[column.id]
+                                row?.[column.id]
                               )}
                             </TableCell>
                           );
@@ -196,7 +198,7 @@ const Partners = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={vendorData.count}
+              count={vendorData?.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

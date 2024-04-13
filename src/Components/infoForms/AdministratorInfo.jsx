@@ -47,13 +47,13 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
       email: email,
       confirmEmail: email,
       administratorPhone: phone,
-      regions: regions.map((region) => region.id),
+      regions: regions?.map((region) => region?.id),
     });
   }, [email, firstName, lastName, phone, regions]);
 
   const handleChangeRegions = (id) => {
-    const newRegions = formik.values.regions.includes(id)
-      ? formik.values.regions.filter((selectedId) => selectedId !== id)
+    const newRegions = formik.values.regions?.includes(id)
+      ? formik.values.regions?.filter((selectedId) => selectedId !== id)
       : [...formik.values.regions, id];
     formik.setFieldValue("regions", newRegions);
   };
@@ -147,20 +147,20 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          {data?.regions.map((region) => {
+          {data?.regions?.map((region) => {
             return (
               <FormControlLabel
                 className="checkbox-padding"
                 disabled={isDisabled}
-                key={region.id}
+                key={region?.id}
                 control={
                   <Checkbox
                     size="small"
-                    checked={formik.values.regions.includes(region.id)}
-                    onChange={() => handleChangeRegions(region.id)}
+                    checked={formik.values.regions?.includes(region?.id)}
+                    onChange={() => handleChangeRegions(region?.id)}
                   />
                 }
-                label={region.name}
+                label={region?.name}
               />
             );
           })}

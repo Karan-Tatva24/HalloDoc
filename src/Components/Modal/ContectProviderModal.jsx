@@ -27,8 +27,8 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
       dispatch(
         contactProvider({
           id,
-          contactMethod: values.contactMethod,
-          messageBody: values.message,
+          contactMethod: values?.contactMethod,
+          messageBody: values?.message,
         }),
       ).then((response) => {
         if (response.type === "contactProvider/fulfilled") {
