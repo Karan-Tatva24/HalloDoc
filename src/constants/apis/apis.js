@@ -74,6 +74,7 @@ export const APPROVE_SHIFT = "/admin/provider/approveShift";
 export const DELETE_SHIFT = "/admin/provider/deleteShift";
 export const UPDATE_NOTIFICATION = "/admin/provider/updateNotification";
 export const DELETE_PROVIDER_ACCOUNT = "/admin/provider/deleteProvider";
+export const ADD_NEW_SHIFT = "/admin/provider/addNewShift";
 
 /* ************************************* Access API ************************************** */
 
