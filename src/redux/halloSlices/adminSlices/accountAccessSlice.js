@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { accountAccess } from "../../halloAPIs/accountAccessAPI";
+import { accountAccess } from "../../halloAPIs/adminAPIs/accessAPIs/accountAccessAPI";
 
 const initialState = {
   accessAccount: {},

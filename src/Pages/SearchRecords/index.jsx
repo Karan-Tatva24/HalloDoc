@@ -24,7 +24,7 @@ import {
   deleteRecord,
   exportRecord,
   searchRecord,
-} from "../../redux/halloAPIs/searchRecordsAPI";
+} from "../../redux/halloAPIs/adminAPIs/recordsAPIs/searchRecordsAPI";
 import "./searchRecords.css";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";

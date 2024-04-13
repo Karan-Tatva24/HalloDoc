@@ -18,13 +18,13 @@ import { Input } from "../../Components/TextField/Input";
 import { columns } from "../../constants/patientHistoryData";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import "./patientHistory.css";
 import {
   patientHistory,
   patientRecord,
-} from "../../redux/halloAPIs/patientRecordsAPI";
-import { useFormik } from "formik";
+} from "../../redux/halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
+import "./patientHistory.css";
 
 const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);

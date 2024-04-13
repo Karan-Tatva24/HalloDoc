@@ -23,10 +23,10 @@ import { Button } from "../../Components/Button";
 import "./userAccess.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userAccess } from "../../redux/halloAPIs/userAccessAPI";
-import { physicianProfile } from "../../redux/halloAPIs/providerInfoAPI";
+import { userAccess } from "../../redux/halloAPIs/adminAPIs/accessAPIs/userAccessAPI";
+import { physicianProfile } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { AppRoutes } from "../../constants/routes";
-import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
+import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 
 const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");

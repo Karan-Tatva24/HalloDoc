@@ -10,8 +10,11 @@ import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
-import { getBusiness } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
-import { sendOrder, viewSendOrder } from "../../redux/halloAPIs/sendOrderAPI";
+import { getBusiness } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/getProfessionsBusinessAPI";
+import {
+  sendOrder,
+  viewSendOrder,
+} from "../../redux/halloAPIs/adminAPIs/partnerAPIs/sendOrderAPI";
 import { toast } from "react-toastify";
 
 const Order = () => {

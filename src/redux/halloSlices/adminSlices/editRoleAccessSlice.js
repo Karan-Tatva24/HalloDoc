@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewRole } from "../../halloAPIs/createAccessAPI";
+import { viewRole } from "../../halloAPIs/adminAPIs/accessAPIs/createAccessAPI";
 
 const initialState = {
   viewRole: {},

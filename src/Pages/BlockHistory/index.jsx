@@ -23,7 +23,7 @@ import { Button } from "../../Components/Button";
 import {
   blockHistory,
   unblockPatient,
-} from "../../redux/halloAPIs/blockHistoryAPI";
+} from "../../redux/halloAPIs/adminAPIs/recordsAPIs/blockHistoryAPI";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 

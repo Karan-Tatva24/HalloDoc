@@ -30,12 +30,15 @@ import SendAgreementModal from "../../Components/Modal/SendAgreementModal";
 import RequestSupportModal from "../../Components/Modal/RequestSupportModal";
 import SendLinkModal from "../../Components/Modal/SendLinkModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getRegions } from "../../redux/halloAPIs/getRegionPhysicianAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
-import { getProfession } from "../../redux/halloAPIs/getProfessionsBusinessAPI";
+import { getRegions } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
+import { getProfession } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/getProfessionsBusinessAPI";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
-import { exportAll, exportByState } from "../../redux/halloAPIs/exportAPI";
+import {
+  exportAll,
+  exportByState,
+} from "../../redux/halloAPIs/adminAPIs/commonAPIs/exportAPI";
 import { toast } from "react-toastify";
 
 const DashBoard = () => {

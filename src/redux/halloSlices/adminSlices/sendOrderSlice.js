@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewSendOrder } from "../../halloAPIs/sendOrderAPI";
+import { viewSendOrder } from "../../halloAPIs/adminAPIs/partnerAPIs/sendOrderAPI";
 
 const initialState = {
   order: [],

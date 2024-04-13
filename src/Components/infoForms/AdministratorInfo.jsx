@@ -14,7 +14,7 @@ import { administratorInfoSchema } from "../../ValidationSchema";
 import {
   adminProfile,
   editAdminProfile,
-} from "../../redux/halloAPIs/adminProfileAPI";
+} from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 

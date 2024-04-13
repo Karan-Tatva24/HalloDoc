@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   editProviderProfile,
   physicianProfile,
-} from "../../redux/halloAPIs/providerInfoAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {

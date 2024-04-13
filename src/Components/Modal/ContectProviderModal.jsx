@@ -13,7 +13,7 @@ import { Button } from "../Button";
 import { useFormik } from "formik";
 import { contectProviderSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
-import { contactProvider } from "../../redux/halloAPIs/providerInfoAPI";
+import { contactProvider } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 
 const ContectProviderModal = ({ open, handleClose, id }) => {

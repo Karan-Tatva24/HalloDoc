@@ -20,7 +20,7 @@ import {
   createAccess,
   getRolesByAccountType,
   updateRole,
-} from "../../redux/halloAPIs/createAccessAPI";
+} from "../../redux/halloAPIs/adminAPIs/accessAPIs/createAccessAPI";
 import { AppRoutes } from "../../constants/routes";
 import { toast } from "react-toastify";
 import { clearViewRole } from "../../redux/halloSlices/adminSlices/editRoleAccessSlice";

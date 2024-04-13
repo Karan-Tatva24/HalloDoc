@@ -22,7 +22,7 @@ import "react-phone-input-2/lib/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import AssignModal from "../../Components/Modal/AssignModal";
 import CancelModal from "../../Components/Modal/CancelModal";
-import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
+import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 
 const INITIAL_VALUE = {
   patientNotes: "",

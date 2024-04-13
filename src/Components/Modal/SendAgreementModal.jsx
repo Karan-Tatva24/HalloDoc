@@ -5,7 +5,7 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
-import { sendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
+import { sendAgreement } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendAgreementAPI";
 import { toast } from "react-toastify";
 
 const SendAgreementModal = ({ open, handleClose }) => {

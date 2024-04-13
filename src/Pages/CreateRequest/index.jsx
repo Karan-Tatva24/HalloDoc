@@ -10,10 +10,10 @@ import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
 import { createRequestSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { createRequestByAdminProvider } from "../../redux/halloAPIs/createRequestAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { createRequestByAdminProvider } from "../../redux/halloAPIs/userAPIs/createRequestAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { AppRoutes } from "../../constants/routes";
-import { verifyState } from "../../redux/halloAPIs/verifyStateAPI";
+import { verifyState } from "../../redux/halloAPIs/adminAPIs/commonAPIs/verifyStateAPI";
 import { toast } from "react-toastify";
 
 const initialValues = {

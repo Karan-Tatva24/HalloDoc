@@ -21,12 +21,12 @@ import { Button } from "../../Components/Button";
 import { columns } from "../../constants/patientRecordData";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "./patientRecord.css";
-import { patientRecord } from "../../redux/halloAPIs/patientRecordsAPI";
-import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
+import { patientRecord } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
+import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewReservationAPI";
+import { viewUpload } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
+import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 import { AppRoutes } from "../../constants/routes";
-import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
-import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
+import "./patientRecord.css";
 
 const PatientRecord = () => {
   const [tableData, setTableData] = useState([]);

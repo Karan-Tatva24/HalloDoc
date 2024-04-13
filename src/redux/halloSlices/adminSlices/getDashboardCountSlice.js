@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dashboardCount } from "../../halloAPIs/dashboardCountAPI";
+import { dashboardCount } from "../../halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 
 const initialState = {
   dashboardCount: [],

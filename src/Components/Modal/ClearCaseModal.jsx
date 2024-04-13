@@ -4,8 +4,8 @@ import { Button } from "../Button";
 import { infoImage } from "../../assets/Images";
 import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCase } from "../../redux/halloAPIs/clearCaseAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { clearCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/clearCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
 
 const ClearCaseModal = ({ open, handleClose }) => {

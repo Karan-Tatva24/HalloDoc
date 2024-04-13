@@ -6,8 +6,8 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { cancelModalSchema as cancelModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { cancelCase } from "../../redux/halloAPIs/cancelCaseAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { cancelCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/cancelCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
 
 const CancelModal = ({ open, handleClose }) => {

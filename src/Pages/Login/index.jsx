@@ -13,8 +13,8 @@ import { Button } from "../../Components/Button";
 import { loginSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { userLogin } from "../../redux/halloAPIs/loginAPI";
-import { loggedUser } from "../../redux/halloAPIs/loggedUserAPI";
+import { userLogin } from "../../redux/halloAPIs/AuthAPIs/loginAPI";
+import { loggedUser } from "../../redux/halloAPIs/adminAPIs/commonAPIs/loggedUserAPI";
 
 const initialValues = {
   email: "",

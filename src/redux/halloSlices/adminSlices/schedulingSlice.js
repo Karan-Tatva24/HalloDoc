@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { unApprovedShift } from "../../halloAPIs/schedulingAPI";
+import { unApprovedShift } from "../../halloAPIs/adminAPIs/providerAPIs/schedulingAPI";
 
 const initialState = {
   unApprovedShiftData: {},

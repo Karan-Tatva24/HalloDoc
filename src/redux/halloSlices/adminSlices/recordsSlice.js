@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { blockHistory } from "../../halloAPIs/blockHistoryAPI";
+import { blockHistory } from "../../halloAPIs/adminAPIs/recordsAPIs/blockHistoryAPI";
 import {
   patientHistory,
   patientRecord,
-} from "../../halloAPIs/patientRecordsAPI";
-import { searchRecord } from "../../halloAPIs/searchRecordsAPI";
-import { emailLog, smsLog } from "../../halloAPIs/emailAndsmsLogAPI";
+} from "../../halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
+import { searchRecord } from "../../halloAPIs/adminAPIs/recordsAPIs/searchRecordsAPI";
+import {
+  emailLog,
+  smsLog,
+} from "../../halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
 
 const initialState = {
   blockHistoryData: {},

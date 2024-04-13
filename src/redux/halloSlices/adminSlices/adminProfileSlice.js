@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { adminProfile } from "../../halloAPIs/adminProfileAPI";
+import { adminProfile } from "../../halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 
 const initialState = {
   profileData: {},

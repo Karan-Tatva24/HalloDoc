@@ -6,8 +6,8 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { blockModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { blockCase } from "../../redux/halloAPIs/blockCaseAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { blockCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/blockCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
 
 const ConfirmBlockModal = ({ open, handleClose }) => {

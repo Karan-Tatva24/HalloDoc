@@ -12,7 +12,10 @@ import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { viewNotes, viewNotesPost } from "../../redux/halloAPIs/viewNotesAPI";
+import {
+  viewNotes,
+  viewNotesPost,
+} from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 import { toast } from "react-toastify";
 
 const ViewNotes = () => {

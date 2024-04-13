@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userLogin } from "../../halloAPIs/loginAPI";
+import { userLogin } from "../../halloAPIs/AuthAPIs/loginAPI";
 
 const initialState = {
   isLoggedIn: false,

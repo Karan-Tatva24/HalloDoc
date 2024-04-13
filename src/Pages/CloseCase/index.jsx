@@ -30,9 +30,9 @@ import {
   closeCase,
   closeCaseEdit,
   closeCaseView,
-} from "../../redux/halloAPIs/closeCaseAPI";
+} from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/closeCaseAPI";
 import { toast } from "react-toastify";
-import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
+import { downloadFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/downloadFileAPI";
 
 const INITIAL_VALUES = {
   phone: "",

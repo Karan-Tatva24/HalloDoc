@@ -10,10 +10,10 @@ import "./editPhysicianInfo.css";
 import ProviderProfile from "../../Components/infoForms/ProviderProfile";
 import OnBording from "./components/OnBording";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteProviderAccount } from "../../redux/halloAPIs/providerInfoAPI";
+import { deleteProviderAccount } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 import { AppRoutes } from "../../constants/routes";
-import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
+import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 
 const EditPhysicianInfo = () => {
   const navigate = useNavigate();

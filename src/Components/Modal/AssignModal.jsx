@@ -6,9 +6,9 @@ import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { assignModalSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
-import { assignCase } from "../../redux/halloAPIs/assignCaseAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
+import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
+import { assignCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/assignCaseAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
 
 const AssignModal = ({ open, handleClose }) => {

@@ -28,7 +28,7 @@ import {
   physicianProfile,
   providerInfo,
   updateNotification,
-} from "../../redux/halloAPIs/providerInfoAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import "./providerInfo.css";
 
 const ProviderInfo = () => {

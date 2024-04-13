@@ -17,14 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import { Button } from "../../Components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import "./emailLogs.css";
+import { useFormik } from "formik";
+import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { columns } from "../../constants/emailLogsData";
-import { emailLog } from "../../redux/halloAPIs/emailAndsmsLogAPI";
-import { useFormik } from "formik";
-import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
+import { emailLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
+import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
+import "./emailLogs.css";
 
 const EmailLogs = () => {
   const [tableData, setTableData] = useState([]);

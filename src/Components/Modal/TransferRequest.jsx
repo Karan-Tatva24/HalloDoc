@@ -5,9 +5,9 @@ import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { transferModalSchema } from "../../ValidationSchema";
-import { transferRequest } from "../../redux/halloAPIs/transferRequestAPI";
-import { dashboardCount } from "../../redux/halloAPIs/dashboardCountAPI";
-import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { transferRequest } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/transferRequestAPI";
+import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
+import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 

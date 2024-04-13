@@ -17,8 +17,8 @@ import { useDispatch } from "react-redux";
 import {
   editProviderProfile,
   physicianProfile,
-} from "../../redux/halloAPIs/providerInfoAPI";
-import { changePassword } from "../../redux/halloAPIs/changePasswordAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
+import { changePassword } from "../../redux/halloAPIs/AuthAPIs/changePasswordAPI";
 import { toast } from "react-toastify";
 
 const INITIAL_VALUES = {

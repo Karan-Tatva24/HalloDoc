@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import { Box, MenuItem } from "@mui/material";
 import { Input } from "../TextField/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { useFormik } from "formik";
 import { Button } from "../Button";
 

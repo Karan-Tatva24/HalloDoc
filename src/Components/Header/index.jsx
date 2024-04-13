@@ -18,8 +18,8 @@ import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/adminSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import "./header.css";
-import { adminProfile } from "../../redux/halloAPIs/adminProfileAPI";
-import { providerInfo } from "../../redux/halloAPIs/providerInfoAPI";
+import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
+import { providerInfo } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 
 const Header = ({ onClickDarkTheme, toggle }) => {

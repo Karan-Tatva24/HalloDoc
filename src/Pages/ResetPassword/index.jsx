@@ -10,7 +10,7 @@ import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { resetPassword } from "../../redux/halloAPIs/resetPassAPI";
+import { resetPassword } from "../../redux/halloAPIs/AuthAPIs/resetPassAPI";
 import { resetPasswordSchema } from "../../ValidationSchema/resetPasswordSchema";
 
 const initialValues = {

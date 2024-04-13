@@ -29,14 +29,14 @@ import "./table.css";
 import { AppRoutes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { viewCase } from "../../redux/halloAPIs/viewReservationAPI";
-import { viewNotes } from "../../redux/halloAPIs/viewNotesAPI";
-import { getPatientName } from "../../redux/halloAPIs/getPatientNameAPI";
-import { viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
-import { newState } from "../../redux/halloAPIs/newStateAPI";
-import { getSendAgreement } from "../../redux/halloAPIs/sendAgreementAPI";
-import { closeCaseView } from "../../redux/halloAPIs/closeCaseAPI";
-import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/getDashboardByStateAPI";
+import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewReservationAPI";
+import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
+import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
+import { viewUpload } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
+import { newState } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/newStateAPI";
+import { getSendAgreement } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendAgreementAPI";
+import { closeCaseView } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/closeCaseAPI";
+import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getDashboardByStateAPI";
 
 const MyTable = ({
   accountType,

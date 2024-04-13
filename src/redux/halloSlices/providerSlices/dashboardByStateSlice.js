@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDashboardByState } from "../../halloAPIs/providerAPIs/getDashboardByStateAPI";
+import { getDashboardByState } from "../../halloAPIs/providerAPIs/dashboardAPIs/getDashboardByStateAPI";
 
 const initialState = {
   providerStateData: {},

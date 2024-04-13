@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { userDefault } from "../../assets/Images";
 import "./providerOnCall.css";
-import { providerOnCall } from "../../redux/halloAPIs/providerOnCallAPI";
+import { providerOnCall } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerOnCallAPI";
 import { AppRoutes } from "../../constants/routes";
 
 const ProviderOnCall = () => {

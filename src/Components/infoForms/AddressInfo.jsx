@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   adminProfile,
   editAdminProfile,
-} from "../../redux/halloAPIs/adminProfileAPI";
+} from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 import {
   editProviderProfile,
   physicianProfile,
-} from "../../redux/halloAPIs/providerInfoAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {

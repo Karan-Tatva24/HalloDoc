@@ -8,7 +8,7 @@ import AccountInfo from "../../Components/infoForms/AccountInfo";
 import AdministratorInfo from "../../Components/infoForms/AdministratorInfo";
 import AddressInfo from "../../Components/infoForms/AddressInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
+import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 
 const MyProfile = () => {
   const navigate = useNavigate();

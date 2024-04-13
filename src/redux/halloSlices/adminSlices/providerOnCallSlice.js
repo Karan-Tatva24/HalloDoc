@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { providerOnCall } from "../../halloAPIs/providerOnCallAPI";
+import { providerOnCall } from "../../halloAPIs/adminAPIs/providerAPIs/providerOnCallAPI";
 
 const initialState = {
   providerOnCallData: [],

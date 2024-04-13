@@ -10,7 +10,7 @@ import SignatureCanvas from "react-signature-canvas";
 import {
   editProviderProfile,
   physicianProfile,
-} from "../../redux/halloAPIs/providerInfoAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 

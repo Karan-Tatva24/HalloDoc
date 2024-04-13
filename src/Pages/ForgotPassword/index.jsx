@@ -11,7 +11,7 @@ import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { forgotPasswordSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
-import { forgotPass } from "../../redux/halloAPIs/forgotPasswordAPI";
+import { forgotPass } from "../../redux/halloAPIs/AuthAPIs/forgotPasswordAPI";
 import { toast } from "react-toastify";
 
 const initialValues = {

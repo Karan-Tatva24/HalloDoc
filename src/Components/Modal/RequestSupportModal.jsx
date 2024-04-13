@@ -6,7 +6,7 @@ import { Button } from "../Button";
 import { requestSupportSchema } from "../../ValidationSchema";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
-import { requestSupport } from "../../redux/halloAPIs/requestSupportAPI";
+import { requestSupport } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/requestSupportAPI";
 import { toast } from "react-toastify";
 
 const RequestSupportModal = ({ open, handleClose }) => {

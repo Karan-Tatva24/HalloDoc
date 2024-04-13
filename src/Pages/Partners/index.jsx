@@ -27,7 +27,7 @@ import {
   deleteBusiness,
   getVendor,
   viewBusiness,
-} from "../../redux/halloAPIs/partnersAPI";
+} from "../../redux/halloAPIs/adminAPIs/partnerAPIs/partnersAPI";
 import { toast } from "react-toastify";
 
 const Partners = () => {

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getPhysician,
   getRegions,
-} from "../../halloAPIs/getRegionPhysicianAPI";
+} from "../../halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 
 const initialState = {
   regions: [],

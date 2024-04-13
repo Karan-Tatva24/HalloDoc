@@ -12,7 +12,7 @@ import {
 import { Input } from "../TextField/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { getPhysician } from "../../redux/halloAPIs/getRegionPhysicianAPI";
+import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { Button } from "../Button";
 
 const CreateShiftModal = ({ open, handleClose }) => {

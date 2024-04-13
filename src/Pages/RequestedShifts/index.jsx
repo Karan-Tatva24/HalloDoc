@@ -27,7 +27,7 @@ import {
   approveShift,
   deleteShift,
   unApprovedShift,
-} from "../../redux/halloAPIs/schedulingAPI";
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/schedulingAPI";
 import { toast } from "react-toastify";
 
 const RequestedShifts = () => {

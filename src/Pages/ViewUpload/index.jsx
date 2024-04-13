@@ -21,10 +21,13 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import "./viewUpload.css";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadFile, viewUpload } from "../../redux/halloAPIs/viewUploadAPI";
-import { downloadFile } from "../../redux/halloAPIs/downloadFileAPI";
-import { deleteFile } from "../../redux/halloAPIs/deleteFileAPI";
-import { sendMail } from "../../redux/halloAPIs/sendMailAPI";
+import {
+  uploadFile,
+  viewUpload,
+} from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
+import { downloadFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/downloadFileAPI";
+import { deleteFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/deleteFileAPI";
+import { sendMail } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendMailAPI";
 import { toast } from "react-toastify";
 
 const ViewUpload = () => {

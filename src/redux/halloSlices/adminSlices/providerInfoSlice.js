@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   physicianProfile,
   providerInfo,
-} from "../../halloAPIs/providerInfoAPI";
+} from "../../halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 
 const initialState = {
   providerInfoData: [],

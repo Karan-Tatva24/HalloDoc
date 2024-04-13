@@ -22,9 +22,9 @@ import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
 import { columns } from "../../constants/smsLogsData";
 import "./smsLogs.css";
-import { smsLog } from "../../redux/halloAPIs/emailAndsmsLogAPI";
+import { smsLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
 import { useFormik } from "formik";
-import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
+import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 
 const SMSLogs = () => {
   const [tableData, setTableData] = useState([]);

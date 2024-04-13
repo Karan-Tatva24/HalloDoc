@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { sendLinkSchema } from "../../ValidationSchema";
 import { Button } from "../Button";
 import { useDispatch } from "react-redux";
-import { sendLink } from "../../redux/halloAPIs/sendLinkAPI";
+import { sendLink } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendLinkAPI";
 import { toast } from "react-toastify";
 
 const SendLinkModal = ({ open, handleClose }) => {

@@ -18,8 +18,11 @@ import { Button } from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useSelector, useDispatch } from "react-redux";
-import { accountAccess } from "../../redux/halloAPIs/accountAccessAPI";
-import { deleteRole, viewRole } from "../../redux/halloAPIs/createAccessAPI";
+import { accountAccess } from "../../redux/halloAPIs/adminAPIs/accessAPIs/accountAccessAPI";
+import {
+  deleteRole,
+  viewRole,
+} from "../../redux/halloAPIs/adminAPIs/accessAPIs/createAccessAPI";
 import { toast } from "react-toastify";
 
 const columns = [

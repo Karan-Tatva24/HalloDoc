@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { viewNotes } from "../../halloAPIs/viewNotesAPI";
+import { viewNotes } from "../../halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 
 const initialState = {
   notes: {},

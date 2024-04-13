@@ -23,11 +23,11 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import PhoneInput from "react-phone-input-2";
 import { Button } from "../../Components/Button";
 import { Input } from "../../Components/TextField/Input";
-import { createProviderAccount } from "../../redux/halloAPIs/createProviderAccountAPI";
+import { createProviderAccount } from "../../redux/halloAPIs/userAPIs/createProviderAccountAPI";
 import { createProviderAccountSchema } from "../../ValidationSchema";
 import "./createProviderAccount.css";
 import { AppRoutes } from "../../constants/routes";
-import { getRoles } from "../../redux/halloAPIs/getRoleAPI";
+import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 
 const initialValues = {
   userName: "",
