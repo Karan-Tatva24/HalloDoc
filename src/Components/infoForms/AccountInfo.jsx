@@ -126,7 +126,7 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
             error={formik.touched.role && Boolean(formik.errors.role)}
             helperText={formik.touched.role && formik.errors.role}
           >
-            {roles.map((role) => (
+            {roles?.map((role) => (
               <MenuItem key={role?.id} value={role?.id}>
                 {role?.Name}
               </MenuItem>

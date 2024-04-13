@@ -51,7 +51,7 @@ const ViewUpload = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.id);
+      const newSelected = rows?.map((row) => row?.id);
       setSelected(newSelected);
       return;
     }
@@ -141,8 +141,8 @@ const ViewUpload = () => {
   };
 
   const handleDownloadAll = () => {
-    const selectedFiles = rows.filter((row) => selected.includes(row.id));
-    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    const selectedFiles = rows?.filter((row) => selected?.includes(row.id));
+    const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(downloadFile({ fileNames: selectedFileNames }))
       .then((response) => {
         if (response.type === "downloadFile/fulfilled") {
@@ -184,8 +184,8 @@ const ViewUpload = () => {
   };
 
   const handleDeleteAll = () => {
-    const selectedFiles = rows.filter((row) => selected.includes(row.id));
-    const selectedFileNames = selectedFiles.map((file) => file.fileName);
+    const selectedFiles = rows?.filter((row) => selected?.includes(row?.id));
+    const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(deleteFile({ fileNames: selectedFileNames, id })).then(
       (response) => {
         if (response.type === "deleteFile/fulfilled") {
@@ -199,7 +199,7 @@ const ViewUpload = () => {
   };
 
   const handleSendMail = () => {
-    const selectedFiles = rows?.filter((row) => selected.includes(row?.id));
+    const selectedFiles = rows?.filter((row) => selected?.includes(row?.id));
     const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(
       sendMail({
@@ -346,7 +346,7 @@ const ViewUpload = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filterData.map((row) => (
+                  {filterData?.map((row) => (
                     <TableRow key={row?.id} hover>
                       <TableCell padding="checkbox">
                         <Checkbox

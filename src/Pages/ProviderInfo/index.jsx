@@ -67,8 +67,8 @@ const ProviderInfo = () => {
   }, [providerInfoData]);
 
   const handleCheckboxChange = (id) => {
-    if (selectedIds.includes(id)) {
-      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+    if (selectedIds?.includes(id)) {
+      setSelectedIds(selectedIds?.filter((selectedId) => selectedId !== id));
     } else {
       setSelectedIds([...selectedIds, id]);
     }
@@ -207,7 +207,7 @@ const ProviderInfo = () => {
                             <TableCell key={column.id} align="center">
                               {column.id === "stopNotification" ? (
                                 <Checkbox
-                                  checked={selectedIds.includes(row?.id)}
+                                  checked={selectedIds?.includes(row?.id)}
                                   onChange={() => handleCheckboxChange(row?.id)}
                                 />
                               ) : column.id === "actions" ? (

@@ -278,7 +278,7 @@ const MyTable = ({
               variant="outlined"
               onClick={() => setRequestType("all")}
             />
-            {indicator.map((value, index) => {
+            {indicator?.map((value, index) => {
               return (
                 <Box
                   key={index}

@@ -55,8 +55,8 @@ const CreateAccess = () => {
   }, [dispatch, formik.values.accountType]);
 
   const handleChangeRoles = (id) => {
-    const newRoles = formik.values.permissionIds.includes(id)
-      ? formik.values.permissionIds.filter(
+    const newRoles = formik.values.permissionIds?.includes(id)
+      ? formik.values.permissionIds?.filter(
           (selectedRoleId) => selectedRoleId !== id,
         )
       : [...formik.values.permissionIds, id];
@@ -157,7 +157,7 @@ const CreateAccess = () => {
                         key={role?.id}
                         control={
                           <Checkbox
-                            checked={formik.values.permissionIds.includes(
+                            checked={formik.values.permissionIds?.includes(
                               role?.id,
                             )}
                             onChange={() => handleChangeRoles(role?.id)}

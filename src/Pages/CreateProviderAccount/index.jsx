@@ -223,9 +223,9 @@ const CreateProviderAccount = () => {
                     error={formik.touched.role && Boolean(formik.errors.role)}
                     helperText={formik.touched.role && formik.errors.role}
                   >
-                    {roles.map((role) => (
-                      <MenuItem key={role.id} value={role.Name}>
-                        {role.Name}
+                    {roles?.map((role) => (
+                      <MenuItem key={role?.id} value={role?.Name}>
+                        {role?.Name}
                       </MenuItem>
                     ))}
                   </Input>
@@ -344,7 +344,7 @@ const CreateProviderAccount = () => {
                         control={
                           <Checkbox
                             size="medium"
-                            checked={formik.values.selectedRegions.includes(
+                            checked={formik.values.selectedRegions?.includes(
                               region?.id,
                             )}
                             onChange={() => handleRegionChange(region?.id)}
