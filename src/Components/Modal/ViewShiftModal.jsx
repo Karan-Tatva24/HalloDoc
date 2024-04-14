@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { Box, MenuItem } from "@mui/material";
 import { Input } from "../TextField/Input";
@@ -7,24 +7,41 @@ import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getR
 import { useFormik } from "formik";
 import { Button } from "../Button";
 
+const INITIAL_VALUES = {
+  searchRegion: "",
+  physician: "",
+  shiftDate: "",
+  startTime: "",
+  endTime: "",
+};
+
 const ViewShiftModal = ({ open, handleClose }) => {
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const dispatch = useDispatch();
   const { regions, physicians } = useSelector(
     (state) => state.root.getRegionPhysician,
   );
+  const { viewShiftData } = useSelector((state) => state.root.viewShift);
+
   const formik = useFormik({
-    initialValues: {
-      searchRegion: "",
-      physician: "",
-      shiftDate: "",
-      startTime: "",
-      endTime: "",
-    },
+    initialValues,
     onSubmit: (values, onSubmitProps) => {
       onSubmitProps.resetForm();
       handleClose();
     },
+    enableReinitialize: true,
   });
+
+  useEffect(() => {
+    setInitialValues({
+      searchRegion: viewShiftData?.region,
+      physician: `${viewShiftData?.physician?.firstName} ${viewShiftData?.physician?.lastName}`,
+      shiftDate: viewShiftData?.shiftDate,
+      startTime: viewShiftData?.startTime,
+      endTime: viewShiftData?.endTime,
+    });
+  }, [viewShiftData]);
+
   return (
     <Modal open={open} handleClose={handleClose} header="View Shift">
       <form>

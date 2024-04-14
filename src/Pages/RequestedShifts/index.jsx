@@ -29,6 +29,7 @@ import {
   unApprovedShift,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/schedulingAPI";
 import { toast } from "react-toastify";
+import { AppRoutes } from "../../constants/routes";
 
 const RequestedShifts = () => {
   const [selected, setSelected] = useState([]);
@@ -165,7 +166,11 @@ const RequestedShifts = () => {
                 })}
               </Input>
               <Box display="flex" justifyContent="flex-end" gap={2}>
-                <Button name="View Current Month Shifts" color="success" />
+                <Button
+                  name="View Current Month Shifts"
+                  color="success"
+                  onClick={() => navigate(AppRoutes.SCHEDULING)}
+                />
                 <Button
                   name="Approved Selected"
                   color="success"

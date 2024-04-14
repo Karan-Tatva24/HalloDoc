@@ -15,7 +15,10 @@ import { useFormik } from "formik";
 import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { Button } from "../Button";
 import { createShiftModalSchema } from "../../ValidationSchema/createShiftModalSchema";
-import { addNewShift } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
+import {
+  addNewShift,
+  viewShiftByDate,
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { toast } from "react-toastify";
 
 const CreateShiftModal = ({ open, handleClose }) => {
@@ -63,6 +66,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
         if (response.type === "addNewShift/fulfilled") {
           formik.resetForm();
           handleClose();
+          dispatch(viewShiftByDate({}));
           toast.success(response.payload.message);
         }
       });

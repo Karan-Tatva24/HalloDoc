@@ -75,6 +75,8 @@ export const DELETE_SHIFT = "/admin/provider/deleteShift";
 export const UPDATE_NOTIFICATION = "/admin/provider/updateNotification";
 export const DELETE_PROVIDER_ACCOUNT = "/admin/provider/deleteProvider";
 export const ADD_NEW_SHIFT = "/admin/provider/addNewShift";
+export const VIEW_SHIFT_BY_DATE = "/admin/provider/viewShiftFilter";
+export const VIEW_SHIFT = "/admin/provider/viewShift";
 
 /* ************************************* Access API ************************************** */
 

@@ -2,10 +2,6 @@
   background-color: #f6f6f6;
   padding: 1rem;
 }
-.patient-btn {
-  border-radius: 10px;
-  background-color: #1dc01d;
-}
 
 .fc .fc-button-primary {
   color: #01bce9 !important;
@@ -18,4 +14,20 @@
   border: none !important;
   box-shadow: none !important;
   color: #ffffff !important;
+}
+
+.indicators {
+  width: 2.5rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.pending {
+  background-color: lightpink;
+  border: 1px solid pink;
+}
+
+.approved {
+  border: 1px solid green;
+  background-color: lightgreen;
 }

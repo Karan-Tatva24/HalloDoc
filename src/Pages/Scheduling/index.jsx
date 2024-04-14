@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -20,13 +20,32 @@ import { Input } from "../../Components/TextField/Input";
 import { AppRoutes } from "../../constants/routes";
 import CreateShiftModal from "../../Components/Modal/CreateShiftModal";
 import ViewShiftModal from "../../Components/Modal/ViewShiftModal";
+import {
+  viewShift,
+  viewShiftByDate,
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 
 const Scheduling = () => {
   const navigate = useNavigate();
   const [selectRegion, setSelectRegion] = useState("all");
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { viewShiftByDateData } = useSelector((state) => state.root.viewShift);
+
+  useEffect(() => {
+    dispatch(
+      viewShiftByDate({
+        date: "",
+        week: "",
+        month: "",
+        startDate: "",
+        endDate: "",
+        regions: selectRegion,
+      }),
+    );
+  }, [dispatch, selectRegion]);
 
   const handleChangeRegion = (e) => {
     setSelectRegion(e.target.value);
@@ -41,6 +60,20 @@ const Scheduling = () => {
     setOpen(false);
     setModalName("");
   };
+
+  const events = viewShiftByDateData?.map((shift) => ({
+    id: shift?.id,
+    title: `${shift?.id}`,
+    start: `${shift?.shiftDate}T${shift?.startTime}`,
+    end: `${shift?.shiftDate}T${shift?.endTime}`,
+    resourceId: shift?.physician?.id,
+    backgroundColor: shift?.isApproved ? "lightgreen" : "lightpink",
+  }));
+
+  const resources = viewShiftByDateData?.map((shift) => ({
+    id: shift?.physician?.id,
+    title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
+  }));
 
   return (
     <>
@@ -98,18 +131,42 @@ const Scheduling = () => {
               />
             </Box>
           </Box>
+          <Box display="flex" justifyContent="flex-end" mt={2} gap={2}>
+            <Box className="indicators pending" />
+            Panding Shifts
+            <Box className="indicators approved" />
+            Approved Shifts
+          </Box>
           <FullCalendar
             plugins={[dayGridPlugin, resourceTimelinePlugin, interactionPlugin]}
-            dateClick={() => handleOpen("view shift")}
-            initialView="resourceTimelineWeek"
+            initialView="dayGridMonth"
             headerToolbar={{
               left: "title prev next",
+              center: "",
               right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
             }}
-            events={[
-              { title: "event 1", date: "2024-03-15" },
-              { title: "event 2", date: "2019-04-02" },
-            ]}
+            events={events}
+            resources={resources}
+            eventContent={(eventInfo) => {
+              return (
+                <div
+                  style={{
+                    width: "100%",
+                    backgroundColor: eventInfo.backgroundColor,
+                    borderRadius: "0.3rem",
+                    cursor: "pointer",
+                    height: "auto",
+                  }}
+                  onClick={() => {
+                    dispatch(viewShift(eventInfo.event.id));
+                    handleOpen("view shift");
+                  }}
+                >
+                  {eventInfo.timeText}
+                </div>
+              );
+            }}
+            droppable={false}
             editable={true}
             selectable={true}
             selectMirror={true}
