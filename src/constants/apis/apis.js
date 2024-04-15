@@ -77,6 +77,8 @@ export const DELETE_PROVIDER_ACCOUNT = "/admin/provider/deleteProvider";
 export const ADD_NEW_SHIFT = "/admin/provider/addNewShift";
 export const VIEW_SHIFT_BY_DATE = "/admin/provider/viewShiftFilter";
 export const VIEW_SHIFT = "/admin/provider/viewShift";
+export const EDIT_SHIFT = "/admin/provider/editShift";
+export const TOGGLE_APPROVED = "/admin/provider/toggleApproval";
 
 /* ************************************* Access API ************************************** */
 
@@ -109,5 +111,8 @@ export const CREATE_ADMIN_REQUEST = "/user/createAdminRequest";
 /* ************************************* Dashboard API *********************************** */
 
 export const PROVIDER_DASHBOARD_BY_STATE = "/provider/dashboard";
+export const PROVIDER_DASHBOARD_COUNT = "/provider/dashboard/dashboardCount";
+export const ACCEPT_REQUEST = "/provider/dashboard/acceptRequest";
+export const PROVIDER_TRANSFER_REQUEST = "/provider/dashboard/transferRequest";
 
 /* ***************************************** Patient API ***************************************** */

@@ -14,12 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { Button } from "../Button";
-import { createShiftModalSchema } from "../../ValidationSchema/createShiftModalSchema";
 import {
   addNewShift,
   viewShiftByDate,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { toast } from "react-toastify";
+import { createShiftModalSchema } from "../../ValidationSchema";
 
 const CreateShiftModal = ({ open, handleClose }) => {
   const [checked, setChecked] = React.useState(false);

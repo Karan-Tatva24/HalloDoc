@@ -22,7 +22,7 @@ const PageNotFound = () => {
               </Box>
 
               <Box
-                className="contant_box_404"
+                className="content_box_404"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -33,7 +33,7 @@ const PageNotFound = () => {
                 </Typography>
 
                 <Typography>
-                  the page you are looking for not avaible!
+                  the page you are looking for not available!
                 </Typography>
 
                 <NavLink to={AppRoutes.DASHBOARD} className="link_404">

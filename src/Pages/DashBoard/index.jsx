@@ -40,6 +40,7 @@ import {
   exportByState,
 } from "../../redux/halloAPIs/adminAPIs/commonAPIs/exportAPI";
 import { toast } from "react-toastify";
+import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -73,10 +74,14 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
-    dispatch(getRegions());
-    dispatch(dashboardCount());
-    dispatch(getProfession());
-  }, [dispatch]);
+    if (accountType === "Admin") {
+      dispatch(getRegions());
+      dispatch(dashboardCount());
+      dispatch(getProfession());
+    } else if (accountType === "Physician") {
+      dispatch(getProviderDashboardCount());
+    }
+  }, [accountType, dispatch]);
 
   useEffect(() => {
     switch (activeButton) {
@@ -197,70 +202,75 @@ const DashBoard = () => {
                       navigate(AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN)
                     }
                   />
-                  <Button
-                    name="Export"
-                    variant="contained"
-                    startIcon={<SendOutlinedIcon />}
-                    onClick={() => {
-                      dispatch(exportByState(activeButton.toLowerCase()))
-                        .then((response) => {
-                          if (response.type === "exportByState/fulfilled") {
-                            const blob = new Blob([response.payload], {
-                              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+                  {accountType === "Admin" ? (
+                    <>
+                      <Button
+                        name="Export"
+                        variant="contained"
+                        startIcon={<SendOutlinedIcon />}
+                        onClick={() => {
+                          dispatch(exportByState(activeButton.toLowerCase()))
+                            .then((response) => {
+                              if (response.type === "exportByState/fulfilled") {
+                                const blob = new Blob([response.payload], {
+                                  type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                });
+                                const url = window.URL.createObjectURL(blob);
+                                const link = document.createElement("a");
+                                link.href = url;
+                                link.download = `${activeButton}State-patients.xlsx`;
+                                document.body.appendChild(link);
+                                link.click();
+                                window.URL.revokeObjectURL(url);
+                                link.remove();
+                                toast.success(response.payload.message);
+                              } else {
+                                toast.error("File download failed.");
+                              }
+                            })
+                            .catch((error) => {
+                              toast.error("Error downloading file:", error);
                             });
-                            const url = window.URL.createObjectURL(blob);
-                            const link = document.createElement("a");
-                            link.href = url;
-                            link.download = `${activeButton}State-patients.xlsx`;
-                            document.body.appendChild(link);
-                            link.click();
-                            window.URL.revokeObjectURL(url);
-                            link.remove();
-                            toast.success(response.payload.message);
-                          } else {
-                            toast.error("File download failed.");
-                          }
-                        })
-                        .catch((error) => {
-                          toast.error("Error downloading file:", error);
-                        });
-                    }}
-                  />
-                  <Button
-                    name="Export All"
-                    variant="contained"
-                    startIcon={<SendOutlinedIcon />}
-                    onClick={() =>
-                      dispatch(exportAll())
-                        .then((response) => {
-                          if (response.type === "exportAll/fulfilled") {
-                            const blob = new Blob([response.payload], {
-                              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            });
-                            const url = window.URL.createObjectURL(blob);
-                            const link = document.createElement("a");
-                            link.href = url;
-                            link.download = `all-patients.xlsx`;
-                            document.body.appendChild(link);
-                            link.click();
-                            window.URL.revokeObjectURL(url);
-                            link.remove();
-                            toast.success(response.payload.message);
-                          } else {
-                            toast.error("File download failed.");
-                          }
-                        })
-                        .catch((error) => {
-                          toast.error("Error downloading file:", error);
-                        })
-                    }
-                  />
-                  <Button
-                    name="Request DTY Support"
-                    variant="contained"
-                    startIcon={<SendOutlinedIcon />}
-                    onClick={() => handleOpen("Request Support")}
-                  />
+                        }}
+                      />
+                      <Button
+                        name="Export All"
+                        variant="contained"
+                        startIcon={<SendOutlinedIcon />}
+                        onClick={() =>
+                          dispatch(exportAll())
+                            .then((response) => {
+                              if (response.type === "exportAll/fulfilled") {
+                                const blob = new Blob([response.payload], {
+                                  type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                });
+                                const url = window.URL.createObjectURL(blob);
+                                const link = document.createElement("a");
+                                link.href = url;
+                                link.download = `all-patients.xlsx`;
+                                document.body.appendChild(link);
+                                link.click();
+                                window.URL.revokeObjectURL(url);
+                                link.remove();
+                                toast.success(response.payload.message);
+                              } else {
+                                toast.error("File download failed.");
+                              }
+                            })
+                            .catch((error) => {
+                              toast.error("Error downloading file:", error);
+                            })
+                        }
+                      />
+                      <Button
+                        name="Request DTY Support"
+                        variant="contained"
+                        startIcon={<SendOutlinedIcon />}
+                        onClick={() => handleOpen("Request Support")}
+                      />
+                    </>
+                  ) : null}
                 </Box>
               </Grid>
             </Grid>
@@ -269,7 +279,7 @@ const DashBoard = () => {
             accountType={accountType}
             counts={counts}
             stateColumns={columns}
-            dropDown={dropDown}
+            stateDropDown={dropDown}
             indicator={indicator}
             activeState={activeButton.toLowerCase()}
             onClick={handleOpen}
@@ -297,6 +307,7 @@ const DashBoard = () => {
         handleClose={handleClose}
       />
       <TransferRequest
+        isAdmin={accountType === "Admin"}
         open={open && modalName === "Transfer"}
         handleClose={handleClose}
       />

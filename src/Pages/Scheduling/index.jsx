@@ -132,9 +132,9 @@ const Scheduling = () => {
             </Box>
           </Box>
           <Box display="flex" justifyContent="flex-end" mt={2} gap={2}>
-            <Box className="indicators pending" />
-            Panding Shifts
-            <Box className="indicators approved" />
+            <Box className="indicators_scheduling pending" />
+            Pending Shifts
+            <Box className="indicators_scheduling approved" />
             Approved Shifts
           </Box>
           <FullCalendar

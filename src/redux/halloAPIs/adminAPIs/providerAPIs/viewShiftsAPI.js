@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../../../config/axios";
 import {
   ADD_NEW_SHIFT,
+  EDIT_SHIFT,
+  TOGGLE_APPROVED,
   VIEW_SHIFT,
   VIEW_SHIFT_BY_DATE,
 } from "../../../../constants/apis/apis";
@@ -45,6 +47,35 @@ export const addNewShift = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await Axios.post(ADD_NEW_SHIFT, params);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const editShift = createAsyncThunk(
+  "editShift",
+  async (params, { rejectWithValue }) => {
+    const { shiftDate, startTime, endTime, id } = params;
+    try {
+      const response = await Axios.patch(`${EDIT_SHIFT}/${id}`, {
+        shiftDate,
+        startTime,
+        endTime,
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const toggleApproved = createAsyncThunk(
+  "toggleApproved",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.patch(`${TOGGLE_APPROVED}/${params}`);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

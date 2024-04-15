@@ -6,6 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getRegionPhysicianAPI";
 import { useFormik } from "formik";
 import { Button } from "../Button";
+import { deleteShift } from "../../redux/halloAPIs/adminAPIs/providerAPIs/schedulingAPI";
+import { toast } from "react-toastify";
+import {
+  editShift,
+  toggleApproved,
+  viewShiftByDate,
+} from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
+import { viewShiftModalSchema } from "../../ValidationSchema";
 
 const INITIAL_VALUES = {
   searchRegion: "",
@@ -17,6 +25,7 @@ const INITIAL_VALUES = {
 
 const ViewShiftModal = ({ open, handleClose }) => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const [isDisabled, setIsDisabled] = useState(true);
   const dispatch = useDispatch();
   const { regions, physicians } = useSelector(
     (state) => state.root.getRegionPhysician,
@@ -29,8 +38,27 @@ const ViewShiftModal = ({ open, handleClose }) => {
       onSubmitProps.resetForm();
       handleClose();
     },
+    validationSchema: viewShiftModalSchema,
     enableReinitialize: true,
   });
+
+  const handleSave = () => {
+    dispatch(
+      editShift({
+        id: viewShiftData.id,
+        shiftDate: formik.values.shiftDate,
+        startTime: formik.values.startTime,
+        endTime: formik.values.endTime,
+      }),
+    ).then((response) => {
+      if (response.type === "editShift/fulfilled") {
+        toast.success(response.payload.message);
+        setIsDisabled(true);
+        handleClose();
+        dispatch(viewShiftByDate({ regions: "all" }));
+      }
+    });
+  };
 
   useEffect(() => {
     setInitialValues({
@@ -50,6 +78,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
             fullWidth
             label="Narrow Search By Region"
             select
+            disabled
             name="searchRegion"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -77,6 +106,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
             fullWidth
             label="Select Physician"
             select
+            disabled
             name="physician"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -101,6 +131,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
             type="date"
             name="shiftDate"
             fullWidth
+            disabled={isDisabled}
             value={formik.values.shiftDate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -113,6 +144,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
               name="startTime"
               type="time"
               fullWidth
+              disabled={isDisabled}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.startTime}
@@ -126,6 +158,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
               name="endTime"
               type="time"
               fullWidth
+              disabled={isDisabled}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.endTime}
@@ -139,9 +172,41 @@ const ViewShiftModal = ({ open, handleClose }) => {
             alignItems="center"
             gap={1.5}
           >
-            <Button name="Return" />
-            <Button name="Edit" />
-            <Button name="Delete" color="error" />
+            <Button
+              name="Return"
+              onClick={() => {
+                dispatch(toggleApproved(viewShiftData?.id)).then((response) => {
+                  if (response.type === "toggleApproved/fulfilled") {
+                    toast.success(response.payload.message);
+                    setIsDisabled(true);
+                    handleClose();
+                    dispatch(viewShiftByDate({ regions: "all" }));
+                  }
+                });
+              }}
+            />
+            <Button
+              name={isDisabled ? "Edit" : "Save"}
+              onClick={
+                isDisabled ? () => setIsDisabled(false) : () => handleSave()
+              }
+            />
+            <Button
+              name="Delete"
+              color="error"
+              onClick={() => {
+                dispatch(deleteShift({ shiftIds: [viewShiftData?.id] })).then(
+                  (response) => {
+                    if (response.type === "deleteShift/fulfilled") {
+                      toast.success(response.payload.message);
+                      setIsDisabled(true);
+                      handleClose();
+                      dispatch(viewShiftByDate({ regions: "all" }));
+                    }
+                  },
+                );
+              }}
+            />
           </Box>
         </Box>
       </form>

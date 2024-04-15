@@ -37,12 +37,14 @@ import { newState } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/newState
 import { getSendAgreement } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendAgreementAPI";
 import { closeCaseView } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/closeCaseAPI";
 import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getDashboardByStateAPI";
+import { acceptRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/acceptRequestAPI";
+import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 
 const MyTable = ({
   accountType,
   counts,
   stateColumns,
-  dropDown,
+  stateDropDown,
   indicator,
   onClick,
   activeState,
@@ -50,6 +52,7 @@ const MyTable = ({
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState(stateColumns);
+  const [dropdown, setDropdown] = useState(stateDropDown);
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [requestType, setRequestType] = useState("all");
@@ -72,9 +75,19 @@ const MyTable = ({
 
   useEffect(() => {
     setColumns(
-      columns.filter((column) => column.accountTypes.includes(accountType)),
+      stateColumns?.filter((column) =>
+        column.accountTypes.includes(accountType),
+      ),
     );
-  }, [accountType, columns]);
+  }, [accountType, stateColumns]);
+
+  useEffect(() => {
+    setDropdown(
+      stateDropDown?.filter((dropdown) =>
+        dropdown.accountTypes?.includes(accountType),
+      ),
+    );
+  }, [accountType, stateDropDown]);
 
   const { stateData } = useSelector((state) => state.root.newState);
   const { providerStateData } = useSelector(
@@ -105,6 +118,14 @@ const MyTable = ({
       if (response.type === "getPatientName/fulfilled") {
         setAnchorEl(null);
         switch (action) {
+          case "Accept":
+            dispatch(acceptRequest(rowId)).then((response) => {
+              if (response.type === "acceptRequest/fulfilled") {
+                toast.success(response.payload.message);
+                dispatch(getProviderDashboardCount());
+              }
+            });
+            break;
           case "Assign Case":
             onClick(action);
             break;
@@ -309,7 +330,7 @@ const MyTable = ({
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ maxWidth: column.maxWidth }}
+                      style={{ minWidth: column.maxWidth }}
                     >
                       <TableSortLabel
                         key={column.id}
@@ -337,7 +358,7 @@ const MyTable = ({
                 return (
                   <TableRow
                     key={row?.id}
-                    className={`requestor-${row?.Requestor?.toLowerCase()}`}
+                    className={`requestor-${row?.["Requestor Type"]?.toLowerCase()}`}
                   >
                     {columns.map((column) => {
                       return (
@@ -413,7 +434,7 @@ const MyTable = ({
                                   onClose={handleClose}
                                   TransitionComponent={Fade}
                                 >
-                                  {dropDown.map((data) => {
+                                  {dropdown?.map((data) => {
                                     return (
                                       <MenuItem
                                         key={data.id}
