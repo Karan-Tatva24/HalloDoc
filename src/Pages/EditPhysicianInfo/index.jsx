@@ -49,6 +49,7 @@ const EditPhysicianInfo = () => {
     isBackgroundDoc,
     isNonDisclosureDoc,
     isLicenseDoc,
+    isHipaaDoc,
     regions,
     role,
   } = physicianData.physicianProfile[0];
@@ -135,6 +136,7 @@ const EditPhysicianInfo = () => {
               isBackgroundDoc={isBackgroundDoc}
               isNonDisclosureDoc={isNonDisclosureDoc}
               isLicenseDoc={isLicenseDoc}
+              isHipaaDoc={isHipaaDoc}
             />
             <Divider sx={{ backgroundColor: "#1f1e1e86", marginTop: "1rem" }} />
             <Box

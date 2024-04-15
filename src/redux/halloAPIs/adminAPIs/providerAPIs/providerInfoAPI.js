@@ -61,28 +61,37 @@ export const editProviderProfile = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     const { id, data } = params;
     try {
-      const response = await Axios.patch(`${EDIT_PROVIDER_PROFILE}/${id}`, {
-        password: data?.password,
-        email: data?.email,
-        roleId: data?.role.toString(),
-        firstName: data?.firstName,
-        lastName: data?.lastName,
-        phoneNumber: data?.phoneNumber,
-        address1: data?.address1,
-        address2: data?.address2,
-        city: data?.city,
-        state: data?.state,
-        zipCode: data?.zipCode,
-        altPhone: data?.altPhone,
-        status: data?.status,
-        medicalLicense: data?.medicalLicense,
-        NPINumber: data?.NPINumber,
-        businessName: data?.businessName,
-        signature: data?.signature,
-        photo: data?.photo,
-        regions: data?.regions,
-        syncEmailAddress: data?.syncEmailAddress,
-      });
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      const response = await Axios.patch(
+        `${EDIT_PROVIDER_PROFILE}/${id}`,
+        {
+          password: data?.password,
+          email: data?.email,
+          roleId: data?.role.toString(),
+          firstName: data?.firstName,
+          lastName: data?.lastName,
+          phoneNumber: data?.phoneNumber,
+          address1: data?.address1,
+          address2: data?.address2,
+          city: data?.city,
+          state: data?.state,
+          zipCode: data?.zipCode,
+          altPhone: data?.altPhone,
+          status: data?.status,
+          medicalLicense: data?.medicalLicense,
+          NPINumber: data?.NPINumber,
+          businessName: data?.businessName,
+          signature: data?.signature,
+          photo: data?.photo,
+          regions: data?.regions,
+          syncEmailAddress: data?.syncEmailAddress,
+        },
+        config,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

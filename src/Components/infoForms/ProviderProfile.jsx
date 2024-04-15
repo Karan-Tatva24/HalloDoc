@@ -22,6 +22,8 @@ const INITIAL_VALUE = {
 
 const ProviderProfile = ({ id, businessName, businessWebsite }) => {
   const [isDisabled, setIsDisabled] = useState(true);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedSigneture, setSelectedSigneture] = useState(null);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const [openModel, setOpenModal] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -56,6 +58,16 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
       businessWebsite,
     });
   }, [businessName, businessWebsite]);
+
+  const handlePhotoChange = (event) => {
+    event.preventDefault();
+    setSelectedPhoto(event.target.files[0]);
+  };
+
+  const handleSignetureChange = (event) => {
+    event.preventDefault();
+    setSelectedSigneture(event.target.files[0]);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -119,14 +131,14 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
               title="Upload-files"
             >
               <input
-                // onChange={handleFileChange}
+                disabled={isDisabled}
+                onChange={handlePhotoChange}
                 type="file"
                 id="photo"
                 hidden
               />
               <label htmlFor="photo">
-                {/* {selectedFile !== null ? selectedFile.name : "Select File"} */}
-                Select File
+                {selectedPhoto !== null ? selectedPhoto.name : "Select Photo"}
               </label>
             </Button>
 
@@ -154,14 +166,16 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
               title="Upload-files"
             >
               <input
-                // onChange={handleFileChange}
+                onChange={handleSignetureChange}
                 type="file"
                 id="signature"
+                disabled={isDisabled}
                 hidden
               />
               <label htmlFor="signature">
-                {/* {selectedFile !== null ? selectedFile.name : "Select File"} */}
-                Select File
+                {selectedSigneture !== null
+                  ? selectedSigneture.name
+                  : "Select Signeture"}
               </label>
             </Button>
 
@@ -254,17 +268,20 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
               name="Save"
               type="submit"
               onClick={() => {
-                dispatch(editProviderProfile({ id, data: formik.values })).then(
+                const formData = new FormData();
+                formData.append("businessName", formik.values.businessName);
+                formData.append(
+                  "businessWebsite",
+                  formik.values.businessWebsite,
+                );
+                formData.append("adminNotes", formik.values.adminNotes);
+                formData.append("photo", selectedPhoto);
+                formData.append("signature", selectedSigneture);
+                dispatch(editProviderProfile({ id, data: formData })).then(
                   (response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
                       toast.success(response.payload.message);
-                    } else if (
-                      response.type === "editProviderProfile/rejected"
-                    ) {
-                      toast.error(
-                        response.payload.data.validation.body.message,
-                      );
                     }
                   },
                 );

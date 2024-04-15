@@ -37,11 +37,6 @@ const Scheduling = () => {
   useEffect(() => {
     dispatch(
       viewShiftByDate({
-        date: "",
-        week: "",
-        month: "",
-        startDate: "",
-        endDate: "",
         regions: selectRegion,
       }),
     );

@@ -15,6 +15,7 @@ const OnBording = ({
   isBackgroundDoc,
   isNonDisclosureDoc,
   isLicenseDoc,
+  isHipaaDoc,
 }) => {
   // const [checked, setChecked] = useState(initialValue);
   // const handleCheckBox = (e) => {
@@ -66,7 +67,7 @@ const OnBording = ({
           control={
             <Checkbox
               name="HIPAA"
-              // checked={checked.HIPAA}
+              checked={isHipaaDoc}
               // onChange={handleCheckBox}
             />
           }
@@ -74,7 +75,7 @@ const OnBording = ({
           sx={{ width: "310px" }}
         />
         <Button name="Upload" />
-        {/* {checked.HIPAA ? <Button name="View" /> : null} */}
+        {isHipaaDoc ? <Button name="View" /> : null}
       </Box>
       <Box display="flex" flexWrap="wrap" gap={2}>
         <FormControlLabel
