@@ -59,6 +59,10 @@ const CreateProviderAccount = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [indConAggFile, setIndConAggFile] = useState(null);
+  const [backCheckFile, setBackCheckFile] = useState(null);
+  const [hipaaCompFile, setHipaaCompFile] = useState(null);
+  const [nonDisAggFile, setNonDisAggFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
@@ -72,7 +76,11 @@ const CreateProviderAccount = () => {
     initialValues,
     onSubmit: (values, onSubmitProps) => {
       const formData = new FormData();
-      formData.append("files", selectedFile);
+      formData.append("photo", selectedFile);
+      formData.append("backgroundCheck", backCheckFile);
+      formData.append("independentContract", indConAggFile);
+      formData.append("hipaaCompliance", hipaaCompFile);
+      formData.append("nonDisclosureAgreement", nonDisAggFile);
       dispatch(
         createProviderAccount({
           accountType: "Physician",
@@ -563,48 +571,118 @@ const CreateProviderAccount = () => {
                 justifyContent="center"
                 gap={3}
               >
+                <Box display="none">
+                  <input
+                    type="file"
+                    id="IndConAggFileInput"
+                    onChange={(e) => {
+                      formik.setFieldValue("IndConAgg", true);
+                      setIndConAggFile(e.target.files[0]);
+                    }}
+                  />
+                  <input
+                    type="file"
+                    id="BacCheckFileInput"
+                    onChange={(e) => {
+                      formik.setFieldValue("BacCheck", true);
+                      setBackCheckFile(e.target.files[0]);
+                    }}
+                  />
+                  <input
+                    type="file"
+                    id="HIPAAFileInput"
+                    onChange={(e) => {
+                      formik.setFieldValue("HIPAA", true);
+                      setHipaaCompFile(e.target.files[0]);
+                    }}
+                  />
+                  <input
+                    type="file"
+                    id="NonDisAggFileInput"
+                    onChange={(e) => {
+                      formik.setFieldValue("nonDisAgg", true);
+                      setNonDisAggFile(e.target.files[0]);
+                    }}
+                  />
+                </Box>
                 <Box display="flex" flexWrap="wrap" gap={65}>
                   <FormControlLabel
-                    control={<Checkbox name="IndConAgg" />}
+                    control={
+                      <Checkbox
+                        name="IndConAgg"
+                        checked={formik.values.IndConAgg}
+                        onChange={formik.handleChange}
+                      />
+                    }
                     label="Independent Contractor Agreement"
                     sx={{ width: "310px" }}
                   />
                   <Button
                     name="Upload"
                     startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={() =>
+                      document.getElementById("IndConAggFileInput").click()
+                    }
                   />
                 </Box>
                 <Box display="flex" flexWrap="wrap" gap={65}>
                   <FormControlLabel
-                    control={<Checkbox name="BacCheck" />}
+                    control={
+                      <Checkbox
+                        name="BacCheck"
+                        checked={formik.values.BacCheck}
+                        onChange={formik.handleChange}
+                      />
+                    }
                     label="Background Check"
                     sx={{ width: "310px" }}
                   />
                   <Button
                     name="Upload"
                     startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={() =>
+                      document.getElementById("BacCheckFileInput").click()
+                    }
                   />
                 </Box>
                 <Box display="flex" flexWrap="wrap" gap={65}>
                   <FormControlLabel
-                    control={<Checkbox name="HIPAA" />}
+                    control={
+                      <Checkbox
+                        name="HIPAA"
+                        checked={formik.values.HIPAA}
+                        onChange={formik.handleChange}
+                      />
+                    }
                     label="HIPAA Compliance"
                     sx={{ width: "310px" }}
                   />
                   <Button
                     name="Upload"
                     startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={() =>
+                      document.getElementById("HIPAAFileInput").click()
+                    }
                   />
                 </Box>
                 <Box display="flex" flexWrap="wrap" gap={65}>
                   <FormControlLabel
-                    control={<Checkbox name="nonDisAgg" />}
+                    control={
+                      <Checkbox
+                        name="nonDisAgg"
+                        checked={formik.values.nonDisAgg}
+                        onChange={formik.handleChange}
+                      />
+                    }
                     label="Non-Disclosure Agreement"
                     sx={{ width: "310px" }}
                   />
                   <Button
                     name="Upload"
                     startIcon={<CloudUploadOutlinedIcon />}
+                    onClick={() =>
+                      document.getElementById("NonDisAggFileInput").click()
+                    }
                   />
                 </Box>
               </Box>

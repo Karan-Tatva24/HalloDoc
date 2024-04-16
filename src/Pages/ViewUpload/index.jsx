@@ -49,6 +49,16 @@ const ViewUpload = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(viewUpload({ id, sortBy: "createdAt", orderBy: "ASC" })).then(
+      (response) => {
+        if (response.type === "viewUpload/rejected") {
+          setFilterData([]);
+        }
+      },
+    );
+  }, [dispatch, id]);
+
+  useEffect(() => {
     setFilterData(rows);
   }, [rows]);
 
@@ -349,37 +359,58 @@ const ViewUpload = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filterData?.map((row) => (
-                    <TableRow key={row?.id} hover>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isSelected(row?.id)}
-                          onClick={(event) => handleClick(event, row?.id)}
-                        />
-                      </TableCell>
-                      <TableCell>{row?.fileName}</TableCell>
-                      <TableCell>{row?.createdAt}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleDownload(row?.fileName)}
-                          size="large"
-                          className="icon-btn"
-                        >
-                          <CloudDownloadOutlinedIcon size="large" />
-                        </Button>
-                        &nbsp;&nbsp;
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleDelete(row?.fileName)}
-                          className="icon-btn"
-                          size="large"
-                        >
-                          <DeleteOutlinedIcon size="large" />
-                        </Button>
+                  {filterData.length === 0 ? (
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell
+                        style={{
+                          color: "red",
+                          textAlign: "center",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          marginLeft: "5rem",
+                          width: "100%",
+                          fontSize: "1.5rem",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        &emsp;&emsp;&emsp;&emsp;File Not Found
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    filterData?.map((row) => (
+                      <TableRow key={row?.id} hover>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isSelected(row?.id)}
+                            onClick={(event) => handleClick(event, row?.id)}
+                          />
+                        </TableCell>
+                        <TableCell>{row?.fileName}</TableCell>
+                        <TableCell>{row?.createdAt}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleDownload(row?.fileName)}
+                            size="large"
+                            className="icon-btn"
+                          >
+                            <CloudDownloadOutlinedIcon size="large" />
+                          </Button>
+                          &nbsp;&nbsp;
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleDelete(row?.fileName)}
+                            className="icon-btn"
+                            size="large"
+                          >
+                            <DeleteOutlinedIcon size="large" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>

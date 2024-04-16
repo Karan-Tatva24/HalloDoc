@@ -32,13 +32,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewReservationAPI";
 import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
-import { viewUpload } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
 import { newState } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/newStateAPI";
 import { getSendAgreement } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendAgreementAPI";
 import { closeCaseView } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/closeCaseAPI";
 import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getDashboardByStateAPI";
 import { acceptRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/acceptRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
+import { typeOfCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
 
 const MyTable = ({
   accountType,
@@ -144,9 +144,6 @@ const MyTable = ({
             onClick(action);
             break;
           case "View Upload":
-            dispatch(
-              viewUpload({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
-            );
             navigate(AppRoutes.VIEW_UPLOAD);
             break;
           case "Orders":
@@ -167,6 +164,12 @@ const MyTable = ({
               closeCaseView({ id: rowId, sortBy: "createdAt", orderBy: "ASC" }),
             );
             navigate(AppRoutes.CLOSE_CASE);
+            break;
+          case "Type Of Care":
+            onClick(action, rowId);
+            break;
+          case "Conclude Care":
+            navigate(AppRoutes.CONCLUDE_CARE);
             break;
           default:
             break;
@@ -402,7 +405,29 @@ const MyTable = ({
                               )}
                               {copiedStates[row?.id]}
                             </>
-                          ) : ["Actions"].includes(column.label) ? (
+                          ) : column.id === "callType" ? (
+                            row?.callType ? (
+                              <Button
+                                name={row?.callType}
+                                onClick={() =>
+                                  dispatch(
+                                    typeOfCare({
+                                      id: row.id,
+                                      typeOfCare: row.callType,
+                                    }),
+                                  ).then((response) => {
+                                    if (
+                                      response.type === "typeOfCare/fulfilled"
+                                    ) {
+                                      dispatch(getProviderDashboardCount());
+                                    }
+                                  })
+                                }
+                              />
+                            ) : (
+                              " - "
+                            )
+                          ) : column.label === "Actions" ? (
                             <>
                               <Button
                                 className="phone-btn"
@@ -438,7 +463,11 @@ const MyTable = ({
                                     return (
                                       <MenuItem
                                         key={data.id}
-                                        onClick={() => handleClose(data.name)}
+                                        onClick={() => {
+                                          data.name === "Encounter"
+                                            ? handleClose("Type Of Care")
+                                            : handleClose(data.name);
+                                        }}
                                         disableRipple
                                       >
                                         {data.icon}&nbsp;{data.name}

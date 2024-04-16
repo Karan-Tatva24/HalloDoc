@@ -24,7 +24,7 @@ export const createProviderAccount = createAsyncThunk(
       altPhone,
       businessName,
       businessWebsite,
-      //   files,
+      files,
     } = params;
     try {
       const response = await Axios.post(
@@ -48,13 +48,17 @@ export const createProviderAccount = createAsyncThunk(
           altPhone,
           businessName,
           businessWebsite,
-          //   files,
+          photo: files.photo,
+          backgroundCheck: files.backgroundCheck,
+          independentContract: files.independentContract,
+          hipaaCompliance: files.hipaaCompliance,
+          nonDisclosureAgreement: files.nonDisclosureAgreement,
         },
-        // {
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
       return response?.data;
     } catch (error) {

@@ -38,6 +38,7 @@ import BlockHistory from "./Pages/BlockHistory";
 import CreateRequest from "./Pages/CreateRequest";
 import "react-phone-input-2/lib/style.css";
 import PageNotFound from "./Pages/PageNotFound";
+import ConcludeCare from "./Pages/ConcludeCare";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -126,6 +127,10 @@ const App = () => {
               <Route
                 path={AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN}
                 element={<CreateRequest />}
+              />
+              <Route
+                path={AppRoutes.CONCLUDE_CARE}
+                element={<ConcludeCare />}
               />
             </Route>
           </Route>

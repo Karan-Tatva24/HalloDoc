@@ -41,6 +41,7 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/commonAPIs/exportAPI";
 import { toast } from "react-toastify";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
+import TypeOfCareModal from "../../Components/Modal/TypeOfCareModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -319,6 +320,10 @@ const DashBoard = () => {
         open={open && modalName === "Clear Case"}
         handleClose={handleClose}
         rowId={rowId}
+      />
+      <TypeOfCareModal
+        open={open && modalName === "Type Of Care"}
+        handleClose={handleClose}
       />
     </>
   );

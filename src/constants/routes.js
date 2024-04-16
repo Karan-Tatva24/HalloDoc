@@ -29,4 +29,5 @@ export const AppRoutes = {
   PATIENTS_RECORDS: "/records/patienthistory/patientsrecords",
   BLOCKED_HISTORY: "/records/blockedhistory",
   CREATE_REQUEST_ADMIN_PHYSICIAN: "/dashboard/createrequest",
+  CONCLUDE_CARE: "/dashboard/concludecare",
 };

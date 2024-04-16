@@ -199,7 +199,7 @@ export const activeColumns = [
     accountTypes: ["Admin", "Physician"],
   },
   {
-    id: "status",
+    id: "callType",
     label: "Status",
     maxWidth: "120px",
     align: "center",

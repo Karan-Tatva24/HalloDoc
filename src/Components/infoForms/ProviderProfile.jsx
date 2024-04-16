@@ -23,7 +23,7 @@ const INITIAL_VALUE = {
 const ProviderProfile = ({ id, businessName, businessWebsite }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [selectedSigneture, setSelectedSigneture] = useState(null);
+  const [selectedSignature, setSelectedSignature] = useState(null);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const [openModel, setOpenModal] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -64,9 +64,9 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
     setSelectedPhoto(event.target.files[0]);
   };
 
-  const handleSignetureChange = (event) => {
+  const handleSignatureChange = (event) => {
     event.preventDefault();
-    setSelectedSigneture(event.target.files[0]);
+    setSelectedSignature(event.target.files[0]);
   };
 
   return (
@@ -166,16 +166,16 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
               title="Upload-files"
             >
               <input
-                onChange={handleSignetureChange}
+                onChange={handleSignatureChange}
                 type="file"
                 id="signature"
                 disabled={isDisabled}
                 hidden
               />
               <label htmlFor="signature">
-                {selectedSigneture !== null
-                  ? selectedSigneture.name
-                  : "Select Signeture"}
+                {selectedSignature !== null
+                  ? selectedSignature.name
+                  : "Signature"}
               </label>
             </Button>
 
@@ -276,7 +276,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
                 );
                 formData.append("adminNotes", formik.values.adminNotes);
                 formData.append("photo", selectedPhoto);
-                formData.append("signature", selectedSigneture);
+                formData.append("signature", selectedSignature);
                 dispatch(editProviderProfile({ id, data: formData })).then(
                   (response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
