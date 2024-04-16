@@ -25,3 +25,4 @@ export {
   createShiftModalSchema,
   viewShiftModalSchema,
 } from "./createShiftModalSchema";
+export { concludeCareSchema } from "./concludeCareSchema";

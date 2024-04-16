@@ -36,7 +36,7 @@ const ViewUpload = () => {
   const [orderBy, setOrderBy] = useState("createdAt");
   const [selectedFile, setSelectedFile] = useState(null);
   const state = useSelector((state) => state.root.viewUpload);
-  const rows = state?.viewUpload;
+  const rows = state?.viewUploadData;
   const [filterData, setFilterData] = useState(rows);
   const {
     patientFirstName,
@@ -359,7 +359,7 @@ const ViewUpload = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filterData.length === 0 ? (
+                  {filterData?.length === 0 ? (
                     <TableRow>
                       <TableCell></TableCell>
                       <TableCell></TableCell>

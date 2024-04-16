@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { viewUpload } from "../../halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
 
 const initialState = {
-  viewUpload: [],
+  viewUploadData: [],
 };
 
 export const viewUploadSlice = createSlice({
@@ -11,7 +11,7 @@ export const viewUploadSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(viewUpload.fulfilled, (state, action) => {
       if (action.payload) {
-        state.viewUpload = action.payload?.data;
+        state.viewUploadData = action.payload?.data;
       }
     });
   },

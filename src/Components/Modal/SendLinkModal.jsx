@@ -33,7 +33,7 @@ const SendLinkModal = ({ open, handleClose }) => {
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "sendLink/rejected") {
-          toast.error(response.payload.data.validation.body.message);
+          toast.error(response.payload?.data?.validation?.body?.message);
         }
       });
     },

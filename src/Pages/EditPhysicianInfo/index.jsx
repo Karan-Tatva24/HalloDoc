@@ -52,9 +52,9 @@ const EditPhysicianInfo = () => {
     isHipaaDoc,
     regions,
     role,
+    business,
+    // requestWiseFiles,
   } = physicianData.physicianProfile[0];
-
-  const { businessName, businessWebsite } = physicianData.businessDetails[0];
 
   const handelDeleteAccount = () => {
     dispatch(deleteProviderAccount(id)).then((response) => {
@@ -124,8 +124,8 @@ const EditPhysicianInfo = () => {
             />
             <ProviderProfile
               id={id}
-              businessName={businessName}
-              businessWebsite={businessWebsite}
+              businessName={business?.businessName}
+              businessWebsite={business?.businessWebsite}
               photo={photo}
               signature={signature}
             />

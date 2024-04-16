@@ -241,7 +241,7 @@ const PhysiciansInformation = ({
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
-                      toast.error(response.payload.data?.message);
+                      toast.error(response.payload?.data?.message);
                     }
                   },
                 );

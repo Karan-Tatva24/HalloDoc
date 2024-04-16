@@ -38,7 +38,7 @@ import { closeCaseView } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/clo
 import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getDashboardByStateAPI";
 import { acceptRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/acceptRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
-import { typeOfCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
+import { houseCallType } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
 
 const MyTable = ({
   accountType,
@@ -410,18 +410,16 @@ const MyTable = ({
                               <Button
                                 name={row?.callType}
                                 onClick={() =>
-                                  dispatch(
-                                    typeOfCare({
-                                      id: row.id,
-                                      typeOfCare: row.callType,
-                                    }),
-                                  ).then((response) => {
-                                    if (
-                                      response.type === "typeOfCare/fulfilled"
-                                    ) {
-                                      dispatch(getProviderDashboardCount());
-                                    }
-                                  })
+                                  dispatch(houseCallType(row.id)).then(
+                                    (response) => {
+                                      if (
+                                        response.type ===
+                                        "houseCallType/fulfilled"
+                                      ) {
+                                        dispatch(getProviderDashboardCount());
+                                      }
+                                    },
+                                  )
                                 }
                               />
                             ) : (

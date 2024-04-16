@@ -8,6 +8,12 @@ const initialState = {
   id: "",
   requestType: "",
   patientEmail: "",
+  street: "",
+  city: "",
+  state: "",
+  zipCode: "",
+  dob: "",
+  patientPhoneNumber: "",
 };
 
 export const getPatientNameSlice = createSlice({
@@ -22,6 +28,12 @@ export const getPatientNameSlice = createSlice({
         state.confirmationNumber = action.payload.data[0]?.confirmationNumber;
         state.requestType = action.payload.data[0]?.requestType;
         state.patientEmail = action.payload.data[0]?.patientEmail;
+        state.street = action.payload.data[0]?.street;
+        state.city = action.payload.data[0]?.city;
+        state.state = action.payload.data[0]?.state;
+        state.zipCode = action.payload.data[0]?.patientEmail;
+        state.dob = action.payload.data[0]?.dob;
+        state.patientPhoneNumber = action.payload.data[0]?.patientPhoneNumber;
       }
     });
   },

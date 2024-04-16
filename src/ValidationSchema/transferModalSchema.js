@@ -4,11 +4,11 @@ export const transferModalSchema = Yup.object({
   isAdmin: Yup.boolean(),
   searchRegion: Yup.string().when("isAdmin", {
     is: true,
-    then: Yup.string().required("Search Region is Required!"),
+    then: (schema) => schema.required("Region is Required!"),
   }),
   physician: Yup.string().when("isAdmin", {
     is: true,
-    then: Yup.string().required("Physician is Required!"),
+    then: (schema) => schema.required("Physician is Required!"),
   }),
   description: Yup.string().required("Description is Required!"),
 });

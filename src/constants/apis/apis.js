@@ -115,5 +115,7 @@ export const PROVIDER_DASHBOARD_COUNT = "/provider/dashboard/dashboardCount";
 export const ACCEPT_REQUEST = "/provider/dashboard/acceptRequest";
 export const PROVIDER_TRANSFER_REQUEST = "/provider/dashboard/transferRequest";
 export const TYPE_OF_CARE = "/provider/dashboard/typeOfCare";
+export const HOUSE_CALL_TYPE = "/provider/dashboard/houseCallType";
+export const CONCLUDE_CARE = "/provider/dashboard/concludeCare";
 
 /* ***************************************** Patient API ***************************************** */
