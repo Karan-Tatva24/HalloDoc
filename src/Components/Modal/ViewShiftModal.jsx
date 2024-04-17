@@ -27,9 +27,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const [isDisabled, setIsDisabled] = useState(true);
   const dispatch = useDispatch();
-  const { regions, physicians } = useSelector(
-    (state) => state.root.getRegionPhysician,
-  );
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { viewShiftData } = useSelector((state) => state.root.viewShift);
 
   const formik = useFormik({
@@ -105,7 +103,6 @@ const ViewShiftModal = ({ open, handleClose }) => {
           <Input
             fullWidth
             label="Select Physician"
-            select
             disabled
             name="physician"
             onChange={formik.handleChange}
@@ -113,19 +110,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
             value={formik.values.physician}
             error={formik.touched.physician && Boolean(formik.errors.physician)}
             helperText={formik.touched.physician && formik.errors.physician}
-          >
-            {physicians &&
-              physicians?.map((physician) => {
-                return (
-                  <MenuItem
-                    key={physician.id}
-                    value={`${physician.firstName} ${physician.lastName}`}
-                  >
-                    {`${physician.firstName} ${physician.lastName}`}
-                  </MenuItem>
-                );
-              })}
-          </Input>
+          />
           <Input
             label="Shift Date"
             type="date"

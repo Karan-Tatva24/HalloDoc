@@ -24,6 +24,7 @@ const ViewNotes = () => {
   const data = state?.notes;
   const dispatch = useDispatch();
   const id = data?.id;
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: {
@@ -120,7 +121,9 @@ const ViewNotes = () => {
               <form onSubmit={formik.handleSubmit}>
                 <Paper className="input-notes-container">
                   <Input
-                    label="Admin Notes"
+                    label={
+                      accountType === "Admin" ? "Admin Notes" : "Provider Notes"
+                    }
                     name="adminNotes"
                     value={formik.values.adminNotes}
                     onChange={formik.handleChange}

@@ -171,6 +171,9 @@ const MyTable = ({
           case "Conclude Care":
             navigate(AppRoutes.CONCLUDE_CARE);
             break;
+          case "Encounter Form":
+            navigate(AppRoutes.ENCOUNTER_FORM);
+            break;
           default:
             break;
         }
@@ -463,7 +466,9 @@ const MyTable = ({
                                         key={data.id}
                                         onClick={() => {
                                           data.name === "Encounter"
-                                            ? handleClose("Type Of Care")
+                                            ? row?.callType
+                                              ? handleClose("Encounter Form")
+                                              : handleClose("Type Of Care")
                                             : handleClose(data.name);
                                         }}
                                         disableRipple

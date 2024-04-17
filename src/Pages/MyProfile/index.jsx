@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import { Button } from "../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import "./myProfile.css";
@@ -9,17 +9,32 @@ import AdministratorInfo from "../../Components/infoForms/AdministratorInfo";
 import AddressInfo from "../../Components/infoForms/AddressInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
+import PhysiciansInformation from "../../Components/infoForms/PhysiciansInformation";
+import ProviderProfile from "../../Components/infoForms/ProviderProfile";
+import OnBoarding from "./components/OnBoarding";
+import RequestToAdminModal from "../../Components/Modal/RequestToAdminModal";
 
 const MyProfile = () => {
+  const [open, setOpen] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { profileData } = useSelector((state) => state.root.adminProfile);
   const { roles } = useSelector((state) => state.root.getRoles);
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   useEffect(() => {
     dispatch(getRoles({ accountType: "admin" }));
   }, [dispatch]);
+
+  const handleOpen = (name, id) => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const {
     id,
@@ -35,8 +50,12 @@ const MyProfile = () => {
     state,
     zipCode,
     altPhone,
+    medicalLicense,
+    NPINumber,
     regions,
     role,
+    business,
+    userFiles,
   } = profileData;
 
   return (
@@ -65,6 +84,15 @@ const MyProfile = () => {
             />
           </Box>
           <Paper className="profile-form-container">
+            {accountType === "Physician" ? (
+              <Box display="flex" justifyContent="flex-end" pb={3}>
+                <Button
+                  name="Request To Admin"
+                  variant="outlined"
+                  onClick={handleOpen}
+                />
+              </Box>
+            ) : null}
             <AccountInfo
               name="MyProfile"
               id={id}
@@ -73,14 +101,28 @@ const MyProfile = () => {
               role={role}
               roles={roles}
             />
-            <AdministratorInfo
-              firstName={firstName}
-              lastName={lastName}
-              email={email}
-              phone={phoneNumber}
-              state={state}
-              regions={regions}
-            />
+            {accountType === "Admin" ? (
+              <AdministratorInfo
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                phone={phoneNumber}
+                state={state}
+                regions={regions}
+              />
+            ) : (
+              <PhysiciansInformation
+                id={id}
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                phone={phoneNumber}
+                medicalLicense={medicalLicense}
+                npiNumber={NPINumber}
+                state={state}
+                regions={regions}
+              />
+            )}
             <AddressInfo
               name="MyProfile"
               address1={address1}
@@ -91,9 +133,30 @@ const MyProfile = () => {
               altPhone={altPhone}
               regions={regions}
             />
+            {accountType === "Physician" ? (
+              <>
+                <ProviderProfile
+                  id={id}
+                  businessName={business?.businessName}
+                  businessWebsite={business?.businessWebsite}
+                  photo={userFiles?.photo}
+                  signature={userFiles?.signature}
+                />
+                <Divider sx={{ backgroundColor: "#1f1e1e86" }} />
+                <OnBoarding
+                  id={id}
+                  isAgreementDoc={userFiles?.isAgreementDoc}
+                  isBackgroundDoc={userFiles?.isBackgroundDoc}
+                  isNonDisclosureDoc={userFiles?.isNonDisclosureDoc}
+                  isLicenseDoc={userFiles?.isLicenseDoc}
+                  isHipaaDoc={userFiles?.isHipaaDoc}
+                />
+              </>
+            ) : null}
           </Paper>
         </Container>
       </Box>
+      <RequestToAdminModal id={id} open={open} handleClose={handleClose} />
     </>
   );
 };

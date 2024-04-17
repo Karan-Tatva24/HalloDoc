@@ -44,6 +44,7 @@ const PhysiciansInformation = ({
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.root.getRegionPhysician);
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -178,25 +179,27 @@ const PhysiciansInformation = ({
             helperText={formik.touched.NPINumber && formik.errors.NPINumber}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Input
-            name="syncEmailAddress"
-            label="Synchronization Email Address"
-            fullWidth
-            disabled={isDisabled}
-            value={formik.values?.syncEmailAddress}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.syncEmailAddress &&
-              Boolean(formik.errors.syncEmailAddress)
-            }
-            helperText={
-              formik.touched.syncEmailAddress && formik.errors.syncEmailAddress
-            }
-          ></Input>
-        </Grid>
-
+        {accountType === "Admin" ? (
+          <Grid item xs={12} md={6}>
+            <Input
+              name="syncEmailAddress"
+              label="Synchronization Email Address"
+              fullWidth
+              disabled={isDisabled}
+              value={formik.values?.syncEmailAddress}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.syncEmailAddress &&
+                Boolean(formik.errors.syncEmailAddress)
+              }
+              helperText={
+                formik.touched.syncEmailAddress &&
+                formik.errors.syncEmailAddress
+              }
+            ></Input>
+          </Grid>
+        ) : null}
         <Grid item xs={12} md={6}>
           {data?.regions?.map((region) => {
             return (
@@ -225,16 +228,18 @@ const PhysiciansInformation = ({
         mt={5}
         mb={2}
       >
-        {isDisabled ? (
-          <Button name="Edit" onClick={() => setIsDisabled(false)} />
-        ) : (
-          <>
-            <Button
-              name="Save"
-              type="submit"
-              onClick={() => {
-                dispatch(editProviderProfile({ id, data: formik.values })).then(
-                  (response) => {
+        {accountType === "Admin" ? (
+          isDisabled ? (
+            <Button name="Edit" onClick={() => setIsDisabled(false)} />
+          ) : (
+            <>
+              <Button
+                name="Save"
+                type="submit"
+                onClick={() => {
+                  dispatch(
+                    editProviderProfile({ id, data: formik.values }),
+                  ).then((response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
                       toast.success(response.payload.message);
@@ -243,21 +248,21 @@ const PhysiciansInformation = ({
                     ) {
                       toast.error(response.payload?.data?.message);
                     }
-                  },
-                );
-                setIsDisabled(true);
-              }}
-            />
-            <Button
-              name="Cancel"
-              variant="outlined"
-              onClick={() => {
-                formik.setValues(initialValues);
-                setIsDisabled(true);
-              }}
-            />
-          </>
-        )}
+                  });
+                  setIsDisabled(true);
+                }}
+              />
+              <Button
+                name="Cancel"
+                variant="outlined"
+                onClick={() => {
+                  formik.setValues(initialValues);
+                  setIsDisabled(true);
+                }}
+              />
+            </>
+          )
+        ) : null}
       </Box>
     </form>
   );

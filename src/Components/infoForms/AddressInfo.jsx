@@ -32,13 +32,14 @@ const AddressInfo = ({
   address2,
   city,
   state,
-  zipCode,
+  zip,
   altPhone,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const { id } = useSelector((state) => state.root.loggedUserData);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -54,10 +55,10 @@ const AddressInfo = ({
       address2,
       city,
       state,
-      zipCode,
+      zipCode: zip,
       altPhone,
     });
-  }, [address1, address2, altPhone, city, state, zipCode]);
+  }, [address1, address2, altPhone, city, state, zip]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -164,63 +165,67 @@ const AddressInfo = ({
         mt={5}
         mb={2}
       >
-        {isDisabled ? (
-          <Button name="Edit" onClick={() => setIsDisabled(false)} />
-        ) : (
-          <>
-            <Button
-              name="Save"
-              type="submit"
-              onClick={() => {
-                if (name === "EditProvider") {
-                  dispatch(
-                    editProviderProfile({ id: index, data: formik.values }),
-                  ).then((response) => {
-                    if (response.type === "editProviderProfile/fulfilled") {
-                      dispatch(physicianProfile(index));
-                      toast.success(response.payload.message);
-                    } else if (
-                      response.type === "editProviderProfile/rejected"
-                    ) {
-                      toast.error(
-                        response.payload.data.validation.body.message,
-                      );
-                    }
-                  });
-                }
+        {accountType === "Admin" ? (
+          isDisabled ? (
+            <Button name="Edit" onClick={() => setIsDisabled(false)} />
+          ) : (
+            <>
+              <Button
+                name="Save"
+                type="submit"
+                onClick={() => {
+                  if (name === "EditProvider") {
+                    dispatch(
+                      editProviderProfile({ id: index, data: formik.values }),
+                    ).then((response) => {
+                      if (response.type === "editProviderProfile/fulfilled") {
+                        dispatch(physicianProfile(index));
+                        toast.success(response.payload.message);
+                      } else if (
+                        response.type === "editProviderProfile/rejected"
+                      ) {
+                        toast.error(
+                          response.payload.data.validation.body.message,
+                        );
+                      }
+                    });
+                  }
 
-                if (name === "MyProfile") {
-                  dispatch(
-                    editAdminProfile({
-                      id,
-                      section: "billing",
-                      updatedData: formik.values,
-                    }),
-                  ).then((response) => {
-                    if (response.type === "editAdminProfile/fulfilled") {
-                      dispatch(adminProfile(id));
-                      toast.success(response.payload.message);
-                    } else if (response.type === "editAdminProfile/rejected") {
-                      toast.error(
-                        response.payload.data.validation.body.message,
-                      );
-                    }
-                  });
-                }
+                  if (name === "MyProfile") {
+                    dispatch(
+                      editAdminProfile({
+                        id,
+                        section: "billing",
+                        updatedData: formik.values,
+                      }),
+                    ).then((response) => {
+                      if (response.type === "editAdminProfile/fulfilled") {
+                        dispatch(adminProfile(id));
+                        toast.success(response.payload.message);
+                      } else if (
+                        response.type === "editAdminProfile/rejected"
+                      ) {
+                        toast.error(
+                          response.payload.data.validation.body.message,
+                        );
+                      }
+                    });
+                  }
 
-                setIsDisabled(true);
-              }}
-            />
-            <Button
-              name="Cancel"
-              variant="outlined"
-              onClick={() => {
-                formik.setValues(initialValues);
-                setIsDisabled(true);
-              }}
-            />
-          </>
-        )}
+                  setIsDisabled(true);
+                }}
+              />
+              <Button
+                name="Cancel"
+                variant="outlined"
+                onClick={() => {
+                  formik.setValues(initialValues);
+                  setIsDisabled(true);
+                }}
+              />
+            </>
+          )
+        ) : null}
       </Box>
     </form>
   );

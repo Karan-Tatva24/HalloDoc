@@ -44,6 +44,7 @@ const ViewReservation = () => {
   const data = state?.viewCase;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -299,7 +300,7 @@ const ViewReservation = () => {
                 mt={4}
                 flexWrap="wrap"
               >
-                {data["Case Tag"] === "New" && (
+                {data["Case Tag"] === "New" && accountType === "Admin" && (
                   <Button
                     name="Assign"
                     type="submit"

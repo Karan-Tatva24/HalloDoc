@@ -22,6 +22,7 @@ import getRolesSliceReducer from "./adminSlices/getRolesSlice";
 import schedulingSliceReducer from "./adminSlices/schedulingSlice";
 import dashboardByStateSlice from "./providerSlices/dashboardByStateSlice";
 import viewShiftSliceReducer from "./adminSlices/viewShiftSlice";
+import encounterFormSliceReducer from "./providerSlices/encounterFormSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -47,4 +48,5 @@ export const rootReducer = combineReducers({
   scheduling: schedulingSliceReducer,
   dashboardByState: dashboardByStateSlice,
   viewShift: viewShiftSliceReducer,
+  encounterForm: encounterFormSliceReducer,
 });

@@ -117,5 +117,12 @@ export const PROVIDER_TRANSFER_REQUEST = "/provider/dashboard/transferRequest";
 export const TYPE_OF_CARE = "/provider/dashboard/typeOfCare";
 export const HOUSE_CALL_TYPE = "/provider/dashboard/houseCallType";
 export const CONCLUDE_CARE = "/provider/dashboard/concludeCare";
+export const GET_ENCOUNTER_FORM = "/provider/dashboard/viewEncounterForm";
+export const EDIT_ENCOUNTER_FORM = "/provider/dashboard/editEncounterForm";
+export const SAVE_ENCOUNTER_FORM = "/provider/dashboard/encounterForm";
+
+/* ************************************* Profile API ************************************* */
+
+export const REQUEST_TO_ADMIN = "/provider/profile/requestToAdmin";
 
 /* ***************************************** Patient API ***************************************** */

@@ -39,6 +39,7 @@ import CreateRequest from "./Pages/CreateRequest";
 import "react-phone-input-2/lib/style.css";
 import PageNotFound from "./Pages/PageNotFound";
 import ConcludeCare from "./Pages/ConcludeCare";
+import EncounterForm from "./Pages/EncounterForm";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -131,6 +132,10 @@ const App = () => {
               <Route
                 path={AppRoutes.CONCLUDE_CARE}
                 element={<ConcludeCare />}
+              />
+              <Route
+                path={AppRoutes.ENCOUNTER_FORM}
+                element={<EncounterForm />}
               />
             </Route>
           </Route>

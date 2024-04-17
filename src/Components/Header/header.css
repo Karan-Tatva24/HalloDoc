@@ -53,16 +53,16 @@ a.active {
     transition: all 0.5s ease;
 }
 
-.sidelinks {
+.sideLinks {
     display: flex;
     align-items: center;
     height: 50px;
     padding-left: 30px;
 }
 
-.sidelinks:hover,
-.sidelinks:focus,
-.sidelinks:active {
+.sideLinks:hover,
+.sideLinks:focus,
+.sideLinks:active {
     background-color: #3e7aae;
     color: #ffffff;
 }

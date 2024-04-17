@@ -155,9 +155,9 @@ const DashBoard = () => {
                         {counts?.map((count, index) => {
                           return (
                             <Typography variant="h5" key={index}>
-                              {count.caseTag === card.applicationState && (
+                              {count.caseTag === card.applicationState ? (
                                 <b>{count.count}</b>
-                              )}
+                              ) : null}
                             </Typography>
                           );
                         })}

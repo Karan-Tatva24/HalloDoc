@@ -1,0 +1,16 @@
+.encounter-main-container {
+  background-color: #f6f6f6;
+}
+
+.encounter-main-wrapper {
+  padding: 1rem 3rem;
+}
+
+.encounter-form-container {
+  padding: 1.25rem;
+}
+
+.encounter-form-header {
+  color: #01bce9;
+  font-size: x-large !important;
+}

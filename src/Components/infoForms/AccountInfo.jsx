@@ -13,7 +13,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import { Button } from "../Button";
 import { Input } from "../TextField/Input";
 import { accountInfoSchema } from "../../ValidationSchema";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   editProviderProfile,
   physicianProfile,
@@ -33,6 +33,7 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
   const [passwordDisable, setPasswordDisable] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const formik = useFormik({
     initialValues,
@@ -95,44 +96,48 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
             }}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Input
-            select
-            name="status"
-            label="Status"
-            fullWidth
-            disabled={name === "MyProfile" ? true : isDisabled}
-            value={formik.values.status}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.status && Boolean(formik.errors.status)}
-            helperText={formik.touched.status && formik.errors.status}
-          >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Inactive">Inactive</MenuItem>
-            <MenuItem value="Pending">Pending</MenuItem>
-          </Input>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Input
-            select
-            name="role"
-            label="Role"
-            fullWidth
-            disabled={name === "MyProfile" ? true : isDisabled}
-            value={formik.values.role}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.role && Boolean(formik.errors.role)}
-            helperText={formik.touched.role && formik.errors.role}
-          >
-            {roles?.map((role) => (
-              <MenuItem key={role?.id} value={role?.id}>
-                {role?.Name}
-              </MenuItem>
-            ))}
-          </Input>
-        </Grid>
+        {accountType === "Admin" ? (
+          <>
+            <Grid item xs={12} md={6}>
+              <Input
+                select
+                name="status"
+                label="Status"
+                fullWidth
+                disabled={name === "MyProfile" ? true : isDisabled}
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.status && Boolean(formik.errors.status)}
+                helperText={formik.touched.status && formik.errors.status}
+              >
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+                <MenuItem value="Pending">Pending</MenuItem>
+              </Input>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                select
+                name="role"
+                label="Role"
+                fullWidth
+                disabled={name === "MyProfile" ? true : isDisabled}
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.role && Boolean(formik.errors.role)}
+                helperText={formik.touched.role && formik.errors.role}
+              >
+                {roles?.map((role) => (
+                  <MenuItem key={role?.id} value={role?.id}>
+                    {role?.Name}
+                  </MenuItem>
+                ))}
+              </Input>
+            </Grid>
+          </>
+        ) : null}
       </Grid>
       <Box
         display="flex"

@@ -26,3 +26,4 @@ export {
   viewShiftModalSchema,
 } from "./createShiftModalSchema";
 export { concludeCareSchema } from "./concludeCareSchema";
+export { encounterFormSchema } from "./encounterFormSchema";

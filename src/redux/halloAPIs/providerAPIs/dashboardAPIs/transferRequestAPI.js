@@ -5,9 +5,11 @@ import { PROVIDER_TRANSFER_REQUEST } from "../../../../constants/apis/apis";
 export const providerTransferRequest = createAsyncThunk(
   "providerTransferRequest",
   async (params, { rejectWithValue }) => {
-    const { id } = params;
+    const { id, description } = params;
     try {
-      const response = await Axios.patch(`${PROVIDER_TRANSFER_REQUEST}/${id}`);
+      const response = await Axios.patch(`${PROVIDER_TRANSFER_REQUEST}/${id}`, {
+        description,
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

@@ -191,7 +191,7 @@ const ViewUpload = () => {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
       } else if (response.type === "deleteFile/rejected") {
-        toast.error(response.payload.data.validation.body.message);
+        toast.error(response?.payload?.data.message);
       }
     });
   };
@@ -205,7 +205,7 @@ const ViewUpload = () => {
           toast.success(response.payload.message);
           dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
         } else if (response.type === "deleteFile/rejected") {
-          toast.error(response?.error);
+          toast.error(response?.payload?.data.message);
         }
       },
     );
@@ -223,7 +223,7 @@ const ViewUpload = () => {
       if (response.type === "sendMail/fulfilled") {
         toast.success(response.payload.message);
       } else if (response.type === "sendMail/rejected") {
-        toast.error(response.payload.data.validation.body.message);
+        toast.error(response.payload?.data.message);
       }
     });
   };

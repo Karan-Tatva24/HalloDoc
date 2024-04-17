@@ -11,7 +11,7 @@ import {
   editProviderProfile,
   physicianProfile,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const INITIAL_VALUE = {
@@ -29,6 +29,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
   const [imageURL, setImageURL] = useState(null);
   const sigCanvas = useRef();
   const dispatch = useDispatch();
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const create = () => {
     const URL = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
@@ -260,44 +261,46 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
         mt={5}
         mb={2}
       >
-        {isDisabled ? (
-          <Button name="Edit" onClick={() => setIsDisabled(false)} />
-        ) : (
-          <>
-            <Button
-              name="Save"
-              type="submit"
-              onClick={() => {
-                const formData = new FormData();
-                formData.append("businessName", formik.values.businessName);
-                formData.append(
-                  "businessWebsite",
-                  formik.values.businessWebsite,
-                );
-                formData.append("adminNotes", formik.values.adminNotes);
-                formData.append("photo", selectedPhoto);
-                formData.append("signature", selectedSignature);
-                dispatch(editProviderProfile({ id, data: formData })).then(
-                  (response) => {
-                    if (response.type === "editProviderProfile/fulfilled") {
-                      dispatch(physicianProfile(id));
-                      toast.success(response.payload.message);
-                    }
-                  },
-                );
-                setIsDisabled(true);
-              }}
-            />
-            <Button
-              name="Cancel"
-              variant="outlined"
-              onClick={() => {
-                formik.setValues(initialValues);
-                setIsDisabled(true);
-              }}
-            />
-          </>
-        )}
+        {accountType === "Admin" ? (
+          isDisabled ? (
+            <Button name="Edit" onClick={() => setIsDisabled(false)} />
+          ) : (
+            <>
+              <Button
+                name="Save"
+                type="submit"
+                onClick={() => {
+                  const formData = new FormData();
+                  formData.append("businessName", formik.values.businessName);
+                  formData.append(
+                    "businessWebsite",
+                    formik.values.businessWebsite,
+                  );
+                  formData.append("adminNotes", formik.values.adminNotes);
+                  formData.append("photo", selectedPhoto);
+                  formData.append("signature", selectedSignature);
+                  dispatch(editProviderProfile({ id, data: formData })).then(
+                    (response) => {
+                      if (response.type === "editProviderProfile/fulfilled") {
+                        dispatch(physicianProfile(id));
+                        toast.success(response.payload.message);
+                      }
+                    },
+                  );
+                  setIsDisabled(true);
+                }}
+              />
+              <Button
+                name="Cancel"
+                variant="outlined"
+                onClick={() => {
+                  formik.setValues(initialValues);
+                  setIsDisabled(true);
+                }}
+              />
+            </>
+          )
+        ) : null}
       </Box>
     </form>
   );
