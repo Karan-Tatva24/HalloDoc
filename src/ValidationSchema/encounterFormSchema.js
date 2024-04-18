@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const encounterFormSchema = Yup.object({
-  serviceDate: Yup.string(),
+  serviceDate: Yup.string().required("Please Provide Service Date"),
   presentIllnessHistory: Yup.string(),
   medicalHistory: Yup.string(),
   medications: Yup.string(),

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { encounterFormSchema } from "../../ValidationSchema";
 import {
   editEncounterForm,
+  finalizeForm,
   getEncounterForm,
   saveEncounterForm,
 } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
@@ -54,6 +55,7 @@ const EncounterForm = () => {
   const { encounterFormData } = useSelector(
     (state) => state.root.encounterForm,
   );
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const {
     id,
@@ -77,9 +79,7 @@ const EncounterForm = () => {
     validationSchema: encounterFormSchema,
     onSubmit: (values) => {
       if (encounterFormData?.id) {
-        dispatch(
-          editEncounterForm({ id: encounterFormData?.id, data: values }),
-        ).then((response) => {
+        dispatch(editEncounterForm({ id, data: values })).then((response) => {
           if (response.type === "editEncounterForm/fulfilled") {
             toast.success(response?.payload?.message);
             navigate(AppRoutes.DASHBOARD);
@@ -89,7 +89,6 @@ const EncounterForm = () => {
         dispatch(saveEncounterForm({ id, data: values })).then((response) => {
           if (response.type === "saveEncounterForm/fulfilled") {
             toast.success(response?.payload?.message);
-            navigate(AppRoutes.DASHBOARD);
           }
         });
       }
@@ -127,6 +126,15 @@ const EncounterForm = () => {
     });
   }, [encounterFormData]);
 
+  const handleFinalize = () => {
+    dispatch(finalizeForm(id)).then((response) => {
+      if (response.type === "finalizeForm/fulfilled") {
+        toast.success(response?.payload?.message);
+        navigate(AppRoutes.DASHBOARD);
+      }
+    });
+  };
+
   return (
     <>
       <Box className="encounter-main-container">
@@ -148,7 +156,10 @@ const EncounterForm = () => {
               size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                formik.resetForm();
+                navigate(-1);
+              }}
               className="back-btn"
             />
           </Box>
@@ -638,7 +649,14 @@ const EncounterForm = () => {
                 pb={1}
               >
                 <Button name="Save Changes" type="submit" />
-                <Button name="Finalize" color="secondary" variant="contained" />
+                {accountType === "Physician" ? (
+                  <Button
+                    name="Finalize"
+                    color="secondary"
+                    variant="contained"
+                    onClick={handleFinalize}
+                  />
+                ) : null}
                 <Button
                   name="Cancel"
                   variant="outlined"

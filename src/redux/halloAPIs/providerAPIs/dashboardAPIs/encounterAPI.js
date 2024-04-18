@@ -2,7 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../../../config/axios";
 import {
   CONCLUDE_CARE,
+  DOWNLOAD,
   EDIT_ENCOUNTER_FORM,
+  FINALIZE_FORM,
   GET_ENCOUNTER_FORM,
   HOUSE_CALL_TYPE,
   SAVE_ENCOUNTER_FORM,
@@ -82,6 +84,32 @@ export const saveEncounterForm = createAsyncThunk(
     const { data, id } = params;
     try {
       const response = await Axios.post(`${SAVE_ENCOUNTER_FORM}/${id}`, data);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const finalizeForm = createAsyncThunk(
+  "finalizeForm",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.patch(`${FINALIZE_FORM}/${params}`);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const download = createAsyncThunk(
+  "download",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.get(`${DOWNLOAD}/${params}`, {
+        responseType: "blob",
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

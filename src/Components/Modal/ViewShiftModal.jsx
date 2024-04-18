@@ -14,6 +14,7 @@ import {
   viewShiftByDate,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { viewShiftModalSchema } from "../../ValidationSchema";
+import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
 
 const INITIAL_VALUES = {
   searchRegion: "",
@@ -29,6 +30,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { viewShiftData } = useSelector((state) => state.root.viewShift);
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   const formik = useFormik({
     initialValues,
@@ -53,7 +55,9 @@ const ViewShiftModal = ({ open, handleClose }) => {
         toast.success(response.payload.message);
         setIsDisabled(true);
         handleClose();
-        dispatch(viewShiftByDate({ regions: "all" }));
+        accountType === "Admin"
+          ? dispatch(viewShiftByDate({ regions: "all" }))
+          : dispatch(mySchedule({}));
       }
     });
   };
@@ -100,17 +104,21 @@ const ViewShiftModal = ({ open, handleClose }) => {
               );
             })}
           </Input>
-          <Input
-            fullWidth
-            label="Select Physician"
-            disabled
-            name="physician"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.physician}
-            error={formik.touched.physician && Boolean(formik.errors.physician)}
-            helperText={formik.touched.physician && formik.errors.physician}
-          />
+          {accountType === "Admin" ? (
+            <Input
+              fullWidth
+              label="Select Physician"
+              disabled
+              name="physician"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.physician}
+              error={
+                formik.touched.physician && Boolean(formik.errors.physician)
+              }
+              helperText={formik.touched.physician && formik.errors.physician}
+            />
+          ) : null}
           <Input
             label="Shift Date"
             type="date"
@@ -165,7 +173,9 @@ const ViewShiftModal = ({ open, handleClose }) => {
                     toast.success(response.payload.message);
                     setIsDisabled(true);
                     handleClose();
-                    dispatch(viewShiftByDate({ regions: "all" }));
+                    accountType === "Admin"
+                      ? dispatch(viewShiftByDate({ regions: "all" }))
+                      : dispatch(mySchedule({}));
                   }
                 });
               }}
@@ -186,7 +196,9 @@ const ViewShiftModal = ({ open, handleClose }) => {
                       toast.success(response.payload.message);
                       setIsDisabled(true);
                       handleClose();
-                      dispatch(viewShiftByDate({ regions: "all" }));
+                      accountType === "Admin"
+                        ? dispatch(viewShiftByDate({ regions: "all" }))
+                        : dispatch(mySchedule({}));
                     }
                   },
                 );

@@ -1,8 +1,12 @@
 import * as Yup from "yup";
 
 export const createShiftModalSchema = Yup.object().shape({
+  isAdmin: Yup.boolean(),
   searchRegion: Yup.string().required("Region is required"),
-  physician: Yup.string().required("Physician is required"),
+  physician: Yup.string().when("isAdmin", {
+    is: true,
+    then: (schema) => schema.required("Physician is required"),
+  }),
   shiftDate: Yup.string().required("Shift Date is required"),
   startTime: Yup.string().required("Start Time is required"),
   endTime: Yup.string()

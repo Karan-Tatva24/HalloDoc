@@ -42,6 +42,7 @@ import {
 import { toast } from "react-toastify";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import TypeOfCareModal from "../../Components/Modal/TypeOfCareModal";
+import EncounterModal from "../../Components/Modal/EncounterModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -323,6 +324,10 @@ const DashBoard = () => {
       />
       <TypeOfCareModal
         open={open && modalName === "Type Of Care"}
+        handleClose={handleClose}
+      />
+      <EncounterModal
+        open={open && modalName === "Encounter Modal"}
         handleClose={handleClose}
       />
     </>

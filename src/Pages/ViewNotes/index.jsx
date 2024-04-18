@@ -17,6 +17,7 @@ import {
   viewNotesPost,
 } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 import { toast } from "react-toastify";
+import { updateProviderNotes } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/updateProviderNotesAPI";
 
 const ViewNotes = () => {
   const navigate = useNavigate();
@@ -28,20 +29,35 @@ const ViewNotes = () => {
 
   const formik = useFormik({
     initialValues: {
+      isAdmin: accountType === "Admin",
       adminNotes: "",
     },
     onSubmit: (values, onSubmitProps) => {
-      dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
-        (response) => {
-          if (response.type === "viewNotesPost/fulfilled") {
-            toast.success(response.payload.message);
-            onSubmitProps.resetForm();
-            dispatch(viewNotes(id));
-          } else {
-            toast.error(response?.error?.message);
-          }
-        },
-      );
+      {
+        accountType === "Admin"
+          ? dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
+              (response) => {
+                if (response.type === "viewNotesPost/fulfilled") {
+                  toast.success(response.payload.message);
+                  onSubmitProps.resetForm();
+                  dispatch(viewNotes(id));
+                } else {
+                  toast.error(response?.error?.message);
+                }
+              },
+            )
+          : dispatch(
+              updateProviderNotes({ id, value: values.adminNotes }),
+            ).then((response) => {
+              if (response.type === "updateProviderNotes/fulfilled") {
+                toast.success(response.payload.message);
+                onSubmitProps.resetForm();
+                dispatch(viewNotes(id));
+              } else {
+                toast.error(response?.error?.message);
+              }
+            });
+      }
     },
     validationSchema: viewNotesSchema,
   });

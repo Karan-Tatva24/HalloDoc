@@ -20,13 +20,17 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { toast } from "react-toastify";
 import { createShiftModalSchema } from "../../ValidationSchema";
+import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
 
 const CreateShiftModal = ({ open, handleClose }) => {
   const [checked, setChecked] = React.useState(false);
   const dispatch = useDispatch();
+
   const { regions, physicians } = useSelector(
     (state) => state.root.getRegionPhysician,
   );
+  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+
   const formik = useFormik({
     initialValues: {
       searchRegion: "",
@@ -47,6 +51,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
     onSubmit: (values) => {
       dispatch(
         addNewShift({
+          isAdmin: accountType === "Admin",
           region: values.searchRegion,
           physicianId: values.physician,
           shiftDate: values.shiftDate,
@@ -66,7 +71,9 @@ const CreateShiftModal = ({ open, handleClose }) => {
         if (response.type === "addNewShift/fulfilled") {
           formik.resetForm();
           handleClose();
-          dispatch(viewShiftByDate({}));
+          accountType === "Admin"
+            ? dispatch(viewShiftByDate({ regions: "all" }))
+            : dispatch(mySchedule({}));
           toast.success(response.payload.message);
         }
       });
@@ -109,26 +116,30 @@ const CreateShiftModal = ({ open, handleClose }) => {
               );
             })}
           </Input>
-          <Input
-            fullWidth
-            label="Select Physician"
-            select
-            name="physician"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.physician}
-            error={formik.touched.physician && Boolean(formik.errors.physician)}
-            helperText={formik.touched.physician && formik.errors.physician}
-          >
-            {physicians &&
-              physicians?.map((physician) => {
-                return (
-                  <MenuItem key={physician?.id} value={physician?.id}>
-                    {`${physician?.firstName} ${physician?.lastName}`}
-                  </MenuItem>
-                );
-              })}
-          </Input>
+          {accountType === "Admin" ? (
+            <Input
+              fullWidth
+              label="Select Physician"
+              select
+              name="physician"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.physician}
+              error={
+                formik.touched.physician && Boolean(formik.errors.physician)
+              }
+              helperText={formik.touched.physician && formik.errors.physician}
+            >
+              {physicians &&
+                physicians?.map((physician) => {
+                  return (
+                    <MenuItem key={physician?.id} value={physician?.id}>
+                      {`${physician?.firstName} ${physician?.lastName}`}
+                    </MenuItem>
+                  );
+                })}
+            </Input>
+          ) : null}
           <Input
             label="Shift Date"
             type="date"

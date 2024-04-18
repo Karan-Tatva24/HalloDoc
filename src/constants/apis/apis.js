@@ -120,6 +120,13 @@ export const CONCLUDE_CARE = "/provider/dashboard/concludeCare";
 export const GET_ENCOUNTER_FORM = "/provider/dashboard/viewEncounterForm";
 export const EDIT_ENCOUNTER_FORM = "/provider/dashboard/editEncounterForm";
 export const SAVE_ENCOUNTER_FORM = "/provider/dashboard/encounterForm";
+export const FINALIZE_FORM = "/provider/dashboard/finalizeForm";
+export const DOWNLOAD = "/provider/dashboard/download";
+export const UPDATE_PROVIDER_NOTES = "/provider/dashboard/updateNotes";
+
+/* ************************************* Schedule API *********************************** */
+
+export const MY_SCHEDULE = "/provider/schedule/mySchedule";
 
 /* ************************************* Profile API ************************************* */
 

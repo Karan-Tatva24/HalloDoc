@@ -19,7 +19,10 @@ import { Button } from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
 import "./concludeCare.css";
 import { useDispatch, useSelector } from "react-redux";
-import { viewUpload } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
+import {
+  uploadFile,
+  viewUpload,
+} from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
 import { downloadFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/downloadFileAPI";
 import { deleteFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/deleteFileAPI";
 import { toast } from "react-toastify";
@@ -44,9 +47,12 @@ const ConcludeCare = () => {
         (response) => {
           if (response.type === "concludeCare/fulfilled") {
             toast.success(response.payload?.message);
+          } else if (response.type === "concludeCare/rejected") {
+            toast.error(response?.payload?.data?.message);
           }
         },
       );
+      navigate(AppRoutes.DASHBOARD);
     },
   });
 
@@ -59,6 +65,21 @@ const ConcludeCare = () => {
   useEffect(() => {
     dispatch(viewUpload({ id, sortBy: "createdAt", orderBy: "ASC" }));
   }, [dispatch, id]);
+
+  const handleUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("document", file);
+    dispatch(uploadFile({ id, formData })).then((response) => {
+      if (response.type === "uploadFile/fulfilled") {
+        toast.success(response.payload.message);
+        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+      } else if (response.type === "uploadFile/rejected") {
+        toast.error(response.payload?.data?.error);
+      }
+    });
+  };
 
   const handleDownload = (fileName) => {
     dispatch(downloadFile({ fileNames: [fileName] }))
@@ -143,12 +164,16 @@ const ConcludeCare = () => {
               <Typography variant="h5">
                 <b>Encounter Form</b>
               </Typography>
+              <Box display="none">
+                <input type="file" id="fileUpload" onChange={handleUpload} />
+              </Box>
               <Button
                 name="Upload"
                 variant="outlined"
                 size="large"
                 startIcon={<CloudUploadOutlinedIcon />}
                 type="submit"
+                onClick={() => document.getElementById("fileUpload").click()}
               />
             </Box>
             <TableContainer component={Paper}>

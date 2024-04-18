@@ -31,7 +31,7 @@ export const getPatientNameSlice = createSlice({
         state.street = action.payload.data[0]?.street;
         state.city = action.payload.data[0]?.city;
         state.state = action.payload.data[0]?.state;
-        state.zipCode = action.payload.data[0]?.patientEmail;
+        state.zipCode = action.payload.data[0]?.zipCode;
         state.dob = action.payload.data[0]?.dob;
         state.patientPhoneNumber = action.payload.data[0]?.patientPhoneNumber;
       }

@@ -40,6 +40,9 @@ import "react-phone-input-2/lib/style.css";
 import PageNotFound from "./Pages/PageNotFound";
 import ConcludeCare from "./Pages/ConcludeCare";
 import EncounterForm from "./Pages/EncounterForm";
+import MySchedule from "./Pages/MySchedule";
+import AdminAuth from "./Components/Private/AdminAuth";
+import Patient from "./Pages/ptientSite/Patient";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -70,61 +73,70 @@ const App = () => {
                 />
               }
             >
+              <Route element={<AdminAuth />}>
+                <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
+                <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
+                <Route path={AppRoutes.PROVIDER} element={<ProviderInfo />} />
+                <Route
+                  path={AppRoutes.EDIT_PHYSICIAN}
+                  element={<EditPhysicianInfo />}
+                />
+                <Route
+                  path={AppRoutes.CREATE_PROVIDER_ACCOUNT}
+                  element={<CreateProviderAccount />}
+                />
+                <Route
+                  path={AppRoutes.ACCOUNT_ACCESS}
+                  element={<AccountAccess />}
+                />
+                <Route path={AppRoutes.USER_ACCESS} element={<UserAccess />} />
+                <Route
+                  path={AppRoutes.CREATE_ROLE}
+                  element={<CreateAccess />}
+                />
+                <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
+                <Route
+                  path={AppRoutes.REQUESTED_SHIFTS}
+                  element={<RequestedShifts />}
+                />
+                <Route
+                  path={AppRoutes.PROVIDER_ON_CALL}
+                  element={<ProviderOnCall />}
+                />
+                <Route
+                  path={AppRoutes.PROVIDER_LOCATION}
+                  element={<ProviderLocation />}
+                />
+                <Route path={AppRoutes.PARTNERS} element={<Partners />} />
+                <Route
+                  path={AppRoutes.ADD_BUSINESS}
+                  element={<AddBusiness />}
+                />
+                <Route
+                  path={AppRoutes.PATIENT_HISTORY}
+                  element={<PatientHistory />}
+                />
+                <Route
+                  path={AppRoutes.PATIENTS_RECORDS}
+                  element={<PatientRecord />}
+                />
+                <Route
+                  path={AppRoutes.SEARCH_RECORDS}
+                  element={<SearchRecords />}
+                />
+                <Route path={AppRoutes.EMAIL_LOGS} element={<EmailLogs />} />
+                <Route path={AppRoutes.SMS_LOGS} element={<SMSLogs />} />
+                <Route
+                  path={AppRoutes.BLOCKED_HISTORY}
+                  element={<BlockHistory />}
+                />
+              </Route>
+
               <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
               <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
               <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
               <Route path={AppRoutes.VIEW_UPLOAD} element={<ViewUpload />} />
-              <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
-              <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
               <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />
-              <Route path={AppRoutes.PROVIDER} element={<ProviderInfo />} />
-              <Route
-                path={AppRoutes.EDIT_PHYSICIAN}
-                element={<EditPhysicianInfo />}
-              />
-              <Route
-                path={AppRoutes.CREATE_PROVIDER_ACCOUNT}
-                element={<CreateProviderAccount />}
-              />
-              <Route
-                path={AppRoutes.ACCOUNT_ACCESS}
-                element={<AccountAccess />}
-              />
-              <Route path={AppRoutes.USER_ACCESS} element={<UserAccess />} />
-              <Route path={AppRoutes.CREATE_ROLE} element={<CreateAccess />} />
-              <Route path={AppRoutes.SCHEDULING} element={<Scheduling />} />
-              <Route
-                path={AppRoutes.REQUESTED_SHIFTS}
-                element={<RequestedShifts />}
-              />
-              <Route
-                path={AppRoutes.PROVIDER_ON_CALL}
-                element={<ProviderOnCall />}
-              />
-              <Route
-                path={AppRoutes.PROVIDER_LOCATION}
-                element={<ProviderLocation />}
-              />
-              <Route path={AppRoutes.PARTNERS} element={<Partners />} />
-              <Route path={AppRoutes.ADD_BUSINESS} element={<AddBusiness />} />
-              <Route
-                path={AppRoutes.PATIENT_HISTORY}
-                element={<PatientHistory />}
-              />
-              <Route
-                path={AppRoutes.PATIENTS_RECORDS}
-                element={<PatientRecord />}
-              />
-              <Route
-                path={AppRoutes.SEARCH_RECORDS}
-                element={<SearchRecords />}
-              />
-              <Route path={AppRoutes.EMAIL_LOGS} element={<EmailLogs />} />
-              <Route path={AppRoutes.SMS_LOGS} element={<SMSLogs />} />
-              <Route
-                path={AppRoutes.BLOCKED_HISTORY}
-                element={<BlockHistory />}
-              />
               <Route
                 path={AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN}
                 element={<CreateRequest />}
@@ -137,7 +149,9 @@ const App = () => {
                 path={AppRoutes.ENCOUNTER_FORM}
                 element={<EncounterForm />}
               />
+              <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
             </Route>
+            <Route path={AppRoutes.PATIENT_SITE} element={<Patient />} />
           </Route>
         </Routes>
       </ThemeProvider>

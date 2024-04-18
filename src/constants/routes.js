@@ -33,4 +33,7 @@ export const AppRoutes = {
   CREATE_REQUEST_ADMIN_PHYSICIAN: "/dashboard/createRequest",
   CONCLUDE_CARE: "/dashboard/concludeCare",
   ENCOUNTER_FORM: "/dashboard/encounterForm",
+
+  /* Patient Routes */
+  PATIENT_SITE: "/patient",
 };

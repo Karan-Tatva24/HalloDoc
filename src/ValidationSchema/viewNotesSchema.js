@@ -1,5 +1,10 @@
 import * as Yup from "yup";
 
 export const viewNotesSchema = Yup.object({
-  adminNotes: Yup.string().required("Admin Notes is Required!"),
+  isAdmin: Yup.boolean(),
+  adminNotes: Yup.string().when("isAdmin", {
+    is: true,
+    then: (schema) => schema.required("Admin Notes is Required!"),
+    otherwise: (schema) => schema.required("Provider Notes is Required!"),
+  }),
 });
