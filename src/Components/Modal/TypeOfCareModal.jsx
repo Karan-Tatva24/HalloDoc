@@ -47,6 +47,7 @@ const TypeOfCareModal = ({ open, handleClose }) => {
               (response) => {
                 if (response.type === "typeOfCare/fulfilled") {
                   dispatch(getProviderDashboardCount());
+                  setSelectedType("");
                   handleClose();
                 }
               },

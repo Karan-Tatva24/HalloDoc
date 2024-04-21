@@ -20,7 +20,13 @@ import { clearEncounterForm } from "../../redux/halloSlices/providerSlices/encou
 import { AppRoutes } from "../../constants/routes";
 
 const INITIAL_VALUES = {
+  firstName: "",
+  lastName: "",
+  location: "",
+  dob: "",
   serviceDate: "",
+  email: "",
+  phoneNumber: "",
   presentIllnessHistory: "",
   medicalHistory: "",
   medications: "",
@@ -98,7 +104,15 @@ const EncounterForm = () => {
 
   useEffect(() => {
     setInitialValues({
+      firstName: encounterFormData?.firstName || patientFirstName,
+      lastName: encounterFormData?.lastName || patientLastName,
+      dob: encounterFormData?.dob || dob,
+      location:
+        encounterFormData?.location ||
+        `${street}, ${city}, ${state}, ${zipCode}`,
       serviceDate: encounterFormData?.serviceDate || "",
+      email: encounterFormData?.email || patientEmail,
+      phoneNumber: encounterFormData?.phoneNumber || patientPhoneNumber,
       presentIllnessHistory: encounterFormData?.presentIllnessHistory || "",
       medicalHistory: encounterFormData?.medicalHistory || "",
       medications: encounterFormData?.medications || "",
@@ -124,7 +138,18 @@ const EncounterForm = () => {
       procedure: encounterFormData?.procedure || "",
       followUp: encounterFormData?.followUp || "",
     });
-  }, [encounterFormData]);
+  }, [
+    city,
+    dob,
+    encounterFormData,
+    patientEmail,
+    patientFirstName,
+    patientLastName,
+    patientPhoneNumber,
+    state,
+    street,
+    zipCode,
+  ]);
 
   const handleFinalize = () => {
     dispatch(finalizeForm(id)).then((response) => {
@@ -181,8 +206,16 @@ const EncounterForm = () => {
                     name="firstName"
                     label="First Name"
                     fullWidth
-                    value={patientFirstName}
-                    disabled
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.firstName && formik.errors.firstName
+                    }
+                    error={
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -190,8 +223,15 @@ const EncounterForm = () => {
                     name="lastName"
                     label="Last Name"
                     fullWidth
-                    value={patientLastName}
-                    disabled
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.lastName && formik.errors.lastName
+                    }
+                    error={
+                      formik.touched.lastName && Boolean(formik.errors.lastName)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -199,18 +239,28 @@ const EncounterForm = () => {
                     name="location"
                     label="Location"
                     fullWidth
-                    value={`${street} ,${city}, ${state}, ${zipCode}`}
-                    disabled
+                    value={formik.values.location}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.location && formik.errors.location
+                    }
+                    error={
+                      formik.touched.location && Boolean(formik.errors.location)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Input
-                    name="dateOfBirth"
+                    name="dob"
                     label="Date Of Birth"
                     type="date"
                     fullWidth
-                    value={dob}
-                    disabled
+                    value={formik.values.dob}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={formik.touched.dob && formik.errors.dob}
+                    error={formik.touched.dob && Boolean(formik.errors.dob)}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -235,10 +285,20 @@ const EncounterForm = () => {
                   <PhoneInput
                     label="Phone Number"
                     name="phoneNumber"
-                    value={patientPhoneNumber}
                     country={"in"}
-                    disabled
                     inputStyle={{ width: "100%", height: "3.438rem" }}
+                    value={formik.values.phoneNumber}
+                    onChange={(value) =>
+                      formik.setFieldValue("phoneNumber", value)
+                    }
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                    }
+                    error={
+                      formik.touched.phoneNumber &&
+                      Boolean(formik.errors.phoneNumber)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -246,8 +306,11 @@ const EncounterForm = () => {
                     name="email"
                     label="Email"
                     fullWidth
-                    value={patientEmail}
-                    disabled
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={formik.touched.email && formik.errors.email}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
