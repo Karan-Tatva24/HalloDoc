@@ -36,4 +36,9 @@ export const AppRoutes = {
 
   /* Patient Routes */
   PATIENT_SITE: "/patient",
+  SUBMIT_REQUEST: "/patient/submitRequest",
+  PATIENT_CREATE_REQUEST: "/patient/createRequest/patient",
+  FAMILY_FRIEND_REQUEST: "/patient/createRequest/family",
+  BUSINESS_REQUEST: "/patient/createRequest/business",
+  CONCIERGE_REQUEST: "/patient/createRequest/concierge",
 };

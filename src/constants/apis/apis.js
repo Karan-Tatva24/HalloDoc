@@ -133,3 +133,5 @@ export const MY_SCHEDULE = "/provider/schedule/mySchedule";
 export const REQUEST_TO_ADMIN = "/provider/profile/requestToAdmin";
 
 /* ***************************************** Patient API ***************************************** */
+
+export const CREATE_REQUEST = "/user/createRequest";

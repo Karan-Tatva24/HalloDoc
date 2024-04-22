@@ -1,7 +1,15 @@
 import * as Yup from "yup";
 
 export const encounterFormSchema = Yup.object({
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  location: Yup.string().required("Location is required"),
+  dob: Yup.string().required("Date of birth is required"),
   serviceDate: Yup.string().required("Please Provide Service Date"),
+  phoneNumber: Yup.string().required("Phone number is required"),
+  email: Yup.string()
+    .email("Please provide valid email")
+    .required("Email is required"),
   presentIllnessHistory: Yup.string(),
   medicalHistory: Yup.string(),
   medications: Yup.string(),

@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../../config/axios";
-import { CREATE_ADMIN_REQUEST } from "../../../constants/apis/apis";
+import {
+  CREATE_ADMIN_REQUEST,
+  CREATE_REQUEST,
+} from "../../../constants/apis/apis";
 
 export const createRequestByAdminProvider = createAsyncThunk(
   "createRequestByAdminProvider",
@@ -35,6 +38,18 @@ export const createRequestByAdminProvider = createAsyncThunk(
         requestType,
         isEmail: false,
       });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
+
+export const createRequest = createAsyncThunk(
+  "createRequest",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.post(CREATE_REQUEST, params);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

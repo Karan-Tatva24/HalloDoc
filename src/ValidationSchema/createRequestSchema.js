@@ -13,3 +13,19 @@ export const createRequestSchema = Yup.object({
   room: Yup.string(),
   adminNotes: Yup.string(),
 });
+
+export const createRequestByPatientSchema = Yup.object({
+  patientNote: Yup.string(),
+  patientFirstName: Yup.string().required("First Name is required"),
+  patientLastName: Yup.string().required("Last Name is required"),
+  dob: Yup.string().required("Date of birth is required"),
+  patientEmail: Yup.string()
+    .email("Enter valid email")
+    .required("Email is required"),
+  patientPhoneNumber: Yup.string(),
+  street: Yup.string().required("Street is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  zipCode: Yup.string().required("Zip code is required"),
+  roomNumber: Yup.string(),
+});

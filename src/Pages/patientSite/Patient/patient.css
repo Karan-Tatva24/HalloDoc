@@ -1,0 +1,43 @@
+.patient-site-btn {
+  height: 4rem;
+  width: 40rem;
+  font-size: larger !important;
+  font-weight: bold !important;
+}
+
+@media (max-width: 700px) {
+  .patient-site-btn {
+    height: 3.8rem;
+    width: 35rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .patient-site-btn {
+    height: 3.5rem;
+    width: 30rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .patient-site-btn {
+    height: 3rem;
+    width: 25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .patient-site-btn {
+    height: 3rem;
+    width: 22rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .patient-site-btn {
+    height: 2rem;
+    width: 15rem;
+    font-size: medium !important;
+    font-weight: bold !important;
+  }
+}

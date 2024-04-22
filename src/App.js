@@ -42,7 +42,12 @@ import ConcludeCare from "./Pages/ConcludeCare";
 import EncounterForm from "./Pages/EncounterForm";
 import MySchedule from "./Pages/MySchedule";
 import AdminAuth from "./Components/Private/AdminAuth";
-import Patient from "./Pages/ptientSite/Patient";
+import Patient from "./Pages/patientSite/Patient";
+import SubmitRequest from "./Pages/patientSite/SubmitRequest";
+import PatientCreateRequest from "./Pages/patientSite/createRequestPages/PatientCreateRequest";
+import FamilyFriendRequest from "./Pages/patientSite/createRequestPages/FamilyFriendRequest";
+import ConciergeRequest from "./Pages/patientSite/createRequestPages/ConciergeRequest";
+import BusinessRequest from "./Pages/patientSite/createRequestPages/BusinessRequest";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -150,9 +155,29 @@ const App = () => {
                 element={<EncounterForm />}
               />
               <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
+              <Route
+                path={AppRoutes.SUBMIT_REQUEST}
+                element={<SubmitRequest />}
+              />
             </Route>
-            <Route path={AppRoutes.PATIENT_SITE} element={<Patient />} />
           </Route>
+          <Route path={AppRoutes.PATIENT_SITE} element={<Patient />} />
+          <Route
+            path={AppRoutes.PATIENT_CREATE_REQUEST}
+            element={<PatientCreateRequest />}
+          />
+          <Route
+            path={AppRoutes.FAMILY_FRIEND_REQUEST}
+            element={<FamilyFriendRequest />}
+          />
+          <Route
+            path={AppRoutes.BUSINESS_REQUEST}
+            element={<BusinessRequest />}
+          />
+          <Route
+            path={AppRoutes.CONCIERGE_REQUEST}
+            element={<ConciergeRequest />}
+          />
         </Routes>
       </ThemeProvider>
     </div>
