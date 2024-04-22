@@ -12,7 +12,7 @@ export const columns = [
     label: "Date Of Service",
   },
   {
-    id: "updatedAt",
+    id: "concludedDate",
     label: "Close Case Date",
   },
   {

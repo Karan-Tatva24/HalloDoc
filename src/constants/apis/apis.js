@@ -105,6 +105,8 @@ export const GET_ROLE = "/admin/common/getRoles";
 
 export const CREATE_PROVIDER_ACCOUNT = "/user/createUser";
 export const CREATE_ADMIN_REQUEST = "/user/createAdminRequest";
+export const CREATE_REQUEST = "/user/createRequest";
+export const IS_EMAIL_FOUND = "/user/emailFound";
 
 /* ***************************************** Provider API ***************************************** */
 
@@ -133,5 +135,3 @@ export const MY_SCHEDULE = "/provider/schedule/mySchedule";
 export const REQUEST_TO_ADMIN = "/provider/profile/requestToAdmin";
 
 /* ***************************************** Patient API ***************************************** */
-
-export const CREATE_REQUEST = "/user/createRequest";

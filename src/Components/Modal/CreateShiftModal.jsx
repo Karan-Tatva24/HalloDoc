@@ -33,6 +33,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
 
   const formik = useFormik({
     initialValues: {
+      isAdmin: accountType === "Admin",
       searchRegion: "",
       physician: "",
       shiftDate: "",
@@ -51,7 +52,6 @@ const CreateShiftModal = ({ open, handleClose }) => {
     onSubmit: (values) => {
       dispatch(
         addNewShift({
-          isAdmin: accountType === "Admin",
           region: values.searchRegion,
           physicianId: values.physician,
           shiftDate: values.shiftDate,
@@ -66,6 +66,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
           friday: values.friday,
           saturday: values.saturday,
           repeatUpto: values.repeatUpto,
+          accountType: accountType,
         }),
       ).then((response) => {
         if (response.type === "addNewShift/fulfilled") {

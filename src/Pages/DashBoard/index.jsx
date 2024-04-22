@@ -77,12 +77,12 @@ const DashBoard = () => {
 
   useEffect(() => {
     if (accountType === "Admin") {
-      dispatch(getRegions());
       dispatch(dashboardCount());
       dispatch(getProfession());
     } else if (accountType === "Physician") {
       dispatch(getProviderDashboardCount());
     }
+    dispatch(getRegions());
   }, [accountType, dispatch]);
 
   useEffect(() => {

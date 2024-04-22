@@ -10,8 +10,9 @@ export const searchRecord = createAsyncThunk(
   "searchRecord",
   async (params, { rejectWithValue }) => {
     const newParams = {};
-    if (params.patientName) newParams.patientName = params.patientName;
     if (params.email) newParams.email = params.email;
+    if (params.patientName) newParams.patientName = params.patientName;
+    if (params.physicianName) newParams.physicianName = params.physicianName;
     if (params.phoneNumber) newParams.phoneNumber = params.phoneNumber;
     if (params.requestType) newParams.requestType = params.requestType;
     if (params.requestStatus) newParams.requestStatus = params.requestStatus;

@@ -8,6 +8,14 @@ import { Input } from "../../../Components/TextField/Input";
 import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
 import InformationModal from "../../../Components/Modal/InformationModal";
+import { useDispatch } from "react-redux";
+import {
+  createRequest,
+  isEmailFound,
+} from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
+import { toast } from "react-toastify";
+import { debounce } from "lodash";
+import { createRequestAllSchema } from "../../../ValidationSchema";
 
 const initialValues = {
   requestType: "Family/Friend",
@@ -16,11 +24,12 @@ const initialValues = {
   requestorPhoneNumber: "",
   requestorEmail: "",
   relationName: "",
-  patientNotes: "",
+  patientNote: "",
   patientFirstName: "",
   patientLastName: "",
   dob: "",
   patientEmail: "",
+  isEmail: "",
   patientPhoneNumber: "",
   street: "",
   city: "",
@@ -30,12 +39,54 @@ const initialValues = {
   document: null,
 };
 
+const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
+  try {
+    const response = await dispatch(isEmailFound({ patientEmail: email }));
+    if (response.type === "isEmailFound/fulfilled") {
+      setFieldValue("isEmail", response.payload?.data);
+    }
+  } catch (error) {
+    console.error("Failed to check email:", error);
+  }
+}, 1000);
+
 const FamilyFriendRequest = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues,
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append("requestType", values.requestType);
+      formData.append("requestorFirstName", values.requestorFirstName);
+      formData.append("requestorLastName", values.requestorLastName);
+      formData.append("requestorPhoneNumber", values.requestorPhoneNumber);
+      formData.append("requestorEmail", values.requestorEmail);
+      formData.append("relationName", values.relationName);
+      formData.append("patientNote", values.patientNote);
+      formData.append("patientFirstName", values.patientFirstName);
+      formData.append("patientLastName", values.patientLastName);
+      formData.append("dob", values.dob);
+      formData.append("patientEmail", values.patientEmail);
+      formData.append("patientPhoneNumber", values.patientPhoneNumber);
+      formData.append("isEmail", values.isEmail);
+      formData.append("street", values.street);
+      formData.append("state", values.state);
+      formData.append("city", values.city);
+      formData.append("zipCode", values.zipCode);
+      formData.append("roomNumber", values.roomNumber);
+      formData.append("document", values.document);
+
+      dispatch(createRequest(formData)).then((response) => {
+        if (response.type === "createRequest/fulfilled") {
+          toast.success(response?.payload?.message);
+          formik.resetForm();
+        }
+      });
+    },
+    validationSchema: createRequestAllSchema,
   });
 
   useEffect(() => {
@@ -45,6 +96,24 @@ const FamilyFriendRequest = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    formik.setFieldValue("document", event.target.files[0]);
+  };
+
+  useEffect(() => {
+    if (formik.values.patientEmail) {
+      debouncedApiCall(
+        formik.values.patientEmail,
+        formik.setFieldValue,
+        dispatch,
+      );
+    }
+    return () => {
+      debouncedApiCall.cancel();
+    };
+  }, [dispatch, formik.setFieldValue, formik.values.patientEmail]);
 
   return (
     <>
@@ -63,11 +132,11 @@ const FamilyFriendRequest = () => {
           </Box>
           <Paper sx={{ padding: "1.25rem" }}>
             <form onSubmit={formik.handleSubmit}>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2}>
                 <b>Family/Friend Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorFirstName"
                     label="Your First Name"
@@ -85,7 +154,7 @@ const FamilyFriendRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorLastName"
                     label="Your Last Name"
@@ -103,7 +172,7 @@ const FamilyFriendRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <PhoneInput
                     name="requestorPhoneNumber"
                     country={"in"}
@@ -123,7 +192,7 @@ const FamilyFriendRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorEmail"
                     label="Your Email"
@@ -141,7 +210,7 @@ const FamilyFriendRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="relationName"
                     label="Relation With Patient"
@@ -159,26 +228,26 @@ const FamilyFriendRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12}>
                   <Input
-                    name="patientName"
+                    name="patientNote"
                     label="Enter Brief Details Of Symptoms (Optional)"
                     fullWidth
                     multiline
                     rows={3}
-                    value={formik.values.patientNotes}
+                    value={formik.values.patientNote}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.patientNotes && formik.errors.patientNotes
+                      formik.touched.patientNote && formik.errors.patientNote
                     }
                     error={
-                      formik.touched.patientNotes &&
-                      Boolean(formik.errors.patientNotes)
+                      formik.touched.patientNote &&
+                      Boolean(formik.errors.patientNote)
                     }
                   />
                 </Grid>
@@ -232,7 +301,7 @@ const FamilyFriendRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Contact Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -274,7 +343,7 @@ const FamilyFriendRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Location</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -348,7 +417,7 @@ const FamilyFriendRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>(Optional) Upload Photo or Document</b>
               </Typography>
               <Box display="flex" position="relative" mb={2} mt={2}>
@@ -365,13 +434,15 @@ const FamilyFriendRequest = () => {
                   title="Upload-files"
                 >
                   <input
-                    // onChange={handleFileChange}
+                    onChange={handleFileChange}
                     type="file"
                     id="selectFile"
                     hidden
                   />
                   <label htmlFor="selectFile">
-                    {/* {selectedFile !== null ? selectedFile?.name : "Select File"} */}
+                    {formik.values.document !== null
+                      ? formik.values.document?.name
+                      : "Select File"}
                   </label>
                 </Button>
 
@@ -389,6 +460,7 @@ const FamilyFriendRequest = () => {
                 gap={2}
                 alignItems="center"
                 flexWrap="wrap"
+                pt={2}
               >
                 <Button name="Submit" type="submit" />
                 <Button name="Cancel" variant="outlined" />

@@ -33,6 +33,7 @@ export const smsLog = createAsyncThunk(
     const newParams = {};
     if (params.receiverName) newParams.receiverName = params.receiverName;
     if (params.email) newParams.email = params.email;
+    if (params.phoneNumber) newParams.phoneNumber = params.phoneNumber;
     if (params.createdDate) newParams.createdDate = params.createdDate;
     if (params.sentDate) newParams.sentDate = params.sentDate;
     if (params.roleName !== "all") newParams.roleName = params.roleName;

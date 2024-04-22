@@ -13,7 +13,7 @@ const ClearCaseModal = ({ open, handleClose }) => {
   const { id } = useSelector((state) => state.root.patientName);
 
   return (
-    <Modal open={open} handleClose={handleClose}>
+    <Modal open={open} onClose={handleClose}>
       <Box
         className="modal-container"
         display="flex"

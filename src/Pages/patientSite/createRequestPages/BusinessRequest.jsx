@@ -6,7 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "../../../Components/TextField/Input";
 import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
+import { debounce } from "lodash";
 import InformationModal from "../../../Components/Modal/InformationModal";
+import { useDispatch } from "react-redux";
+import {
+  createRequest,
+  isEmailFound,
+} from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
+import { toast } from "react-toastify";
+import { createRequestAllSchema } from "../../../ValidationSchema";
 
 const initialValues = {
   requestType: "Business",
@@ -14,11 +22,13 @@ const initialValues = {
   requestorLastName: "",
   requestorPhoneNumber: "",
   requestorEmail: "",
-  patientNotes: "",
+  relationName: "",
+  patientNote: "",
   patientFirstName: "",
   patientLastName: "",
   dob: "",
   patientEmail: "",
+  isEmail: "",
   patientPhoneNumber: "",
   street: "",
   city: "",
@@ -27,12 +37,31 @@ const initialValues = {
   roomNumber: "",
 };
 
+const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
+  try {
+    const response = await dispatch(isEmailFound({ patientEmail: email }));
+    if (response.type === "isEmailFound/fulfilled") {
+      setFieldValue("isEmail", response.payload?.data);
+    }
+  } catch (error) {
+    toast.error("Failed to check email:", error);
+  }
+}, 1000);
+
 const BusinessRequest = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues,
+    onSubmit: (values) => {
+      dispatch(createRequest(values)).then((response) => {
+        toast.success(response?.payload?.message);
+        formik.resetForm();
+      });
+    },
+    validationSchema: createRequestAllSchema,
   });
 
   useEffect(() => {
@@ -42,6 +71,19 @@ const BusinessRequest = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (formik.values.patientEmail) {
+      debouncedApiCall(
+        formik.values.patientEmail,
+        formik.setFieldValue,
+        dispatch,
+      );
+    }
+    return () => {
+      debouncedApiCall.cancel();
+    };
+  }, [dispatch, formik.setFieldValue, formik.values.patientEmail]);
 
   return (
     <>
@@ -60,11 +102,11 @@ const BusinessRequest = () => {
           </Box>
           <Paper sx={{ padding: "1.25rem" }}>
             <form onSubmit={formik.handleSubmit}>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2}>
                 <b>Business Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorFirstName"
                     label="Your First Name"
@@ -82,7 +124,7 @@ const BusinessRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorLastName"
                     label="Your Last Name"
@@ -100,7 +142,7 @@ const BusinessRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <PhoneInput
                     name="requestorPhoneNumber"
                     country={"in"}
@@ -120,7 +162,7 @@ const BusinessRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input
                     name="requestorEmail"
                     label="Your Email"
@@ -138,33 +180,47 @@ const BusinessRequest = () => {
                     }
                   />
                 </Grid>
-                <Grid item sx={12} md={6}>
-                  <Input label="Business/Property Name" fullWidth />
+                <Grid item xs={12} md={6}>
+                  <Input
+                    name="relationName"
+                    label="Business/Property Name"
+                    fullWidth
+                    value={formik.values.relationName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.relationName && formik.errors.relationName
+                    }
+                    error={
+                      formik.touched.relationName &&
+                      Boolean(formik.errors.relationName)
+                    }
+                  />
                 </Grid>
-                <Grid item sx={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <Input label="Case Number (Optional)" fullWidth />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
                 <Grid item xs={12}>
                   <Input
-                    name="patientName"
+                    name="patientNote"
                     label="Enter Brief Details Of Symptoms (Optional)"
                     fullWidth
                     multiline
                     rows={3}
-                    value={formik.values.patientNotes}
+                    value={formik.values.patientNote}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={
-                      formik.touched.patientNotes && formik.errors.patientNotes
+                      formik.touched.patientNote && formik.errors.patientNote
                     }
                     error={
-                      formik.touched.patientNotes &&
-                      Boolean(formik.errors.patientNotes)
+                      formik.touched.patientNote &&
+                      Boolean(formik.errors.patientNote)
                     }
                   />
                 </Grid>
@@ -218,7 +274,7 @@ const BusinessRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Contact Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -260,7 +316,7 @@ const BusinessRequest = () => {
                   />
                 </Grid>
               </Grid>
-              <Typography variant="h5">
+              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Location</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -340,6 +396,7 @@ const BusinessRequest = () => {
                 gap={2}
                 alignItems="center"
                 flexWrap="wrap"
+                pt={2}
               >
                 <Button name="Submit" type="submit" />
                 <Button name="Cancel" variant="outlined" />

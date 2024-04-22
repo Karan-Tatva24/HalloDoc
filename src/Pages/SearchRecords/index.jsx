@@ -54,11 +54,11 @@ const SearchRecords = () => {
       dispatch(
         searchRecord({
           requestStatus: values.requestStatus,
-          name: values.name,
+          patientName: values.name,
           requestType: values.requestType,
           fromDate: values.fromDate,
           toDate: values.toDate,
-          providerName: values.providerName,
+          physicianName: values.providerName,
           email: values.email,
           phoneNumber: values.phoneNumber,
           sortBy: orderBy,

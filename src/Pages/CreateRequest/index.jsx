@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -10,13 +10,18 @@ import PhoneInput from "react-phone-input-2";
 import { useFormik } from "formik";
 import { createRequestSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { createRequestByAdminProvider } from "../../redux/halloAPIs/userAPIs/createRequestAPI";
+import {
+  createRequestByAdminProvider,
+  isEmailFound,
+} from "../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { AppRoutes } from "../../constants/routes";
 import { verifyState } from "../../redux/halloAPIs/adminAPIs/commonAPIs/verifyStateAPI";
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
 
 const initialValues = {
+  isEmail: true,
   firstName: "",
   lastName: "",
   phoneNumber: "",
@@ -30,6 +35,17 @@ const initialValues = {
   adminNotes: "",
 };
 
+const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
+  try {
+    const response = await dispatch(isEmailFound({ patientEmail: email }));
+    if (response.type === "isEmailFound/fulfilled") {
+      setFieldValue("isEmail", response.payload?.data);
+    }
+  } catch (error) {
+    console.error("Failed to check email:", error);
+  }
+}, 1000);
+
 const CreateRequest = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,6 +57,7 @@ const CreateRequest = () => {
         if (response.type === "verifyState/fulfilled") {
           dispatch(
             createRequestByAdminProvider({
+              isEmail: values.isEmail,
               patientFirstName: values.firstName,
               patientLastName: values.lastName,
               patientEmail: values.email,
@@ -72,6 +89,16 @@ const CreateRequest = () => {
     },
     validationSchema: createRequestSchema,
   });
+
+  useEffect(() => {
+    if (formik.values.email) {
+      debouncedApiCall(formik.values.email, formik.setFieldValue, dispatch);
+    }
+    return () => {
+      debouncedApiCall.cancel();
+    };
+  }, [dispatch, formik.setFieldValue, formik.values.email]);
+
   return (
     <>
       <Box className="create-request-main-container">

@@ -3,7 +3,20 @@ import Axios from "../../../config/axios";
 import {
   CREATE_ADMIN_REQUEST,
   CREATE_REQUEST,
+  IS_EMAIL_FOUND,
 } from "../../../constants/apis/apis";
+
+export const isEmailFound = createAsyncThunk(
+  "isEmailFound",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await Axios.post(IS_EMAIL_FOUND, params);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  },
+);
 
 export const createRequestByAdminProvider = createAsyncThunk(
   "createRequestByAdminProvider",
@@ -21,6 +34,7 @@ export const createRequestByAdminProvider = createAsyncThunk(
       roomNumber,
       patientNote,
       requestType,
+      isEmail,
     } = params;
     try {
       const response = await Axios.post(CREATE_ADMIN_REQUEST, {
@@ -36,7 +50,7 @@ export const createRequestByAdminProvider = createAsyncThunk(
         roomNumber,
         patientNote,
         requestType,
-        isEmail: false,
+        isEmail,
       });
       return response?.data;
     } catch (error) {

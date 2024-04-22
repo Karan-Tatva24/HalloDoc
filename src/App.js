@@ -69,15 +69,15 @@ const App = () => {
             />
           </Route>
           <Route path={AppRoutes.RESETPASSWORD} element={<ResetPassword />} />
-          <Route element={<RequireAuth />}>
-            <Route
-              element={
-                <Header
-                  onClickDarkTheme={toggleDarkTheme}
-                  toggle={toggleDarkMode}
-                />
-              }
-            >
+          <Route
+            element={
+              <Header
+                onClickDarkTheme={toggleDarkTheme}
+                toggle={toggleDarkMode}
+              />
+            }
+          >
+            <Route element={<RequireAuth />}>
               <Route element={<AdminAuth />}>
                 <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
                 <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
@@ -155,29 +155,29 @@ const App = () => {
                 element={<EncounterForm />}
               />
               <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
-              <Route
-                path={AppRoutes.SUBMIT_REQUEST}
-                element={<SubmitRequest />}
-              />
             </Route>
+            <Route
+              path={AppRoutes.SUBMIT_REQUEST}
+              element={<SubmitRequest />}
+            />
+            <Route path={AppRoutes.PATIENT_SITE} element={<Patient />} />
+            <Route
+              path={AppRoutes.PATIENT_CREATE_REQUEST}
+              element={<PatientCreateRequest />}
+            />
+            <Route
+              path={AppRoutes.FAMILY_FRIEND_REQUEST}
+              element={<FamilyFriendRequest />}
+            />
+            <Route
+              path={AppRoutes.BUSINESS_REQUEST}
+              element={<BusinessRequest />}
+            />
+            <Route
+              path={AppRoutes.CONCIERGE_REQUEST}
+              element={<ConciergeRequest />}
+            />
           </Route>
-          <Route path={AppRoutes.PATIENT_SITE} element={<Patient />} />
-          <Route
-            path={AppRoutes.PATIENT_CREATE_REQUEST}
-            element={<PatientCreateRequest />}
-          />
-          <Route
-            path={AppRoutes.FAMILY_FRIEND_REQUEST}
-            element={<FamilyFriendRequest />}
-          />
-          <Route
-            path={AppRoutes.BUSINESS_REQUEST}
-            element={<BusinessRequest />}
-          />
-          <Route
-            path={AppRoutes.CONCIERGE_REQUEST}
-            element={<ConciergeRequest />}
-          />
         </Routes>
       </ThemeProvider>
     </div>

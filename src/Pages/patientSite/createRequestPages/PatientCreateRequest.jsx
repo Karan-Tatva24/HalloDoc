@@ -1,16 +1,30 @@
-import { Box, Container, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../../../Components/TextField/Input";
 import { useFormik } from "formik";
 import PhoneInput from "react-phone-input-2";
 import { useDispatch } from "react-redux";
-import { createRequest } from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
+import {
+  createRequest,
+  isEmailFound,
+} from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { createRequestByPatientSchema } from "../../../ValidationSchema";
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
 
 const initialValues = {
   requestType: "Patient",
@@ -19,6 +33,9 @@ const initialValues = {
   patientLastName: "",
   dob: "",
   patientEmail: "",
+  password: "",
+  confirmPassword: "",
+  isEmail: true,
   patientPhoneNumber: "",
   street: "",
   city: "",
@@ -28,16 +45,46 @@ const initialValues = {
   document: null,
 };
 
+const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
+  try {
+    const response = await dispatch(isEmailFound({ patientEmail: email }));
+    if (response.type === "isEmailFound/fulfilled") {
+      setFieldValue("isEmail", response.payload?.data);
+    }
+  } catch (error) {
+    toast.error("Failed to check email:", error);
+  }
+}, 1000);
+
 const PatientCreateRequest = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
-      dispatch(createRequest(values)).then((response) => {
+      const formData = new FormData();
+      formData.append("requestType", values.requestType);
+      formData.append("patientNote", values.patientNote);
+      formData.append("patientFirstName", values.patientFirstName);
+      formData.append("patientLastName", values.patientLastName);
+      formData.append("dob", values.dob);
+      formData.append("patientEmail", values.patientEmail);
+      formData.append("patientPhoneNumber", values.patientPhoneNumber);
+      formData.append("isEmail", values.isEmail);
+      formData.append("street", values.street);
+      formData.append("state", values.state);
+      formData.append("city", values.city);
+      formData.append("zipCode", values.zipCode);
+      formData.append("roomNumber", values.roomNumber);
+      formData.append("password", values.password);
+      formData.append("document", values.document);
+
+      dispatch(createRequest(formData)).then((response) => {
         if (response.type === "createRequest/fulfilled") {
           toast.success(response?.payload?.message);
+          formik.resetForm();
         }
       });
     },
@@ -49,6 +96,25 @@ const PatientCreateRequest = () => {
     formik.setFieldValue("document", event.target.files[0]);
   };
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  useEffect(() => {
+    if (formik.values.patientEmail) {
+      debouncedApiCall(
+        formik.values.patientEmail,
+        formik.setFieldValue,
+        dispatch,
+      );
+    }
+    return () => {
+      debouncedApiCall.cancel();
+    };
+  }, [dispatch, formik.setFieldValue, formik.values.patientEmail]);
+
   return (
     <>
       <Box sx={{ backgroundColor: "#f6f6f6" }}>
@@ -57,7 +123,6 @@ const PatientCreateRequest = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="medium"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
@@ -180,6 +245,91 @@ const PatientCreateRequest = () => {
                     }
                   />
                 </Grid>
+                {!formik.values.isEmail ? (
+                  <>
+                    <Grid item xs={12} md={6}>
+                      <Input
+                        name="password"
+                        label="New Password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        helperText={
+                          formik.touched.password && formik.errors.password
+                        }
+                        error={
+                          formik.touched.password &&
+                          Boolean(formik.errors.password)
+                        }
+                        type={showPassword ? "text" : "password"}
+                        variant="outlined"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOffOutlinedIcon />
+                                ) : (
+                                  <VisibilityOutlinedIcon />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Input
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        helperText={
+                          formik.touched.confirmPassword &&
+                          formik.errors.confirmPassword
+                        }
+                        type={showPassword ? "text" : "password"}
+                        variant="outlined"
+                        error={
+                          formik.touched.confirmPassword &&
+                          Boolean(formik.errors.confirmPassword)
+                        }
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOffOutlinedIcon />
+                                ) : (
+                                  <VisibilityOutlinedIcon />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography>
+                        * It looks like you are new to our service. Please
+                        create password for your account.
+                      </Typography>
+                    </Grid>
+                  </>
+                ) : null}
               </Grid>
               <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Location</b>

@@ -47,14 +47,14 @@ const SMSLogs = () => {
       role: "all",
       receiverName: "",
       phoneNumber: "",
-      createDate: "",
+      createdDate: "",
       sentDate: "",
     },
     onSubmit: (values) => {
       dispatch(
         smsLog({
           receiverName: values.receiverName,
-          createdDate: values.createDate,
+          createdDate: values.createdDate,
           sentDate: values.sentDate,
           phoneNumber: values.phoneNumber,
           roleName: values.role,
@@ -171,7 +171,7 @@ const SMSLogs = () => {
                     name="createdDate"
                     type="date"
                     fullWidth
-                    value={formik.values.createDate}
+                    value={formik.values.createdDate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
