@@ -21,6 +21,7 @@ import {
 import { toast } from "react-toastify";
 import { createShiftModalSchema } from "../../ValidationSchema";
 import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
+import { clearPhysician } from "../../redux/halloSlices/adminSlices/getRegionPhysicianSlice";
 
 const CreateShiftModal = ({ open, handleClose }) => {
   const [checked, setChecked] = React.useState(false);
@@ -71,6 +72,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
       ).then((response) => {
         if (response.type === "addNewShift/fulfilled") {
           formik.resetForm();
+          dispatch(clearPhysician());
           handleClose();
           accountType === "Admin"
             ? dispatch(viewShiftByDate({ regions: "all" }))
@@ -308,6 +310,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
               variant="outlined"
               onClick={() => {
                 formik.resetForm();
+                dispatch(clearPhysician());
                 setChecked(false);
                 handleClose();
               }}

@@ -99,7 +99,6 @@ const ViewReservation = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
@@ -113,7 +112,7 @@ const ViewReservation = () => {
                 <b>Patient Information</b>
               </Typography>
               <Typography variant="caption" display="block">
-                Conformation Number
+                Confirmation Number
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 <b>{data?.["Confirmation Number"]}</b>
@@ -181,6 +180,7 @@ const ViewReservation = () => {
                 <Grid item xs={12} md={6}>
                   <Input
                     type="date"
+                    label="Date Of Birth"
                     name="dateOfBirth"
                     disabled
                     value={formik.values.dateOfBirth}

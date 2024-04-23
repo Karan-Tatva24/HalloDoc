@@ -80,7 +80,6 @@ const ViewNotes = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}

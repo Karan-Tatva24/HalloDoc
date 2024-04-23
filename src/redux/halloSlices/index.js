@@ -24,6 +24,9 @@ import dashboardByStateSlice from "./providerSlices/dashboardByStateSlice";
 import viewShiftSliceReducer from "./adminSlices/viewShiftSlice";
 import encounterFormSliceReducer from "./providerSlices/encounterFormSlice";
 import myScheduleSliceReducer from "./providerSlices/myScheduleSlice";
+import medicalHistorySliceReducer from "./patientSlices/medicalHistorySlice";
+import sendOrderSliceReducer from "./adminSlices/sendOrderSlice";
+import commonSliceReducer from "./patientSlices/commonSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -36,6 +39,7 @@ export const rootReducer = combineReducers({
   getProfessionsBusiness: getProfessionBusinessSliceReducer,
   viewUpload: viewUploadSliceReducer,
   closeCase: closeCaseSliceReducer,
+  sendOrder: sendOrderSliceReducer,
   loggedUserData: loggedUserDataSliceReducer,
   adminProfile: adminProfileSliceReducer,
   accountAccess: accountAccessSliceReducer,
@@ -51,4 +55,6 @@ export const rootReducer = combineReducers({
   viewShift: viewShiftSliceReducer,
   encounterForm: encounterFormSliceReducer,
   mySchedule: myScheduleSliceReducer,
+  medicalHistory: medicalHistorySliceReducer,
+  common: commonSliceReducer,
 });

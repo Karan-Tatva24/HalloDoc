@@ -205,7 +205,11 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
                 <div className="sigPadContainer">
                   <SignatureCanvas
                     penColor="black"
-                    canvasProps={{ className: "sigCanvas" }}
+                    canvasProps={{
+                      width: 500,
+                      height: 200,
+                      className: "sigCanvas",
+                    }}
                     ref={sigCanvas}
                   />
                   <hr />

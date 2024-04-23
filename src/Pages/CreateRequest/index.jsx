@@ -118,7 +118,6 @@ const CreateRequest = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
@@ -316,7 +315,11 @@ const CreateRequest = () => {
                 <b>Notes</b>
               </Typography>
               <Input
-                label="Admin Notes (optional)"
+                label={
+                  accountType === "Admin"
+                    ? "Admin Notes (optional)"
+                    : "Physician Notes (Optional)"
+                }
                 name="adminNotes"
                 multiline
                 rows={3}

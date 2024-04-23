@@ -178,7 +178,6 @@ const EncounterForm = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => {

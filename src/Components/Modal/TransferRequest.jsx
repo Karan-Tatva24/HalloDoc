@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { providerTransferRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/transferRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
+import { clearPhysician } from "../../redux/halloSlices/adminSlices/getRegionPhysicianSlice";
 
 const TransferRequest = ({ isAdmin, open, handleClose }) => {
   const dispatch = useDispatch();
@@ -43,10 +44,11 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
             toast.success(response.payload.message);
             onSubmitProps.resetForm();
             dispatch(dashboardCount());
-            handleClose();
+            dispatch(clearPhysician());
           } else if (response.type === "transferRequest/rejected") {
             toast.error(response.payload.data.validation.body.message);
           }
+          handleClose();
         });
       } else if (accountType === "Physician") {
         dispatch(
@@ -149,6 +151,7 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
               name="Cancel"
               variant="outlined"
               onClick={() => {
+                dispatch(clearPhysician());
                 formik.resetForm();
                 handleClose();
               }}

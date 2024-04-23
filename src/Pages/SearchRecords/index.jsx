@@ -189,6 +189,7 @@ const SearchRecords = () => {
                     <MenuItem value="patient">Patient</MenuItem>
                     <MenuItem value="family/friend">Family/Friend</MenuItem>
                     <MenuItem value="business">Business</MenuItem>
+                    <MenuItem value="concierge">Concierge</MenuItem>
                   </Input>
                 </Grid>
                 <Grid item xs={12} md={3}>

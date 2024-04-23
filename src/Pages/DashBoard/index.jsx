@@ -43,6 +43,8 @@ import { toast } from "react-toastify";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import TypeOfCareModal from "../../Components/Modal/TypeOfCareModal";
 import EncounterModal from "../../Components/Modal/EncounterModal";
+import MedicalHistory from "../../Components/MedicalHistory";
+import CreateNewRequestModal from "../../Components/Modal/CreateNewRequestModal";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -79,10 +81,11 @@ const DashBoard = () => {
     if (accountType === "Admin") {
       dispatch(dashboardCount());
       dispatch(getProfession());
+      dispatch(getRegions());
     } else if (accountType === "Physician") {
       dispatch(getProviderDashboardCount());
+      dispatch(getRegions());
     }
-    dispatch(getRegions());
   }, [accountType, dispatch]);
 
   useEffect(() => {
@@ -120,173 +123,178 @@ const DashBoard = () => {
   return (
     <>
       <Box>
-        <Box className="dashboard-container">
-          <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
-            {cards.map((card, index) => {
-              return (
-                <Grid
-                  key={index}
-                  container
-                  justifyContent="center"
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={2}
-                >
-                  {card.accountTypes.includes(accountType) ? (
-                    <>
-                      <Button
-                        color={card.color}
-                        variant={
-                          isActive && activeButton === card.applicationState
-                            ? "contained"
-                            : "outlined"
-                        }
-                        className="card-btn"
-                        fullWidth
-                        onClick={() => handleClick(card.applicationState)}
-                      >
-                        <Box className="card-content-heading">
-                          {card.icon}
-                          <Typography variant="body1">
-                            {card.applicationState}
-                          </Typography>
-                        </Box>
-                        {counts?.map((count, index) => {
-                          return (
-                            <Typography variant="h5" key={index}>
-                              {count.caseTag === card.applicationState ? (
-                                <b>{count.count}</b>
-                              ) : null}
+        {accountType === "User" ? (
+          <MedicalHistory handleOpen={handleOpen} />
+        ) : (
+          <Box className="dashboard-container">
+            <Grid container spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}>
+              {cards.map((card, index) => {
+                return (
+                  <Grid
+                    key={index}
+                    container
+                    justifyContent="center"
+                    item
+                    xs={6}
+                    md={4}
+                    lg={2}
+                  >
+                    {card.accountTypes.includes(accountType) ? (
+                      <>
+                        <Button
+                          color={card.color}
+                          variant={
+                            isActive && activeButton === card.applicationState
+                              ? "contained"
+                              : "outlined"
+                          }
+                          className="card-btn"
+                          fullWidth
+                          onClick={() => handleClick(card.applicationState)}
+                        >
+                          <Box className="card-content-heading">
+                            {card.icon}
+                            <Typography variant="body1">
+                              {card.applicationState}
                             </Typography>
-                          );
-                        })}
-                      </Button>
-                      {isActive && activeButton === card.applicationState ? (
-                        <img
-                          src={card.toolTip}
-                          alt="triangle"
-                          className="btn-triangle"
-                        />
-                      ) : null}
-                    </>
-                  ) : null}
-                </Grid>
-              );
-            })}
-          </Grid>
-          <Box className="dashboard-text-btn">
-            <Grid
-              container
-              justifyContent="space-between"
-              alignItems="baseline"
-              spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}
-            >
-              <Grid item xs={12} lg={5}>
-                <Typography variant="h5">
-                  Patients<span className="state">({activeButton})</span>
-                </Typography>
-              </Grid>
-              <Grid item xs={12} lg={7}>
-                <Box className="dashboard-btn">
-                  <Button
-                    name="Send Link"
-                    variant="contained"
-                    startIcon={<SendOutlinedIcon />}
-                    onClick={() => handleOpen("Send Link")}
-                  />
-                  <Button
-                    name="Create Request"
-                    variant="contained"
-                    startIcon={<RequestPageOutlinedIcon />}
-                    onClick={() =>
-                      navigate(AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN)
-                    }
-                  />
-
-                  {accountType === "Admin" ? (
-                    <>
-                      <Button
-                        name="Export"
-                        variant="contained"
-                        startIcon={<SendOutlinedIcon />}
-                        onClick={() => {
-                          dispatch(exportByState(activeButton.toLowerCase()))
-                            .then((response) => {
-                              if (response.type === "exportByState/fulfilled") {
-                                const blob = new Blob([response.payload], {
-                                  type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                });
-                                const url = window.URL.createObjectURL(blob);
-                                const link = document.createElement("a");
-                                link.href = url;
-                                link.download = `${activeButton}State-patients.xlsx`;
-                                document.body.appendChild(link);
-                                link.click();
-                                window.URL.revokeObjectURL(url);
-                                link.remove();
-                                toast.success(response.payload.message);
-                              } else {
-                                toast.error("File download failed.");
-                              }
-                            })
-                            .catch((error) => {
-                              toast.error("Error downloading file:", error);
-                            });
-                        }}
-                      />
-                      <Button
-                        name="Export All"
-                        variant="contained"
-                        startIcon={<SendOutlinedIcon />}
-                        onClick={() =>
-                          dispatch(exportAll())
-                            .then((response) => {
-                              if (response.type === "exportAll/fulfilled") {
-                                const blob = new Blob([response.payload], {
-                                  type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                });
-                                const url = window.URL.createObjectURL(blob);
-                                const link = document.createElement("a");
-                                link.href = url;
-                                link.download = `all-patients.xlsx`;
-                                document.body.appendChild(link);
-                                link.click();
-                                window.URL.revokeObjectURL(url);
-                                link.remove();
-                                toast.success(response.payload.message);
-                              } else {
-                                toast.error("File download failed.");
-                              }
-                            })
-                            .catch((error) => {
-                              toast.error("Error downloading file:", error);
-                            })
-                        }
-                      />
-                      <Button
-                        name="Request DTY Support"
-                        variant="contained"
-                        startIcon={<SendOutlinedIcon />}
-                        onClick={() => handleOpen("Request Support")}
-                      />
-                    </>
-                  ) : null}
-                </Box>
-              </Grid>
+                          </Box>
+                          {counts?.map((count, index) => {
+                            return (
+                              <Typography variant="h5" key={index}>
+                                {count.caseTag === card.applicationState ? (
+                                  <b>{count.count}</b>
+                                ) : null}
+                              </Typography>
+                            );
+                          })}
+                        </Button>
+                        {isActive && activeButton === card.applicationState ? (
+                          <img
+                            src={card.toolTip}
+                            alt="triangle"
+                            className="btn-triangle"
+                          />
+                        ) : null}
+                      </>
+                    ) : null}
+                  </Grid>
+                );
+              })}
             </Grid>
+            <Box className="dashboard-text-btn">
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="baseline"
+                spacing={{ xs: 2, sm: 3, md: 3, lg: 4 }}
+              >
+                <Grid item xs={12} lg={5}>
+                  <Typography variant="h5">
+                    Patients<span className="state">({activeButton})</span>
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} lg={7}>
+                  <Box className="dashboard-btn">
+                    <Button
+                      name="Send Link"
+                      variant="contained"
+                      startIcon={<SendOutlinedIcon />}
+                      onClick={() => handleOpen("Send Link")}
+                    />
+                    <Button
+                      name="Create Request"
+                      variant="contained"
+                      startIcon={<RequestPageOutlinedIcon />}
+                      onClick={() =>
+                        navigate(AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN)
+                      }
+                    />
+
+                    {accountType === "Admin" ? (
+                      <>
+                        <Button
+                          name="Export"
+                          variant="contained"
+                          startIcon={<SendOutlinedIcon />}
+                          onClick={() => {
+                            dispatch(exportByState(activeButton.toLowerCase()))
+                              .then((response) => {
+                                if (
+                                  response.type === "exportByState/fulfilled"
+                                ) {
+                                  const blob = new Blob([response.payload], {
+                                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                  });
+                                  const url = window.URL.createObjectURL(blob);
+                                  const link = document.createElement("a");
+                                  link.href = url;
+                                  link.download = `${activeButton}State-patients.xlsx`;
+                                  document.body.appendChild(link);
+                                  link.click();
+                                  window.URL.revokeObjectURL(url);
+                                  link.remove();
+                                  toast.success(response.payload.message);
+                                } else {
+                                  toast.error("File download failed.");
+                                }
+                              })
+                              .catch((error) => {
+                                toast.error("Error downloading file:", error);
+                              });
+                          }}
+                        />
+                        <Button
+                          name="Export All"
+                          variant="contained"
+                          startIcon={<SendOutlinedIcon />}
+                          onClick={() =>
+                            dispatch(exportAll())
+                              .then((response) => {
+                                if (response.type === "exportAll/fulfilled") {
+                                  const blob = new Blob([response.payload], {
+                                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                  });
+                                  const url = window.URL.createObjectURL(blob);
+                                  const link = document.createElement("a");
+                                  link.href = url;
+                                  link.download = `all-patients.xlsx`;
+                                  document.body.appendChild(link);
+                                  link.click();
+                                  window.URL.revokeObjectURL(url);
+                                  link.remove();
+                                  toast.success(response.payload.message);
+                                } else {
+                                  toast.error("File download failed.");
+                                }
+                              })
+                              .catch((error) => {
+                                toast.error("Error downloading file:", error);
+                              })
+                          }
+                        />
+                        <Button
+                          name="Request DTY Support"
+                          variant="contained"
+                          startIcon={<SendOutlinedIcon />}
+                          onClick={() => handleOpen("Request Support")}
+                        />
+                      </>
+                    ) : null}
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <MyTable
+              accountType={accountType}
+              counts={counts}
+              stateColumns={columns}
+              stateDropDown={dropDown}
+              indicator={indicator}
+              activeState={activeButton.toLowerCase()}
+              onClick={handleOpen}
+            />
           </Box>
-          <MyTable
-            accountType={accountType}
-            counts={counts}
-            stateColumns={columns}
-            stateDropDown={dropDown}
-            indicator={indicator}
-            activeState={activeButton.toLowerCase()}
-            onClick={handleOpen}
-          />
-        </Box>
+        )}
       </Box>
       <RequestSupportModal
         open={open && modalName === "Request Support"}
@@ -328,6 +336,10 @@ const DashBoard = () => {
       />
       <EncounterModal
         open={open && modalName === "Encounter Modal"}
+        handleClose={handleClose}
+      />
+      <CreateNewRequestModal
+        open={open && modalName === "Create New Request"}
         handleClose={handleClose}
       />
     </>

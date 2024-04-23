@@ -170,7 +170,7 @@ const BlockHistory = () => {
             </form>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
-                <TableHead style={{ backgroundColor: "#f6f6f6" }}>
+                <TableHead style={{ backgroundColor: "#f0f0f0" }}>
                   <TableRow>
                     {columns.map((column) =>
                       column.id === "createdAt" ? (

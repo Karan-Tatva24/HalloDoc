@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { patientRecord } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
 import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewReservationAPI";
-import { viewUpload } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewUploadAPI";
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 import { AppRoutes } from "../../constants/routes";
 import "./patientRecord.css";
@@ -104,7 +103,6 @@ const PatientRecord = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
@@ -196,28 +194,13 @@ const PatientRecord = () => {
                                     </MenuItem>
                                     <MenuItem
                                       disableRipple
-                                      onClick={handleClose}
-                                    >
-                                      Chat
-                                    </MenuItem>
-                                    <MenuItem
-                                      disableRipple
                                       onClick={() => {
-                                        dispatch(getPatientName(rowId));
-                                        dispatch(
-                                          viewUpload({ id: row?.id }),
-                                        ).then((response) => {
-                                          if (
-                                            response.type ===
-                                            "viewUpload/fulfilled"
-                                          ) {
-                                            navigate(AppRoutes.VIEW_UPLOAD);
-                                          }
-                                        });
+                                        dispatch(getPatientName(row?.id));
+                                        navigate(AppRoutes.VIEW_UPLOAD);
                                         handleClose();
                                       }}
                                     >
-                                      0 Documents
+                                      {`${row?.filesCount} Documents`}
                                     </MenuItem>
                                   </Menu>
                                 </>

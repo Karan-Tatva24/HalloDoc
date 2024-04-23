@@ -48,6 +48,8 @@ import PatientCreateRequest from "./Pages/patientSite/createRequestPages/Patient
 import FamilyFriendRequest from "./Pages/patientSite/createRequestPages/FamilyFriendRequest";
 import ConciergeRequest from "./Pages/patientSite/createRequestPages/ConciergeRequest";
 import BusinessRequest from "./Pages/patientSite/createRequestPages/BusinessRequest";
+import SubmitInformation from "./Pages/patientSite/SubmitInformation";
+import Agreement from "./Pages/patientSite/Agreement";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -177,7 +179,12 @@ const App = () => {
               path={AppRoutes.CONCIERGE_REQUEST}
               element={<ConciergeRequest />}
             />
+            <Route
+              path={AppRoutes.SUBMIT_INFORMATION}
+              element={<SubmitInformation />}
+            />
           </Route>
+          <Route path={AppRoutes.AGREEMENT_PAGE} element={<Agreement />} />
         </Routes>
       </ThemeProvider>
     </div>

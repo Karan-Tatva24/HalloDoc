@@ -1,6 +1,7 @@
 import loginHeading from "./logo.png";
 import loginHeroImage from "./loginImage.jpg";
-export { loginHeading, loginHeroImage };
+import loginBackground from "./loginBackground.jpg";
+export { loginHeading, loginHeroImage, loginBackground };
 export { default as infoImage } from "./info.svg";
 export { default as primaryTriangle } from "./primaryTriangle.svg";
 export { default as secondaryTriangle } from "./secondaryTriangle.svg";

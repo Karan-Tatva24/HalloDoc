@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { Button } from "../../../Components/Button";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 import { Input } from "../../../Components/TextField/Input";
 import PhoneInput from "react-phone-input-2";
-import { useFormik } from "formik";
-import { debounce } from "lodash";
-import InformationModal from "../../../Components/Modal/InformationModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  createRequest,
+  createRequestByAdminProvider,
   isEmailFound,
 } from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { toast } from "react-toastify";
-import { createRequestAllSchema } from "../../../ValidationSchema";
+import { debounce } from "lodash";
 
 const initialValues = {
-  requestType: "Business",
-  requestorFirstName: "",
-  requestorLastName: "",
-  requestorPhoneNumber: "",
-  requestorEmail: "",
   relationName: "",
-  patientNote: "",
   patientFirstName: "",
   patientLastName: "",
-  dob: "",
   patientEmail: "",
-  isEmail: "",
   patientPhoneNumber: "",
+  isEmail: false,
+  dob: "",
   street: "",
   city: "",
   state: "",
   zipCode: "",
   roomNumber: "",
+  patientNote: "",
+  document: null,
 };
 
 const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
@@ -44,32 +39,48 @@ const debouncedApiCall = debounce(async (email, setFieldValue, dispatch) => {
       setFieldValue("isEmail", response.payload?.data);
     }
   } catch (error) {
-    toast.error("Failed to check email:", error);
+    console.error("Failed to check email:", error);
   }
 }, 1000);
 
-const BusinessRequest = () => {
-  const [open, setOpen] = useState(false);
+const SubmitInformation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { requestType } = useSelector((state) => state.root.common);
 
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
-      dispatch(createRequest(values)).then((response) => {
-        toast.success(response?.payload?.message);
-        formik.resetForm();
+      const formData = new FormData();
+      formData.append("requestType", requestType);
+      formData.append("relationName", values.relationName);
+      formData.append("patientNote", values.patientNote);
+      formData.append("patientFirstName", values.patientFirstName);
+      formData.append("patientLastName", values.patientLastName);
+      formData.append("patientPhoneNumber", values.patientPhoneNumber);
+      formData.append("patientEmail", values.patientEmail);
+      formData.append("dob", values.dob);
+      formData.append("street", values.street);
+      formData.append("city", values.city);
+      formData.append("state", values.state);
+      formData.append("zipCode", values.zipCode);
+      formData.append("roomNumber", values.roomNumber);
+      formData.append("document", values.document);
+      formData.append("isEmail", values.isEmail);
+
+      dispatch(createRequestByAdminProvider(formData)).then((response) => {
+        if (response.type === "createRequestByAdminProvider/fulfilled") {
+          toast.success(response?.payload?.message);
+          formik.resetForm();
+          navigate(-1);
+        }
       });
     },
-    validationSchema: createRequestAllSchema,
   });
 
-  useEffect(() => {
-    setOpen(true);
-  }, []);
-
-  const handleClose = () => {
-    setOpen(false);
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    formik.setFieldValue("document", event.target.files[0]);
   };
 
   useEffect(() => {
@@ -89,10 +100,19 @@ const BusinessRequest = () => {
     <>
       <Box sx={{ backgroundColor: "#f6f6f6" }}>
         <Container maxWidth="md" sx={{ padding: "1rem 3rem" }}>
-          <Box display="flex" justifyContent="flex-end" mb={2} flexWrap="wrap">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            mb={2}
+            flexWrap="wrap"
+          >
+            <Typography variant="h5" gutterBottom>
+              <b>Submit Information</b>
+            </Typography>
             <Button
               name="Back"
               variant="outlined"
+              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
@@ -102,105 +122,6 @@ const BusinessRequest = () => {
           <Paper sx={{ padding: "1.25rem" }}>
             <form onSubmit={formik.handleSubmit}>
               <Typography variant="h5" pb={2}>
-                <b>Business Information</b>
-              </Typography>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    name="requestorFirstName"
-                    label="Your First Name"
-                    fullWidth
-                    value={formik.values.requestorFirstName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.requestorFirstName &&
-                      formik.errors.requestorFirstName
-                    }
-                    error={
-                      formik.touched.requestorFirstName &&
-                      Boolean(formik.errors.requestorFirstName)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    name="requestorLastName"
-                    label="Your Last Name"
-                    fullWidth
-                    value={formik.values.requestorLastName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.requestorLastName &&
-                      formik.errors.requestorLastName
-                    }
-                    error={
-                      formik.touched.requestorLastName &&
-                      Boolean(formik.errors.requestorLastName)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <PhoneInput
-                    name="requestorPhoneNumber"
-                    country={"in"}
-                    inputStyle={{ width: "100%", height: "3.438rem" }}
-                    value={formik.values.requestorPhoneNumber}
-                    onChange={(value) =>
-                      formik.setFieldValue("requestorPhoneNumber", value)
-                    }
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.requestorPhoneNumber &&
-                      formik.errors.requestorPhoneNumber
-                    }
-                    error={
-                      formik.touched.requestorPhoneNumber &&
-                      Boolean(formik.errors.requestorPhoneNumber)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    name="requestorEmail"
-                    label="Your Email"
-                    fullWidth
-                    value={formik.values.requestorEmail}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.requestorEmail &&
-                      formik.errors.requestorEmail
-                    }
-                    error={
-                      formik.touched.requestorEmail &&
-                      Boolean(formik.errors.requestorEmail)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input
-                    name="relationName"
-                    label="Business/Property Name"
-                    fullWidth
-                    value={formik.values.relationName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.relationName && formik.errors.relationName
-                    }
-                    error={
-                      formik.touched.relationName &&
-                      Boolean(formik.errors.relationName)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Input label="Case Number (Optional)" fullWidth />
-                </Grid>
-              </Grid>
-              <Typography variant="h5" pb={2} pt={3}>
                 <b>Patient Information</b>
               </Typography>
               <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -389,6 +310,70 @@ const BusinessRequest = () => {
                   />
                 </Grid>
               </Grid>
+              {requestType === "Patient" ? null : (
+                <>
+                  <Typography variant="h5" pb={2} pt={3}>
+                    <b>Relation</b>
+                  </Typography>
+                  <Grid container spacing={{ xs: 1, md: 2 }}>
+                    <Grid item xs={12} md={6}>
+                      <Input
+                        name="relationName"
+                        label="Relation with Patient (Optional)"
+                        fullWidth
+                        value={formik.values.relationName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        helperText={
+                          formik.touched.relationName &&
+                          formik.errors.relationName
+                        }
+                        error={
+                          formik.touched.relationName &&
+                          Boolean(formik.errors.relationName)
+                        }
+                      />
+                    </Grid>
+                  </Grid>
+                </>
+              )}
+              <Typography variant="h5" pb={2} pt={3}>
+                <b>(Optional) Upload Photo or Document</b>
+              </Typography>
+              <Box display="flex" position="relative" mb={2} mt={2}>
+                <Button
+                  style={{
+                    color: "#000000",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    backgroundColor: "#f6f6f6",
+                  }}
+                  fullWidth
+                  variant="outlined"
+                  component="label"
+                  title="Upload-files"
+                >
+                  <input
+                    onChange={handleFileChange}
+                    type="file"
+                    id="selectFile"
+                    hidden
+                  />
+                  <label htmlFor="selectFile">
+                    {formik.values.document !== null
+                      ? formik.values.document?.name
+                      : "Select File"}
+                  </label>
+                </Button>
+
+                <Button
+                  name="Upload"
+                  variant="contained"
+                  size="large"
+                  startIcon={<CloudUploadOutlinedIcon />}
+                  type="submit"
+                />
+              </Box>
               <Box
                 display="flex"
                 justifyContent="flex-end"
@@ -404,9 +389,8 @@ const BusinessRequest = () => {
           </Paper>
         </Container>
       </Box>
-      <InformationModal open={open} handleClose={handleClose} />
     </>
   );
 };
 
-export default BusinessRequest;
+export default SubmitInformation;

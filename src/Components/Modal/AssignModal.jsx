@@ -10,6 +10,7 @@ import { getPhysician } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getR
 import { assignCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/assignCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
+import { clearPhysician } from "../../redux/halloSlices/adminSlices/getRegionPhysicianSlice";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -37,11 +38,12 @@ const AssignModal = ({ open, handleClose }) => {
         if (response.type === "assignCase/fulfilled") {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
+          dispatch(clearPhysician());
           dispatch(dashboardCount());
-          handleClose();
         } else if (response.type === "assignCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
         }
+        handleClose();
       });
     },
   });
@@ -124,6 +126,7 @@ const AssignModal = ({ open, handleClose }) => {
               variant="outlined"
               onClick={() => {
                 formik.resetForm();
+                dispatch(clearPhysician());
                 handleClose();
               }}
             />

@@ -32,7 +32,7 @@ const AddressInfo = ({
   address2,
   city,
   state,
-  zip,
+  zipCode,
   altPhone,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -55,10 +55,10 @@ const AddressInfo = ({
       address2,
       city,
       state,
-      zipCode: zip,
+      zipCode,
       altPhone,
     });
-  }, [address1, address2, altPhone, city, state, zip]);
+  }, [address1, address2, altPhone, city, state, zipCode]);
 
   return (
     <form onSubmit={formik.handleSubmit}>

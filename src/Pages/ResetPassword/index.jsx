@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Grid, IconButton, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -19,7 +18,10 @@ const initialValues = {
 };
 
 const ResetPassword = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
   const { isLoading } = useSelector((state) => state.root.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +44,12 @@ const ResetPassword = () => {
     onSubmit,
   });
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = (field) => {
+    setShowPassword((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -53,13 +60,6 @@ const ResetPassword = () => {
       <Grid item xl={6} lg={6} md={6} className="loginHero-image">
         <img src={loginHeroImage} alt="Login Page" width="100%" height="100%" />
       </Grid>
-      <div className="dm-btn">
-        <Button
-          name={<DarkModeOutlinedIcon fontSize="large" />}
-          variant="outlined"
-          size="large"
-        />
-      </div>
       <Grid
         item
         xl={6}
@@ -94,18 +94,18 @@ const ResetPassword = () => {
               error={
                 formik.touched.newPassword && Boolean(formik.errors.newPassword)
               }
-              type={showPassword ? "text" : "password"}
+              type={showPassword.newPassword ? "text" : "password"}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={() => handleClickShowPassword("newPassword")}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? (
+                      {showPassword.newPassword ? (
                         <VisibilityOffOutlinedIcon />
                       ) : (
                         <VisibilityOutlinedIcon />
@@ -127,7 +127,7 @@ const ResetPassword = () => {
               helperText={
                 formik.touched.confirmPassword && formik.errors.confirmPassword
               }
-              type={showPassword ? "text" : "password"}
+              type={showPassword.confirmPassword ? "text" : "password"}
               variant="outlined"
               error={
                 formik.touched.confirmPassword &&
@@ -138,11 +138,11 @@ const ResetPassword = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={() => handleClickShowPassword("confirmPassword")}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? (
+                      {showPassword.confirmPassword ? (
                         <VisibilityOffOutlinedIcon />
                       ) : (
                         <VisibilityOutlinedIcon />

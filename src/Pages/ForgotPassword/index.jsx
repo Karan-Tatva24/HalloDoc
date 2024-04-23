@@ -2,7 +2,6 @@ import React from "react";
 import { Grid, InputAdornment, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { loginHeading, loginHeroImage } from "../../assets/Images";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -39,13 +38,6 @@ const ForgotPassword = () => {
       <Grid item xl={6} lg={6} md={6} className="loginHero-image">
         <img src={loginHeroImage} alt="Login Page" width="100%" height="100%" />
       </Grid>
-      <div className="dm-btn">
-        <Button
-          name={<DarkModeOutlinedIcon fontSize="large" />}
-          variant="outlined"
-          size="large"
-        />
-      </div>
       <Grid item xl={6} lg={6} md={6} sm={12} xs={12} height="100%">
         <div className="bg-image"></div>
         <div className="right-page">

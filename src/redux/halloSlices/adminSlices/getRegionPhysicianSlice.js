@@ -12,6 +12,11 @@ const initialState = {
 export const getRegionPhysicianSlice = createSlice({
   name: "Get Region Physician",
   initialState,
+  reducers: {
+    clearPhysician: (state) => {
+      state.physicians = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getRegions.fulfilled, (state, action) => {
       if (action.payload) {
@@ -27,3 +32,4 @@ export const getRegionPhysicianSlice = createSlice({
 });
 
 export default getRegionPhysicianSlice.reducer;
+export const { clearPhysician } = getRegionPhysicianSlice.actions;

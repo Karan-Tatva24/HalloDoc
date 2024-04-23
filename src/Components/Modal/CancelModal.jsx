@@ -95,7 +95,7 @@ const CancelModal = ({ open, handleClose }) => {
             }
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button name="Conform" variant="contained" type="submit" />
+            <Button name="Confirm" variant="contained" type="submit" />
             <Button
               name="Cancel"
               variant="outlined"

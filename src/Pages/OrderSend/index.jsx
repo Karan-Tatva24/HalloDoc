@@ -16,6 +16,7 @@ import {
   viewSendOrder,
 } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/sendOrderAPI";
 import { toast } from "react-toastify";
+import { clearOrder } from "../../redux/halloSlices/adminSlices/sendOrderSlice";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Order = () => {
   const { professions, businesses } = useSelector(
     (state) => state.root.getProfessionsBusiness,
   );
-  const { order } = useSelector((state) => state.sendOrder);
+  const { order } = useSelector((state) => state.root.sendOrder);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -70,10 +71,12 @@ const Order = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                dispatch(clearOrder());
+                navigate(-1);
+              }}
               className="back-btn"
             />
           </Box>
@@ -152,7 +155,7 @@ const Order = () => {
                     label="Business Contact"
                     fullWidth
                     disabled
-                    value={order?.[0]?.businessContact}
+                    value={order?.businessContact}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -161,7 +164,7 @@ const Order = () => {
                     label="Email"
                     fullWidth
                     disabled
-                    value={order?.[0]?.email}
+                    value={order?.email}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -170,7 +173,7 @@ const Order = () => {
                     label="Fax Number"
                     fullWidth
                     disabled
-                    value={order?.[0]?.faxNumber}
+                    value={order?.faxNumber}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -209,10 +212,10 @@ const Order = () => {
                       formik.touched.refillNumber && formik.errors.refillNumber
                     }
                   >
-                    <MenuItem value="notrequired">Not required</MenuItem>
+                    <MenuItem value="0">Not required</MenuItem>
                     <MenuItem value="1">1</MenuItem>
                     <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="more">More than two</MenuItem>
+                    <MenuItem value=">2">More than two</MenuItem>
                   </Input>
                 </Grid>
               </Grid>
@@ -221,7 +224,10 @@ const Order = () => {
                 <Button
                   name="Cancel"
                   variant="outlined"
-                  onClick={() => navigate(AppRoutes.DASHBOARD)}
+                  onClick={() => {
+                    dispatch(clearOrder());
+                    navigate(AppRoutes.DASHBOARD);
+                  }}
                 />
               </Box>
             </Paper>

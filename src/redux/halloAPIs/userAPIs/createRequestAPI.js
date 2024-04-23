@@ -21,37 +21,8 @@ export const isEmailFound = createAsyncThunk(
 export const createRequestByAdminProvider = createAsyncThunk(
   "createRequestByAdminProvider",
   async (params, { rejectWithValue }) => {
-    const {
-      patientFirstName,
-      patientLastName,
-      patientEmail,
-      patientPhoneNumber,
-      street,
-      city,
-      state,
-      zipCode,
-      dob,
-      roomNumber,
-      patientNote,
-      requestType,
-      isEmail,
-    } = params;
     try {
-      const response = await Axios.post(CREATE_ADMIN_REQUEST, {
-        patientFirstName,
-        patientLastName,
-        patientEmail,
-        patientPhoneNumber,
-        street,
-        city,
-        state,
-        zipCode,
-        dob,
-        roomNumber,
-        patientNote,
-        requestType,
-        isEmail,
-      });
+      const response = await Axios.post(CREATE_ADMIN_REQUEST, params);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

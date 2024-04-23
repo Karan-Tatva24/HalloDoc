@@ -49,7 +49,7 @@ const ViewUpload = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(viewUpload({ id, sortBy: "createdAt", orderBy: "ASC" })).then(
+    dispatch(viewUpload({ id, sortBy: "createdAt", orderBy: "DESC" })).then(
       (response) => {
         if (response.type === "viewUpload/rejected") {
           setFilterData([]);
@@ -99,10 +99,6 @@ const ViewUpload = () => {
     setOrderBy(property);
   };
 
-  useEffect(() => {
-    dispatch(viewUpload({ id, sortBy: orderBy, orderBy: order.toUpperCase() }));
-  }, [dispatch, id, order, orderBy]);
-
   const handleFileChange = (event) => {
     event.preventDefault();
     setSelectedFile(event.target.files[0]);
@@ -115,7 +111,7 @@ const ViewUpload = () => {
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
         toast.success(response.payload.message);
-        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
       } else if (response.type === "uploadFile/rejected") {
         toast.error(response.payload?.data?.error);
       }
@@ -189,7 +185,7 @@ const ViewUpload = () => {
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
         toast.success(response.payload.message);
-        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
       } else if (response.type === "deleteFile/rejected") {
         toast.error(response?.payload?.data.message);
       }
@@ -203,9 +199,9 @@ const ViewUpload = () => {
       (response) => {
         if (response.type === "deleteFile/fulfilled") {
           toast.success(response.payload.message);
-          dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+          dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
         } else if (response.type === "deleteFile/rejected") {
-          toast.error(response?.payload?.data.message);
+          toast.error(response?.payload?.data.error);
         }
       },
     );
@@ -246,7 +242,6 @@ const ViewUpload = () => {
             <Button
               name="Back"
               variant="outlined"
-              size="small"
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}

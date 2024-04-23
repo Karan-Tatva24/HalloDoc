@@ -28,7 +28,7 @@
 
 .link a {
   text-decoration: none;
-  color: #67abb1;
+  color: #01bce9 !important;
   font-size: 1.09rem;
 }
 
@@ -56,7 +56,7 @@
   padding: 1.3rem;
 }
 
-.footer-links-login>a:first-child::after {
+.footer-links-login > a:first-child::after {
   position: absolute;
   content: "";
   top: 1.5rem;
@@ -71,10 +71,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.bg-image {
-  display: none;
 }
 
 .btn {
@@ -97,10 +93,10 @@
   color: #9e9798;
   position: relative;
   text-decoration: none;
-  padding: 1.280rem;
+  padding: 1.28rem;
 }
 
-.footer-links-fp>a:first-child::after {
+.footer-links-fp > a:first-child::after {
   position: absolute;
   content: "";
   top: 1.5rem;
@@ -112,12 +108,13 @@
 @media (max-width: 900px) {
   .bg-image {
     display: block;
-    background-image: url("./assets/Images/loginImage.jpg");
+    background-image: url("./assets/Images/loginBackground.jpg");
     background-size: cover;
     background-position: center;
-    filter: blur(10px);
-    -webkit-filter: blur(10px);
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
     height: 100vh;
+    width: 100vw;
   }
 
   .right-page {
@@ -126,7 +123,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #a0def3;
+    background-color: transparent;
   }
 
   .loginHero-image {
@@ -154,21 +151,26 @@
   }
 
   .link a {
-    color: black !important;
+    color: #000000 !important;
   }
 
-  .form-input>div {
-    background: rgba(255, 255, 255, 50%) !important;
+  .link svg {
+    color: #000000 !important;
+  }
+
+  .form-input > div {
+    background: #b9c6c971 !important;
   }
 }
 
 @media (max-width: 600px) {
   .bg-image {
-    background-image: url("./assets/Images/loginImage.jpg");
+    background-image: url("./assets/Images/loginBackground.jpg");
     background-size: cover;
-    filter: blur(10px);
-    -webkit-filter: blur(10px);
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
     height: 100vh;
+    width: 100vw;
   }
 
   .right-page {

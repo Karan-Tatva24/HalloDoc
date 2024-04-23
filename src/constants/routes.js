@@ -41,4 +41,6 @@ export const AppRoutes = {
   FAMILY_FRIEND_REQUEST: "/patient/createRequest/family",
   BUSINESS_REQUEST: "/patient/createRequest/business",
   CONCIERGE_REQUEST: "/patient/createRequest/concierge",
+  SUBMIT_INFORMATION: "/dashboard/patient/submitInformation",
+  AGREEMENT_PAGE: "/patient/agreement",
 };
