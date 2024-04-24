@@ -24,6 +24,7 @@ export {
   createRequestSchema,
   createRequestByPatientSchema,
   createRequestAllSchema,
+  submitInformationSchema,
 } from "./createRequestSchema";
 export {
   createShiftModalSchema,

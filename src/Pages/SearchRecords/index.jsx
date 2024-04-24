@@ -39,6 +39,16 @@ const SearchRecords = () => {
   const dispatch = useDispatch();
   const { searchRecordData } = useSelector((state) => state.root.records);
 
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+
   const formik = useFormik({
     initialValues: {
       requestStatus: "",
@@ -160,10 +170,36 @@ const SearchRecords = () => {
                     value={formik.values.requestStatus}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    MenuProps={MenuProps}
                   >
-                    <MenuItem value="active">Active</MenuItem>
-                    <MenuItem value="pending">Pending</MenuItem>
-                    <MenuItem value="closed">Closed</MenuItem>
+                    <MenuItem value="Unassigned">Unassigned</MenuItem>
+                    <MenuItem value="Processing">Processing</MenuItem>
+                    <MenuItem value="Accepted">Accepted</MenuItem>
+                    <MenuItem value="Cancelled">Cancelled</MenuItem>
+                    <MenuItem value="Reserving">Reserving</MenuItem>
+                    <MenuItem value="MDOnRoute">MDOnRoute</MenuItem>
+                    <MenuItem value="Conclude">Conclude</MenuItem>
+                    <MenuItem value="MDOnSite">MDOnSite</MenuItem>
+                    <MenuItem value="FollowUp">FollowUp</MenuItem>
+                    <MenuItem value="Closed">Closed</MenuItem>
+                    <MenuItem value="Locked">Locked</MenuItem>
+                    <MenuItem value="Declined">Declined</MenuItem>
+                    <MenuItem value="Consult">Consult</MenuItem>
+                    <MenuItem value="Cleared">Cleared</MenuItem>
+                    <MenuItem value="Blocked">Blocked</MenuItem>
+                    <MenuItem value="Unpaid">Unpaid</MenuItem>
+                    <MenuItem value="CancelledByProvider">
+                      CancelledByProvider
+                    </MenuItem>
+                    <MenuItem value="CancelledByAdmin">
+                      CancelledByAdmin
+                    </MenuItem>
+                    <MenuItem value="CCUploadedByClient">
+                      CCUploadedByClient
+                    </MenuItem>
+                    <MenuItem value="CCApprovedByAdmin">
+                      CCApprovedByAdmin
+                    </MenuItem>
                   </Input>
                 </Grid>
                 <Grid item xs={12} md={3}>

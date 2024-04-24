@@ -100,6 +100,7 @@ export const EXPORT = "/admin/common/export";
 export const EXPORT_ALL = "/admin/common/exportAll";
 export const VERIFY_STATE = "/admin/common/verifyRegion";
 export const GET_ROLE = "/admin/common/getRoles";
+export const VIEW_FILE = "/admin/common/viewFile";
 
 /* ****************************************** User API ******************************************* */
 
@@ -139,3 +140,4 @@ export const REQUEST_TO_ADMIN = "/provider/profile/requestToAdmin";
 export const MEDICAL_HISTORY = "/patient/medicalHistory";
 export const ACCEPT_AGREEMENT = "/patient/acceptAgreement";
 export const CANCEL_AGREEMENT = "/patient/cancelAgreement";
+export const EDIT_PROFILE = "/patient/editPatientProfile";

@@ -36,12 +36,12 @@ const AssignModal = ({ open, handleClose }) => {
         }),
       ).then((response) => {
         if (response.type === "assignCase/fulfilled") {
-          toast.success(response.payload.message);
+          toast.success(response?.payload?.message);
           onSubmitProps.resetForm();
           dispatch(clearPhysician());
           dispatch(dashboardCount());
         } else if (response.type === "assignCase/rejected") {
-          toast.error(response.payload.data.validation.body.message);
+          toast.error(response.payload?.data?.validation?.body?.message);
         }
         handleClose();
       });

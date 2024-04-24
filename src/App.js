@@ -50,6 +50,7 @@ import ConciergeRequest from "./Pages/patientSite/createRequestPages/ConciergeRe
 import BusinessRequest from "./Pages/patientSite/createRequestPages/BusinessRequest";
 import SubmitInformation from "./Pages/patientSite/SubmitInformation";
 import Agreement from "./Pages/patientSite/Agreement";
+import UserProfile from "./Pages/patientSite/UserProfile";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -183,6 +184,7 @@ const App = () => {
               path={AppRoutes.SUBMIT_INFORMATION}
               element={<SubmitInformation />}
             />
+            <Route path={AppRoutes.USER_PROFILE} element={<UserProfile />} />
           </Route>
           <Route path={AppRoutes.AGREEMENT_PAGE} element={<Agreement />} />
         </Routes>

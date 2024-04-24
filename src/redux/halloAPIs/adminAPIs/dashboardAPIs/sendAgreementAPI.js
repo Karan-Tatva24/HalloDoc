@@ -9,7 +9,9 @@ export const sendAgreement = createAsyncThunk(
   "sendAgreement",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await Axios.post(`${SEND_AGREEMENT}/${params}`);
+      const response = await Axios.post(
+        `${SEND_AGREEMENT}/${params?.toString()}`,
+      );
       return response?.data;
     } catch (error) {
       return rejectWithValue(error?.response);

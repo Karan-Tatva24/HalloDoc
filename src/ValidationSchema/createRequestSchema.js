@@ -76,3 +76,21 @@ export const createRequestAllSchema = Yup.object({
   patientPhoneNumber: Yup.string().required("is Required"),
   roomNumber: Yup.string(),
 });
+
+export const submitInformationSchema = Yup.object({
+  relationName: Yup.string(),
+  patientFirstName: Yup.string().required("Patient First Name is Required"),
+  patientLastName: Yup.string().required("Patient Last is Required"),
+  patientEmail: Yup.string()
+    .email("Invalid Email")
+    .required("Patient Email is Required"),
+  patientPhoneNumber: Yup.string().required("Patient Phone number is Required"),
+  isEmail: Yup.boolean(),
+  dob: Yup.string().required("Date of birth is Required"),
+  street: Yup.string().required("Street is Required"),
+  city: Yup.string().required("City is Required"),
+  state: Yup.string().required("State is Required"),
+  zipCode: Yup.string().required("ZipCode is Required"),
+  roomNumber: Yup.string(),
+  patientNote: Yup.string(),
+});

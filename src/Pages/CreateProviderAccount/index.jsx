@@ -81,29 +81,30 @@ const CreateProviderAccount = () => {
       formData.append("independentContract", indConAggFile);
       formData.append("hipaaCompliance", hipaaCompFile);
       formData.append("nonDisclosureAgreement", nonDisAggFile);
-      dispatch(
-        createProviderAccount({
-          accountType: "Physician",
-          userName: values.userName,
-          password: values.password,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phoneNumber: values.administratorPhone,
-          medicalLicense: values.medicalLicense,
-          NPINumber: values.npiNumber,
-          regions: values.selectedRegions,
-          address1: values.address1,
-          address2: values.address2,
-          city: values.city,
-          state: values.state,
-          zipCode: values.zip,
-          altPhone: values.mailingPhone,
-          businessName: values.businessName,
-          businessWebsite: values.businessWebsite,
-          files: formData,
-        }),
-      ).then((response) => {
+      formData.append("accountType", "Physician");
+      formData.append("userName", values.userName);
+      formData.append("password", values.password);
+      formData.append("firstName", values.firstName);
+      formData.append("lastName", values.lastName);
+      formData.append("email", values.email);
+      formData.append("phoneNumber", values.administratorPhone);
+      formData.append("medicalLicense", values.medicalLicense);
+      formData.append("NPINumber", values.npiNumber);
+      values.selectedRegions.forEach((region) => {
+        formData.append("regions", region);
+      });
+      formData.append("address1", values.address1);
+      formData.append("address2", values.address2);
+      formData.append("city", values.city);
+      formData.append("state", values.state);
+      formData.append("zipCode", values.zip);
+      formData.append("altPhone", values.mailingPhone);
+      formData.append("businessName", values.businessName);
+      formData.append("businessWebsite", values.businessWebsite);
+      formData.append("roleId", values.role);
+      formData.append("notes", values.adminNotes);
+
+      dispatch(createProviderAccount(formData)).then((response) => {
         console.log(response);
         if (response.type === "createProviderAccount/fulfilled") {
           toast.success(response.payload.message);
@@ -231,7 +232,7 @@ const CreateProviderAccount = () => {
                     helperText={formik.touched.role && formik.errors.role}
                   >
                     {roles?.map((role) => (
-                      <MenuItem key={role?.id} value={role?.Name}>
+                      <MenuItem key={role?.id} value={role?.id}>
                         {role?.Name}
                       </MenuItem>
                     ))}

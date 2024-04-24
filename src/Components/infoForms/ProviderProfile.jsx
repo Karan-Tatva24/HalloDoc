@@ -17,10 +17,10 @@ import { toast } from "react-toastify";
 const INITIAL_VALUE = {
   businessName: "",
   businessWebsite: "",
-  adminNotes: "Hello",
+  adminNotes: "",
 };
 
-const ProviderProfile = ({ id, businessName, businessWebsite }) => {
+const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [selectedSignature, setSelectedSignature] = useState(null);
@@ -46,19 +46,17 @@ const ProviderProfile = ({ id, businessName, businessWebsite }) => {
 
   const formik = useFormik({
     initialValues,
-    onSubmit: (value) => {
-      console.log("Address Values", value);
-    },
     validationSchema: providerProfileSchema,
     enableReinitialize: true,
   });
 
   useEffect(() => {
     setInitialValues({
+      adminNotes: notes,
       businessName,
       businessWebsite,
     });
-  }, [businessName, businessWebsite]);
+  }, [businessName, businessWebsite, notes]);
 
   const handlePhotoChange = (event) => {
     event.preventDefault();

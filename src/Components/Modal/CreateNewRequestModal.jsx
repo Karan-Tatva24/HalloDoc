@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
@@ -14,13 +14,10 @@ const CreateNewRequestModal = ({ open, handleClose }) => {
 
   return (
     <Modal open={open} handleClose={handleClose} header="Create New Request">
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gap={3}
-        pt={4}
-      >
+      <Typography variant="body1" p={2}>
+        Here, I want to create new request for ...
+      </Typography>
+      <Box display="flex" justifyContent="center" alignItems="center" gap={3}>
         <Button
           name="Me"
           variant={selectedType === "Patient" ? "contained" : "outlined"}
@@ -39,7 +36,7 @@ const CreateNewRequestModal = ({ open, handleClose }) => {
         justifyContent="flex-end"
         alignItems="center"
         gap={2}
-        p={4}
+        p={2}
       >
         <Button
           name="Continue"

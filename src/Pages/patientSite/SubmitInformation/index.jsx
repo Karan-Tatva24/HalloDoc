@@ -14,6 +14,7 @@ import {
 } from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
+import { submitInformationSchema } from "../../../ValidationSchema";
 
 const initialValues = {
   relationName: "",
@@ -76,6 +77,7 @@ const SubmitInformation = () => {
         }
       });
     },
+    validationSchema: submitInformationSchema,
   });
 
   const handleFileChange = (event) => {

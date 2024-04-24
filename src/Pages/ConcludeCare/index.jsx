@@ -31,6 +31,7 @@ import { useFormik } from "formik";
 import { concludeCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
 import { AppRoutes } from "../../constants/routes";
 import { concludeCareSchema } from "../../ValidationSchema";
+import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 
 const ConcludeCare = () => {
   const [tableData, setTableData] = useState();
@@ -47,12 +48,13 @@ const ConcludeCare = () => {
         (response) => {
           if (response.type === "concludeCare/fulfilled") {
             toast.success(response.payload?.message);
+            dispatch(getProviderDashboardCount());
           } else if (response.type === "concludeCare/rejected") {
             toast.error(response?.payload?.data?.message);
           }
         },
       );
-      navigate(AppRoutes.DASHBOARD);
+      navigate(-1);
     },
   });
 

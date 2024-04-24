@@ -42,5 +42,6 @@ export const AppRoutes = {
   BUSINESS_REQUEST: "/patient/createRequest/business",
   CONCIERGE_REQUEST: "/patient/createRequest/concierge",
   SUBMIT_INFORMATION: "/dashboard/patient/submitInformation",
-  AGREEMENT_PAGE: "/patient/agreement",
+  AGREEMENT_PAGE: "/patient/agreement/:id",
+  USER_PROFILE: "/profile/patient",
 };

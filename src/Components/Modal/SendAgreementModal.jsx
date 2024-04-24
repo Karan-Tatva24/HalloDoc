@@ -46,11 +46,12 @@ const SendAgreementModal = ({ open, handleClose }) => {
               variant="contained"
               onClick={() => {
                 dispatch(sendAgreement(id)).then((response) => {
+                  console.log(response);
                   if (response.type === "sendAgreement/fulfilled") {
                     toast.success(response.payload.message);
                     handleClose();
                   } else if (response.type === "sendAgreement/rejected") {
-                    toast.error(response.payload.data.validation.body.message);
+                    toast.error("Unable to Send");
                   }
                 });
               }}

@@ -41,7 +41,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
             Patient Name :
-            <span style={{ color: "aqua" }}>
+            <span style={{ color: "#01bce9" }}>
               {patientFirstName}
               {patientLastName}
             </span>

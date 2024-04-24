@@ -39,7 +39,7 @@ const EmailLogs = () => {
   const { roles } = useSelector((state) => state.root.getRoles);
 
   useEffect(() => {
-    dispatch(getRoles({ accountType: "all" }));
+    dispatch(getRoles({ accountType: "All" }));
   }, [dispatch]);
 
   const formik = useFormik({
@@ -239,9 +239,9 @@ const EmailLogs = () => {
                             <TableCell key={column?.id} align="center">
                               {row[column.id] !== null
                                 ? column.id === "recipient"
-                                  ? `${row.receiver.firstName} ${row?.receiver?.lastName}`
+                                  ? `${row.receiver.patientFirstName} ${row?.receiver?.patientLastName}`
                                   : column.id === "roleName"
-                                    ? row?.receiver?.role?.Name
+                                    ? row?.receiver?.user?.role?.Name
                                     : column.id === "sent"
                                       ? row?.isEmailSent
                                         ? "Yes"

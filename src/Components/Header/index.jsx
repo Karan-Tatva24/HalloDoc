@@ -29,8 +29,9 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userName, id } = useSelector((state) => state?.root.loggedUserData);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { userName, id, accountType } = useSelector(
+    (state) => state?.root.loggedUserData,
+  );
   const { isLoggedIn } = useSelector((state) => state.root.login);
 
   const handleLogout = () => {
@@ -116,7 +117,7 @@ const Header = () => {
                   Provider Location
                 </NavLink>
               </li>
-            ) : (
+            ) : accountType === "Physician" ? (
               <li>
                 <NavLink
                   to={AppRoutes.INVOICING}
@@ -125,7 +126,7 @@ const Header = () => {
                   Invoicing
                 </NavLink>
               </li>
-            )}
+            ) : null}
             {accountType === "Physician" ? (
               <li>
                 <NavLink
@@ -138,11 +139,15 @@ const Header = () => {
             ) : null}
             <li>
               <NavLink
-                to={AppRoutes.MY_PROFILE}
+                to={
+                  accountType === "User"
+                    ? AppRoutes.USER_PROFILE
+                    : AppRoutes.MY_PROFILE
+                }
                 className={({ isActive }) => (isActive ? "active" : "")}
                 onClick={() => dispatch(adminProfile(id))}
               >
-                My Profile
+                {accountType === "User" ? "Profile" : "My Profile"}
               </NavLink>
             </li>
             {accountType === "Admin" ? (

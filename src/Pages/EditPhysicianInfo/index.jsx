@@ -8,11 +8,8 @@ import PhysiciansInformation from "../../Components/infoForms/PhysiciansInformat
 import AddressInfo from "../../Components/infoForms/AddressInfo";
 import "./editPhysicianInfo.css";
 import ProviderProfile from "../../Components/infoForms/ProviderProfile";
-import OnBording from "./components/OnBording";
+import OnBoarding from "./components/OnBoarding";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteProviderAccount } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
-import { toast } from "react-toastify";
-import { AppRoutes } from "../../constants/routes";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 
 const EditPhysicianInfo = () => {
@@ -52,18 +49,30 @@ const EditPhysicianInfo = () => {
     isHipaaDoc,
     regions,
     role,
+    notes,
     business,
-    // requestWiseFiles,
+    userFiles,
   } = physicianData.physicianProfile[0];
 
-  const handelDeleteAccount = () => {
-    dispatch(deleteProviderAccount(id)).then((response) => {
-      if (response.type === "deleteProviderAccount/fulfilled") {
-        toast.success(response.payload.message);
-        navigate(AppRoutes.PROVIDER);
-      }
-    });
-  };
+  const agreementDoc = userFiles?.filter(
+    (file) => file?.docType === "independentContract",
+  )?.[0]?.fileName;
+
+  const backgroundDoc = userFiles?.filter(
+    (file) => file?.docType === "backgroundCheck",
+  )?.[0]?.fileName;
+
+  const nonDisDoc = userFiles?.filter(
+    (file) => file?.docType === "nonDisclosureAgreement",
+  )?.[0]?.fileName;
+
+  const hipaaDoc = userFiles?.filter(
+    (file) => file?.docType === "hipaaCompliance",
+  )?.[0]?.fileName;
+
+  const licenseDoc = userFiles?.filter(
+    (file) => file?.docType === "licenseDoc",
+  )?.[0]?.fileName;
 
   return (
     <>
@@ -125,33 +134,24 @@ const EditPhysicianInfo = () => {
               id={id}
               businessName={business?.businessName}
               businessWebsite={business?.businessWebsite}
+              notes={notes}
               photo={photo}
               signature={signature}
             />
             <Divider sx={{ backgroundColor: "#1f1e1e86" }} />
-            <OnBording
+            <OnBoarding
               id={id}
+              agreementDoc={agreementDoc}
+              backgroundDoc={backgroundDoc}
+              nonDisDoc={nonDisDoc}
+              hipaaDoc={hipaaDoc}
+              licenseDoc={licenseDoc}
               isAgreementDoc={isAgreementDoc}
               isBackgroundDoc={isBackgroundDoc}
               isNonDisclosureDoc={isNonDisclosureDoc}
               isLicenseDoc={isLicenseDoc}
               isHipaaDoc={isHipaaDoc}
             />
-            <Divider sx={{ backgroundColor: "#1f1e1e86", marginTop: "1rem" }} />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={2}
-              mt={3}
-            >
-              <Button name="Save" />
-              <Button
-                color="error"
-                name="Delete Account"
-                onClick={handelDeleteAccount}
-              />
-            </Box>
           </Paper>
         </Container>
       </Box>

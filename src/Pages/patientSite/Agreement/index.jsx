@@ -1,8 +1,22 @@
 import { Box, Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../../Components/Button";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { acceptAgreement } from "../../../redux/halloAPIs/patientAPIs/agreementAPI";
+import CancelAgreementModal from "../../../Components/Modal/CancelAgreementModal";
+import { toast } from "react-toastify";
 
 const Agreement = () => {
+  const [open, setOpen] = useState(false);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handelClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Box
@@ -22,11 +36,29 @@ const Agreement = () => {
             &quot;Cancel&quot;.
           </Typography>
           <Box display="flex" justifyContent="space-around" pt={8}>
-            <Button name="I Agree" color="success" size="large" />
-            <Button name="Cancel" color="error" size="large" />
+            <Button
+              name="I Agree"
+              color="success"
+              size="large"
+              onClick={() =>
+                dispatch(acceptAgreement(id)).then((res) => {
+                  if (res.type === "acceptAgreement/fulfilled") {
+                    toast.success(res.payload.message);
+                    navigate(-1);
+                  }
+                })
+              }
+            />
+            <Button
+              name="Cancel"
+              color="error"
+              size="large"
+              onClick={() => setOpen(true)}
+            />
           </Box>
         </Container>
       </Box>
+      <CancelAgreementModal id={id} open={open} handleClose={handelClose} />
     </>
   );
 };
