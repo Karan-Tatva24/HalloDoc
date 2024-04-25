@@ -27,6 +27,7 @@ import myScheduleSliceReducer from "./providerSlices/myScheduleSlice";
 import medicalHistorySliceReducer from "./patientSlices/medicalHistorySlice";
 import sendOrderSliceReducer from "./adminSlices/sendOrderSlice";
 import commonSliceReducer from "./patientSlices/commonSlice";
+import apiStatusSliceReducer from "./apiStatusSlice";
 
 export const rootReducer = combineReducers({
   login: loginSliceReducer,
@@ -57,4 +58,5 @@ export const rootReducer = combineReducers({
   mySchedule: myScheduleSliceReducer,
   medicalHistory: medicalHistorySliceReducer,
   common: commonSliceReducer,
+  apiStatus: apiStatusSliceReducer,
 });

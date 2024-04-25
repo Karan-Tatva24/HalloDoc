@@ -108,6 +108,8 @@ const EmailLogs = () => {
             mb={2}
             flexWrap="wrap"
             pt={4}
+            pb={2}
+            gap={2}
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
@@ -120,12 +122,15 @@ const EmailLogs = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
-          <Paper className="email-logs-paper">
+          <Paper>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={{ xs: 1, md: 2 }} pb={5}>
+              <Grid
+                container
+                spacing={{ xs: 1, md: 2 }}
+                p="1rem 1.25rem 1.5rem 1.25rem"
+              >
                 <Grid item xs={12} sm={6} md={4} lg={2}>
                   <Input
                     label="Search By Role"
@@ -260,7 +265,7 @@ const EmailLogs = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={emailLogData?.count}
+              count={emailLogData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -16,10 +16,8 @@ import { Button } from "../Button";
 import { AppRoutes } from "../../constants/routes";
 import { logout } from "../../redux/halloSlices/adminSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
-import "./header.css";
-import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
-import { providerInfo } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
+import "./header.css";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -29,7 +27,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userName, id, accountType } = useSelector(
+  const { userName, accountType } = useSelector(
     (state) => state?.root.loggedUserData,
   );
   const { isLoggedIn } = useSelector((state) => state.root.login);
@@ -145,7 +143,6 @@ const Header = () => {
                     : AppRoutes.MY_PROFILE
                 }
                 className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => dispatch(adminProfile(id))}
               >
                 {accountType === "User" ? "Profile" : "My Profile"}
               </NavLink>
@@ -170,16 +167,8 @@ const Header = () => {
                     >
                       <MenuItem
                         onClick={() => {
-                          dispatch(
-                            providerInfo({
-                              regions: "all",
-                            }),
-                          ).then((response) => {
-                            if (response.type === "providerInfo/fulfilled") {
-                              navigate(AppRoutes.PROVIDER);
-                              handleMenuClose();
-                            }
-                          });
+                          navigate(AppRoutes.PROVIDER);
+                          handleMenuClose();
                         }}
                       >
                         Provider
@@ -194,7 +183,7 @@ const Header = () => {
                       </MenuItem>
                       <MenuItem
                         onClick={() => {
-                          navigate(-1);
+                          navigate(AppRoutes.INVOICING);
                           handleMenuClose();
                         }}
                       >
@@ -348,11 +337,7 @@ const Header = () => {
             My Schedule
           </NavLink>
         ) : null}
-        <NavLink
-          to={AppRoutes.MY_PROFILE}
-          className="sideLinks"
-          onClick={() => dispatch(adminProfile())}
-        >
+        <NavLink to={AppRoutes.MY_PROFILE} className="sideLinks">
           My Profile
         </NavLink>
         {accountType === "Admin" ? (

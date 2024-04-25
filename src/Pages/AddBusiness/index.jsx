@@ -115,7 +115,6 @@ const AddBusiness = () => {
                 dispatch(clearBusiness());
                 navigate(-1);
               }}
-              className="back-btn"
             />
           </Box>
           <Paper className="add-business-paper">

@@ -184,7 +184,6 @@ const EncounterForm = () => {
                 formik.resetForm();
                 navigate(-1);
               }}
-              className="back-btn"
             />
           </Box>
           <Paper className="encounter-form-container">

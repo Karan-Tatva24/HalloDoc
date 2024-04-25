@@ -13,6 +13,7 @@ import PhysiciansInformation from "../../Components/infoForms/PhysiciansInformat
 import ProviderProfile from "../../Components/infoForms/ProviderProfile";
 import OnBoarding from "./components/OnBoarding";
 import RequestToAdminModal from "../../Components/Modal/RequestToAdminModal";
+import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 
 const MyProfile = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,7 @@ const MyProfile = () => {
   const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
   useEffect(() => {
+    dispatch(adminProfile());
     dispatch(getRoles({ accountType: "admin" }));
   }, [dispatch]);
 
@@ -79,7 +81,6 @@ const MyProfile = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Paper className="profile-form-container">

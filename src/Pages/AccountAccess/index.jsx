@@ -89,8 +89,8 @@ const AccountAccess = () => {
           <Typography variant="h5" gutterBottom>
             <b>Account Access</b>
           </Typography>
-          <Paper className="access-full-paper">
-            <Box display="flex" justifyContent="end" p={3}>
+          <Paper>
+            <Box display="flex" justifyContent="end" pt={4.5} pb={3} pr={3}>
               <Button
                 name="Create Access"
                 variant="outlined"
@@ -179,7 +179,7 @@ const AccountAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={accessAccount?.count}
+              count={accessAccount?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

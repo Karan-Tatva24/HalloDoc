@@ -145,6 +145,8 @@ const SearchRecords = () => {
             mb={2}
             flexWrap="wrap"
             pt={4}
+            pb={2}
+            gap={2}
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
@@ -158,9 +160,9 @@ const SearchRecords = () => {
               onClick={handleExportToExcel}
             />
           </Box>
-          <Paper className="search-record-paper">
+          <Paper>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid container spacing={{ xs: 1, md: 2 }} p={1.5}>
                 <Grid item xs={12} md={3}>
                   <Input
                     label="Select Request Status"
@@ -288,6 +290,8 @@ const SearchRecords = () => {
                 gap={2}
                 pt={2}
                 pb={2}
+                pr={1.25}
+                pl={1.25}
               >
                 <Button
                   name="Clear"
@@ -402,7 +406,7 @@ const SearchRecords = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={searchRecordData?.count}
+              count={searchRecordData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -126,7 +126,6 @@ const PatientCreateRequest = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Paper sx={{ padding: "1.25rem" }}>

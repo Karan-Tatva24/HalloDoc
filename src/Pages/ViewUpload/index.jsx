@@ -231,8 +231,9 @@ const ViewUpload = () => {
           <Box
             display="flex"
             justifyContent="space-between"
-            mb={2}
             flexWrap="wrap"
+            gap={2}
+            pb={2}
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
@@ -245,23 +246,24 @@ const ViewUpload = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
-          <Paper className="upload-container">
-            <Typography variant="caption">Patient Name</Typography>
-            <Typography variant="h6">
+          <Paper>
+            <Typography variant="caption" pl={2} mt={2}>
+              Patient Name
+            </Typography>
+            <Typography variant="h6" pl={2}>
               <b className="patient-name">
                 {patientFirstName} {patientLastName}
               </b>
               ({confirmationNumber})
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" pl={2}>
               Check here to review and add files that you or the Client/Member
               has attached to the Request.
             </Typography>
             <form onSubmit={handleUpload}>
-              <Box display="flex" position="relative" mb={2} mt={2}>
+              <Box display="flex" position="relative" mb={2} mt={2} p={2}>
                 <Button
                   style={{
                     color: "#000000",
@@ -297,15 +299,16 @@ const ViewUpload = () => {
             <Box
               display="flex"
               justifyContent="space-between"
-              mb={2}
+              p={2}
               flexWrap="wrap"
+              gap={2}
             >
               <Box display="flex" flexWrap="wrap">
                 <Typography variant="h6" gutterBottom>
                   <b>Documents</b>
                 </Typography>
               </Box>
-              <Box display="flex" gap={1}>
+              <Box display="flex" gap={1} flexWrap="wrap">
                 <Button
                   name="Download Selected"
                   variant="outlined"

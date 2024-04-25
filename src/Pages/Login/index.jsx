@@ -10,11 +10,16 @@ import { AppRoutes } from "../../constants/routes";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { loginSchema } from "../../ValidationSchema";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { userLogin } from "../../redux/halloAPIs/AuthAPIs/loginAPI";
 import { loggedUser } from "../../redux/halloAPIs/adminAPIs/commonAPIs/loggedUserAPI";
 import "../../App.css";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   email: "",
@@ -23,18 +28,20 @@ const initialValues = {
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { isLoading } = useSelector((state) => state.root.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (values) => {
+    dispatch(apiPending());
     dispatch(userLogin(values)).then((response) => {
       if (response.type === "userLogin/fulfilled") {
         localStorage.setItem("private_token", response.payload.token);
         toast.success("You are login Successfully");
         dispatch(loggedUser(values?.email));
+        dispatch(apiSuccess());
         navigate(AppRoutes.DASHBOARD);
       } else {
+        dispatch(apiFails());
         toast.error("Invalid email or password");
       }
     });
@@ -138,7 +145,6 @@ const Login = () => {
               fullWidth
               size="large"
             />
-            {isLoading && <p>Loading ...</p>}
           </form>
           <div className="link">
             <Link to={AppRoutes.FORGOTPASSWORD} underline="hover">

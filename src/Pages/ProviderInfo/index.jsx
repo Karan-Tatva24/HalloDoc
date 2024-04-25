@@ -20,7 +20,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Input } from "../../Components/TextField/Input";
 import { Button } from "../../Components/Button";
 import { columns } from "../../constants/providerData";
-import ContectProviderModal from "../../Components/Modal/ContectProviderModal";
+import ContactProviderModal from "../../Components/Modal/ContactProviderModal";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,12 +111,15 @@ const ProviderInfo = () => {
           <Typography variant="h5" gutterBottom pt={4} pb={2}>
             <b>Provider Information</b>
           </Typography>
-          <Paper className="provider-paper">
+          <Paper>
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               mb={4}
+              flexWrap="wrap"
+              gap={2}
+              p={2}
             >
               <Input
                 className="large-drop-list"
@@ -258,7 +261,7 @@ const ProviderInfo = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={providerInfoData?.count}
+              count={providerInfoData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -267,7 +270,7 @@ const ProviderInfo = () => {
           </Paper>
         </Container>
       </Box>
-      <ContectProviderModal open={open} handleClose={handleClose} id={id} />
+      <ContactProviderModal open={open} handleClose={handleClose} id={id} />
     </>
   );
 };

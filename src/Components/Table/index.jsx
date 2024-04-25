@@ -251,13 +251,14 @@ const MyTable = ({
   ]);
 
   return (
-    <div className="my-table-container">
+    <Paper className="my-table-container">
       <Grid
         container={true}
         alignItems="center"
         justifyContent="space-between"
         className="table-head"
         flexWrap="wrap"
+        spacing={{ xs: 2, md: 2 }}
       >
         <Grid item xs={12} md={4} lg={6}>
           <Box className="search-dropdown">
@@ -301,7 +302,16 @@ const MyTable = ({
             ) : null}
           </Box>
         </Grid>
-        <Grid container justifyContent="flex-end" item xs={12} md={8} lg={6}>
+        <Grid
+          container
+          justifyContent="flex-end"
+          item
+          xs={12}
+          md={8}
+          lg={6}
+          pb={2}
+          gap={2}
+        >
           <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
             <Button
               name="All"
@@ -330,7 +340,7 @@ const MyTable = ({
       </Grid>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {columns.map((column) =>
@@ -339,7 +349,10 @@ const MyTable = ({
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.maxWidth }}
+                      style={{
+                        minWidth: column.maxWidth,
+                        backgroundColor: "#f6f6f6",
+                      }}
                     >
                       <TableSortLabel
                         key={column.id}
@@ -354,7 +367,10 @@ const MyTable = ({
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      style={{ minWidth: column.maxWidth }}
+                      style={{
+                        minWidth: column.maxWidth,
+                        backgroundColor: "#f6f6f6",
+                      }}
                     >
                       {column.label}
                     </TableCell>
@@ -523,9 +539,9 @@ const MyTable = ({
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={
-            accountType === "Admin"
+            (accountType === "Admin"
               ? stateData?.count
-              : providerStateData?.count
+              : providerStateData?.count) || 0
           }
           rowsPerPage={rowsPerPage}
           page={page}
@@ -533,7 +549,7 @@ const MyTable = ({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-    </div>
+    </Paper>
   );
 };
 

@@ -159,7 +159,6 @@ const CreateProviderAccount = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Paper className="create-provider-form-container">

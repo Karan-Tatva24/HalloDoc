@@ -155,7 +155,6 @@ const CloseCase = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Paper className="closeCase-container">

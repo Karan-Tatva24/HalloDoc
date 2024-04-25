@@ -94,6 +94,8 @@ const PatientRecord = () => {
             mb={2}
             flexWrap="wrap"
             pt={4}
+            pb={2}
+            gap={2}
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
@@ -106,10 +108,9 @@ const PatientRecord = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
-          <Paper className="patient-record-paper">
+          <Paper>
             <TableContainer sx={{ maxHeight: "none" }} component={Paper}>
               <Table>
                 <TableHead style={{ backgroundColor: "#f6f6f6" }}>
@@ -227,7 +228,7 @@ const PatientRecord = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={patientRecordData?.patients?.count}
+              count={patientRecordData?.patients?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

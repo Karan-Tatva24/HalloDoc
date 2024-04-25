@@ -9,7 +9,7 @@ export const AppRoutes = {
   SEND_ORDER: "/dashboard/sendOrder",
   CLOSE_CASE: "/dashboard/closeCase",
   MY_PROFILE: "/myProfile",
-  INVOICING: "/invoicing",
+  INVOICING: "/provider/invoicing",
   MY_SCHEDULE: "/mySchedule",
   PROVIDER: "/provider",
   EDIT_PHYSICIAN: "/provider/editInfo",

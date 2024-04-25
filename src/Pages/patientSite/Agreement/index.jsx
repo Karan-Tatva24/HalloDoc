@@ -24,7 +24,7 @@ const Agreement = () => {
         flexDirection="column"
         justifyContent="flex-start"
         alignItems="center"
-        pt={20}
+        pt={15}
       >
         <Container maxWidth="md">
           <Typography variant="h6">

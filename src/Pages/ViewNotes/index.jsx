@@ -8,7 +8,6 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import "./viewNotes.css";
 import { Input } from "../../Components/TextField/Input";
-import Footer from "../../Components/Footer";
 import { useFormik } from "formik";
 import { viewNotesSchema } from "../../ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,7 +82,6 @@ const ViewNotes = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -161,7 +159,6 @@ const ViewNotes = () => {
           </Grid>
         </Container>
       </Box>
-      <Footer />
     </>
   );
 };

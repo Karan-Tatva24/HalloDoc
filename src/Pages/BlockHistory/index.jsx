@@ -94,12 +94,16 @@ const BlockHistory = () => {
     <>
       <Box className="block-history-main-container">
         <Container maxWidth="80%" className="block-history-wrapper-container">
-          <Typography variant="h5" gutterBottom pt={4}>
+          <Typography variant="h5" gutterBottom pt={4} pb={3}>
             <b>Block History</b>
           </Typography>
-          <Paper className="block-history-paper">
+          <Paper>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid
+                container
+                spacing={{ xs: 1, md: 2 }}
+                p="1rem 1.2rem 0.8rem 1.25rem"
+              >
                 <Grid item xs={12} md={3}>
                   <Input
                     label="Name"
@@ -147,8 +151,7 @@ const BlockHistory = () => {
                 justifyContent="flex-end"
                 alignItems="center"
                 gap={2}
-                pt={2}
-                pb={2}
+                p={2}
               >
                 <Button
                   name="Clear"
@@ -257,7 +260,7 @@ const BlockHistory = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={blockHistoryData?.count}
+              count={blockHistoryData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

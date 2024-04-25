@@ -77,7 +77,6 @@ const Order = () => {
                 dispatch(clearOrder());
                 navigate(-1);
               }}
-              className="back-btn"
             />
           </Box>
           <form onSubmit={formik.handleSubmit}>

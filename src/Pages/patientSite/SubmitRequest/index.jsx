@@ -3,7 +3,6 @@ import { Box, Container, Typography } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { Button } from "../../../Components/Button";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../../Components/Footer";
 import { AppRoutes } from "../../../constants/routes";
 import "./submitRequest.css";
 
@@ -72,9 +71,6 @@ const SubmitRequest = () => {
           </Box>
         </Box>
       </Container>
-      <Box position="fixed" bottom={0} minWidth="100%">
-        <Footer />
-      </Box>
     </>
   );
 };

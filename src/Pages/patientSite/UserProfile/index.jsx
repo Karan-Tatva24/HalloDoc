@@ -37,6 +37,10 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(adminProfile());
+  }, [dispatch]);
+
   const { profileData } = useSelector((state) => state.root.adminProfile);
 
   const formik = useFormik({ initialValues, enableReinitialize: true });
@@ -85,7 +89,6 @@ const UserProfile = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
           <Paper sx={{ padding: "1.25rem" }}>
@@ -168,7 +171,7 @@ const UserProfile = () => {
                   >
                     <MenuItem value="Phone">Phone</MenuItem>
                     <MenuItem value="Mobile">Mobile</MenuItem>
-                    <MenuItem value="Landline">LendLine</MenuItem>
+                    <MenuItem value="Landline">LandLine</MenuItem>
                   </Input>
                 </Grid>
                 <Grid item xs={8} md={4}>

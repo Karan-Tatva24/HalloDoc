@@ -10,3 +10,4 @@ export { default as infoTriangle } from "./infoTriangle.svg";
 export { default as warningTriangle } from "./warningTriangle.svg";
 export { default as successTriangle } from "./successTriangle.svg";
 export { default as userDefault } from "./userDefault.svg";
+export { default as loader } from "./loader.gif";

@@ -1,21 +1,17 @@
+import { useState } from "react";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { halloDocTheme } from "./doc.theme";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Pages/Login";
 import ForgotPassword from "./Pages/ForgotPassword";
-import { AppRoutes } from "./constants/routes";
-import "./App.css";
 import DashBoard from "./Pages/DashBoard";
 import ViewReservation from "./Pages/ViewReservation";
 import ViewNotes from "./Pages/ViewNotes";
-import { RequireAuth } from "./Components/Private/RequireAuth";
 import ViewUpload from "./Pages/ViewUpload";
-import { BackLoginAuth } from "./Components/Private/BackLoginAuth";
 import Order from "./Pages/OrderSend";
 import CloseCase from "./Pages/CloseCase";
 import MyProfile from "./Pages/MyProfile";
 import Header from "./Components/Header";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { halloDocTheme } from "./doc.theme";
-import { useState } from "react";
 import ProviderInfo from "./Pages/ProviderInfo";
 import EditPhysicianInfo from "./Pages/EditPhysicianInfo";
 import ResetPassword from "./Pages/ResetPassword";
@@ -36,12 +32,10 @@ import EmailLogs from "./Pages/EmailLogs";
 import SMSLogs from "./Pages/SMSLogs";
 import BlockHistory from "./Pages/BlockHistory";
 import CreateRequest from "./Pages/CreateRequest";
-import "react-phone-input-2/lib/style.css";
 import PageNotFound from "./Pages/PageNotFound";
 import ConcludeCare from "./Pages/ConcludeCare";
 import EncounterForm from "./Pages/EncounterForm";
 import MySchedule from "./Pages/MySchedule";
-import AdminAuth from "./Components/Private/AdminAuth";
 import Patient from "./Pages/patientSite/Patient";
 import SubmitRequest from "./Pages/patientSite/SubmitRequest";
 import PatientCreateRequest from "./Pages/patientSite/createRequestPages/PatientCreateRequest";
@@ -51,18 +45,39 @@ import BusinessRequest from "./Pages/patientSite/createRequestPages/BusinessRequ
 import SubmitInformation from "./Pages/patientSite/SubmitInformation";
 import Agreement from "./Pages/patientSite/Agreement";
 import UserProfile from "./Pages/patientSite/UserProfile";
+import Footer from "./Components/Footer";
+import { AppRoutes } from "./constants/routes";
+import { RequireAuth } from "./Components/Private/RequireAuth";
+import { BackLoginAuth } from "./Components/Private/BackLoginAuth";
+import AdminAuth from "./Components/Private/AdminAuth";
+import ProviderAuth from "./Components/Private/ProviderAuth";
+import AdminProviderAuth from "./Components/Private/AdminProviderAuth";
+import PatientAuth from "./Components/Private/PatientAuth";
+import { loader } from "./assets/Images";
+import "react-phone-input-2/lib/style.css";
+import "./App.css";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
   const toggleDarkTheme = () => {
     setToggleDarkMode(!toggleDarkMode);
   };
+
+  const { isLoading } = useSelector((state) => state.root.apiStatus);
+
   return (
-    <div className="App">
+    <Box className="App">
+      {isLoading ? (
+        <Box className="loader-wrapper">
+          <img src={loader} alt="loader" />
+        </Box>
+      ) : null}
+
       <ThemeProvider theme={halloDocTheme(toggleDarkMode)}>
         <CssBaseline />
         <Routes>
-          <Route path="*" element={<PageNotFound />} />
+          {/* ****** This routes are only access by logged out user only ********* */}
           <Route element={<BackLoginAuth />}>
             <Route path="/" element={<Login />} />
             <Route path={AppRoutes.LOGIN} element={<Login />} />
@@ -70,8 +85,9 @@ const App = () => {
               path={AppRoutes.FORGOTPASSWORD}
               element={<ForgotPassword />}
             />
+            <Route path={AppRoutes.RESETPASSWORD} element={<ResetPassword />} />
           </Route>
-          <Route path={AppRoutes.RESETPASSWORD} element={<ResetPassword />} />
+
           <Route
             element={
               <Header
@@ -80,7 +96,11 @@ const App = () => {
               />
             }
           >
+            <Route path="/*" element={<PageNotFound />} />
+
+            {/* ******* This routes are access by only login user ******* */}
             <Route element={<RequireAuth />}>
+              {/* ******* This routes are access by only Admin ********* */}
               <Route element={<AdminAuth />}>
                 <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
                 <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
@@ -140,25 +160,51 @@ const App = () => {
                 />
               </Route>
 
+              {/* ******** This routes are access by only Physician ********* */}
+              <Route element={<ProviderAuth />}>
+                <Route
+                  path={AppRoutes.CONCLUDE_CARE}
+                  element={<ConcludeCare />}
+                />
+                <Route
+                  path={AppRoutes.ENCOUNTER_FORM}
+                  element={<EncounterForm />}
+                />
+                <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
+              </Route>
+
+              {/* ******* This routes are access by admin and physician only ********** */}
+              <Route element={<AdminProviderAuth />}>
+                <Route
+                  path={AppRoutes.VIEW_CASE}
+                  element={<ViewReservation />}
+                />
+                <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
+                <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />
+                <Route
+                  path={AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN}
+                  element={<CreateRequest />}
+                />
+              </Route>
+
+              {/* ******* This routes are access by only Patient ******** */}
+              <Route element={<PatientAuth />}>
+                <Route
+                  path={AppRoutes.SUBMIT_INFORMATION}
+                  element={<SubmitInformation />}
+                />
+                <Route
+                  path={AppRoutes.USER_PROFILE}
+                  element={<UserProfile />}
+                />
+              </Route>
+
               <Route path={AppRoutes.DASHBOARD} element={<DashBoard />} />
-              <Route path={AppRoutes.VIEW_CASE} element={<ViewReservation />} />
-              <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
               <Route path={AppRoutes.VIEW_UPLOAD} element={<ViewUpload />} />
-              <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />
-              <Route
-                path={AppRoutes.CREATE_REQUEST_ADMIN_PHYSICIAN}
-                element={<CreateRequest />}
-              />
-              <Route
-                path={AppRoutes.CONCLUDE_CARE}
-                element={<ConcludeCare />}
-              />
-              <Route
-                path={AppRoutes.ENCOUNTER_FORM}
-                element={<EncounterForm />}
-              />
-              <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
             </Route>
+
+            {/* ********** This Routes are Access without Login ********** */}
+            <Route path={AppRoutes.AGREEMENT_PAGE} element={<Agreement />} />
             <Route
               path={AppRoutes.SUBMIT_REQUEST}
               element={<SubmitRequest />}
@@ -180,16 +226,13 @@ const App = () => {
               path={AppRoutes.CONCIERGE_REQUEST}
               element={<ConciergeRequest />}
             />
-            <Route
-              path={AppRoutes.SUBMIT_INFORMATION}
-              element={<SubmitInformation />}
-            />
-            <Route path={AppRoutes.USER_PROFILE} element={<UserProfile />} />
           </Route>
-          <Route path={AppRoutes.AGREEMENT_PAGE} element={<Agreement />} />
         </Routes>
+        <Box position="relative" bottom={0} minWidth="100%">
+          <Footer />
+        </Box>
       </ThemeProvider>
-    </div>
+    </Box>
   );
 };
 

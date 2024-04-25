@@ -86,15 +86,17 @@ const Partners = () => {
           <Typography variant="h5" gutterBottom pt={4}>
             <b>Vendor(s)</b>
           </Typography>
-          <Paper className="partner-paper">
+          <Paper>
             <Box
               display="flex"
               alignItems="center"
               justifyContent="space-between"
               flexWrap="wrap"
               mb={2}
+              p={2}
+              gap={2}
             >
-              <Box display="flex" alignItems="center" gap={3}>
+              <Box display="flex" alignItems="center" gap={3} flexWrap="wrap">
                 <Input
                   className="search-text"
                   placeholder="Vendor"
@@ -198,7 +200,7 @@ const Partners = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={vendorData?.count}
+              count={vendorData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

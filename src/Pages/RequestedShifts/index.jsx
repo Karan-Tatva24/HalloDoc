@@ -135,12 +135,18 @@ const RequestedShifts = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
 
-          <Paper className="request-shifts-container">
-            <Box display="flex" justifyContent="space-between" pb={4}>
+          <Paper>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              pb={4}
+              pt={2}
+              pr={2}
+              pl={2}
+            >
               <Input
                 className="search-text drop-list"
                 select
@@ -187,6 +193,8 @@ const RequestedShifts = () => {
                               pageSize: rowsPerPage,
                             }),
                           );
+                        } else if (response.type === "approveShift") {
+                          toast.error("Please select shifts");
                         }
                       },
                     )
@@ -209,6 +217,8 @@ const RequestedShifts = () => {
                               pageSize: rowsPerPage,
                             }),
                           );
+                        } else if (response.type === "deleteShift/rejected") {
+                          toast.error("Please select shifts");
                         }
                       })
                       .catch((error) => {
@@ -221,7 +231,7 @@ const RequestedShifts = () => {
             </Box>
             <TableContainer component={Paper}>
               <Table>
-                <TableHead>
+                <TableHead style={{ background: "#f6f6f6" }}>
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -270,7 +280,7 @@ const RequestedShifts = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={unApprovedShiftData?.count}
+              count={unApprovedShiftData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

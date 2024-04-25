@@ -87,12 +87,9 @@ const MedicalHistory = ({ handleOpen }) => {
             </Box>
             <TableContainer>
               <Table>
-                <TableHead>
+                <TableHead style={{ backgroundColor: "#f6f6f6" }}>
                   <TableRow>
-                    <TableCell
-                      align="left"
-                      style={{ backgroundColor: "#f0f0f0" }}
-                    >
+                    <TableCell align="left">
                       <TableSortLabel
                         active={orderBy === "createdAt"}
                         direction={order}
@@ -101,18 +98,8 @@ const MedicalHistory = ({ handleOpen }) => {
                         Created Date
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ backgroundColor: "#f0f0f0" }}
-                    >
-                      Status
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ backgroundColor: "#f0f0f0" }}
-                    >
-                      Document
-                    </TableCell>
+                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">Document</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -142,7 +129,7 @@ const MedicalHistory = ({ handleOpen }) => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={medicalHistoryData?.count}
+              count={medicalHistoryData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -109,11 +109,10 @@ const UserAccess = () => {
               startIcon={<ArrowBackIosNewOutlinedIcon />}
               color="primary"
               onClick={() => navigate(-1)}
-              className="back-btn"
             />
           </Box>
-          <Paper className="user-access-full-paper">
-            <Box pb={1}>
+          <Paper>
+            <Box p={1.25}>
               <Input
                 select
                 value={selectedRole}
@@ -192,7 +191,7 @@ const UserAccess = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={userAccount?.count}
+              count={userAccount?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -82,12 +82,16 @@ const PatientHistory = () => {
     <>
       <Box className="patient-history-main-container">
         <Container maxWidth="80%" className="patient-history-wrapper-container">
-          <Typography variant="h5" gutterBottom pt={4}>
+          <Typography variant="h5" gutterBottom pt={4} pb={2}>
             <b>Patient History</b>
           </Typography>
-          <Paper className="patient-history-paper">
+          <Paper>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid
+                container
+                spacing={{ xs: 1, md: 2 }}
+                p="1.5rem 1.2rem 1rem 1.2rem"
+              >
                 <Grid item xs={12} md={3}>
                   <Input
                     label="First Name"
@@ -134,8 +138,7 @@ const PatientHistory = () => {
                 justifyContent="flex-end"
                 alignItems="center"
                 gap={2}
-                pt={2}
-                pb={2}
+                p={2}
               >
                 <Button
                   name="Clear"
@@ -210,7 +213,7 @@ const PatientHistory = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={patientHistoryData?.count}
+              count={patientHistoryData?.count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
