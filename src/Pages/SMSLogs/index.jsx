@@ -25,6 +25,7 @@ import "./smsLogs.css";
 import { smsLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
 import { useFormik } from "formik";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const SMSLogs = () => {
   const [tableData, setTableData] = useState([]);
@@ -51,6 +52,7 @@ const SMSLogs = () => {
       sentDate: "",
     },
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         smsLog({
           receiverName: values.receiverName,
@@ -63,12 +65,15 @@ const SMSLogs = () => {
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "smsLog/fulfilled") dispatch(apiSuccess());
+      });
       formik.resetForm();
     },
   });
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       smsLog({
         sortBy: orderBy,
@@ -76,7 +81,9 @@ const SMSLogs = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "smsLog/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
   useEffect(() => setTableData(smsLogData?.rows), [smsLogData]);

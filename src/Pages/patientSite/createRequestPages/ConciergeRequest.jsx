@@ -15,6 +15,10 @@ import {
 } from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { toast } from "react-toastify";
 import { createRequestAllSchema } from "../../../ValidationSchema";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   requestType: "Concierge",
@@ -56,10 +60,12 @@ const ConciergeRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(createRequest(values)).then((response) => {
         if (response.type === "createRequest/fulfilled") {
           toast.success(response?.payload?.message);
           formik.resetForm();
+          dispatch(apiSuccess());
         }
       });
     },

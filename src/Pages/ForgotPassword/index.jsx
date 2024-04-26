@@ -12,6 +12,11 @@ import { forgotPasswordSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
 import { forgotPass } from "../../redux/halloAPIs/AuthAPIs/forgotPasswordAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   email: "",
@@ -23,11 +28,14 @@ const ForgotPassword = () => {
     initialValues,
     validationSchema: forgotPasswordSchema,
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(forgotPass(values)).then((response) => {
         if (response.type === "forgotPass/fulfilled") {
           toast.success(response?.payload?.message);
+          dispatch(apiSuccess());
         } else {
           toast.error(response?.error?.message);
+          dispatch(apiFails());
         }
       });
     },

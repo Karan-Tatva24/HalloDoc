@@ -11,12 +11,17 @@ import {
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { useFormik } from "formik";
-import { contectProviderSchema } from "../../ValidationSchema";
+import { contactProviderSchema } from "../../ValidationSchema";
 import { useDispatch } from "react-redux";
 import { contactProvider } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
-const ContectProviderModal = ({ open, handleClose, id }) => {
+const ContactProviderModal = ({ open, handleClose, id }) => {
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -24,6 +29,7 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
       contactMethod: "email",
     },
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         contactProvider({
           id,
@@ -33,14 +39,16 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
       ).then((response) => {
         if (response.type === "contactProvider/fulfilled") {
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "contactProvider/rejected") {
           toast.error(response.payload.data.validation.body.message);
+          dispatch(apiFails());
         }
       });
     },
-    validationSchema: contectProviderSchema,
+    validationSchema: contactProviderSchema,
   });
   return (
     <Modal open={open} handleClose={handleClose} header="Contact Your Provider">
@@ -95,4 +103,4 @@ const ContectProviderModal = ({ open, handleClose, id }) => {
   );
 };
 
-export default ContectProviderModal;
+export default ContactProviderModal;

@@ -8,6 +8,7 @@ import { Button } from "../Button";
 import { useDispatch } from "react-redux";
 import { requestToAdmin } from "../../redux/halloAPIs/providerAPIs/profileAPIs/requestToAdminAPI";
 import { toast } from "react-toastify";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const validationSchema = Yup.object({
   message: Yup.string().required("Please provide message for Administrator"),
@@ -21,11 +22,13 @@ const RequestToAdminModal = ({ id, open, handleClose }) => {
     },
     validationSchema,
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(requestToAdmin({ id, message: values.message })).then(
         (response) => {
           if (response.type === "requestToAdmin/fulfilled") {
             toast.success(response?.payload?.message);
             formik.resetForm();
+            dispatch(apiSuccess());
             handleClose();
           }
         },

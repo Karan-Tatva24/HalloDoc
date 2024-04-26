@@ -28,6 +28,11 @@ import { createProviderAccountSchema } from "../../ValidationSchema";
 import "./createProviderAccount.css";
 import { AppRoutes } from "../../constants/routes";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   userName: "",
@@ -75,6 +80,7 @@ const CreateProviderAccount = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       const formData = new FormData();
       formData.append("photo", selectedFile);
       formData.append("backgroundCheck", backCheckFile);
@@ -111,8 +117,10 @@ const CreateProviderAccount = () => {
           onSubmitProps.resetForm();
           setSelectedFile(null);
           navigate(AppRoutes.PROVIDER);
+          dispatch(apiSuccess());
         } else if (response.type === "createProviderAccount/rejected") {
           toast.error(response.payload.data.message);
+          dispatch(apiFails());
         }
       });
     },

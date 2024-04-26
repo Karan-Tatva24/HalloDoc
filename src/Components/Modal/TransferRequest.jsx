@@ -13,6 +13,11 @@ import { toast } from "react-toastify";
 import { providerTransferRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/transferRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import { clearPhysician } from "../../redux/halloSlices/adminSlices/getRegionPhysicianSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const TransferRequest = ({ isAdmin, open, handleClose }) => {
   const dispatch = useDispatch();
@@ -32,6 +37,7 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
     },
     validationSchema: transferModalSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       if (accountType === "Admin") {
         dispatch(
           transferRequest({
@@ -44,9 +50,11 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
             toast.success(response.payload.message);
             onSubmitProps.resetForm();
             dispatch(dashboardCount());
+            dispatch(apiSuccess());
             dispatch(clearPhysician());
           } else if (response.type === "transferRequest/rejected") {
-            toast.error(response.payload.data.validation.body.message);
+            toast.error(response?.payload?.data?.validation?.body?.message);
+            dispatch(apiFails());
           }
           handleClose();
         });
@@ -55,8 +63,9 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
           providerTransferRequest({ id: id, description: values.description }),
         ).then((response) => {
           if (response.type === "providerTransferRequest/fulfilled") {
-            toast.success(response?.payload.message);
+            toast.success(response?.payload?.message);
             dispatch(getProviderDashboardCount());
+            dispatch(apiSuccess());
             handleClose();
           }
         });

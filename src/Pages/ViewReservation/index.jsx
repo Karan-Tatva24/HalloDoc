@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AssignModal from "../../Components/Modal/AssignModal";
 import CancelModal from "../../Components/Modal/CancelModal";
 import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   patientNotes: "",
@@ -50,7 +51,6 @@ const ViewReservation = () => {
     initialValues: initialValues,
     validationSchema: viewReservationSchema,
     onSubmit: (values, onSubmitProps) => {
-      console.log(values);
       onSubmitProps.resetForm();
     },
     enableReinitialize: true,
@@ -312,9 +312,11 @@ const ViewReservation = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
+                    dispatch(apiPending());
                     dispatch(viewNotes(data.id)).then((response) => {
                       if (response.type === "viewNotes/fulfilled") {
                         navigate(AppRoutes.VIEW_NOTES);
+                        dispatch(apiSuccess());
                       }
                     });
                   }}

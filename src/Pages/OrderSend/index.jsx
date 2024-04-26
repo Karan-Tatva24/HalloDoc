@@ -17,6 +17,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/sendOrderAPI";
 import { toast } from "react-toastify";
 import { clearOrder } from "../../redux/halloSlices/adminSlices/sendOrderSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -36,6 +41,7 @@ const Order = () => {
     },
     validationSchema: orderDetails,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         sendOrder({
           id: businessId,
@@ -47,8 +53,10 @@ const Order = () => {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           navigate(AppRoutes.DASHBOARD);
+          dispatch(apiSuccess());
         } else if (response.type === "sendOrder/rejected") {
           toast.error(response.payload.data.validation.body.message);
+          dispatch(apiFails());
         }
       });
     },

@@ -11,6 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { resetPassword } from "../../redux/halloAPIs/AuthAPIs/resetPassAPI";
 import { resetPasswordSchema } from "../../ValidationSchema/resetPasswordSchema";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   newPassword: "",
@@ -28,12 +33,15 @@ const ResetPassword = () => {
   const { token } = useParams();
 
   const onSubmit = (values) => {
+    dispatch(apiPending());
     dispatch(resetPassword({ values, token })).then((response) => {
       if (response.type === "resetPassword/fulfilled") {
         toast.success("You are Reset Password Successfully");
         navigate(-1);
+        dispatch(apiSuccess());
       } else {
         toast.error(response?.error?.message);
+        dispatch(apiFails());
       }
     });
   };

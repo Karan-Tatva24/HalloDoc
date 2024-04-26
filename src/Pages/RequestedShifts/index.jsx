@@ -30,6 +30,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/schedulingAPI";
 import { toast } from "react-toastify";
 import { AppRoutes } from "../../constants/routes";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const RequestedShifts = () => {
   const [selected, setSelected] = useState([]);
@@ -45,6 +50,7 @@ const RequestedShifts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       unApprovedShift({
         regions: selectRegion,
@@ -53,7 +59,9 @@ const RequestedShifts = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "unApprovedShift/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, selectRegion]);
 
   const { unApprovedShiftData } = useSelector((state) => state.root.scheduling);
@@ -179,7 +187,8 @@ const RequestedShifts = () => {
                 <Button
                   name="Approved Selected"
                   color="success"
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(apiPending());
                     dispatch(approveShift({ shiftIds: selected })).then(
                       (response) => {
                         if (response.type === "approveShift/fulfilled") {
@@ -193,17 +202,20 @@ const RequestedShifts = () => {
                               pageSize: rowsPerPage,
                             }),
                           );
+                          dispatch(apiSuccess());
                         } else if (response.type === "approveShift") {
                           toast.error("Please select shifts");
+                          dispatch(apiFails());
                         }
                       },
-                    )
-                  }
+                    );
+                  }}
                 />
                 <Button
                   name="Delete Selected"
                   color="error"
                   onClick={() => {
+                    dispatch(apiPending());
                     dispatch(deleteShift({ shiftIds: selected }))
                       .then((response) => {
                         if (response.type == "deleteShift/fulfilled") {
@@ -217,8 +229,10 @@ const RequestedShifts = () => {
                               pageSize: rowsPerPage,
                             }),
                           );
+                          dispatch(apiSuccess());
                         } else if (response.type === "deleteShift/rejected") {
                           toast.error("Please select shifts");
+                          dispatch(apiFails());
                         }
                       })
                       .catch((error) => {

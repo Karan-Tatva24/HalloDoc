@@ -39,6 +39,7 @@ import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboar
 import { acceptRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/acceptRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import { houseCallType } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const MyTable = ({
   accountType,
@@ -114,6 +115,7 @@ const MyTable = ({
   };
 
   const handleClose = (action) => {
+    dispatch(apiPending());
     dispatch(getPatientName(rowId)).then((response) => {
       if (response.type === "getPatientName/fulfilled") {
         setAnchorEl(null);
@@ -181,6 +183,7 @@ const MyTable = ({
             break;
         }
       }
+      dispatch(apiSuccess());
     });
   };
 
@@ -212,6 +215,7 @@ const MyTable = ({
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     if (accountType === "Admin") {
       dispatch(
         newState({
@@ -224,7 +228,9 @@ const MyTable = ({
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "newState/fulfilled") dispatch(apiSuccess());
+      });
     } else if (accountType === "Physician") {
       dispatch(
         getDashboardByState({
@@ -234,7 +240,10 @@ const MyTable = ({
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "getDashboardByState/fulfilled")
+          dispatch(apiSuccess());
+      });
     }
   }, [
     accountType,
@@ -431,7 +440,8 @@ const MyTable = ({
                             row?.callType ? (
                               <Button
                                 name={row?.callType}
-                                onClick={() =>
+                                onClick={() => {
+                                  dispatch(apiPending());
                                   dispatch(houseCallType(row.id)).then(
                                     (response) => {
                                       if (
@@ -439,10 +449,11 @@ const MyTable = ({
                                         "houseCallType/fulfilled"
                                       ) {
                                         dispatch(getProviderDashboardCount());
+                                        dispatch(apiSuccess());
                                       }
                                     },
-                                  )
-                                }
+                                  );
+                                }}
                               />
                             ) : (
                               " - "

@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/clearCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ClearCaseModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -35,13 +40,16 @@ const ClearCaseModal = ({ open, handleClose }) => {
             name="Clear"
             variant="contained"
             onClick={() => {
+              dispatch(apiPending());
               dispatch(clearCase(id)).then((response) => {
                 if (response.type === "clearCase/fulfilled") {
                   toast.success(response.payload.message);
                   dispatch(dashboardCount());
+                  dispatch(apiSuccess());
                   handleClose();
                 } else if (response.type === "clearCase/rejected") {
                   toast.error(response.payload.data.validation.body.message);
+                  dispatch(apiFails());
                 }
               });
             }}

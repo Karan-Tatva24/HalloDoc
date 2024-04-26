@@ -9,6 +9,11 @@ import { Button } from "../Button";
 import { useDispatch } from "react-redux";
 import { sendLink } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendLinkAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const SendLinkModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -20,6 +25,7 @@ const SendLinkModal = ({ open, handleClose }) => {
       email: "",
     },
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         sendLink({
           firstName: values.firstName,
@@ -30,10 +36,12 @@ const SendLinkModal = ({ open, handleClose }) => {
       ).then((response) => {
         if (response.type === "sendLink/fulfilled") {
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "sendLink/rejected") {
           toast.error(response.payload?.data?.validation?.body?.message);
+          dispatch(apiFails());
         }
       });
     },

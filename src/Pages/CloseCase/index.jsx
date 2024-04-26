@@ -33,6 +33,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/closeCaseAPI";
 import { toast } from "react-toastify";
 import { downloadFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/downloadFileAPI";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   phone: "",
@@ -72,6 +77,7 @@ const CloseCase = () => {
   const handleSave = () => {
     setInitialValues(formik.values);
     setIsDisabled(true);
+    dispatch(apiPending());
     dispatch(
       closeCaseEdit({
         id,
@@ -81,8 +87,10 @@ const CloseCase = () => {
     ).then((response) => {
       if (response.type === "closeCaseEdit/fulfilled") {
         toast.success(response.payload.message);
+        dispatch(apiSuccess());
       } else if (response.type === "closeCaseEdit/rejected") {
         toast.error(response.payload.data.validation.body.message);
+        dispatch(apiFails());
       }
     });
   };
@@ -93,6 +101,7 @@ const CloseCase = () => {
   };
 
   const handleDownload = (fileName) => {
+    dispatch(apiPending());
     dispatch(downloadFile({ fileNames: [fileName] }))
       .then((response) => {
         if (response.type === "downloadFile/fulfilled") {
@@ -113,6 +122,7 @@ const CloseCase = () => {
             document.body.removeChild(link);
           }
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
         } else {
           toast.error("File download failed.");
         }
@@ -123,9 +133,12 @@ const CloseCase = () => {
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       closeCaseView({ id, sortBy: orderBy, orderBy: order.toUpperCase() }),
-    );
+    ).then((response) => {
+      if (response.type === "closeCaseView/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, id, order, orderBy]);
 
   const handleRequestSort = (property) => {

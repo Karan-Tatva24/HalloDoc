@@ -15,6 +15,10 @@ import {
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 import { submitInformationSchema } from "../../../ValidationSchema";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   relationName: "",
@@ -52,6 +56,7 @@ const SubmitInformation = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       const formData = new FormData();
       formData.append("requestType", requestType);
       formData.append("relationName", values.relationName);
@@ -74,6 +79,7 @@ const SubmitInformation = () => {
           toast.success(response?.payload?.message);
           formik.resetForm();
           navigate(-1);
+          dispatch(apiSuccess());
         }
       });
     },

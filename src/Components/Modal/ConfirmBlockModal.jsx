@@ -9,6 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { blockCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/blockCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ConfirmBlockModal = ({ open, handleClose }) => {
   const { patientFirstName, patientLastName, id } = useSelector(
@@ -21,6 +26,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
     },
     validationSchema: blockModalSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         blockCase({ id, reasonForCancellation: values.blockRequest }),
       ).then((response) => {
@@ -28,9 +34,11 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
+          dispatch(apiSuccess());
           handleClose();
         } else if (response.type === "blockCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
+          dispatch(apiFails());
         }
       });
     },

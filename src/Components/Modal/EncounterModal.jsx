@@ -5,12 +5,14 @@ import { Button } from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { download } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
 import { toast } from "react-toastify";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const EncounterModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.root.patientName);
 
   const handleDownload = () => {
+    dispatch(apiPending());
     dispatch(download(id))
       .then((response) => {
         if (response.type === "download/fulfilled") {
@@ -31,6 +33,7 @@ const EncounterModal = ({ open, handleClose }) => {
             document.body.removeChild(link);
           }
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
         } else {
           toast.error("No files selected!");
         }

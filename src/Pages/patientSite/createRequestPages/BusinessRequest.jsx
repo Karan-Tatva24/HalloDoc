@@ -15,6 +15,10 @@ import {
 } from "../../../redux/halloAPIs/userAPIs/createRequestAPI";
 import { toast } from "react-toastify";
 import { createRequestAllSchema } from "../../../ValidationSchema";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   requestType: "Business",
@@ -56,9 +60,11 @@ const BusinessRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(createRequest(values)).then((response) => {
         toast.success(response?.payload?.message);
         formik.resetForm();
+        dispatch(apiSuccess());
       });
     },
     validationSchema: createRequestAllSchema,

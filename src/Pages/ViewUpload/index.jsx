@@ -29,6 +29,11 @@ import { downloadFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/downloa
 import { deleteFile } from "../../redux/halloAPIs/adminAPIs/commonAPIs/deleteFileAPI";
 import { sendMail } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendMailAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ViewUpload = () => {
   const [selected, setSelected] = useState([]);
@@ -49,10 +54,14 @@ const ViewUpload = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(viewUpload({ id, sortBy: "createdAt", orderBy: "DESC" })).then(
       (response) => {
         if (response.type === "viewUpload/rejected") {
           setFilterData([]);
+          dispatch(apiFails());
+        } else if (response.type === "viewUpload/fulfilled") {
+          dispatch(apiSuccess());
         }
       },
     );
@@ -105,6 +114,7 @@ const ViewUpload = () => {
   };
 
   const handleUpload = (e) => {
+    dispatch(apiPending());
     e.preventDefault();
     const formData = new FormData();
     formData.append("document", selectedFile);
@@ -112,8 +122,10 @@ const ViewUpload = () => {
       if (response.type === "uploadFile/fulfilled") {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
+        dispatch(apiSuccess());
       } else if (response.type === "uploadFile/rejected") {
         toast.error(response.payload?.data?.error);
+        dispatch(apiFails());
       }
     });
     setSelectedFile(null);
@@ -182,17 +194,21 @@ const ViewUpload = () => {
   };
 
   const handleDelete = (document) => {
+    dispatch(apiPending());
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
+        dispatch(apiSuccess());
       } else if (response.type === "deleteFile/rejected") {
         toast.error(response?.payload?.data.message);
+        dispatch(apiFails());
       }
     });
   };
 
   const handleDeleteAll = () => {
+    dispatch(apiPending());
     const selectedFiles = rows?.filter((row) => selected?.includes(row?.id));
     const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(deleteFile({ fileNames: selectedFileNames, id })).then(
@@ -200,14 +216,17 @@ const ViewUpload = () => {
         if (response.type === "deleteFile/fulfilled") {
           toast.success(response.payload.message);
           dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
+          dispatch(apiSuccess());
         } else if (response.type === "deleteFile/rejected") {
           toast.error(response?.payload?.data.error);
+          dispatch(apiFails());
         }
       },
     );
   };
 
   const handleSendMail = () => {
+    dispatch(apiPending());
     const selectedFiles = rows?.filter((row) => selected?.includes(row?.id));
     const selectedFileNames = selectedFiles?.map((file) => file?.fileName);
     dispatch(
@@ -218,8 +237,10 @@ const ViewUpload = () => {
     ).then((response) => {
       if (response.type === "sendMail/fulfilled") {
         toast.success(response.payload.message);
+        dispatch(apiSuccess());
       } else if (response.type === "sendMail/rejected") {
         toast.error(response.payload?.data.message);
+        dispatch(apiFails());
       }
     });
   };

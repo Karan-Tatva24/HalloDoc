@@ -6,6 +6,10 @@ import { useDispatch } from "react-redux";
 import { acceptAgreement } from "../../../redux/halloAPIs/patientAPIs/agreementAPI";
 import CancelAgreementModal from "../../../Components/Modal/CancelAgreementModal";
 import { toast } from "react-toastify";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const Agreement = () => {
   const [open, setOpen] = useState(false);
@@ -40,14 +44,16 @@ const Agreement = () => {
               name="I Agree"
               color="success"
               size="large"
-              onClick={() =>
+              onClick={() => {
+                dispatch(apiPending());
                 dispatch(acceptAgreement(id)).then((res) => {
                   if (res.type === "acceptAgreement/fulfilled") {
                     toast.success(res.payload.message);
                     navigate(-1);
+                    dispatch(apiSuccess());
                   }
-                })
-              }
+                });
+              }}
             />
             <Button
               name="Cancel"

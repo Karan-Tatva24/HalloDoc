@@ -28,6 +28,7 @@ import {
 import "./searchRecords.css";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const SearchRecords = () => {
   const [tableData, setTableData] = useState([]);
@@ -61,6 +62,7 @@ const SearchRecords = () => {
       phoneNumber: "",
     },
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         searchRecord({
           requestStatus: values.requestStatus,
@@ -76,11 +78,14 @@ const SearchRecords = () => {
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "searchRecord/fulfilled") dispatch(apiSuccess());
+      });
     },
   });
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       searchRecord({
         sortBy: orderBy,
@@ -88,7 +93,9 @@ const SearchRecords = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "searchRecord/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
   useEffect(() => setTableData(searchRecordData?.rows), [searchRecordData]);

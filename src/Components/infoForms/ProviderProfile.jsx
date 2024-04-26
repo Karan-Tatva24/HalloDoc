@@ -13,6 +13,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   businessName: "",
@@ -70,7 +75,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant="h6">
+      <Typography variant="h6" pb={2} pt={3}>
         <b>Provider Profile</b>
       </Typography>
       <Grid
@@ -272,6 +277,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
                 name="Save"
                 type="submit"
                 onClick={() => {
+                  dispatch(apiPending());
                   const formData = new FormData();
                   formData.append("businessName", formik.values.businessName);
                   formData.append(
@@ -285,7 +291,15 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
                     (response) => {
                       if (response.type === "editProviderProfile/fulfilled") {
                         dispatch(physicianProfile(id));
+                        dispatch(apiSuccess());
                         toast.success(response.payload.message);
+                      } else if (
+                        response.type === "editProviderProfile/rejected"
+                      ) {
+                        toast.error(
+                          response.payload?.data?.validation?.message,
+                        );
+                        dispatch(apiFails());
                       }
                     },
                   );

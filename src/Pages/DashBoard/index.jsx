@@ -45,6 +45,7 @@ import TypeOfCareModal from "../../Components/Modal/TypeOfCareModal";
 import EncounterModal from "../../Components/Modal/EncounterModal";
 import MedicalHistory from "../../Components/MedicalHistory";
 import CreateNewRequestModal from "../../Components/Modal/CreateNewRequestModal";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -78,6 +79,7 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     if (accountType === "Admin") {
       dispatch(dashboardCount());
       dispatch(getProfession());
@@ -86,6 +88,7 @@ const DashBoard = () => {
       dispatch(getProviderDashboardCount());
       dispatch(getRegions());
     }
+    dispatch(apiSuccess());
   }, [accountType, dispatch]);
 
   useEffect(() => {

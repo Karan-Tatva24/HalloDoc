@@ -17,6 +17,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 import { toast } from "react-toastify";
 import { updateProviderNotes } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/updateProviderNotesAPI";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ViewNotes = () => {
   const navigate = useNavigate();
@@ -32,6 +37,7 @@ const ViewNotes = () => {
       adminNotes: "",
     },
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       {
         accountType === "Admin"
           ? dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
@@ -40,8 +46,10 @@ const ViewNotes = () => {
                   toast.success(response.payload.message);
                   onSubmitProps.resetForm();
                   dispatch(viewNotes(id));
+                  dispatch(apiSuccess());
                 } else {
                   toast.error(response?.error?.message);
+                  dispatch(apiFails());
                 }
               },
             )
@@ -52,8 +60,10 @@ const ViewNotes = () => {
                 toast.success(response.payload.message);
                 onSubmitProps.resetForm();
                 dispatch(viewNotes(id));
+                dispatch(apiSuccess());
               } else {
                 toast.error(response?.error?.message);
+                dispatch(apiFails());
               }
             });
       }

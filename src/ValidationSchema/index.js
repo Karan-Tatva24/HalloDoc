@@ -17,7 +17,7 @@ export {
 } from "./infoFormsSchema";
 export { requestSupportSchema } from "./requestSupportSchema";
 export { sendLinkSchema } from "./sendLinkSchema";
-export { contectProviderSchema } from "./ContectProviderSchema";
+export { contactProviderSchema } from "./contactProviderSchema";
 export { createProviderAccountSchema } from "./createProviderAccountSchema";
 export { addBusinessSchema } from "./addBusinessSchema";
 export {

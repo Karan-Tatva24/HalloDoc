@@ -26,6 +26,7 @@ import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewRese
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 import { AppRoutes } from "../../constants/routes";
 import "./patientRecord.css";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const PatientRecord = () => {
   const [tableData, setTableData] = useState([]);
@@ -42,6 +43,7 @@ const PatientRecord = () => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       patientRecord({
         id: patientRecordData?.id,
@@ -50,7 +52,9 @@ const PatientRecord = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "patientRecord/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, patientRecordData?.id, rowsPerPage]);
 
   useEffect(
@@ -178,6 +182,7 @@ const PatientRecord = () => {
                                     <MenuItem
                                       disableRipple
                                       onClick={() => {
+                                        dispatch(apiPending());
                                         dispatch(viewCase(row?.id)).then(
                                           (response) => {
                                             if (
@@ -185,6 +190,7 @@ const PatientRecord = () => {
                                               "viewCase/fulfilled"
                                             ) {
                                               navigate(AppRoutes.VIEW_CASE);
+                                              dispatch(apiSuccess());
                                             }
                                           },
                                         );

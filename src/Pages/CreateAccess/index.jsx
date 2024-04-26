@@ -24,6 +24,7 @@ import {
 import { AppRoutes } from "../../constants/routes";
 import { toast } from "react-toastify";
 import { clearViewRole } from "../../redux/halloSlices/adminSlices/editRoleAccessSlice";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   roleName: "",
@@ -48,10 +49,16 @@ const CreateAccess = () => {
       accountType: viewRole?.accountType || "All",
       permissionIds: viewRole?.permissions?.map((role) => role?.id) || [],
     });
-  }, [dispatch, viewRole]);
+  }, [viewRole]);
 
   useEffect(() => {
-    dispatch(getRolesByAccountType(formik.values.accountType));
+    dispatch(apiPending());
+    dispatch(getRolesByAccountType(formik.values.accountType)).then(
+      (response) => {
+        if (response.type === "getRolesByAccountType/fulfilled")
+          dispatch(apiSuccess());
+      },
+    );
   }, [dispatch, formik.values.accountType]);
 
   const handleChangeRoles = (id) => {
@@ -64,6 +71,7 @@ const CreateAccess = () => {
   };
 
   const handleSave = () => {
+    dispatch(apiPending());
     if (viewRole?.id) {
       dispatch(updateRole({ id: viewRole.id, data: formik.values })).then(
         (response) => {
@@ -71,6 +79,7 @@ const CreateAccess = () => {
             toast.success(response.payload.message);
             dispatch(clearViewRole());
             navigate(AppRoutes.ACCOUNT_ACCESS);
+            dispatch(apiSuccess());
           }
         },
       );
@@ -80,6 +89,7 @@ const CreateAccess = () => {
           toast.success(response.payload.message);
           dispatch(clearViewRole());
           navigate(AppRoutes.ACCOUNT_ACCESS);
+          dispatch(apiSuccess());
         }
       });
     }

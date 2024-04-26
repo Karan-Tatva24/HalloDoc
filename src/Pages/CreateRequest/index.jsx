@@ -19,6 +19,11 @@ import { AppRoutes } from "../../constants/routes";
 import { verifyState } from "../../redux/halloAPIs/adminAPIs/commonAPIs/verifyStateAPI";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   isEmail: true,
@@ -53,6 +58,7 @@ const CreateRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(verifyState(values.state)).then((response) => {
         if (response.type === "verifyState/fulfilled") {
           dispatch(
@@ -76,6 +82,7 @@ const CreateRequest = () => {
               dispatch(dashboardCount());
               toast.success(response.payload.message);
               navigate(AppRoutes.DASHBOARD);
+              dispatch(apiSuccess());
             }
           });
           onSubmitProps.resetForm();
@@ -84,6 +91,7 @@ const CreateRequest = () => {
           formik.setErrors({
             state: response.payload?.data.message,
           });
+          dispatch(apiFails());
         }
       });
     },

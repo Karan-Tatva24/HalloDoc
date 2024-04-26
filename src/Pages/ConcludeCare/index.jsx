@@ -32,6 +32,11 @@ import { concludeCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/e
 import { AppRoutes } from "../../constants/routes";
 import { concludeCareSchema } from "../../ValidationSchema";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ConcludeCare = () => {
   const [tableData, setTableData] = useState();
@@ -44,13 +49,16 @@ const ConcludeCare = () => {
     },
     validationSchema: concludeCareSchema,
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(concludeCare({ id, providerNotes: values.providerNotes })).then(
         (response) => {
           if (response.type === "concludeCare/fulfilled") {
             toast.success(response.payload?.message);
             dispatch(getProviderDashboardCount());
+            dispatch(apiSuccess());
           } else if (response.type === "concludeCare/rejected") {
             toast.error(response?.payload?.data?.message);
+            dispatch(apiFails());
           }
         },
       );
@@ -69,6 +77,7 @@ const ConcludeCare = () => {
   }, [dispatch, id]);
 
   const handleUpload = (e) => {
+    dispatch(apiPending());
     e.preventDefault();
     const file = e.target.files[0];
     const formData = new FormData();
@@ -77,13 +86,16 @@ const ConcludeCare = () => {
       if (response.type === "uploadFile/fulfilled") {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        dispatch(apiSuccess());
       } else if (response.type === "uploadFile/rejected") {
         toast.error(response.payload?.data?.error);
+        dispatch(apiFails());
       }
     });
   };
 
   const handleDownload = (fileName) => {
+    dispatch(apiPending());
     dispatch(downloadFile({ fileNames: [fileName] }))
       .then((response) => {
         if (response.type === "downloadFile/fulfilled") {
@@ -104,6 +116,7 @@ const ConcludeCare = () => {
             document.body.removeChild(link);
           }
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
         } else {
           toast.error("No files selected!");
         }
@@ -114,12 +127,14 @@ const ConcludeCare = () => {
   };
 
   const handleDelete = (document) => {
+    dispatch(apiPending());
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
         toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
+        dispatch(apiSuccess());
       } else if (response.type === "deleteFile/rejected") {
-        toast.error(response.payload.data.validation.body.message);
+        toast.error(response?.payload?.data?.validation?.body?.message);
         navigate(AppRoutes.DASHBOARD);
       }
     });

@@ -15,6 +15,11 @@ import {
   physicianProfile,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   address1: "",
@@ -62,7 +67,7 @@ const AddressInfo = ({
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant="h6">
+      <Typography variant="h6" pb={2} pt={3}>
         <b>Mailing & Billing Information</b>
       </Typography>
       <Grid
@@ -175,23 +180,27 @@ const AddressInfo = ({
                 type="submit"
                 onClick={() => {
                   if (name === "EditProvider") {
+                    dispatch(apiPending());
                     dispatch(
                       editProviderProfile({ id: index, data: formik.values }),
                     ).then((response) => {
                       if (response.type === "editProviderProfile/fulfilled") {
                         dispatch(physicianProfile(index));
+                        dispatch(apiSuccess());
                         toast.success(response.payload.message);
                       } else if (
                         response.type === "editProviderProfile/rejected"
                       ) {
                         toast.error(
-                          response.payload.data.validation.body.message,
+                          response.payload?.data?.validation?.body?.message,
                         );
+                        dispatch(apiFails());
                       }
                     });
                   }
 
                   if (name === "MyProfile") {
+                    dispatch(apiPending());
                     dispatch(
                       editAdminProfile({
                         id,
@@ -201,17 +210,18 @@ const AddressInfo = ({
                     ).then((response) => {
                       if (response.type === "editAdminProfile/fulfilled") {
                         dispatch(adminProfile(id));
+                        dispatch(apiSuccess());
                         toast.success(response.payload.message);
                       } else if (
                         response.type === "editAdminProfile/rejected"
                       ) {
                         toast.error(
-                          response.payload.data.validation.body.message,
+                          response.payload?.data?.validation?.body?.message,
                         );
+                        dispatch(apiFails());
                       }
                     });
                   }
-
                   setIsDisabled(true);
                 }}
               />

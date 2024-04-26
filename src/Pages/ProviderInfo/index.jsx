@@ -30,6 +30,7 @@ import {
   updateNotification,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import "./providerInfo.css";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const ProviderInfo = () => {
   const [searchTerm, setSearchTerm] = useState("all");
@@ -93,6 +94,7 @@ const ProviderInfo = () => {
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       providerInfo({
         sortBy: orderBy,
@@ -101,7 +103,9 @@ const ProviderInfo = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "providerInfo/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, searchTerm]);
 
   return (
@@ -154,6 +158,7 @@ const ProviderInfo = () => {
                   <Button
                     name="Save"
                     onClick={() => {
+                      dispatch(apiPending());
                       dispatch(updateNotification(selectedIds)).then(
                         (response) => {
                           if (
@@ -161,6 +166,7 @@ const ProviderInfo = () => {
                           ) {
                             dispatch(providerInfo({ regions: searchTerm }));
                             setShowSaveButton(false);
+                            dispatch(apiSuccess());
                           }
                         },
                       );
@@ -231,6 +237,7 @@ const ProviderInfo = () => {
                                     variant="outlined"
                                     size="small"
                                     onClick={() => {
+                                      dispatch(apiPending());
                                       dispatch(physicianProfile(row?.id)).then(
                                         (response) => {
                                           if (
@@ -238,6 +245,7 @@ const ProviderInfo = () => {
                                             "physicianProfile/fulfilled"
                                           ) {
                                             navigate(AppRoutes.EDIT_PHYSICIAN);
+                                            dispatch(apiSuccess());
                                           }
                                         },
                                       );

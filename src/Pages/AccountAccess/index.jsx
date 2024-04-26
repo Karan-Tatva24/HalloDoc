@@ -24,6 +24,7 @@ import {
   viewRole,
 } from "../../redux/halloAPIs/adminAPIs/accessAPIs/createAccessAPI";
 import { toast } from "react-toastify";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const columns = [
   {
@@ -72,6 +73,7 @@ const AccountAccess = () => {
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       accountAccess({
         sortBy: orderBy,
@@ -79,7 +81,9 @@ const AccountAccess = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "accountAccess/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
   return (
@@ -139,7 +143,16 @@ const AccountAccess = () => {
                                     variant="outlined"
                                     size="small"
                                     onClick={() => {
-                                      dispatch(viewRole(row?.id));
+                                      dispatch(apiPending());
+                                      dispatch(viewRole(row?.id)).then(
+                                        (response) => {
+                                          if (
+                                            response.type ===
+                                            "viewRole/fulfilled"
+                                          )
+                                            dispatch(apiSuccess());
+                                        },
+                                      );
                                       navigate(AppRoutes.CREATE_ROLE);
                                     }}
                                   />
@@ -148,6 +161,7 @@ const AccountAccess = () => {
                                     variant="outlined"
                                     size="small"
                                     onClick={() => {
+                                      dispatch(apiPending());
                                       dispatch(deleteRole(row.id)).then(
                                         (response) => {
                                           if (
@@ -155,6 +169,7 @@ const AccountAccess = () => {
                                             "deleteRole/fulfilled"
                                           ) {
                                             dispatch(accountAccess());
+                                            dispatch(apiSuccess());
                                             toast.success(
                                               response.payload.message,
                                             );

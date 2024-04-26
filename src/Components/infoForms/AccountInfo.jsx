@@ -20,9 +20,14 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { changePassword } from "../../redux/halloAPIs/AuthAPIs/changePasswordAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
-  role: "masterAdmin",
+  role: "",
   status: "",
   password: "",
 };
@@ -50,7 +55,7 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
 
   return (
     <form>
-      <Typography variant="h6">
+      <Typography variant="h6" pb={2}>
         <b>Account Information</b>
       </Typography>
       <Grid
@@ -156,18 +161,21 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
                 name="Save"
                 type="submit"
                 onClick={() => {
+                  dispatch(apiPending());
                   dispatch(
                     editProviderProfile({ id, data: formik.values }),
                   ).then((response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
+                      dispatch(apiSuccess());
                       toast.success(response.payload.message);
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
                       toast.error(
-                        response.payload.data.validation.body.message,
+                        response.payload?.data?.validation?.body?.message,
                       );
+                      dispatch(apiFails());
                     }
                   });
                   setIsDisabled(true);
@@ -191,17 +199,20 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
             passwordDisable
               ? () => setPasswordDisable(false)
               : () => {
+                  dispatch(apiPending());
                   dispatch(
                     changePassword({ id, password: formik.values.password }),
                   ).then((response) => {
                     if (response.type === "changePassword/fulfilled") {
                       formik.setFieldValue("password", "");
+                      dispatch(apiSuccess());
                       setPasswordDisable(true);
                       toast.success(response.payload.message);
                     } else if (response.type === "changePassword/rejected") {
                       toast.error(
-                        response.payload.data.validation.body.message,
+                        response.payload?.data?.validation?.body?.message,
                       );
+                      dispatch(apiFails());
                     }
                   });
                 }

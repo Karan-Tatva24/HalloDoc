@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AppRoutes } from "../constants/routes";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 // import { clearCookie, getValueFromCookie } from "@/src/utility/cookie";
 // import { TOKEN_KEY, DEFAULT_CONTENT_TYPE } from "@/src/constants/common";
 // import { HOMEPAGE_URL } from "../constants/urls";
@@ -28,9 +28,6 @@ Axios.interceptors.response.use(
     if (error?.response?.data?.errorMessage === "jwt expired") {
       localStorage.clear();
       window.location = AppRoutes.LOGIN;
-    } else if (error?.response?.data?.status === 404) {
-      toast.error(error?.response?.data?.message);
-      window.location = AppRoutes.DASHBOARD;
     }
     return Promise.reject(error);
   },

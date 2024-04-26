@@ -67,7 +67,12 @@ const App = () => {
   const { isLoading } = useSelector((state) => state.root.apiStatus);
 
   return (
-    <Box className="App">
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      flexDirection="column"
+      gap={2}
+    >
       {isLoading ? (
         <Box className="loader-wrapper">
           <img src={loader} alt="loader" />
@@ -228,10 +233,10 @@ const App = () => {
             />
           </Route>
         </Routes>
-        <Box position="relative" bottom={0} minWidth="100%">
-          <Footer />
-        </Box>
       </ThemeProvider>
+      <Box position="relative" bottom={0} minWidth="100%">
+        <Footer />
+      </Box>
     </Box>
   );
 };

@@ -25,6 +25,7 @@ import {
   patientRecord,
 } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
 import "./patientHistory.css";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);
@@ -45,6 +46,7 @@ const PatientHistory = () => {
       phoneNumber: "",
     },
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         patientHistory({
           firstName: values.firstName,
@@ -54,17 +56,23 @@ const PatientHistory = () => {
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "patientHistory/fulfilled")
+          dispatch(apiSuccess());
+      });
     },
   });
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       patientHistory({
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "patientHistory/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, pageNo, rowsPerPage]);
 
   const handleChangePage = (event, newPage) => {

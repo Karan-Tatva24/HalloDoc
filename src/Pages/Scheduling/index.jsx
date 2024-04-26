@@ -24,6 +24,7 @@ import {
   viewShift,
   viewShiftByDate,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const Scheduling = () => {
   const navigate = useNavigate();
@@ -35,11 +36,14 @@ const Scheduling = () => {
   const { viewShiftByDateData } = useSelector((state) => state.root.viewShift);
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       viewShiftByDate({
         regions: selectRegion,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "viewShiftByDate/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, selectRegion]);
 
   const handleChangeRegion = (e) => {

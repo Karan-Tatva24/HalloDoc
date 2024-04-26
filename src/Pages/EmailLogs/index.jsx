@@ -25,6 +25,7 @@ import { columns } from "../../constants/emailLogsData";
 import { emailLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 import "./emailLogs.css";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const EmailLogs = () => {
   const [tableData, setTableData] = useState([]);
@@ -51,6 +52,7 @@ const EmailLogs = () => {
       sentDate: "",
     },
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         emailLog({
           receiverName: values.receiverName,
@@ -63,12 +65,15 @@ const EmailLogs = () => {
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "emailLog/fulfilled") dispatch(apiSuccess());
+      });
       formik.resetForm();
     },
   });
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       emailLog({
         sortBy: orderBy,
@@ -76,7 +81,9 @@ const EmailLogs = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "emailLog/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
   useEffect(() => setTableData(emailLogData?.rows), [emailLogData]);

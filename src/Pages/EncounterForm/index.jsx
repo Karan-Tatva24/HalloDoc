@@ -18,6 +18,7 @@ import {
 import { toast } from "react-toastify";
 import { clearEncounterForm } from "../../redux/halloSlices/providerSlices/encounterFormSlice";
 import { AppRoutes } from "../../constants/routes";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   firstName: "",
@@ -84,17 +85,20 @@ const EncounterForm = () => {
     initialValues,
     validationSchema: encounterFormSchema,
     onSubmit: (values) => {
+      dispatch(apiPending());
       if (encounterFormData?.id) {
         dispatch(editEncounterForm({ id, data: values })).then((response) => {
           if (response.type === "editEncounterForm/fulfilled") {
             toast.success(response?.payload?.message);
             navigate(AppRoutes.DASHBOARD);
+            dispatch(apiSuccess());
           }
         });
       } else {
         dispatch(saveEncounterForm({ id, data: values })).then((response) => {
           if (response.type === "saveEncounterForm/fulfilled") {
             toast.success(response?.payload?.message);
+            dispatch(apiSuccess());
           }
         });
       }
@@ -152,10 +156,12 @@ const EncounterForm = () => {
   ]);
 
   const handleFinalize = () => {
+    dispatch(apiPending());
     dispatch(finalizeForm(id)).then((response) => {
       if (response.type === "finalizeForm/fulfilled") {
         toast.success(response?.payload?.message);
         navigate(AppRoutes.DASHBOARD);
+        dispatch(apiSuccess());
       }
     });
   };

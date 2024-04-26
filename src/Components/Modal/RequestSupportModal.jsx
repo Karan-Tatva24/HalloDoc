@@ -8,6 +8,11 @@ import Modal from "./Modal";
 import { useDispatch } from "react-redux";
 import { requestSupport } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/requestSupportAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const RequestSupportModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -17,13 +22,16 @@ const RequestSupportModal = ({ open, handleClose }) => {
     },
     validationSchema: requestSupportSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(requestSupport(values.message)).then((response) => {
         if (response.type === "requestSupport/fulfilled") {
           toast.success(response.payload.message);
+          dispatch(apiSuccess());
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "requestSupport/rejected") {
           toast.error(response?.payload?.data?.validation?.body?.message);
+          dispatch(apiFails());
         }
       });
     },

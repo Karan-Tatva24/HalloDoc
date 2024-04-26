@@ -25,6 +25,10 @@ import {
 import { createRequestByPatientSchema } from "../../../ValidationSchema";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   requestType: "Patient",
@@ -64,6 +68,7 @@ const PatientCreateRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       const formData = new FormData();
       formData.append("requestType", values.requestType);
       formData.append("patientNote", values.patientNote);
@@ -85,6 +90,7 @@ const PatientCreateRequest = () => {
         if (response.type === "createRequest/fulfilled") {
           toast.success(response?.payload?.message);
           formik.resetForm();
+          dispatch(apiSuccess());
         }
       });
     },

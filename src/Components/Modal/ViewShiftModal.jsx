@@ -15,6 +15,7 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { viewShiftModalSchema } from "../../ValidationSchema";
 import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   searchRegion: "",
@@ -43,6 +44,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
   });
 
   const handleSave = () => {
+    dispatch(apiPending());
     dispatch(
       editShift({
         id: viewShiftData.id,
@@ -58,6 +60,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
         accountType === "Admin"
           ? dispatch(viewShiftByDate({ regions: "all" }))
           : dispatch(mySchedule({}));
+        dispatch(apiSuccess());
       }
     });
   };
@@ -190,6 +193,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
               name="Delete"
               color="error"
               onClick={() => {
+                dispatch(apiPending());
                 dispatch(deleteShift({ shiftIds: [viewShiftData?.id] })).then(
                   (response) => {
                     if (response.type === "deleteShift/fulfilled") {
@@ -199,6 +203,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
                       accountType === "Admin"
                         ? dispatch(viewShiftByDate({ regions: "all" }))
                         : dispatch(mySchedule({}));
+                      dispatch(apiSuccess());
                     }
                   },
                 );

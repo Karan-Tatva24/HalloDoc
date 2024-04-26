@@ -26,6 +26,7 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/blockHistoryAPI";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const BlockHistory = () => {
   const [tableData, setTableData] = useState([]);
@@ -45,6 +46,7 @@ const BlockHistory = () => {
       phone: "",
     },
     onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         blockHistory({
           name: values.name,
@@ -56,11 +58,14 @@ const BlockHistory = () => {
           page: pageNo,
           pageSize: rowsPerPage,
         }),
-      );
+      ).then((response) => {
+        if (response.type === "blockHistory/fulfilled") dispatch(apiSuccess());
+      });
     },
   });
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       blockHistory({
         sortBy: orderBy,
@@ -68,7 +73,9 @@ const BlockHistory = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "blockHistory/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
   useEffect(() => setTableData(blockHistoryData?.rows), [blockHistoryData]);
@@ -217,6 +224,7 @@ const BlockHistory = () => {
                                   name="Unblock"
                                   variant="outlined"
                                   onClick={() => {
+                                    dispatch(apiPending());
                                     dispatch(unblockPatient(row?.id)).then(
                                       (response) => {
                                         if (
@@ -234,6 +242,7 @@ const BlockHistory = () => {
                                           toast.success(
                                             response.payload.message,
                                           );
+                                          dispatch(apiSuccess());
                                         }
                                       },
                                     );

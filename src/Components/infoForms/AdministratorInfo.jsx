@@ -17,6 +17,11 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   firstName: "",
@@ -60,7 +65,7 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant="h6">
+      <Typography variant="h6" pb={2} pt={3}>
         <b>Administrator Information</b>
       </Typography>
       <Grid
@@ -182,6 +187,7 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
               name="Save"
               type="submit"
               onClick={() => {
+                dispatch(apiPending());
                 dispatch(
                   editAdminProfile({
                     section: "administration",
@@ -190,9 +196,13 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
                 ).then((response) => {
                   if (response.type === "editAdminProfile/fulfilled") {
                     dispatch(adminProfile());
+                    dispatch(apiSuccess());
                     toast.success(response.payload.message);
                   } else if (response.type === "editAdminProfile/rejected") {
-                    toast.error(response.payload.data.validation.body.message);
+                    toast.error(
+                      response.payload?.data?.validation?.body?.message,
+                    );
+                    dispatch(apiFails());
                   }
                 });
                 setIsDisabled(true);

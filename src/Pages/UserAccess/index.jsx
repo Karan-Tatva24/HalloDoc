@@ -27,6 +27,7 @@ import { userAccess } from "../../redux/halloAPIs/adminAPIs/accessAPIs/userAcces
 import { physicianProfile } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { AppRoutes } from "../../constants/routes";
 import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -44,16 +45,19 @@ const UserAccess = () => {
   useEffect(() => setTableData(userAccount?.rows), [userAccount]);
 
   const handleEditClick = (id, accountType) => {
+    dispatch(apiPending());
     if (accountType === "Physician") {
       dispatch(physicianProfile(id)).then((response) => {
         if (response.type === "physicianProfile/fulfilled") {
           navigate(AppRoutes.EDIT_PHYSICIAN);
+          dispatch(apiSuccess());
         }
       });
     } else if (accountType === "Admin") {
       dispatch(adminProfile()).then((response) => {
         if (response.type === "adminProfile/fulfilled") {
           navigate(AppRoutes.MY_PROFILE);
+          dispatch(apiSuccess());
         }
       });
     }
@@ -77,6 +81,7 @@ const UserAccess = () => {
   };
 
   useEffect(() => {
+    dispatch(apiPending());
     dispatch(
       userAccess({
         accountType: selectedRole,
@@ -85,7 +90,9 @@ const UserAccess = () => {
         page: pageNo,
         pageSize: rowsPerPage,
       }),
-    );
+    ).then((response) => {
+      if (response.type === "userAccess/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, selectedRole]);
 
   return (

@@ -8,13 +8,15 @@ import { useDispatch } from "react-redux";
 import { cancelAgreement } from "../../redux/halloAPIs/patientAPIs/agreementAPI";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const CancelAgreementModal = ({ id, open, handleClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: { reasonForCancellation: "" },
-    onSubmit: (values) =>
+    onSubmit: (values) => {
+      dispatch(apiPending());
       dispatch(
         cancelAgreement({
           id,
@@ -23,10 +25,12 @@ const CancelAgreementModal = ({ id, open, handleClose }) => {
       ).then((res) => {
         if (res.type === "cancelAgreement/fulfilled") {
           toast.success(res.payload.message);
+          dispatch(apiSuccess());
           handleClose();
           navigate(-1);
         }
-      }),
+      });
+    },
   });
   return (
     <Modal open={open} handleClose={handleClose} header="Cancel Confirmation">

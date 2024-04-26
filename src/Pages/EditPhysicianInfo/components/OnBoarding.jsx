@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { viewFile } from "../../../redux/halloAPIs/adminAPIs/commonAPIs/viewFileAPI";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   IndConAgg: false,
@@ -53,6 +57,7 @@ const OnBoarding = ({
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       const formData = new FormData();
       formData.append("backgroundCheck", backCheckFile);
       formData.append("independentContract", indConAggFile);
@@ -64,6 +69,7 @@ const OnBoarding = ({
         if (response.type === "editProviderProfile/fulfilled") {
           toast.success(response.payload.message);
           dispatch(physicianProfile(id));
+          dispatch(apiSuccess());
         }
       });
     },
@@ -118,10 +124,12 @@ const OnBoarding = ({
   };
 
   const handelDeleteAccount = () => {
+    dispatch(apiPending());
     dispatch(deleteProviderAccount(id)).then((response) => {
       if (response.type === "deleteProviderAccount/fulfilled") {
         toast.success(response.payload.message);
         navigate(AppRoutes.PROVIDER);
+        dispatch(apiSuccess());
       }
     });
   };

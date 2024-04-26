@@ -17,6 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { editProfile } from "../../../redux/halloAPIs/patientAPIs/editProfileAPI";
 import { toast } from "react-toastify";
 import { adminProfile } from "../../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   firstName: "",
@@ -38,7 +42,10 @@ const UserProfile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(adminProfile());
+    dispatch(apiPending());
+    dispatch(adminProfile()).then((response) => {
+      if (response.type === "adminProfile/fulfilled") dispatch(apiSuccess());
+    });
   }, [dispatch]);
 
   const { profileData } = useSelector((state) => state.root.adminProfile);
@@ -61,11 +68,13 @@ const UserProfile = () => {
   }, [profileData]);
 
   const handleSave = () => {
+    dispatch(apiPending());
     dispatch(editProfile(formik.values)).then((response) => {
       if (response.type === "editProfile/fulfilled") {
         toast.success(response.payload.message);
         dispatch(adminProfile(profileData.id));
         setIsDisable(true);
+        dispatch(apiSuccess());
       }
     });
   };

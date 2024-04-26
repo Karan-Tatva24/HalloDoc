@@ -16,6 +16,10 @@ import {
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 import { createRequestAllSchema } from "../../../ValidationSchema";
+import {
+  apiPending,
+  apiSuccess,
+} from "../../../redux/halloSlices/apiStatusSlice";
 
 const initialValues = {
   requestType: "Family/Friend",
@@ -58,6 +62,7 @@ const FamilyFriendRequest = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      dispatch(apiPending());
       const formData = new FormData();
       formData.append("requestType", values.requestType);
       formData.append("requestorFirstName", values.requestorFirstName);
@@ -83,6 +88,7 @@ const FamilyFriendRequest = () => {
         if (response.type === "createRequest/fulfilled") {
           toast.success(response?.payload?.message);
           formik.resetForm();
+          dispatch(apiSuccess());
         }
       });
     },

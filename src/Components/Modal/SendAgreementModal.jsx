@@ -7,6 +7,11 @@ import "./modal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { sendAgreement } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/sendAgreementAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const SendAgreementModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -45,13 +50,16 @@ const SendAgreementModal = ({ open, handleClose }) => {
               name="Send"
               variant="contained"
               onClick={() => {
+                dispatch(apiPending());
                 dispatch(sendAgreement(id)).then((response) => {
                   console.log(response);
                   if (response.type === "sendAgreement/fulfilled") {
                     toast.success(response.payload.message);
+                    dispatch(apiSuccess());
                     handleClose();
                   } else if (response.type === "sendAgreement/rejected") {
                     toast.error("Unable to Send");
+                    dispatch(apiFails());
                   }
                 });
               }}

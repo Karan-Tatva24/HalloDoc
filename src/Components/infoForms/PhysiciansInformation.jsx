@@ -17,6 +17,11 @@ import {
   physicianProfile,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   firstName: "",
@@ -84,7 +89,7 @@ const PhysiciansInformation = ({
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant="h6" className="account">
+      <Typography variant="h6" className="account" pb={2} pt={3}>
         <b>Physician Information</b>
       </Typography>
       <Grid
@@ -237,16 +242,19 @@ const PhysiciansInformation = ({
                 name="Save"
                 type="submit"
                 onClick={() => {
+                  dispatch(apiPending());
                   dispatch(
                     editProviderProfile({ id, data: formik.values }),
                   ).then((response) => {
                     if (response.type === "editProviderProfile/fulfilled") {
                       dispatch(physicianProfile(id));
+                      dispatch(apiSuccess());
                       toast.success(response.payload.message);
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
                       toast.error(response.payload?.data?.message);
+                      dispatch(apiFails());
                     }
                   });
                   setIsDisabled(true);

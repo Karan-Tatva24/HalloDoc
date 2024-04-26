@@ -11,6 +11,11 @@ import { assignCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/assign
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
 import { clearPhysician } from "../../redux/halloSlices/adminSlices/getRegionPhysicianSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const AssignModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
@@ -28,6 +33,7 @@ const AssignModal = ({ open, handleClose }) => {
     },
     validationSchema: assignModalSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         assignCase({
           id: id,
@@ -40,8 +46,10 @@ const AssignModal = ({ open, handleClose }) => {
           onSubmitProps.resetForm();
           dispatch(clearPhysician());
           dispatch(dashboardCount());
+          dispatch(apiSuccess());
         } else if (response.type === "assignCase/rejected") {
           toast.error(response.payload?.data?.validation?.body?.message);
+          dispatch(apiFails());
         }
         handleClose();
       });

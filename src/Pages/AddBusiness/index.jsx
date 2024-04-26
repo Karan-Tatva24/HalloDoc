@@ -23,6 +23,7 @@ import {
   addBusiness,
   updateBusiness,
 } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/partnersAPI";
+import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   businessName: "",
@@ -69,6 +70,7 @@ const AddBusiness = () => {
   }, [business]);
 
   const handleSave = () => {
+    dispatch(apiPending());
     if (business?.id) {
       dispatch(updateBusiness({ id: business.id, data: formik.values })).then(
         (response) => {
@@ -76,6 +78,7 @@ const AddBusiness = () => {
             toast.success(response.payload.message);
             dispatch(clearBusiness());
             navigate(AppRoutes.PARTNERS);
+            dispatch(apiSuccess());
           }
         },
       );
@@ -85,6 +88,7 @@ const AddBusiness = () => {
           toast.success(response.payload.message);
           dispatch(clearBusiness());
           navigate(AppRoutes.PARTNERS);
+          dispatch(apiSuccess());
         }
       });
     }

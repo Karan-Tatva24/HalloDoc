@@ -9,6 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { cancelCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/cancelCaseAPI";
 import { dashboardCount } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/dashboardCountAPI";
 import { toast } from "react-toastify";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const CancelModal = ({ open, handleClose }) => {
   const { patientFirstName, patientLastName, id } = useSelector(
@@ -23,6 +28,7 @@ const CancelModal = ({ open, handleClose }) => {
     },
     validationSchema: cancelModalSchema,
     onSubmit: (values, onSubmitProps) => {
+      dispatch(apiPending());
       dispatch(
         cancelCase({
           id,
@@ -34,10 +40,12 @@ const CancelModal = ({ open, handleClose }) => {
           toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
+          dispatch(apiSuccess());
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "cancelCase/rejected") {
           toast.error(response.payload.data.validation.body.message);
+          dispatch(apiFails());
         }
       });
     },
