@@ -19,6 +19,9 @@ import { toast } from "react-toastify";
 import { clearEncounterForm } from "../../redux/halloSlices/providerSlices/encounterFormSlice";
 import { AppRoutes } from "../../constants/routes";
 import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const INITIAL_VALUES = {
   firstName: "",
@@ -86,6 +89,11 @@ const EncounterForm = () => {
     validationSchema: encounterFormSchema,
     onSubmit: (values) => {
       dispatch(apiPending());
+      // formik.setFieldValue(
+      //   "serviceDate",
+      //   values.serviceDate.format("MM-DD-YYYY"),
+      // );
+      // formik.setFieldValue("dob", values.dob.format("MM-DD-YYYY"));
       if (encounterFormData?.id) {
         dispatch(editEncounterForm({ id, data: values })).then((response) => {
           if (response.type === "editEncounterForm/fulfilled") {
@@ -255,35 +263,51 @@ const EncounterForm = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input
-                    name="dob"
-                    label="Date Of Birth"
-                    type="date"
-                    fullWidth
-                    value={formik.values.dob}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={formik.touched.dob && formik.errors.dob}
-                    error={formik.touched.dob && Boolean(formik.errors.dob)}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="dob"
+                      label="Date Of Birth"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.dob ? dayjs(formik.values.dob) : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("dob", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.dob && Boolean(formik.errors.dob)}
+                      helperText={formik.touched.dob && formik.errors.dob}
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input
-                    name="serviceDate"
-                    label="Date"
-                    type="date"
-                    fullWidth
-                    value={formik.values.serviceDate}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.serviceDate && formik.errors.serviceDate
-                    }
-                    error={
-                      formik.touched.serviceDate &&
-                      Boolean(formik.errors.serviceDate)
-                    }
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="serviceDate"
+                      label="Date"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.serviceDate
+                          ? dayjs(formik.values.serviceDate)
+                          : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("serviceDate", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.serviceDate &&
+                        Boolean(formik.errors.serviceDate)
+                      }
+                      helperText={
+                        formik.touched.serviceDate && formik.errors.serviceDate
+                      }
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <PhoneInput

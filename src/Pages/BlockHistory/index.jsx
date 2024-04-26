@@ -27,6 +27,9 @@ import {
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const BlockHistory = () => {
   const [tableData, setTableData] = useState([]);
@@ -41,7 +44,7 @@ const BlockHistory = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      date: "",
+      date: null,
       email: "",
       phone: "",
     },
@@ -50,7 +53,7 @@ const BlockHistory = () => {
       dispatch(
         blockHistory({
           name: values.name,
-          date: values.date,
+          date: values.date.format("MM-DD-YYYY"),
           email: values.email,
           phone: values.phone,
           sortBy: orderBy,
@@ -111,7 +114,7 @@ const BlockHistory = () => {
                 spacing={{ xs: 1, md: 2 }}
                 p="1rem 1.2rem 0.8rem 1.25rem"
               >
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Input
                     label="Name"
                     name="name"
@@ -121,18 +124,28 @@ const BlockHistory = () => {
                     onBlur={formik.handleBlur}
                   />
                 </Grid>
-                <Grid item xs={12} md={3}>
-                  <Input
-                    label="Date"
-                    name="date"
-                    type="date"
-                    fullWidth
-                    value={formik.values.date}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
+                <Grid item xs={12} sm={6} md={3}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      fullWidth
+                      sx={{ width: "100%" }}
+                      name="date"
+                      label="Date"
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.date ? dayjs(formik.values.date) : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("date", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.date && Boolean(formik.errors.date)}
+                      helperText={formik.touched.date && formik.errors.date}
+                    />
+                  </LocalizationProvider>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Input
                     label="Email"
                     name="email"
@@ -142,7 +155,7 @@ const BlockHistory = () => {
                     onBlur={formik.handleBlur}
                   />
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Input
                     label="Phone Number"
                     name="phone"

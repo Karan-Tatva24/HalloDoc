@@ -69,8 +69,9 @@ const App = () => {
   return (
     <Box
       display="flex"
-      justifyContent="space-between"
       flexDirection="column"
+      justifyContent="space-between"
+      height="100vh"
       gap={2}
     >
       {isLoading ? (
@@ -171,10 +172,6 @@ const App = () => {
                   path={AppRoutes.CONCLUDE_CARE}
                   element={<ConcludeCare />}
                 />
-                <Route
-                  path={AppRoutes.ENCOUNTER_FORM}
-                  element={<EncounterForm />}
-                />
                 <Route path={AppRoutes.MY_SCHEDULE} element={<MySchedule />} />
               </Route>
 
@@ -183,6 +180,10 @@ const App = () => {
                 <Route
                   path={AppRoutes.VIEW_CASE}
                   element={<ViewReservation />}
+                />
+                <Route
+                  path={AppRoutes.ENCOUNTER_FORM}
+                  element={<EncounterForm />}
                 />
                 <Route path={AppRoutes.VIEW_NOTES} element={<ViewNotes />} />
                 <Route path={AppRoutes.MY_PROFILE} element={<MyProfile />} />

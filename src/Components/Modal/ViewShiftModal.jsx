@@ -16,11 +16,14 @@ import {
 import { viewShiftModalSchema } from "../../ValidationSchema";
 import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
 import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const INITIAL_VALUES = {
   searchRegion: "",
   physician: "",
-  shiftDate: "",
+  shiftDate: null,
   startTime: "",
   endTime: "",
 };
@@ -48,7 +51,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
     dispatch(
       editShift({
         id: viewShiftData.id,
-        shiftDate: formik.values.shiftDate,
+        shiftDate: formik.values.shiftDate.format("MM-DD-YYYY"),
         startTime: formik.values.startTime,
         endTime: formik.values.endTime,
       }),
@@ -69,7 +72,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
     setInitialValues({
       searchRegion: viewShiftData?.region,
       physician: `${viewShiftData?.physician?.firstName} ${viewShiftData?.physician?.lastName}`,
-      shiftDate: viewShiftData?.shiftDate,
+      shiftDate: dayjs(viewShiftData?.shiftDate),
       startTime: viewShiftData?.startTime,
       endTime: viewShiftData?.endTime,
     });
@@ -122,18 +125,27 @@ const ViewShiftModal = ({ open, handleClose }) => {
               helperText={formik.touched.physician && formik.errors.physician}
             />
           ) : null}
-          <Input
-            label="Shift Date"
-            type="date"
-            name="shiftDate"
-            fullWidth
-            disabled={isDisabled}
-            value={formik.values.shiftDate}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.shiftDate && Boolean(formik.errors.shiftDate)}
-            helperText={formik.touched.shiftDate && formik.errors.shiftDate}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              name="shiftDate"
+              label="Shift Date"
+              fullWidth
+              inputFormat="DD/MM/YYYY"
+              disabled={isDisabled}
+              value={
+                formik.values.shiftDate ? dayjs(formik.values.shiftDate) : null
+              }
+              onChange={(newValue) => {
+                const formattedDate = newValue ? newValue : null;
+                formik.setFieldValue("shiftDate", formattedDate);
+              }}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.shiftDate && Boolean(formik.errors.shiftDate)
+              }
+              helperText={formik.touched.shiftDate && formik.errors.shiftDate}
+            />
+          </LocalizationProvider>
           <Box display="flex" justifyContent="space-between" gap={1.5}>
             <Input
               label="Start"

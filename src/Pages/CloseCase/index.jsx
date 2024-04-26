@@ -18,7 +18,6 @@ import { Button } from "../../Components/Button";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import SmartphoneOutlinedIcon from "@mui/icons-material/SmartphoneOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import "./closeCase.css";
 import { Input } from "../../Components/TextField/Input";
@@ -38,6 +37,9 @@ import {
   apiPending,
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const INITIAL_VALUES = {
   phone: "",
@@ -156,6 +158,8 @@ const CloseCase = () => {
             justifyContent="space-between"
             mb={2}
             flexWrap="wrap"
+            gap={2}
+            pb={2}
           >
             <Box display="flex" flexWrap="wrap">
               <Typography variant="h5" gutterBottom>
@@ -170,12 +174,13 @@ const CloseCase = () => {
               onClick={() => navigate(-1)}
             />
           </Box>
-          <Paper className="closeCase-container">
+          <Paper>
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               flexWrap="wrap"
+              p={2}
             >
               <Box>
                 <Typography variant="caption">Patient Name</Typography>
@@ -193,7 +198,7 @@ const CloseCase = () => {
                 size="large"
               />
             </Box>
-            <Typography variant="h6" gutterBottom mt={4}>
+            <Typography variant="h6" gutterBottom mt={4} pl={2} pr={2}>
               <b>Documents</b>
             </Typography>
             <TableContainer component={Paper}>
@@ -233,11 +238,11 @@ const CloseCase = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Typography variant="h6" mt={5} mb={3}>
+            <Typography variant="h6" mt={5} mb={3} pl={2} pr={2}>
               Patient Information
             </Typography>
             <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={{ xs: 1, md: 2 }}>
+              <Grid container spacing={{ xs: 1, md: 2 }} p={2}>
                 <Grid item xs={12} md={6}>
                   <Input
                     label="First Name"
@@ -255,20 +260,18 @@ const CloseCase = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input
-                    label="Date of Birth"
-                    type="date"
-                    fullWidth
-                    disabled
-                    value={closeCaseData?.dob}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <CalendarMonthOutlinedIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="date"
+                      label="Date Of Birth"
+                      inputFormat="DD/MM/YYYY"
+                      disabled
+                      sx={{ width: "100%" }}
+                      value={
+                        closeCaseData?.dob ? dayjs(closeCaseData?.dob) : null
+                      }
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={10} md={5}>
                   <Input
@@ -315,6 +318,7 @@ const CloseCase = () => {
                 alignItems="center"
                 gap={2}
                 mt={2}
+                p={2}
               >
                 <Button
                   name={isDisabled ? "Edit" : "Save"}

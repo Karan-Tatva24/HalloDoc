@@ -26,6 +26,9 @@ import { emailLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsm
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 import "./emailLogs.css";
 import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const EmailLogs = () => {
   const [tableData, setTableData] = useState([]);
@@ -56,8 +59,8 @@ const EmailLogs = () => {
       dispatch(
         emailLog({
           receiverName: values.receiverName,
-          createdDate: values.createDate,
-          sentDate: values.sentDate,
+          createdDate: values.createDate.format("MM-DD-YYYY"),
+          sentDate: values.sentDate.format("MM-DD-YYYY"),
           email: values.email,
           roleName: values.role,
           sortBy: orderBy,
@@ -177,26 +180,58 @@ const EmailLogs = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
-                  <Input
-                    label="Created Date"
-                    name="createDate"
-                    type="date"
-                    fullWidth
-                    value={formik.values.createDate}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="createDate"
+                      label="Created Date"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.createDate
+                          ? dayjs(formik.values.createDate)
+                          : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("createDate", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.createDate &&
+                        Boolean(formik.errors.createDate)
+                      }
+                      helperText={
+                        formik.touched.createDate && formik.errors.createDate
+                      }
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
-                  <Input
-                    label="Sent Date"
-                    name="sentDate"
-                    type="Date"
-                    fullWidth
-                    value={formik.values.sentDate}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="sentDate"
+                      label="Sent Date"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.sentDate
+                          ? dayjs(formik.values.sentDate)
+                          : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("sentDate", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.sentDate &&
+                        Boolean(formik.errors.sentDate)
+                      }
+                      helperText={
+                        formik.touched.sentDate && formik.errors.sentDate
+                      }
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
                   <Box display="flex" justifyContent="flex-end" gap={2} pt={1}>

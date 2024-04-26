@@ -19,6 +19,9 @@ import {
   apiPending,
   apiSuccess,
 } from "../../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const initialValues = {
   requestType: "Business",
@@ -27,6 +30,7 @@ const initialValues = {
   requestorPhoneNumber: "",
   requestorEmail: "",
   relationName: "",
+  caseNumber: "",
   patientNote: "",
   patientFirstName: "",
   patientLastName: "",
@@ -91,6 +95,8 @@ const BusinessRequest = () => {
     };
   }, [dispatch, formik.setFieldValue, formik.values.patientEmail]);
 
+  console.log("touched", formik.touched.dob);
+  console.log("patientFirstName touched", formik.touched.patientFirstName);
   return (
     <>
       <Box sx={{ backgroundColor: "#f6f6f6" }}>
@@ -202,7 +208,21 @@ const BusinessRequest = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input label="Case Number (Optional)" fullWidth />
+                  <Input
+                    name="caseNumber"
+                    label="Case Number (Optional)"
+                    fullWidth
+                    value={formik.values.caseNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={
+                      formik.touched.caseNumber && formik.errors.caseNumber
+                    }
+                    error={
+                      formik.touched.caseNumber &&
+                      Boolean(formik.errors.caseNumber)
+                    }
+                  />
                 </Grid>
               </Grid>
               <Typography variant="h5" pb={2} pt={3}>
@@ -265,17 +285,31 @@ const BusinessRequest = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input
-                    name="dob"
-                    label="Date Of Birth"
-                    type="date"
-                    fullWidth
-                    value={formik.values.dob}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={formik.touched.dob && formik.errors.dob}
-                    error={formik.touched.dob && Boolean(formik.errors.dob)}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="dob"
+                      label="Date Of Birth"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.dob ? dayjs(formik.values.dob) : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("dob", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      renderInput={(params) => (
+                        <Input
+                          helperText={formik.touched.dob && formik.errors.dob}
+                          error={
+                            formik.touched.dob && Boolean(formik.errors.dob)
+                          }
+                          {...params}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
                 </Grid>
               </Grid>
               <Typography variant="h5" pb={2} pt={3}>

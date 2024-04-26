@@ -24,6 +24,9 @@ import AssignModal from "../../Components/Modal/AssignModal";
 import CancelModal from "../../Components/Modal/CancelModal";
 import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
 import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const INITIAL_VALUE = {
   patientNotes: "",
@@ -177,23 +180,31 @@ const ViewReservation = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Input
-                    type="date"
-                    label="Date Of Birth"
-                    name="dateOfBirth"
-                    disabled
-                    value={formik.values.dateOfBirth}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={
-                      formik.touched.dateOfBirth && formik.errors.dateOfBirth
-                    }
-                    error={
-                      formik.touched.dateOfBirth &&
-                      Boolean(formik.errors.dateOfBirth)
-                    }
-                    fullWidth
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="dateOfBirth"
+                      label="Date Of Birth"
+                      sx={{ width: "100%" }}
+                      inputFormat="DD/MM/YYYY"
+                      value={
+                        formik.values.dateOfBirth
+                          ? dayjs(formik.values.dateOfBirth)
+                          : null
+                      }
+                      onChange={(newValue) => {
+                        const formattedDate = newValue ? newValue : null;
+                        formik.setFieldValue("dateOfBirth", formattedDate);
+                      }}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.dateOfBirth &&
+                        Boolean(formik.errors.dateOfBirth)
+                      }
+                      helperText={
+                        formik.touched.dateOfBirth && formik.errors.dateOfBirth
+                      }
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={10} md={5}>
                   <PhoneInput
