@@ -14,7 +14,11 @@ import ProviderProfile from "../../Components/infoForms/ProviderProfile";
 import OnBoarding from "./components/OnBoarding";
 import RequestToAdminModal from "../../Components/Modal/RequestToAdminModal";
 import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const MyProfile = () => {
   const [open, setOpen] = useState(false);
@@ -28,10 +32,11 @@ const MyProfile = () => {
 
   useEffect(() => {
     dispatch(apiPending());
+    dispatch(getRoles({ accountType: "admin" }));
     dispatch(adminProfile()).then((response) => {
       if (response.type === "adminProfile/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "adminProfile/rejected") dispatch(apiFails());
     });
-    dispatch(getRoles({ accountType: "admin" }));
   }, [dispatch]);
 
   const handleOpen = (name, id) => {

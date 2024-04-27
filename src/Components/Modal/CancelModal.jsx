@@ -44,8 +44,8 @@ const CancelModal = ({ open, handleClose }) => {
           handleClose();
           onSubmitProps.resetForm();
         } else if (response.type === "cancelCase/rejected") {
-          toast.error(response.payload.data.validation.body.message);
           dispatch(apiFails());
+          toast.error(response.payload.data.validation.body.message);
         }
       });
     },

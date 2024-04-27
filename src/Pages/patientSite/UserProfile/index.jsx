@@ -18,11 +18,11 @@ import { editProfile } from "../../../redux/halloAPIs/patientAPIs/editProfileAPI
 import { toast } from "react-toastify";
 import { adminProfile } from "../../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
 import {
+  apiFails,
   apiPending,
   apiSuccess,
 } from "../../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const INITIAL_VALUES = {
@@ -48,6 +48,7 @@ const UserProfile = () => {
     dispatch(apiPending());
     dispatch(adminProfile()).then((response) => {
       if (response.type === "adminProfile/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "adminProfile/rejected") dispatch(apiFails());
     });
   }, [dispatch]);
 
@@ -74,11 +75,11 @@ const UserProfile = () => {
     dispatch(apiPending());
     dispatch(editProfile(formik.values)).then((response) => {
       if (response.type === "editProfile/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(adminProfile(profileData.id));
         setIsDisable(true);
         dispatch(apiSuccess());
-      }
+        toast.success(response.payload.message);
+      } else if (response.type === "editProfile/rejected") dispatch(apiFails());
     });
   };
 
@@ -145,25 +146,21 @@ const UserProfile = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="dob"
-                      label="Date Of Birth"
-                      sx={{ width: "100%" }}
-                      disabled={isDisable}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.dob ? dayjs(formik.values.dob) : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("dob", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.dob && Boolean(formik.errors.dob)}
-                      helperText={formik.touched.dob && formik.errors.dob}
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="dob"
+                    label="Date Of Birth"
+                    sx={{ width: "100%" }}
+                    disabled={isDisable}
+                    inputFormat="DD/MM/YYYY"
+                    value={formik.values.dob ? dayjs(formik.values.dob) : null}
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("dob", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.dob && Boolean(formik.errors.dob)}
+                    helperText={formik.touched.dob && formik.errors.dob}
+                  />
                 </Grid>
               </Grid>
               <Typography variant="h5" pb={2} pt={3}>

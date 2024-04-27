@@ -296,10 +296,10 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
                       } else if (
                         response.type === "editProviderProfile/rejected"
                       ) {
+                        dispatch(apiFails());
                         toast.error(
                           response.payload?.data?.validation?.message,
                         );
-                        dispatch(apiFails());
                       }
                     },
                   );

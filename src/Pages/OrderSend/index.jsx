@@ -50,17 +50,18 @@ const Order = () => {
         }),
       ).then((response) => {
         if (response.type === "sendOrder/fulfilled") {
-          toast.success(response.payload.message);
           onSubmitProps.resetForm();
           navigate(AppRoutes.DASHBOARD);
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
         } else if (response.type === "sendOrder/rejected") {
-          toast.error(response.payload.data.validation.body.message);
           dispatch(apiFails());
+          toast.error(response.payload.data.validation.body.message);
         }
       });
     },
   });
+
   return (
     <>
       <Box className="order-main-container">

@@ -24,7 +24,11 @@ import {
   viewRole,
 } from "../../redux/halloAPIs/adminAPIs/accessAPIs/createAccessAPI";
 import { toast } from "react-toastify";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const columns = [
   {
@@ -83,6 +87,7 @@ const AccountAccess = () => {
       }),
     ).then((response) => {
       if (response.type === "accountAccess/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "accountAccess/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
@@ -151,6 +156,11 @@ const AccountAccess = () => {
                                             "viewRole/fulfilled"
                                           )
                                             dispatch(apiSuccess());
+                                          else if (
+                                            response.type ===
+                                            "viewRole/rejected"
+                                          )
+                                            dispatch(apiFails());
                                         },
                                       );
                                       navigate(AppRoutes.CREATE_ROLE);
@@ -173,7 +183,11 @@ const AccountAccess = () => {
                                             toast.success(
                                               response.payload.message,
                                             );
-                                          }
+                                          } else if (
+                                            response.type ===
+                                            "deleteRole/rejected"
+                                          )
+                                            dispatch(apiFails());
                                         },
                                       );
                                     }}

@@ -45,7 +45,11 @@ import TypeOfCareModal from "../../Components/Modal/TypeOfCareModal";
 import EncounterModal from "../../Components/Modal/EncounterModal";
 import MedicalHistory from "../../Components/MedicalHistory";
 import CreateNewRequestModal from "../../Components/Modal/CreateNewRequestModal";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const DashBoard = () => {
   const [isActive, setIsActive] = useState(true);
@@ -81,12 +85,23 @@ const DashBoard = () => {
   useEffect(() => {
     dispatch(apiPending());
     if (accountType === "Admin") {
-      dispatch(dashboardCount());
-      dispatch(getProfession());
-      dispatch(getRegions());
+      dispatch(dashboardCount()).then((response) => {
+        if (response.type === "") dispatch(apiFails("dashboardCount/rejected"));
+      });
+      dispatch(getProfession()).then((response) => {
+        if (response.type === "") dispatch(apiFails("getProfession/rejected"));
+      });
+      dispatch(getRegions()).then((response) => {
+        if (response.type === "") dispatch(apiFails("getRegions/rejected"));
+      });
     } else if (accountType === "Physician") {
-      dispatch(getProviderDashboardCount());
-      dispatch(getRegions());
+      dispatch(getProviderDashboardCount()).then((response) => {
+        if (response.type === "")
+          dispatch(apiFails("getProviderDashboardCount/rejected"));
+      });
+      dispatch(getRegions()).then((response) => {
+        if (response.type === "") dispatch(apiFails("getRegions/rejected"));
+      });
     }
     dispatch(apiSuccess());
   }, [accountType, dispatch]);

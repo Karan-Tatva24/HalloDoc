@@ -18,7 +18,11 @@ import { userDefault } from "../../assets/Images";
 import "./providerOnCall.css";
 import { providerOnCall } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerOnCallAPI";
 import { AppRoutes } from "../../constants/routes";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ProviderOnCall = () => {
   const navigate = useNavigate();
@@ -32,6 +36,8 @@ const ProviderOnCall = () => {
     dispatch(apiPending());
     dispatch(providerOnCall({ regions: selectedRegion })).then((response) => {
       if (response.type === "providerOnCall/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "providerOnCall/rejected")
+        dispatch(apiFails());
     });
   }, [dispatch, selectedRegion]);
 

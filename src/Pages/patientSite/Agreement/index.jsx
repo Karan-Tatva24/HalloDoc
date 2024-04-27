@@ -7,6 +7,7 @@ import { acceptAgreement } from "../../../redux/halloAPIs/patientAPIs/agreementA
 import CancelAgreementModal from "../../../Components/Modal/CancelAgreementModal";
 import { toast } from "react-toastify";
 import {
+  apiFails,
   apiPending,
   apiSuccess,
 } from "../../../redux/halloSlices/apiStatusSlice";
@@ -48,10 +49,11 @@ const Agreement = () => {
                 dispatch(apiPending());
                 dispatch(acceptAgreement(id)).then((res) => {
                   if (res.type === "acceptAgreement/fulfilled") {
-                    toast.success(res.payload.message);
                     navigate(-1);
                     dispatch(apiSuccess());
-                  }
+                    toast.success(res.payload.message);
+                  } else if (Response.type === "acceptAgreement/rejected")
+                    dispatch(apiFails());
                 });
               }}
             />

@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { viewFile } from "../../../redux/halloAPIs/adminAPIs/commonAPIs/viewFileAPI";
 import {
+  apiFails,
   apiPending,
   apiSuccess,
 } from "../../../redux/halloSlices/apiStatusSlice";
@@ -67,10 +68,11 @@ const OnBoarding = ({
 
       dispatch(editProviderProfile({ id, data: formData })).then((response) => {
         if (response.type === "editProviderProfile/fulfilled") {
-          toast.success(response.payload.message);
           dispatch(physicianProfile(id));
           dispatch(apiSuccess());
-        }
+          toast.success(response.payload.message);
+        } else if (response.type === "editProviderProfile/rejected")
+          dispatch(apiFails());
       });
     },
     enableReinitialize: true,

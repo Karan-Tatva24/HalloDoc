@@ -43,13 +43,13 @@ const ViewNotes = () => {
           ? dispatch(viewNotesPost({ id, value: values.adminNotes })).then(
               (response) => {
                 if (response.type === "viewNotesPost/fulfilled") {
-                  toast.success(response.payload.message);
                   onSubmitProps.resetForm();
                   dispatch(viewNotes(id));
                   dispatch(apiSuccess());
+                  toast.success(response.payload.message);
                 } else {
-                  toast.error(response?.error?.message);
                   dispatch(apiFails());
+                  toast.error(response?.error?.message);
                 }
               },
             )
@@ -57,13 +57,13 @@ const ViewNotes = () => {
               updateProviderNotes({ id, value: values.adminNotes }),
             ).then((response) => {
               if (response.type === "updateProviderNotes/fulfilled") {
-                toast.success(response.payload.message);
                 onSubmitProps.resetForm();
                 dispatch(viewNotes(id));
                 dispatch(apiSuccess());
+                toast.success(response.payload.message);
               } else {
-                toast.error(response?.error?.message);
                 dispatch(apiFails());
+                toast.error(response?.error?.message);
               }
             });
       }

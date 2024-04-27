@@ -24,7 +24,11 @@ import {
 import { AppRoutes } from "../../constants/routes";
 import { toast } from "react-toastify";
 import { clearViewRole } from "../../redux/halloSlices/adminSlices/editRoleAccessSlice";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUES = {
   roleName: "",
@@ -57,6 +61,8 @@ const CreateAccess = () => {
       (response) => {
         if (response.type === "getRolesByAccountType/fulfilled")
           dispatch(apiSuccess());
+        else if (response.type === "getRoleByAccountType/rejected")
+          dispatch(apiFails());
       },
     );
   }, [dispatch, formik.values.accountType]);
@@ -76,21 +82,23 @@ const CreateAccess = () => {
       dispatch(updateRole({ id: viewRole.id, data: formik.values })).then(
         (response) => {
           if (response.type === "updateRole/fulfilled") {
-            toast.success(response.payload.message);
             dispatch(clearViewRole());
             navigate(AppRoutes.ACCOUNT_ACCESS);
             dispatch(apiSuccess());
-          }
+            toast.success(response.payload.message);
+          } else if (response.type === "updateRole/rejected")
+            dispatch(apiFails());
         },
       );
     } else {
       dispatch(createAccess(formik.values)).then((response) => {
         if (response.type === "createAccess/fulfilled") {
-          toast.success(response.payload.message);
           dispatch(clearViewRole());
           navigate(AppRoutes.ACCOUNT_ACCESS);
           dispatch(apiSuccess());
-        }
+          toast.success(response.payload.message);
+        } else if (response.type === "createAccess/rejected")
+          dispatch(apiFails());
       });
     }
   };

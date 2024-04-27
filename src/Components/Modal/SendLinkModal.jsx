@@ -35,13 +35,13 @@ const SendLinkModal = ({ open, handleClose }) => {
         }),
       ).then((response) => {
         if (response.type === "sendLink/fulfilled") {
-          toast.success(response.payload.message);
-          dispatch(apiSuccess());
           handleClose();
+          dispatch(apiSuccess());
+          toast.success(response.payload.message);
           onSubmitProps.resetForm();
         } else if (response.type === "sendLink/rejected") {
-          toast.error(response.payload?.data?.validation?.body?.message);
           dispatch(apiFails());
+          toast.error(response.payload?.data?.validation?.body?.message);
         }
       });
     },

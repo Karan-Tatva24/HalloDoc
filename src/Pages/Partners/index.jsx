@@ -29,7 +29,11 @@ import {
   viewBusiness,
 } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/partnersAPI";
 import { toast } from "react-toastify";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const Partners = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,6 +57,7 @@ const Partners = () => {
       }),
     ).then((response) => {
       if (response.type === "getVendor/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "getVendor/rejected") dispatch(apiFails());
     });
   }, [dispatch, pageNo, professionFilter, rowsPerPage, searchTerm]);
 
@@ -67,10 +72,11 @@ const Partners = () => {
     dispatch(apiPending());
     dispatch(deleteBusiness(id)).then((response) => {
       if (response.type === "deleteBusiness/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(getVendor({ page: pageNo, pageSize: rowsPerPage }));
         dispatch(apiSuccess());
-      }
+        toast.success(response.payload.message);
+      } else if (response.type === "deleteBusiness/rejected")
+        dispatch(apiFails());
     });
   };
 

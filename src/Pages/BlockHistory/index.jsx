@@ -26,9 +26,12 @@ import {
 } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/blockHistoryAPI";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const BlockHistory = () => {
@@ -63,6 +66,8 @@ const BlockHistory = () => {
         }),
       ).then((response) => {
         if (response.type === "blockHistory/fulfilled") dispatch(apiSuccess());
+        else if (response.type === "blockHistory/rejected")
+          dispatch(apiFails());
       });
     },
   });
@@ -78,6 +83,7 @@ const BlockHistory = () => {
       }),
     ).then((response) => {
       if (response.type === "blockHistory/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "blockHistory/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
@@ -125,25 +131,23 @@ const BlockHistory = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      fullWidth
-                      sx={{ width: "100%" }}
-                      name="date"
-                      label="Date"
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.date ? dayjs(formik.values.date) : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("date", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.date && Boolean(formik.errors.date)}
-                      helperText={formik.touched.date && formik.errors.date}
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    fullWidth
+                    sx={{ width: "100%" }}
+                    name="date"
+                    label="Date"
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.date ? dayjs(formik.values.date) : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("date", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.date && Boolean(formik.errors.date)}
+                    helperText={formik.touched.date && formik.errors.date}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
                   <Input
@@ -252,11 +256,15 @@ const BlockHistory = () => {
                                               pageSize: rowsPerPage,
                                             }),
                                           );
+                                          dispatch(apiSuccess());
                                           toast.success(
                                             response.payload.message,
                                           );
-                                          dispatch(apiSuccess());
-                                        }
+                                        } else if (
+                                          response.type ===
+                                          "unblockPatient/rejected"
+                                        )
+                                          dispatch(apiFails());
                                       },
                                     );
                                   }}

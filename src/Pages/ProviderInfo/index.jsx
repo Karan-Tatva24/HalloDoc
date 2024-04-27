@@ -30,7 +30,11 @@ import {
   updateNotification,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import "./providerInfo.css";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const ProviderInfo = () => {
   const [searchTerm, setSearchTerm] = useState("all");
@@ -105,6 +109,7 @@ const ProviderInfo = () => {
       }),
     ).then((response) => {
       if (response.type === "providerInfo/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "providerInfo/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, searchTerm]);
 
@@ -167,7 +172,10 @@ const ProviderInfo = () => {
                             dispatch(providerInfo({ regions: searchTerm }));
                             setShowSaveButton(false);
                             dispatch(apiSuccess());
-                          }
+                          } else if (
+                            response.type === "updateNotification/rejected"
+                          )
+                            dispatch(apiFails());
                         },
                       );
                     }}

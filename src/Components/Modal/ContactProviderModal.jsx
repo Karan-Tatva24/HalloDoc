@@ -38,13 +38,13 @@ const ContactProviderModal = ({ open, handleClose, id }) => {
         }),
       ).then((response) => {
         if (response.type === "contactProvider/fulfilled") {
-          toast.success(response.payload.message);
+          onSubmitProps.resetForm();
           dispatch(apiSuccess());
           handleClose();
-          onSubmitProps.resetForm();
+          toast.success(response.payload.message);
         } else if (response.type === "contactProvider/rejected") {
-          toast.error(response.payload.data.validation.body.message);
           dispatch(apiFails());
+          toast.error(response.payload.data.validation.body.message);
         }
       });
     },

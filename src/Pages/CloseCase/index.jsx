@@ -37,9 +37,8 @@ import {
   apiPending,
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const INITIAL_VALUES = {
   phone: "",
@@ -88,11 +87,11 @@ const CloseCase = () => {
       }),
     ).then((response) => {
       if (response.type === "closeCaseEdit/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "closeCaseEdit/rejected") {
-        toast.error(response.payload.data.validation.body.message);
         dispatch(apiFails());
+        toast.error(response.payload.data.validation.body.message);
       }
     });
   };
@@ -123,13 +122,15 @@ const CloseCase = () => {
             URL.revokeObjectURL(url);
             document.body.removeChild(link);
           }
-          toast.success(response.payload.message);
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
         } else {
+          dispatch(apiFails());
           toast.error("File download failed.");
         }
       })
       .catch((error) => {
+        dispatch(apiFails());
         toast.error("Error downloading file:", error);
       });
   };
@@ -140,6 +141,7 @@ const CloseCase = () => {
       closeCaseView({ id, sortBy: orderBy, orderBy: order.toUpperCase() }),
     ).then((response) => {
       if (response.type === "closeCaseView/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "closeCaseView/rejected") dispatch(apiFails());
     });
   }, [dispatch, id, order, orderBy]);
 
@@ -260,18 +262,16 @@ const CloseCase = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="date"
-                      label="Date Of Birth"
-                      inputFormat="DD/MM/YYYY"
-                      disabled
-                      sx={{ width: "100%" }}
-                      value={
-                        closeCaseData?.dob ? dayjs(closeCaseData?.dob) : null
-                      }
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="date"
+                    label="Date Of Birth"
+                    inputFormat="DD/MM/YYYY"
+                    disabled
+                    sx={{ width: "100%" }}
+                    value={
+                      closeCaseData?.dob ? dayjs(closeCaseData?.dob) : null
+                    }
+                  />
                 </Grid>
                 <Grid item xs={10} md={5}>
                   <Input

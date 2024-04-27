@@ -16,6 +16,7 @@ import {
   apiPending,
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
+import { AppRoutes } from "../../constants/routes";
 
 const initialValues = {
   newPassword: "",
@@ -36,12 +37,12 @@ const ResetPassword = () => {
     dispatch(apiPending());
     dispatch(resetPassword({ values, token })).then((response) => {
       if (response.type === "resetPassword/fulfilled") {
-        toast.success("You are Reset Password Successfully");
-        navigate(-1);
+        navigate(AppRoutes.LOGIN);
         dispatch(apiSuccess());
+        toast.success("You are Reset Password Successfully");
       } else {
-        toast.error(response?.error?.message);
         dispatch(apiFails());
+        toast.error(response?.error?.message);
       }
     });
   };

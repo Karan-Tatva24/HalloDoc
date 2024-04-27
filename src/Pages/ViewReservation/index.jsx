@@ -23,9 +23,12 @@ import { useDispatch, useSelector } from "react-redux";
 import AssignModal from "../../Components/Modal/AssignModal";
 import CancelModal from "../../Components/Modal/CancelModal";
 import { viewNotes } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewNotesAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const INITIAL_VALUE = {
@@ -180,31 +183,29 @@ const ViewReservation = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="dateOfBirth"
-                      label="Date Of Birth"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.dateOfBirth
-                          ? dayjs(formik.values.dateOfBirth)
-                          : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("dateOfBirth", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.dateOfBirth &&
-                        Boolean(formik.errors.dateOfBirth)
-                      }
-                      helperText={
-                        formik.touched.dateOfBirth && formik.errors.dateOfBirth
-                      }
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="dateOfBirth"
+                    label="Date Of Birth"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.dateOfBirth
+                        ? dayjs(formik.values.dateOfBirth)
+                        : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("dateOfBirth", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.dateOfBirth &&
+                      Boolean(formik.errors.dateOfBirth)
+                    }
+                    helperText={
+                      formik.touched.dateOfBirth && formik.errors.dateOfBirth
+                    }
+                  />
                 </Grid>
                 <Grid item xs={10} md={5}>
                   <PhoneInput
@@ -328,7 +329,8 @@ const ViewReservation = () => {
                       if (response.type === "viewNotes/fulfilled") {
                         navigate(AppRoutes.VIEW_NOTES);
                         dispatch(apiSuccess());
-                      }
+                      } else if (response.type === "viewNotes/rejected")
+                        dispatch(apiFails());
                     });
                   }}
                 />

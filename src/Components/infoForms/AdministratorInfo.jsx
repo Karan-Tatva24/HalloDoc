@@ -199,10 +199,10 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
                     dispatch(apiSuccess());
                     toast.success(response.payload.message);
                   } else if (response.type === "editAdminProfile/rejected") {
+                    dispatch(apiFails());
                     toast.error(
                       response.payload?.data?.validation?.body?.message,
                     );
-                    dispatch(apiFails());
                   }
                 });
                 setIsDisabled(true);

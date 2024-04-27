@@ -25,7 +25,11 @@ import {
   patientRecord,
 } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/patientRecordsAPI";
 import "./patientHistory.css";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const PatientHistory = () => {
   const [tableData, setTableData] = useState([]);
@@ -59,6 +63,8 @@ const PatientHistory = () => {
       ).then((response) => {
         if (response.type === "patientHistory/fulfilled")
           dispatch(apiSuccess());
+        else if (response.type === "patientHistory/rejected")
+          dispatch(apiFails());
       });
     },
   });
@@ -72,6 +78,8 @@ const PatientHistory = () => {
       }),
     ).then((response) => {
       if (response.type === "patientHistory/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "patientHistory/rejected")
+        dispatch(apiFails());
     });
   }, [dispatch, pageNo, rowsPerPage]);
 
@@ -194,6 +202,7 @@ const PatientHistory = () => {
                                   name="Explore"
                                   variant="outlined"
                                   onClick={() => {
+                                    dispatch(apiPending());
                                     dispatch(
                                       patientRecord({ id: row?.userId }),
                                     ).then((response) => {
@@ -202,7 +211,12 @@ const PatientHistory = () => {
                                         "patientRecord/fulfilled"
                                       ) {
                                         navigate(AppRoutes.PATIENTS_RECORDS);
-                                      }
+                                        dispatch(apiSuccess());
+                                      } else if (
+                                        response.type ===
+                                        "patientRecord/rejected"
+                                      )
+                                        dispatch(apiFails());
                                     });
                                   }}
                                 />

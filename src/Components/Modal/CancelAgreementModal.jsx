@@ -8,7 +8,11 @@ import { useDispatch } from "react-redux";
 import { cancelAgreement } from "../../redux/halloAPIs/patientAPIs/agreementAPI";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const CancelAgreementModal = ({ id, open, handleClose }) => {
   const dispatch = useDispatch();
@@ -28,6 +32,9 @@ const CancelAgreementModal = ({ id, open, handleClose }) => {
           dispatch(apiSuccess());
           handleClose();
           navigate(-1);
+        } else if (res.type === "cancelAgreement/rejected") {
+          toast.error(res.payload?.data?.validation?.message);
+          dispatch(apiFails());
         }
       });
     },

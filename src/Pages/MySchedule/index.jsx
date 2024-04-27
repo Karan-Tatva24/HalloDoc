@@ -12,7 +12,11 @@ import ViewShiftModal from "../../Components/Modal/ViewShiftModal";
 import { viewShift } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { mySchedule } from "../../redux/halloAPIs/providerAPIs/scheduleAPIs/myScheduleAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const MySchedule = () => {
   const [modalName, setModalName] = useState("");
@@ -26,6 +30,7 @@ const MySchedule = () => {
     dispatch(apiPending());
     dispatch(mySchedule({})).then((response) => {
       if (response.type === "mySchedule/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "mySchedule/rejected") dispatch(apiFails());
     });
   }, [dispatch]);
 

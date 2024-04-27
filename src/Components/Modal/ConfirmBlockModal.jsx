@@ -31,14 +31,14 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
         blockCase({ id, reasonForCancellation: values.blockRequest }),
       ).then((response) => {
         if (response.type === "blockCase/fulfilled") {
-          toast.success(response.payload.message);
           onSubmitProps.resetForm();
           dispatch(dashboardCount());
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
           handleClose();
         } else if (response.type === "blockCase/rejected") {
-          toast.error(response.payload.data.validation.body.message);
           dispatch(apiFails());
+          toast.error(response.payload.data.validation.body.message);
         }
       });
     },

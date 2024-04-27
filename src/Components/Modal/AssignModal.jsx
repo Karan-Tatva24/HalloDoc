@@ -48,8 +48,8 @@ const AssignModal = ({ open, handleClose }) => {
           dispatch(dashboardCount());
           dispatch(apiSuccess());
         } else if (response.type === "assignCase/rejected") {
-          toast.error(response.payload?.data?.validation?.body?.message);
           dispatch(apiFails());
+          toast.error(response.payload?.data?.validation?.body?.message);
         }
         handleClose();
       });

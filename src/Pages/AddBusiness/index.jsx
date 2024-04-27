@@ -23,7 +23,11 @@ import {
   addBusiness,
   updateBusiness,
 } from "../../redux/halloAPIs/adminAPIs/partnerAPIs/partnersAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const INITIAL_VALUE = {
   businessName: "",
@@ -75,21 +79,23 @@ const AddBusiness = () => {
       dispatch(updateBusiness({ id: business.id, data: formik.values })).then(
         (response) => {
           if (response.type === "updateBusiness/fulfilled") {
-            toast.success(response.payload.message);
             dispatch(clearBusiness());
             navigate(AppRoutes.PARTNERS);
             dispatch(apiSuccess());
-          }
+            toast.success(response.payload.message);
+          } else if (response.type === "updateBusiness/rejected")
+            dispatch(apiFails());
         },
       );
     } else {
       dispatch(addBusiness(formik.values)).then((response) => {
         if (response.type === "addBusiness/fulfilled") {
-          toast.success(response.payload.message);
           dispatch(clearBusiness());
           navigate(AppRoutes.PARTNERS);
           dispatch(apiSuccess());
-        }
+          toast.success(response.payload.message);
+        } else if (response.type === "addBusiness/rejected")
+          dispatch(apiFails());
       });
     }
   };

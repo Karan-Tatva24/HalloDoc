@@ -24,7 +24,11 @@ import {
   viewShift,
   viewShiftByDate,
 } from "../../redux/halloAPIs/adminAPIs/providerAPIs/viewShiftsAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const Scheduling = () => {
   const navigate = useNavigate();
@@ -43,6 +47,8 @@ const Scheduling = () => {
       }),
     ).then((response) => {
       if (response.type === "viewShiftByDate/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "viewShiftByDate/rejected")
+        dispatch(apiFails());
     });
   }, [dispatch, selectRegion]);
 

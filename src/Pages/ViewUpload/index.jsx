@@ -120,12 +120,12 @@ const ViewUpload = () => {
     formData.append("document", selectedFile);
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "uploadFile/rejected") {
-        toast.error(response.payload?.data?.error);
         dispatch(apiFails());
+        toast.error(response.payload?.data?.error);
       }
     });
     setSelectedFile(null);
@@ -197,12 +197,12 @@ const ViewUpload = () => {
     dispatch(apiPending());
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "deleteFile/rejected") {
-        toast.error(response?.payload?.data.message);
         dispatch(apiFails());
+        toast.error(response?.payload?.data.message);
       }
     });
   };
@@ -214,12 +214,12 @@ const ViewUpload = () => {
     dispatch(deleteFile({ fileNames: selectedFileNames, id })).then(
       (response) => {
         if (response.type === "deleteFile/fulfilled") {
-          toast.success(response.payload.message);
           dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
         } else if (response.type === "deleteFile/rejected") {
-          toast.error(response?.payload?.data.error);
           dispatch(apiFails());
+          toast.error(response?.payload?.data.error);
         }
       },
     );
@@ -236,11 +236,11 @@ const ViewUpload = () => {
       }),
     ).then((response) => {
       if (response.type === "sendMail/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "sendMail/rejected") {
-        toast.error(response.payload?.data.message);
         dispatch(apiFails());
+        toast.error(response.payload?.data.message);
       }
     });
   };

@@ -25,13 +25,13 @@ const RequestSupportModal = ({ open, handleClose }) => {
       dispatch(apiPending());
       dispatch(requestSupport(values.message)).then((response) => {
         if (response.type === "requestSupport/fulfilled") {
-          toast.success(response.payload.message);
           dispatch(apiSuccess());
           handleClose();
+          toast.success(response.payload.message);
           onSubmitProps.resetForm();
         } else if (response.type === "requestSupport/rejected") {
-          toast.error(response?.payload?.data?.validation?.body?.message);
           dispatch(apiFails());
+          toast.error(response?.payload?.data?.validation?.body?.message);
         }
       });
     },

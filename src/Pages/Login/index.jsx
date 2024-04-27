@@ -36,10 +36,10 @@ const Login = () => {
     dispatch(userLogin(values)).then((response) => {
       if (response.type === "userLogin/fulfilled") {
         localStorage.setItem("private_token", response.payload.token);
-        toast.success("You are login Successfully");
         dispatch(loggedUser(values?.email));
         dispatch(apiSuccess());
         navigate(AppRoutes.DASHBOARD);
+        toast.success("You are login Successfully");
       } else {
         dispatch(apiFails());
         toast.error("Invalid email or password");

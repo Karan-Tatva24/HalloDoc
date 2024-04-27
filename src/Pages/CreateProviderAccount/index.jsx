@@ -113,14 +113,14 @@ const CreateProviderAccount = () => {
       dispatch(createProviderAccount(formData)).then((response) => {
         console.log(response);
         if (response.type === "createProviderAccount/fulfilled") {
-          toast.success(response.payload.message);
           onSubmitProps.resetForm();
           setSelectedFile(null);
           navigate(AppRoutes.PROVIDER);
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
         } else if (response.type === "createProviderAccount/rejected") {
-          toast.error(response.payload.data.message);
           dispatch(apiFails());
+          toast.error(response.payload.data.message);
         }
       });
     },

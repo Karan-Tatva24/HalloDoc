@@ -47,14 +47,14 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
           }),
         ).then((response) => {
           if (response.type === "transferRequest/fulfilled") {
-            toast.success(response.payload.message);
             onSubmitProps.resetForm();
             dispatch(dashboardCount());
-            dispatch(apiSuccess());
             dispatch(clearPhysician());
+            dispatch(apiSuccess());
+            toast.success(response.payload.message);
           } else if (response.type === "transferRequest/rejected") {
-            toast.error(response?.payload?.data?.validation?.body?.message);
             dispatch(apiFails());
+            toast.error(response?.payload?.data?.validation?.body?.message);
           }
           handleClose();
         });
@@ -63,11 +63,12 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
           providerTransferRequest({ id: id, description: values.description }),
         ).then((response) => {
           if (response.type === "providerTransferRequest/fulfilled") {
-            toast.success(response?.payload?.message);
             dispatch(getProviderDashboardCount());
-            dispatch(apiSuccess());
             handleClose();
-          }
+            dispatch(apiSuccess());
+            toast.success(response?.payload?.message);
+          } else if (response.type === "providerTransferRequest/rejected")
+            dispatch(apiFails());
         });
       }
     },

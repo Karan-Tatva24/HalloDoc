@@ -54,12 +54,12 @@ const SendAgreementModal = ({ open, handleClose }) => {
                 dispatch(sendAgreement(id)).then((response) => {
                   console.log(response);
                   if (response.type === "sendAgreement/fulfilled") {
-                    toast.success(response.payload.message);
-                    dispatch(apiSuccess());
                     handleClose();
+                    dispatch(apiSuccess());
+                    toast.success(response.payload.message);
                   } else if (response.type === "sendAgreement/rejected") {
-                    toast.error("Unable to Send");
                     dispatch(apiFails());
+                    toast.error("Unable to Send");
                   }
                 });
               }}

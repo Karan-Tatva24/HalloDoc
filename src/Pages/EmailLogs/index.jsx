@@ -25,9 +25,12 @@ import { columns } from "../../constants/emailLogsData";
 import { emailLog } from "../../redux/halloAPIs/adminAPIs/recordsAPIs/emailAndsmsLogAPI";
 import { getRoles } from "../../redux/halloAPIs/adminAPIs/commonAPIs/getRoleAPI";
 import "./emailLogs.css";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const EmailLogs = () => {
@@ -70,6 +73,7 @@ const EmailLogs = () => {
         }),
       ).then((response) => {
         if (response.type === "emailLog/fulfilled") dispatch(apiSuccess());
+        else if (response.type === "emailLog/rejected") dispatch(apiFails());
       });
       formik.resetForm();
     },
@@ -86,6 +90,7 @@ const EmailLogs = () => {
       }),
     ).then((response) => {
       if (response.type === "emailLog/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "emailLog/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
@@ -180,58 +185,53 @@ const EmailLogs = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="createDate"
-                      label="Created Date"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.createDate
-                          ? dayjs(formik.values.createDate)
-                          : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("createDate", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.createDate &&
-                        Boolean(formik.errors.createDate)
-                      }
-                      helperText={
-                        formik.touched.createDate && formik.errors.createDate
-                      }
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="createDate"
+                    label="Created Date"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.createDate
+                        ? dayjs(formik.values.createDate)
+                        : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("createDate", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.createDate &&
+                      Boolean(formik.errors.createDate)
+                    }
+                    helperText={
+                      formik.touched.createDate && formik.errors.createDate
+                    }
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="sentDate"
-                      label="Sent Date"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.sentDate
-                          ? dayjs(formik.values.sentDate)
-                          : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("sentDate", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.sentDate &&
-                        Boolean(formik.errors.sentDate)
-                      }
-                      helperText={
-                        formik.touched.sentDate && formik.errors.sentDate
-                      }
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="sentDate"
+                    label="Sent Date"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.sentDate
+                        ? dayjs(formik.values.sentDate)
+                        : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("sentDate", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.sentDate && Boolean(formik.errors.sentDate)
+                    }
+                    helperText={
+                      formik.touched.sentDate && formik.errors.sentDate
+                    }
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={2}>
                   <Box display="flex" justifyContent="flex-end" gap={2} pt={1}>

@@ -253,8 +253,8 @@ const PhysiciansInformation = ({
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
-                      toast.error(response.payload?.data?.message);
                       dispatch(apiFails());
+                      toast.error(response.payload?.data?.message);
                     }
                   });
                   setIsDisabled(true);

@@ -28,9 +28,12 @@ import {
 import "./searchRecords.css";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const SearchRecords = () => {
@@ -83,6 +86,8 @@ const SearchRecords = () => {
         }),
       ).then((response) => {
         if (response.type === "searchRecord/fulfilled") dispatch(apiSuccess());
+        else if (response.type === "searchRecord/rejected")
+          dispatch(apiFails());
       });
     },
   });
@@ -98,6 +103,7 @@ const SearchRecords = () => {
       }),
     ).then((response) => {
       if (response.type === "searchRecord/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "searchRecord/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 
@@ -241,55 +247,48 @@ const SearchRecords = () => {
                   </Input>
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="fromDate"
-                      label="From Date Of Service"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.fromDate
-                          ? dayjs(formik.values.fromDate)
-                          : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("fromDate", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.fromDate &&
-                        Boolean(formik.errors.fromDate)
-                      }
-                      helperText={
-                        formik.touched.fromDate && formik.errors.fromDate
-                      }
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="fromDate"
+                    label="From Date Of Service"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.fromDate
+                        ? dayjs(formik.values.fromDate)
+                        : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("fromDate", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.fromDate && Boolean(formik.errors.fromDate)
+                    }
+                    helperText={
+                      formik.touched.fromDate && formik.errors.fromDate
+                    }
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="toDate"
-                      label="To Date Of Service"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.toDate
-                          ? dayjs(formik.values.toDate)
-                          : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("toDate", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.toDate && Boolean(formik.errors.toDate)
-                      }
-                      helperText={formik.touched.toDate && formik.errors.toDate}
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="toDate"
+                    label="To Date Of Service"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={
+                      formik.values.toDate ? dayjs(formik.values.toDate) : null
+                    }
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("toDate", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.toDate && Boolean(formik.errors.toDate)
+                    }
+                    helperText={formik.touched.toDate && formik.errors.toDate}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <Input

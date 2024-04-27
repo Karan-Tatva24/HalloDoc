@@ -172,10 +172,10 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
                     } else if (
                       response.type === "editProviderProfile/rejected"
                     ) {
+                      dispatch(apiFails());
                       toast.error(
                         response.payload?.data?.validation?.body?.message,
                       );
-                      dispatch(apiFails());
                     }
                   });
                   setIsDisabled(true);
@@ -209,10 +209,10 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
                       setPasswordDisable(true);
                       toast.success(response.payload.message);
                     } else if (response.type === "changePassword/rejected") {
+                      dispatch(apiFails());
                       toast.error(
                         response.payload?.data?.validation?.body?.message,
                       );
-                      dispatch(apiFails());
                     }
                   });
                 }

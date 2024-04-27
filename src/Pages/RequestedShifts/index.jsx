@@ -61,6 +61,8 @@ const RequestedShifts = () => {
       }),
     ).then((response) => {
       if (response.type === "unApprovedShift/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "unApprovedShift/rejected")
+        dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, selectRegion]);
 
@@ -192,7 +194,6 @@ const RequestedShifts = () => {
                     dispatch(approveShift({ shiftIds: selected })).then(
                       (response) => {
                         if (response.type === "approveShift/fulfilled") {
-                          toast.success(response.payload.message);
                           setSelected([]);
                           dispatch(
                             unApprovedShift({
@@ -203,9 +204,10 @@ const RequestedShifts = () => {
                             }),
                           );
                           dispatch(apiSuccess());
+                          toast.success(response.payload.message);
                         } else if (response.type === "approveShift") {
-                          toast.error("Please select shifts");
                           dispatch(apiFails());
+                          toast.error("Please select shifts");
                         }
                       },
                     );
@@ -219,7 +221,6 @@ const RequestedShifts = () => {
                     dispatch(deleteShift({ shiftIds: selected }))
                       .then((response) => {
                         if (response.type == "deleteShift/fulfilled") {
-                          toast.success(response.payload.message);
                           setSelected([]);
                           dispatch(
                             unApprovedShift({
@@ -230,14 +231,16 @@ const RequestedShifts = () => {
                             }),
                           );
                           dispatch(apiSuccess());
+                          toast.success(response.payload.message);
                         } else if (response.type === "deleteShift/rejected") {
-                          toast.error("Please select shifts");
                           dispatch(apiFails());
+                          toast.error("Please select shifts");
                         }
                       })
                       .catch((error) => {
                         console.error("Delete action failed:", error);
                         toast.error("Failed to delete shifts.");
+                        dispatch(apiFails());
                       });
                   }}
                 />

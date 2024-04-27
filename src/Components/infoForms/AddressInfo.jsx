@@ -191,10 +191,10 @@ const AddressInfo = ({
                       } else if (
                         response.type === "editProviderProfile/rejected"
                       ) {
+                        dispatch(apiFails());
                         toast.error(
                           response.payload?.data?.validation?.body?.message,
                         );
-                        dispatch(apiFails());
                       }
                     });
                   }
@@ -215,10 +215,10 @@ const AddressInfo = ({
                       } else if (
                         response.type === "editAdminProfile/rejected"
                       ) {
+                        dispatch(apiFails());
                         toast.error(
                           response.payload?.data?.validation?.body?.message,
                         );
-                        dispatch(apiFails());
                       }
                     });
                   }

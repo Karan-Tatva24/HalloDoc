@@ -5,7 +5,11 @@ import { Button } from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { typeOfCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const TypeOfCareModal = ({ open, handleClose }) => {
   const [selectedType, setSelectedType] = useState("");
@@ -50,9 +54,10 @@ const TypeOfCareModal = ({ open, handleClose }) => {
                 if (response.type === "typeOfCare/fulfilled") {
                   dispatch(getProviderDashboardCount());
                   setSelectedType("");
-                  dispatch(apiSuccess());
                   handleClose();
-                }
+                  dispatch(apiSuccess());
+                } else if (response.type === "typeOfCare/rejected")
+                  dispatch(apiFails());
               },
             );
           }}

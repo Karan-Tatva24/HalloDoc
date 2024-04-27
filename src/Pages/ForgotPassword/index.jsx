@@ -31,11 +31,11 @@ const ForgotPassword = () => {
       dispatch(apiPending());
       dispatch(forgotPass(values)).then((response) => {
         if (response.type === "forgotPass/fulfilled") {
-          toast.success(response?.payload?.message);
           dispatch(apiSuccess());
+          toast.success(response?.payload?.message);
         } else {
-          toast.error(response?.error?.message);
           dispatch(apiFails());
+          toast.error(response?.error?.message);
         }
       });
     },

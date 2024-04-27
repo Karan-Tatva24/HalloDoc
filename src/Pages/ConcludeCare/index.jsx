@@ -29,7 +29,6 @@ import { toast } from "react-toastify";
 import { Input } from "../../Components/TextField/Input";
 import { useFormik } from "formik";
 import { concludeCare } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
-import { AppRoutes } from "../../constants/routes";
 import { concludeCareSchema } from "../../ValidationSchema";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import {
@@ -53,12 +52,12 @@ const ConcludeCare = () => {
       dispatch(concludeCare({ id, providerNotes: values.providerNotes })).then(
         (response) => {
           if (response.type === "concludeCare/fulfilled") {
-            toast.success(response.payload?.message);
             dispatch(getProviderDashboardCount());
             dispatch(apiSuccess());
+            toast.success(response.payload?.message);
           } else if (response.type === "concludeCare/rejected") {
-            toast.error(response?.payload?.data?.message);
             dispatch(apiFails());
+            toast.error(response?.payload?.data?.message);
           }
         },
       );
@@ -84,12 +83,12 @@ const ConcludeCare = () => {
     formData.append("document", file);
     dispatch(uploadFile({ id, formData })).then((response) => {
       if (response.type === "uploadFile/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "uploadFile/rejected") {
-        toast.error(response.payload?.data?.error);
         dispatch(apiFails());
+        toast.error(response.payload?.data?.error);
       }
     });
   };
@@ -115,13 +114,15 @@ const ConcludeCare = () => {
             URL.revokeObjectURL(url);
             document.body.removeChild(link);
           }
-          toast.success(response.payload.message);
           dispatch(apiSuccess());
+          toast.success(response.payload.message);
         } else {
+          dispatch(apiFails());
           toast.error("No files selected!");
         }
       })
       .catch((error) => {
+        dispatch(apiFails());
         toast.error("Error downloading file:", error);
       });
   };
@@ -130,12 +131,12 @@ const ConcludeCare = () => {
     dispatch(apiPending());
     dispatch(deleteFile({ fileNames: [document], id })).then((response) => {
       if (response.type === "deleteFile/fulfilled") {
-        toast.success(response.payload.message);
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "ASC" }));
         dispatch(apiSuccess());
+        toast.success(response.payload.message);
       } else if (response.type === "deleteFile/rejected") {
+        dispatch(apiFails());
         toast.error(response?.payload?.data?.validation?.body?.message);
-        navigate(AppRoutes.DASHBOARD);
       }
     });
   };

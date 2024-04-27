@@ -39,7 +39,11 @@ import { getDashboardByState } from "../../redux/halloAPIs/providerAPIs/dashboar
 import { acceptRequest } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/acceptRequestAPI";
 import { getProviderDashboardCount } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/getProviderDashboardCount";
 import { houseCallType } from "../../redux/halloAPIs/providerAPIs/dashboardAPIs/encounterAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const MyTable = ({
   accountType,
@@ -230,6 +234,7 @@ const MyTable = ({
         }),
       ).then((response) => {
         if (response.type === "newState/fulfilled") dispatch(apiSuccess());
+        else if (response.type === "newState/rejected") dispatch(apiFails());
       });
     } else if (accountType === "Physician") {
       dispatch(
@@ -243,6 +248,8 @@ const MyTable = ({
       ).then((response) => {
         if (response.type === "getDashboardByState/fulfilled")
           dispatch(apiSuccess());
+        else if (response.type === "getDashboardByState/rejected")
+          dispatch(apiFails());
       });
     }
   }, [
@@ -450,7 +457,11 @@ const MyTable = ({
                                       ) {
                                         dispatch(getProviderDashboardCount());
                                         dispatch(apiSuccess());
-                                      }
+                                      } else if (
+                                        response.type ===
+                                        "houseCallType/rejected"
+                                      )
+                                        dispatch(apiFails());
                                     },
                                   );
                                 }}

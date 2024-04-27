@@ -27,7 +27,11 @@ import { userAccess } from "../../redux/halloAPIs/adminAPIs/accessAPIs/userAcces
 import { physicianProfile } from "../../redux/halloAPIs/adminAPIs/providerAPIs/providerInfoAPI";
 import { AppRoutes } from "../../constants/routes";
 import { adminProfile } from "../../redux/halloAPIs/adminAPIs/profileAPIs/adminProfileAPI";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const UserAccess = () => {
   const [orderBy, setOrderBy] = useState("accountType");
@@ -51,14 +55,16 @@ const UserAccess = () => {
         if (response.type === "physicianProfile/fulfilled") {
           navigate(AppRoutes.EDIT_PHYSICIAN);
           dispatch(apiSuccess());
-        }
+        } else if (response.type === "physicianProfile/rejected")
+          dispatch(apiFails());
       });
     } else if (accountType === "Admin") {
       dispatch(adminProfile()).then((response) => {
         if (response.type === "adminProfile/fulfilled") {
           navigate(AppRoutes.MY_PROFILE);
           dispatch(apiSuccess());
-        }
+        } else if (response.type === "adminProfile/rejected")
+          dispatch(apiFails());
       });
     }
   };
@@ -92,6 +98,7 @@ const UserAccess = () => {
       }),
     ).then((response) => {
       if (response.type === "userAccess/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "userAccess/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage, selectedRole]);
 

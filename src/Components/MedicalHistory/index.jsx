@@ -19,7 +19,11 @@ import { medicalHistory } from "../../redux/halloAPIs/patientAPIs/medicalHistory
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 import { Button } from "../Button";
 import { AppRoutes } from "../../constants/routes";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const MedicalHistory = ({ handleOpen }) => {
   const [tableData, setTableData] = useState([]);
@@ -49,6 +53,8 @@ const MedicalHistory = ({ handleOpen }) => {
       }),
     ).then((response) => {
       if (response.type === "medicalHistory/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "medicalHistory/rejected")
+        dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, rowsPerPage]);
 

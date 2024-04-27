@@ -43,13 +43,13 @@ const ClearCaseModal = ({ open, handleClose }) => {
               dispatch(apiPending());
               dispatch(clearCase(id)).then((response) => {
                 if (response.type === "clearCase/fulfilled") {
-                  toast.success(response.payload.message);
                   dispatch(dashboardCount());
                   dispatch(apiSuccess());
+                  toast.success(response.payload.message);
                   handleClose();
                 } else if (response.type === "clearCase/rejected") {
-                  toast.error(response.payload.data.validation.body.message);
                   dispatch(apiFails());
+                  toast.error(response.payload.data.validation.body.message);
                 }
               });
             }}

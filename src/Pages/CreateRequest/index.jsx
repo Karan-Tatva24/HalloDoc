@@ -24,8 +24,7 @@ import {
   apiPending,
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 const initialValues = {
@@ -83,10 +82,13 @@ const CreateRequest = () => {
           ).then((response) => {
             if (response.type === "createRequestByAdminProvider/fulfilled") {
               dispatch(dashboardCount());
-              toast.success(response.payload.message);
               navigate(AppRoutes.DASHBOARD);
               dispatch(apiSuccess());
-            }
+              toast.success(response.payload.message);
+            } else if (
+              response.type === "createRequestByAdminProvider/rejected"
+            )
+              dispatch(apiFails());
           });
           onSubmitProps.resetForm();
         } else {
@@ -206,24 +208,20 @@ const CreateRequest = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      name="dob"
-                      label="Date Of Birth"
-                      sx={{ width: "100%" }}
-                      inputFormat="DD/MM/YYYY"
-                      value={
-                        formik.values.dob ? dayjs(formik.values.dob) : null
-                      }
-                      onChange={(newValue) => {
-                        const formattedDate = newValue ? newValue : null;
-                        formik.setFieldValue("dob", formattedDate);
-                      }}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.dob && Boolean(formik.errors.dob)}
-                      helperText={formik.touched.dob && formik.errors.dob}
-                    />
-                  </LocalizationProvider>
+                  <DatePicker
+                    name="dob"
+                    label="Date Of Birth"
+                    sx={{ width: "100%" }}
+                    inputFormat="DD/MM/YYYY"
+                    value={formik.values.dob ? dayjs(formik.values.dob) : null}
+                    onChange={(newValue) => {
+                      const formattedDate = newValue ? newValue : null;
+                      formik.setFieldValue("dob", formattedDate);
+                    }}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.dob && Boolean(formik.errors.dob)}
+                    helperText={formik.touched.dob && formik.errors.dob}
+                  />
                 </Grid>
               </Grid>
               <Typography variant="h6" pt={3} pb={3}>

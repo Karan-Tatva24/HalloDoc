@@ -26,7 +26,11 @@ import { viewCase } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/viewRese
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 import { AppRoutes } from "../../constants/routes";
 import "./patientRecord.css";
-import { apiPending, apiSuccess } from "../../redux/halloSlices/apiStatusSlice";
+import {
+  apiFails,
+  apiPending,
+  apiSuccess,
+} from "../../redux/halloSlices/apiStatusSlice";
 
 const PatientRecord = () => {
   const [tableData, setTableData] = useState([]);
@@ -54,6 +58,7 @@ const PatientRecord = () => {
       }),
     ).then((response) => {
       if (response.type === "patientRecord/fulfilled") dispatch(apiSuccess());
+      else if (response.type === "patientRecord/rejected") dispatch(apiFails());
     });
   }, [dispatch, order, orderBy, pageNo, patientRecordData?.id, rowsPerPage]);
 
