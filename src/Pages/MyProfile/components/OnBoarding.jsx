@@ -1,8 +1,51 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Button } from "../../../Components/Button";
+import { viewFile } from "../../../redux/halloAPIs/adminAPIs/commonAPIs/viewFileAPI";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
-const OnBoarding = () => {
+const OnBoarding = ({
+  id,
+  agreementDoc,
+  backgroundDoc,
+  nonDisDoc,
+  hipaaDoc,
+  licenseDoc,
+}) => {
+  const dispatch = useDispatch();
+
+  const getMimeType = (fileName) => {
+    const extension = fileName.split(".").pop().toLowerCase();
+    const mimeTypes = {
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      pdf: "application/pdf",
+    };
+    return mimeTypes[extension] || "application/octet-stream";
+  };
+
+  const handleViewFile = (fileName) => {
+    dispatch(viewFile(fileName)).then((response) => {
+      if (response.type === "viewFile/fulfilled") {
+        const mimeType = getMimeType(fileName);
+        const blob = new Blob([response.payload], { type: mimeType });
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, fileName);
+        } else {
+          const link = document.createElement("a");
+          const url = URL.createObjectURL(blob);
+          link.href = url;
+          window.open(url, "_blank");
+        }
+      } else {
+        toast.error("File not found");
+      }
+    });
+  };
+
   return (
     <Box
       display="flex"
@@ -22,7 +65,9 @@ const OnBoarding = () => {
         <Typography variant="subtitle2">
           Independent Contractor Agreement
         </Typography>
-        <Button name="View" />
+        {agreementDoc ? (
+          <Button name="View" onClick={() => handleViewFile(agreementDoc)} />
+        ) : null}
       </Box>
       <Box
         display="flex"
@@ -32,7 +77,9 @@ const OnBoarding = () => {
         flexWrap="wrap"
       >
         <Typography variant="subtitle2">Background Check</Typography>
-        <Button name="View" />
+        {backgroundDoc ? (
+          <Button name="View" onClick={() => handleViewFile(backgroundDoc)} />
+        ) : null}
       </Box>
       <Box
         display="flex"
@@ -42,7 +89,9 @@ const OnBoarding = () => {
         flexWrap="wrap"
       >
         <Typography variant="subtitle2">HIPAA Compliance</Typography>
-        <Button name="View" />
+        {hipaaDoc ? (
+          <Button name="View" onClick={() => handleViewFile(hipaaDoc)} />
+        ) : null}
       </Box>
       <Box
         display="flex"
@@ -52,7 +101,9 @@ const OnBoarding = () => {
         flexWrap="wrap"
       >
         <Typography variant="subtitle2">Non-Disclosure Agreement</Typography>
-        <Button name="View" />
+        {nonDisDoc ? (
+          <Button name="View" onClick={() => handleViewFile(nonDisDoc)} />
+        ) : null}
       </Box>
       <Box
         display="flex"
@@ -62,7 +113,9 @@ const OnBoarding = () => {
         flexWrap="wrap"
       >
         <Typography variant="subtitle2">License Document</Typography>
-        <Button name="View" />
+        {licenseDoc ? (
+          <Button name="View" onClick={() => handleViewFile(licenseDoc)} />
+        ) : null}
       </Box>
     </Box>
   );

@@ -32,3 +32,4 @@ export {
 } from "./createShiftModalSchema";
 export { concludeCareSchema } from "./concludeCareSchema";
 export { encounterFormSchema } from "./encounterFormSchema";
+export { signUpPageSchema } from "./signUpPageSchema";

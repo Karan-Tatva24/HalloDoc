@@ -50,8 +50,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
           <Typography>
             Patient Name :
             <span style={{ color: "#01bce9" }}>
-              {patientFirstName}
-              {patientLastName}
+              {`${patientFirstName} ${patientLastName}`}
             </span>
           </Typography>
           <Input

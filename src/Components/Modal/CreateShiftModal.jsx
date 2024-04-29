@@ -315,8 +315,8 @@ const CreateShiftModal = ({ open, handleClose }) => {
               helperText={formik.touched.repeatUpto && formik.errors.repeatUpto}
             >
               <MenuItem value="2">2-times</MenuItem>
-              <MenuItem value="1">1-times</MenuItem>
-              <MenuItem value="0">0-times</MenuItem>
+              <MenuItem value="3">3-times</MenuItem>
+              <MenuItem value="4">4-times</MenuItem>
             </Input>
           </Grid>
           <Box display="flex" justifyContent="flex-end" gap={2}>

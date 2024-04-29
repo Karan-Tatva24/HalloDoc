@@ -30,6 +30,7 @@ const Patient = () => {
           name="Registered Patients"
           color="info"
           className="patient-site-btn"
+          onClick={() => navigate(AppRoutes.LOGIN)}
         />
       </Box>
       <Box pt={50}>

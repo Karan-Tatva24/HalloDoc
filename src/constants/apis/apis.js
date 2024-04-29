@@ -108,6 +108,7 @@ export const CREATE_PROVIDER_ACCOUNT = "/user/createUser";
 export const CREATE_ADMIN_REQUEST = "/user/createAdminRequest";
 export const CREATE_REQUEST = "/user/createRequest";
 export const IS_EMAIL_FOUND = "/user/emailFound";
+export const CREATE_ACCOUNT = "/user/createPatient";
 
 /* ***************************************** Provider API ***************************************** */
 

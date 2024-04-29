@@ -205,7 +205,7 @@ const RequestedShifts = () => {
                           );
                           dispatch(apiSuccess());
                           toast.success(response.payload.message);
-                        } else if (response.type === "approveShift") {
+                        } else if (response.type === "approveShift/rejected") {
                           dispatch(apiFails());
                           toast.error("Please select shifts");
                         }

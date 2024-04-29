@@ -59,6 +59,7 @@ import "./App.css";
 import { useSelector } from "react-redux";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import SignUp from "./Pages/patientSite/SignUpPage";
 
 const App = () => {
   const [toggleDarkMode, setToggleDarkMode] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
   };
 
   const { isLoading } = useSelector((state) => state.root.apiStatus);
+  const { isLoggedIn } = useSelector((state) => state.root.login);
 
   return (
     <Box
@@ -97,6 +99,7 @@ const App = () => {
                 path={AppRoutes.RESETPASSWORD}
                 element={<ResetPassword />}
               />
+              <Route path={AppRoutes.CREATE_ACCOUNT} element={<SignUp />} />
             </Route>
 
             <Route
@@ -247,9 +250,11 @@ const App = () => {
           </Routes>
         </ThemeProvider>
       </LocalizationProvider>
-      <Box position="relative" bottom={0} minWidth="100%">
-        <Footer />
-      </Box>
+      {isLoggedIn ? (
+        <Box position="relative" bottom={0} minWidth="100%">
+          <Footer />
+        </Box>
+      ) : null}
     </Box>
   );
 };

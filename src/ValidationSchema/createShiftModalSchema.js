@@ -21,6 +21,7 @@ export const createShiftModalSchema = Yup.object().shape({
         },
       });
     }),
+  isRepeat: Yup.boolean(),
   sunday: Yup.boolean(),
   monday: Yup.boolean(),
   tuesday: Yup.boolean(),
@@ -28,7 +29,10 @@ export const createShiftModalSchema = Yup.object().shape({
   thursday: Yup.boolean(),
   friday: Yup.boolean(),
   saturday: Yup.boolean(),
-  repeatUpto: Yup.string(),
+  repeatUpto: Yup.string().when("isRepeat", {
+    is: true,
+    then: (schema) => schema.required("Repete upto is must required"),
+  }),
 });
 
 export const viewShiftModalSchema = Yup.object().shape({

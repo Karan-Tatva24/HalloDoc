@@ -52,7 +52,7 @@ const Agreement = () => {
                     navigate(-1);
                     dispatch(apiSuccess());
                     toast.success(res.payload.message);
-                  } else if (Response.type === "acceptAgreement/rejected")
+                  } else if (res.type === "acceptAgreement/rejected")
                     dispatch(apiFails());
                 });
               }}

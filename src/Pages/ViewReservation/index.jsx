@@ -186,6 +186,7 @@ const ViewReservation = () => {
                   <DatePicker
                     name="dateOfBirth"
                     label="Date Of Birth"
+                    disabled
                     sx={{ width: "100%" }}
                     inputFormat="DD/MM/YYYY"
                     value={

@@ -23,11 +23,11 @@
 }
 
 .pending {
-  background-color: lightpink;
-  border: 1px solid pink;
+  background-color: #ffb6c1;
+  border: 1px solid #ffc0cb;
 }
 
 .approved {
-  border: 1px solid green;
-  background-color: lightgreen;
+  border: 1px solid #008000;
+  background-color: #90ee90;
 }

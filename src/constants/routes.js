@@ -44,4 +44,5 @@ export const AppRoutes = {
   SUBMIT_INFORMATION: "/dashboard/patient/submitInformation",
   AGREEMENT_PAGE: "/patient/agreement/:id",
   USER_PROFILE: "/profile/patient",
+  CREATE_ACCOUNT: "/patient/createAccount",
 };

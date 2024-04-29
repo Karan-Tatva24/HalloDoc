@@ -122,10 +122,10 @@ const ViewUpload = () => {
       if (response.type === "uploadFile/fulfilled") {
         dispatch(viewUpload({ id, sortBy: "createAt", orderBy: "DESC" }));
         dispatch(apiSuccess());
-        toast.success(response.payload.message);
+        toast.success(response.payload?.message);
       } else if (response.type === "uploadFile/rejected") {
         dispatch(apiFails());
-        toast.error(response.payload?.data?.error);
+        toast.error(response.payload?.data?.message);
       }
     });
     setSelectedFile(null);

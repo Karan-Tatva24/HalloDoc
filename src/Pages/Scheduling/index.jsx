@@ -30,14 +30,26 @@ import {
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
 
+const addDays = (date, days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+const formatDateTime = (date, time) => {
+  return `${date}T${time}:00`;
+};
+
 const Scheduling = () => {
-  const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
   const [selectRegion, setSelectRegion] = useState("all");
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { viewShiftByDateData } = useSelector((state) => state.root.viewShift);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(apiPending());
@@ -66,14 +78,61 @@ const Scheduling = () => {
     setModalName("");
   };
 
-  const events = viewShiftByDateData?.map((shift) => ({
-    id: shift?.id,
-    title: `${shift?.id}`,
-    start: `${shift?.shiftDate}T${shift?.startTime}`,
-    end: `${shift?.shiftDate}T${shift?.endTime}`,
-    resourceId: shift?.physician?.id,
-    backgroundColor: shift?.isApproved ? "lightgreen" : "lightpink",
-  }));
+  useEffect(() => {
+    if (viewShiftByDateData) {
+      const processedEvents = [];
+
+      viewShiftByDateData.forEach((shift) => {
+        const event = {
+          id: shift.id,
+          title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
+          start: formatDateTime(shift.shiftDate, shift.startTime),
+          end: formatDateTime(shift.shiftDate, shift.endTime),
+          resourceId: shift?.physician?.id,
+          backgroundColor: shift.isApproved ? "lightgreen" : "lightpink",
+        };
+        processedEvents.push(event);
+
+        if (shift.isRepeat) {
+          const daysOfWeek = [
+            "sunday",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+          ];
+          const repeatCount = shift.repeatUpto || 1;
+
+          for (let i = 1; i <= repeatCount; i++) {
+            daysOfWeek.forEach((day, index) => {
+              if (shift[day]) {
+                const date = addDays(
+                  new Date(shift.shiftDate),
+                  i * 7 + index - new Date(shift.shiftDate).getDay(),
+                );
+                const repeatedEvent = {
+                  ...event,
+                  start: formatDateTime(
+                    date.toISOString().split("T")[0],
+                    shift.startTime,
+                  ),
+                  end: formatDateTime(
+                    date.toISOString().split("T")[0],
+                    shift.endTime,
+                  ),
+                };
+                processedEvents.push(repeatedEvent);
+              }
+            });
+          }
+        }
+      });
+
+      setEvents(processedEvents);
+    }
+  }, [viewShiftByDateData]);
 
   const resources = viewShiftByDateData?.map((shift) => ({
     id: shift?.physician?.id,
@@ -143,39 +202,40 @@ const Scheduling = () => {
             Approved Shifts
           </Box>
           <FullCalendar
-            plugins={[dayGridPlugin, resourceTimelinePlugin, interactionPlugin]}
-            initialView="dayGridMonth"
+            plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
+            initialView="resourceTimelineDay"
+            views={{
+              resourceTimelineDay: {
+                type: "resourceTimeline",
+                duration: { days: 1 },
+                buttonText: "Day",
+              },
+              resourceTimelineWeek: {
+                type: "resourceTimeline",
+                duration: { weeks: 1 },
+                buttonText: "Week",
+              },
+              dayGridMonth: {
+                type: "dayGrid",
+                duration: { months: 1 },
+                buttonText: "Month",
+              },
+            }}
             headerToolbar={{
               left: "title prev next",
               center: "",
               right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
             }}
+            resourceAreaHeaderContent="Physicians"
+            scrollTime="08:00"
+            aspectRatio="1.5"
             events={events}
             resources={resources}
-            eventContent={(eventInfo) => {
-              return (
-                <div
-                  style={{
-                    width: "100%",
-                    backgroundColor: eventInfo.backgroundColor,
-                    borderRadius: "0.3rem",
-                    cursor: "pointer",
-                    height: "auto",
-                  }}
-                  onClick={() => {
-                    dispatch(viewShift(eventInfo.event.id));
-                    handleOpen("view shift");
-                  }}
-                >
-                  {eventInfo.timeText}
-                </div>
-              );
+            eventClick={(eventInfo) => {
+              console.log("eventInfo", eventInfo.event.id);
+              dispatch(viewShift(eventInfo.event.id));
+              handleOpen("view shift");
             }}
-            droppable={false}
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
           />
         </Container>
       </Box>

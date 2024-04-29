@@ -66,8 +66,29 @@ const MyProfile = () => {
     regions,
     role,
     business,
+    notes,
     userFiles,
   } = profileData;
+
+  const agreementDoc = userFiles?.filter(
+    (file) => file?.docType === "independentContract",
+  )?.[0]?.fileName;
+
+  const backgroundDoc = userFiles?.filter(
+    (file) => file?.docType === "backgroundCheck",
+  )?.[0]?.fileName;
+
+  const nonDisDoc = userFiles?.filter(
+    (file) => file?.docType === "nonDisclosureAgreement",
+  )?.[0]?.fileName;
+
+  const hipaaDoc = userFiles?.filter(
+    (file) => file?.docType === "hipaaCompliance",
+  )?.[0]?.fileName;
+
+  const licenseDoc = userFiles?.filter(
+    (file) => file?.docType === "licenseDoc",
+  )?.[0]?.fileName;
 
   return (
     <>
@@ -138,7 +159,7 @@ const MyProfile = () => {
               address2={address2}
               city={city}
               state={state}
-              zip={zipCode}
+              zipCode={zipCode}
               altPhone={altPhone}
               regions={regions}
             />
@@ -150,15 +171,16 @@ const MyProfile = () => {
                   businessWebsite={business?.businessWebsite}
                   photo={userFiles?.photo}
                   signature={userFiles?.signature}
+                  notes={notes}
                 />
                 <Divider sx={{ backgroundColor: "#1f1e1e86" }} />
                 <OnBoarding
                   id={id}
-                  isAgreementDoc={userFiles?.isAgreementDoc}
-                  isBackgroundDoc={userFiles?.isBackgroundDoc}
-                  isNonDisclosureDoc={userFiles?.isNonDisclosureDoc}
-                  isLicenseDoc={userFiles?.isLicenseDoc}
-                  isHipaaDoc={userFiles?.isHipaaDoc}
+                  agreementDoc={agreementDoc}
+                  backgroundDoc={backgroundDoc}
+                  nonDisDoc={nonDisDoc}
+                  hipaaDoc={hipaaDoc}
+                  licenseDoc={licenseDoc}
                 />
               </>
             ) : null}
