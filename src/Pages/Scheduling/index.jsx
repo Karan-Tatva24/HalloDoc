@@ -114,6 +114,8 @@ const Scheduling = () => {
                 );
                 const repeatedEvent = {
                   ...event,
+                  id: `${shift.id}-repeat-${i}-${day}`,
+                  title: `${shift?.physician?.firstName} ${shift?.physician?.lastName} (Repeated)`,
                   start: formatDateTime(
                     date.toISOString().split("T")[0],
                     shift.startTime,
@@ -122,6 +124,9 @@ const Scheduling = () => {
                     date.toISOString().split("T")[0],
                     shift.endTime,
                   ),
+                  backgroundColor: shift.isApproved
+                    ? "lightgreen"
+                    : "lightpink",
                 };
                 processedEvents.push(repeatedEvent);
               }
@@ -138,6 +143,8 @@ const Scheduling = () => {
     id: shift?.physician?.id,
     title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
   }));
+
+  console.log("events", events);
 
   return (
     <>
@@ -227,14 +234,21 @@ const Scheduling = () => {
               right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
             }}
             resourceAreaHeaderContent="Physicians"
-            scrollTime="08:00"
-            aspectRatio="1.5"
             events={events}
             resources={resources}
             eventClick={(eventInfo) => {
-              console.log("eventInfo", eventInfo.event.id);
               dispatch(viewShift(eventInfo.event.id));
               handleOpen("view shift");
+            }}
+            eventContent={(eventInfo) => {
+              return {
+                html: `
+                  <Box class="custom-event" style="background-color: ${eventInfo.event.backgroundColor}; color: white;">
+                    <Box>${eventInfo.timeText}</Box>
+                    <Box>${eventInfo.event.title}</Box>
+                  </Box>
+                `,
+              };
             }}
           />
         </Container>

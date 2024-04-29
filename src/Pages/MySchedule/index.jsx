@@ -18,7 +18,18 @@ import {
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
 
+const addDays = (date, days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+const formatDateTime = (date, time) => {
+  return `${date}T${time}:00`;
+};
+
 const MySchedule = () => {
+  const [events, setEvents] = useState([]);
   const [modalName, setModalName] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -44,14 +55,65 @@ const MySchedule = () => {
     setModalName("");
   };
 
-  const events = myScheduleData?.map((shift) => ({
-    id: shift?.id,
-    title: `${shift?.id}`,
-    start: `${shift?.shiftDate}T${shift?.startTime}`,
-    end: `${shift?.shiftDate}T${shift?.endTime}`,
-    resourceId: shift?.physician?.id,
-    backgroundColor: shift?.isApproved ? "lightgreen" : "lightpink",
-  }));
+  useEffect(() => {
+    if (myScheduleData) {
+      const processedEvents = [];
+
+      myScheduleData.forEach((shift) => {
+        const event = {
+          id: shift.id,
+          title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
+          start: formatDateTime(shift.shiftDate, shift.startTime),
+          end: formatDateTime(shift.shiftDate, shift.endTime),
+          backgroundColor: shift.isApproved ? "lightgreen" : "lightpink",
+        };
+        processedEvents.push(event);
+
+        if (shift.isRepeat) {
+          const daysOfWeek = [
+            "sunday",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+          ];
+          const repeatCount = shift.repeatUpto || 1;
+
+          for (let i = 1; i <= repeatCount; i++) {
+            daysOfWeek.forEach((day, index) => {
+              if (shift[day]) {
+                const date = addDays(
+                  new Date(shift.shiftDate),
+                  i * 7 + index - new Date(shift.shiftDate).getDay(),
+                );
+                const repeatedEvent = {
+                  ...event,
+                  id: `${shift.id}-repeat-${i}-${day}`,
+                  title: `${shift?.physician?.firstName} ${shift?.physician?.lastName} (Repeated)`,
+                  start: formatDateTime(
+                    date.toISOString().split("T")[0],
+                    shift.startTime,
+                  ),
+                  end: formatDateTime(
+                    date.toISOString().split("T")[0],
+                    shift.endTime,
+                  ),
+                  backgroundColor: shift.isApproved
+                    ? "lightgreen"
+                    : "lightpink",
+                };
+                processedEvents.push(repeatedEvent);
+              }
+            });
+          }
+        }
+      });
+
+      setEvents(processedEvents);
+    }
+  }, [myScheduleData]);
 
   const resources = myScheduleData?.map((shift) => ({
     id: shift?.physician?.id,
@@ -93,6 +155,13 @@ const MySchedule = () => {
                 },
               },
             }}
+            views={{
+              dayGridMonth: {
+                type: "dayGrid",
+                duration: { months: 1 },
+                buttonText: "Month",
+              },
+            }}
             headerToolbar={{
               left: "title prev next",
               center: "",
@@ -100,30 +169,19 @@ const MySchedule = () => {
             }}
             events={events}
             resources={resources}
-            eventContent={(eventInfo) => {
-              return (
-                <div
-                  style={{
-                    width: "100%",
-                    backgroundColor: eventInfo.backgroundColor,
-                    borderRadius: "0.3rem",
-                    cursor: "pointer",
-                    height: "auto",
-                  }}
-                  onClick={() => {
-                    dispatch(viewShift(eventInfo.event.id));
-                    handleOpen("view shift");
-                  }}
-                >
-                  {eventInfo.timeText}
-                </div>
-              );
+            eventClick={(eventInfo) => {
+              dispatch(viewShift(eventInfo.event.id));
+              handleOpen("view shift");
             }}
-            droppable={false}
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
+            eventContent={(eventInfo) => {
+              return {
+                html: `
+                  <Box class="mySchedule-custom-event" style="background-color: ${eventInfo.event.backgroundColor}; color: white;">
+                    <Box>${eventInfo.timeText}</Box>
+                  </Box>
+                `,
+              };
+            }}
           />
         </Container>
       </Box>

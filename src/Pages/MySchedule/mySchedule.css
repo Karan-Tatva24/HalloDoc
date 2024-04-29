@@ -3,3 +3,16 @@
   background-color: #008000 !important;
   border: 1px solid #008000 !important;
 }
+
+.mySchedule-custom-event {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: hidden;
+}
