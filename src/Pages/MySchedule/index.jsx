@@ -65,7 +65,7 @@ const MySchedule = () => {
           title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
           start: formatDateTime(shift.shiftDate, shift.startTime),
           end: formatDateTime(shift.shiftDate, shift.endTime),
-          backgroundColor: shift.isApproved ? "lightgreen" : "lightpink",
+          backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
         };
         processedEvents.push(event);
 
@@ -100,9 +100,7 @@ const MySchedule = () => {
                     date.toISOString().split("T")[0],
                     shift.endTime,
                   ),
-                  backgroundColor: shift.isApproved
-                    ? "lightgreen"
-                    : "lightpink",
+                  backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
                 };
                 processedEvents.push(repeatedEvent);
               }

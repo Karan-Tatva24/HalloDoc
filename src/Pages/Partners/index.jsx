@@ -139,10 +139,10 @@ const Partners = () => {
                   onChange={(e) => setProfessionFilter(e.target.value)}
                 >
                   <MenuItem value="all">All Professions</MenuItem>
-                  {professions?.map((profession, index) => {
+                  {professions?.map((profession) => {
                     return (
-                      <MenuItem key={index} value={profession?.profession}>
-                        {profession?.profession}
+                      <MenuItem key={profession?.id} value={profession?.name}>
+                        {profession?.name}
                       </MenuItem>
                     );
                   })}
@@ -178,8 +178,8 @@ const Partners = () => {
                       <TableRow key={row?.id}>
                         {columns?.map((column) => {
                           return (
-                            <TableCell key={column.id} align="center">
-                              {column.id === "actions" ? (
+                            <TableCell key={column?.id} align="center">
+                              {column?.id === "actions" ? (
                                 <Box display="flex" gap={1}>
                                   <Button
                                     name="Edit"
@@ -197,6 +197,8 @@ const Partners = () => {
                                     }
                                   />
                                 </Box>
+                              ) : column.id === "profession" ? (
+                                row?.profession?.name
                               ) : (
                                 row?.[column.id]
                               )}

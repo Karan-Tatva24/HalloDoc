@@ -98,8 +98,6 @@ const BusinessRequest = () => {
     };
   }, [dispatch, formik.setFieldValue, formik.values.patientEmail]);
 
-  console.log("touched", formik.touched.dob);
-  console.log("patientFirstName touched", formik.touched.patientFirstName);
   return (
     <>
       <Box sx={{ backgroundColor: "#f6f6f6" }}>

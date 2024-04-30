@@ -111,7 +111,6 @@ const CreateProviderAccount = () => {
       formData.append("notes", values.adminNotes);
 
       dispatch(createProviderAccount(formData)).then((response) => {
-        console.log(response);
         if (response.type === "createProviderAccount/fulfilled") {
           onSubmitProps.resetForm();
           setSelectedFile(null);

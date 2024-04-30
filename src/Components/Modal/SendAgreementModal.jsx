@@ -52,7 +52,6 @@ const SendAgreementModal = ({ open, handleClose }) => {
               onClick={() => {
                 dispatch(apiPending());
                 dispatch(sendAgreement(id)).then((response) => {
-                  console.log(response);
                   if (response.type === "sendAgreement/fulfilled") {
                     handleClose();
                     dispatch(apiSuccess());

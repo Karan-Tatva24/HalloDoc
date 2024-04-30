@@ -3,13 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   Box,
+  Collapse,
   Divider,
   Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
   Menu,
   MenuItem,
   Typography,
 } from "@mui/material";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Button } from "../Button";
@@ -18,9 +22,13 @@ import { logout } from "../../redux/halloSlices/adminSlices/loginSlice";
 import { loginHeading } from "../../assets/Images";
 import { toast } from "react-toastify";
 import "./header.css";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [providerListOpen, setProviderListOpen] = useState(false);
+  const [recordListOpen, setRecordListOpen] = useState(false);
+  const [accessListOpen, setAccessListOpen] = useState(false);
   const [providerMenuOpen, setProviderMenuOpen] = useState(false);
   const [recordsMenuOpen, setRecordsMenuOpen] = useState(false);
   const [accessMenuOpen, setAccessMenuOpen] = useState(false);
@@ -65,16 +73,28 @@ const Header = () => {
   return (
     <Box>
       <Box className="header">
-        <Box
-          className="header-logo-image"
-          onClick={() => navigate(AppRoutes.DASHBOARD)}
-        >
-          <img src={loginHeading} alt="HalloDoc" />
+        <Box display="flex" alignItems="center" gap={3}>
+          <Button
+            variant="outlined"
+            size="large"
+            className="toggle-btn icon-btn"
+            onClick={() => setDrawerOpen(true)}
+          >
+            <MenuOutlinedIcon fontSize="large" />
+          </Button>
+          <img
+            className="header-logo-image"
+            src={loginHeading}
+            alt="HalloDoc"
+            onClick={() => navigate(AppRoutes.DASHBOARD)}
+          />
         </Box>
         {isLoggedIn ? (
           <>
             <Box className="header-user-detail">
-              <Typography>Welcome&nbsp;{userName}</Typography>
+              <Typography className="user-name">
+                Welcome&nbsp;{userName}
+              </Typography>
               <Button
                 name="Log Out"
                 variant="outlined"
@@ -82,15 +102,15 @@ const Header = () => {
                 className="log-out-btn"
                 onClick={handleLogout}
               />
-              <Button
-                variant="outlined"
-                size="large"
-                className="toggle-btn icon-btn"
-                onClick={() => setOpen(true)}
-              >
-                <MenuOutlinedIcon />
-              </Button>
             </Box>
+            <Button
+              variant="outlined"
+              size="large"
+              className="toggle-btn icon-btn"
+              onClick={handleLogout}
+            >
+              <LogoutOutlinedIcon fontSize="large" />
+            </Button>
           </>
         ) : null}
       </Box>
@@ -300,166 +320,192 @@ const Header = () => {
         </>
       ) : null}
 
-      <Drawer open={open} onClose={() => setOpen(false)} className="sidebar">
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-          p={1}
+      <Drawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        className="sidebar"
+      >
+        <List
+          component="nav"
+          subheader={
+            <ListSubheader
+              component="div"
+              id="nested-list-subheader"
+              sx={{ fontSize: "large" }}
+            >
+              Welcome, <b>{userName}</b>
+            </ListSubheader>
+          }
         >
-          <CloseOutlinedIcon
-            onClick={() => setOpen(false)}
-            id="close-icon"
-            sx={{ position: "initial", cursor: "pointer" }}
-          />
-          <LogoutOutlinedIcon
-            onClick={handleLogout}
-            id="close-icon"
-            sx={{ position: "initial", cursor: "pointer" }}
-          />
-        </Box>
-
-        <NavLink to={AppRoutes.DASHBOARD} className="sideLinks">
-          Dashboard
-        </NavLink>
-        {accountType === "Admin" ? (
-          <NavLink to={AppRoutes.PROVIDER_LOCATION} className="sideLinks">
-            Provider Location
-          </NavLink>
-        ) : (
-          <NavLink to={AppRoutes.INVOICING} className="sideLinks">
-            Invoicing
-          </NavLink>
-        )}
-        {accountType === "Physician" ? (
-          <NavLink to={AppRoutes.MY_SCHEDULE} className="sideLinks">
-            My Schedule
-          </NavLink>
-        ) : null}
-        <NavLink to={AppRoutes.MY_PROFILE} className="sideLinks">
-          My Profile
-        </NavLink>
-        {accountType === "Admin" ? (
-          <>
-            <li
-              onMouseEnter={(e) => handleNavLinkHover(e, "provider")}
-              onMouseLeave={handleMenuClose}
+          <ListItemButton
+            onClick={() => {
+              setDrawerOpen(false);
+              navigate(AppRoutes.DASHBOARD);
+            }}
+          >
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+          {accountType === "Admin" ? (
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate(AppRoutes.PROVIDER_LOCATION);
+              }}
             >
-              <NavLink to={AppRoutes.PROVIDER} className="sideLinks">
-                Providers
-              </NavLink>
-              {providerMenuOpen && (
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem
+              <ListItemText primary="Provider Location" />
+            </ListItemButton>
+          ) : (
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate(AppRoutes.INVOICING);
+              }}
+            >
+              <ListItemText primary="Invoicing" />
+            </ListItemButton>
+          )}
+          {accountType === "Physician" ? (
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate(AppRoutes.MY_SCHEDULE);
+              }}
+            >
+              <ListItemText primary="My Schedule" />
+            </ListItemButton>
+          ) : null}
+          <ListItemButton
+            onClick={() => {
+              setDrawerOpen(false);
+              navigate(AppRoutes.MY_PROFILE);
+            }}
+          >
+            <ListItemText primary="My Profile" />
+          </ListItemButton>
+          {accountType === "Admin" ? (
+            <>
+              <ListItemButton
+                onClick={() => setProviderListOpen(!providerListOpen)}
+              >
+                <ListItemText primary="Provider" />
+                {providerListOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={providerListOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.PROVIDER);
-                      handleMenuClose();
                     }}
                   >
-                    Provider
-                  </MenuItem>
-                  <MenuItem
+                    <ListItemText primary="Provider" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.SCHEDULING);
-                      handleMenuClose();
                     }}
                   >
-                    Scheduling
-                  </MenuItem>
-                  <MenuItem
+                    <ListItemText primary="Scheduling" />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+              <ListItemButton
+                onClick={() => {
+                  setDrawerOpen(false);
+                  navigate(AppRoutes.PARTNERS);
+                }}
+              >
+                <ListItemText primary="Partners" />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => setAccessListOpen(!accessListOpen)}
+              >
+                <ListItemText primary="Access" />
+                {accessListOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={accessListOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
-                      navigate(-1);
-                      handleMenuClose();
-                    }}
-                  >
-                    Invoicing
-                  </MenuItem>
-                </Menu>
-              )}
-            </li>
-            <NavLink to={AppRoutes.PARTNERS} className="sideLinks">
-              Partners
-            </NavLink>
-            <li
-              onMouseEnter={(e) => handleNavLinkHover(e, "access")}
-              onMouseLeave={handleMenuClose}
-            >
-              <NavLink to={AppRoutes.ACCOUNT_ACCESS} className="sideLinks">
-                Access
-              </NavLink>
-              {accessMenuOpen && (
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem
-                    onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.ACCOUNT_ACCESS);
-                      handleMenuClose();
                     }}
                   >
-                    Account Access
-                  </MenuItem>
-                  <MenuItem
+                    <ListItemText primary="Account Access" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.USER_ACCESS);
-                      handleMenuClose();
                     }}
                   >
-                    User Access
-                  </MenuItem>
-                </Menu>
-              )}
-            </li>
-            <li
-              onMouseEnter={(e) => handleNavLinkHover(e, "records")}
-              onMouseLeave={handleMenuClose}
-            >
-              <NavLink to={AppRoutes.RECORDS} className="sideLinks">
-                Records
-              </NavLink>
-              {recordsMenuOpen && (
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem
+                    <ListItemText primary="User Access" />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+              <ListItemButton
+                onClick={() => setRecordListOpen(!recordListOpen)}
+              >
+                <ListItemText primary="Records" />
+                {recordListOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={recordListOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.SEARCH_RECORDS);
-                      handleMenuClose();
                     }}
                   >
-                    Search Records
-                  </MenuItem>
-                  <MenuItem
+                    <ListItemText primary="Search Records" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
                     onClick={() => {
+                      setDrawerOpen(false);
                       navigate(AppRoutes.EMAIL_LOGS);
-                      handleMenuClose();
                     }}
                   >
-                    Email Logs
-                  </MenuItem>
-                  <MenuItem onClick={() => navigate(AppRoutes.SMS_LOGS)}>
-                    SMS Logs
-                  </MenuItem>
-                  <MenuItem onClick={() => navigate(AppRoutes.PATIENT_HISTORY)}>
-                    Patients Records
-                  </MenuItem>
-                  <MenuItem onClick={() => navigate(AppRoutes.BLOCKED_HISTORY)}>
-                    Blocked History
-                  </MenuItem>
-                </Menu>
-              )}
-            </li>
-          </>
-        ) : null}
+                    <ListItemText primary="Email Logs" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      navigate(AppRoutes.SMS_LOGS);
+                    }}
+                  >
+                    <ListItemText primary="SMS Logs" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      navigate(AppRoutes.PATIENT_HISTORY);
+                    }}
+                  >
+                    <ListItemText primary="Patient Records" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      navigate(AppRoutes.BLOCKED_HISTORY);
+                    }}
+                  >
+                    <ListItemText primary="Block History" />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </>
+          ) : null}
+        </List>
       </Drawer>
       <Outlet />
     </Box>

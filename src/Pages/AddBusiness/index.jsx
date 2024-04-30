@@ -31,7 +31,7 @@ import {
 
 const INITIAL_VALUE = {
   businessName: "",
-  profession: "",
+  professionId: "",
   faxNumber: "",
   phoneNumber: "",
   email: "",
@@ -61,7 +61,7 @@ const AddBusiness = () => {
   useEffect(() => {
     setInitialValues({
       businessName: business?.businessName || "",
-      profession: business?.profession || "",
+      professionId: business?.profession?.id || "",
       faxNumber: business?.faxNumber || "",
       phoneNumber: business?.phoneNumber || "",
       email: business?.email || "",
@@ -153,24 +153,24 @@ const AddBusiness = () => {
                 <Grid item xs={12} md={6}>
                   <Input
                     label="Profession"
-                    name="profession"
+                    name="professionId"
                     select
                     fullWidth
-                    value={formik.values.profession}
+                    value={formik.values.professionId}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik.touched.profession &&
-                      Boolean(formik.errors.profession)
+                      formik.touched.professionId &&
+                      Boolean(formik.errors.professionId)
                     }
                     helperText={
-                      formik.touched.profession && formik.errors.profession
+                      formik.touched.professionId && formik.errors.professionId
                     }
                   >
-                    {professions?.map((profession, index) => {
+                    {professions?.map((profession) => {
                       return (
-                        <MenuItem key={index} value={profession.profession}>
-                          {profession.profession}
+                        <MenuItem key={profession?.id} value={profession?.id}>
+                          {profession?.name}
                         </MenuItem>
                       );
                     })}

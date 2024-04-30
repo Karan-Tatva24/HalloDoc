@@ -15,7 +15,7 @@
   display: none !important;
 }
 
-.header-logo-image img {
+.header-logo-image {
   height: 4.625rem;
 }
 
@@ -51,6 +51,8 @@ a.active {
 .sidebar {
   min-width: 238px;
   transition: all 0.5s ease;
+  position: relative !important;
+  top: 7rem !important;
 }
 
 .sideLinks {
@@ -93,6 +95,9 @@ li {
   }
 
   .header-nav-links {
+    display: none !important;
+  }
+  .user-name {
     display: none !important;
   }
 }

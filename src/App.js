@@ -116,7 +116,6 @@ const App = () => {
               <Route element={<RequireAuth />}>
                 {/* ******* This routes are access by only Admin ********* */}
                 <Route element={<AdminAuth />}>
-                  <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
                   <Route path={AppRoutes.CLOSE_CASE} element={<CloseCase />} />
                   <Route path={AppRoutes.PROVIDER} element={<ProviderInfo />} />
                   <Route
@@ -191,6 +190,7 @@ const App = () => {
 
                 {/* ******* This routes are access by admin and physician only ********** */}
                 <Route element={<AdminProviderAuth />}>
+                  <Route path={AppRoutes.SEND_ORDER} element={<Order />} />
                   <Route
                     path={AppRoutes.VIEW_CASE}
                     element={<ViewReservation />}

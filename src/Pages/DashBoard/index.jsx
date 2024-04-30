@@ -102,6 +102,9 @@ const DashBoard = () => {
       dispatch(getRegions()).then((response) => {
         if (response.type === "") dispatch(apiFails("getRegions/rejected"));
       });
+      dispatch(getProfession()).then((response) => {
+        if (response.type === "") dispatch(apiFails("getProfession/rejected"));
+      });
     }
     dispatch(apiSuccess());
   }, [accountType, dispatch]);

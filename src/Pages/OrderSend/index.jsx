@@ -109,16 +109,14 @@ const Order = () => {
                       formik.errors.selectProfession
                     }
                   >
-                    {professions?.map((profession, index) => {
+                    {professions?.map((profession) => {
                       return (
                         <MenuItem
-                          key={index}
-                          value={profession?.profession}
-                          onClick={() =>
-                            dispatch(getBusiness(profession?.profession))
-                          }
+                          key={profession?.id}
+                          value={profession?.id}
+                          onClick={() => dispatch(getBusiness(profession?.id))}
                         >
-                          {profession?.profession}
+                          {profession?.name}
                         </MenuItem>
                       );
                     })}

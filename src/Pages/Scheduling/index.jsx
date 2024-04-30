@@ -89,7 +89,7 @@ const Scheduling = () => {
           start: formatDateTime(shift.shiftDate, shift.startTime),
           end: formatDateTime(shift.shiftDate, shift.endTime),
           resourceId: shift?.physician?.id,
-          backgroundColor: shift.isApproved ? "lightgreen" : "lightpink",
+          backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
         };
         processedEvents.push(event);
 
@@ -124,9 +124,7 @@ const Scheduling = () => {
                     date.toISOString().split("T")[0],
                     shift.endTime,
                   ),
-                  backgroundColor: shift.isApproved
-                    ? "lightgreen"
-                    : "lightpink",
+                  backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
                 };
                 processedEvents.push(repeatedEvent);
               }
@@ -144,13 +142,16 @@ const Scheduling = () => {
     title: `${shift?.physician?.firstName} ${shift?.physician?.lastName}`,
   }));
 
-  console.log("events", events);
-
   return (
     <>
       <Box className="main-scheduling-container">
-        <Container maxWidth="lg" className="scheduling-container-wrapper">
-          <Box display="flex" justifyContent="space-between" mb="8px">
+        <Container maxWidth="xl" className="scheduling-container-wrapper">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            mb="8px"
+            flexWrap="wrap"
+          >
             <Box display="flex">
               <Typography variant="h5" gutterBottom>
                 <b>Scheduling</b>
@@ -164,7 +165,12 @@ const Scheduling = () => {
               onClick={() => navigate(-1)}
             />
           </Box>
-          <Box display="flex" justifyContent="space-between">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap={2}
+          >
             <Input
               className="search-text drop-list"
               select
@@ -187,7 +193,7 @@ const Scheduling = () => {
                 );
               })}
             </Input>
-            <Box display="flex" gap={2}>
+            <Box display="flex" gap={2} flexWrap="wrap">
               <Button
                 name="Provider on call"
                 onClick={() => navigate(AppRoutes.PROVIDER_ON_CALL)}
@@ -210,7 +216,7 @@ const Scheduling = () => {
           </Box>
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
-            initialView="resourceTimelineDay"
+            initialView="dayGridMonth"
             views={{
               resourceTimelineDay: {
                 type: "resourceTimeline",

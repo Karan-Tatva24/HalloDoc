@@ -58,9 +58,7 @@ const CloseCase = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: closeCaseSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: (values) => {},
     enableReinitialize: true,
   });
 
