@@ -85,8 +85,11 @@ export const halloDocTheme = (toggleDarkMode) => {
             minWidth: "250px",
           },
           root: {
-            "&.sidebar .MuiDrawer-paper": {
-              backgroundColor: "#c7ecf2",
+            "&.sidebar .MuiBackdrop-root": {
+              marginTop: "7rem",
+            },
+            "&.sidebar .MuiPaper-root": {
+              marginTop: "7rem",
             },
           },
         },

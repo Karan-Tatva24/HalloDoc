@@ -152,6 +152,8 @@ const RequestedShifts = () => {
             <Box
               display="flex"
               justifyContent="space-between"
+              flexWrap="wrap"
+              gap={2}
               pb={4}
               pt={2}
               pr={2}
@@ -180,7 +182,12 @@ const RequestedShifts = () => {
                   );
                 })}
               </Input>
-              <Box display="flex" justifyContent="flex-end" gap={2}>
+              <Box
+                display="flex"
+                // justifyContent="flex-end"
+                flexWrap="wrap"
+                gap={2}
+              >
                 <Button
                   name="View Current Month Shifts"
                   color="success"

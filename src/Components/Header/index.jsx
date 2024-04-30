@@ -71,7 +71,7 @@ const Header = () => {
   };
 
   return (
-    <Box>
+    <Box position="relative">
       <Box className="header">
         <Box display="flex" alignItems="center" gap={3}>
           <Button
@@ -321,8 +321,10 @@ const Header = () => {
       ) : null}
 
       <Drawer
+        elevation={0}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        sx={{ marginTop: "7rem" }}
         className="sidebar"
       >
         <List

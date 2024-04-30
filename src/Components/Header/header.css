@@ -52,7 +52,7 @@ a.active {
   min-width: 238px;
   transition: all 0.5s ease;
   position: relative !important;
-  top: 7rem !important;
+  margin-top: 7rem !important;
 }
 
 .sideLinks {
@@ -65,12 +65,10 @@ a.active {
 .sideLinks:hover,
 .sideLinks:focus,
 .sideLinks:active {
-  background-color: #3e7aae;
   color: #ffffff;
 }
 
 .sidebar .active {
-  background-color: #4c8dc5;
   color: #ffffff;
   border-bottom: none;
 }

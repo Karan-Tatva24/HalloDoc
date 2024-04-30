@@ -56,7 +56,7 @@ const BlockHistory = () => {
       dispatch(
         blockHistory({
           name: values.name,
-          date: values.date.format("MM-DD-YYYY"),
+          date: values.date,
           email: values.email,
           phone: values.phone,
           sortBy: orderBy,
@@ -141,7 +141,9 @@ const BlockHistory = () => {
                       formik.values.date ? dayjs(formik.values.date) : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("date", formattedDate);
                     }}
                     onBlur={formik.handleBlur}

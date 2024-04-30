@@ -196,7 +196,9 @@ const SMSLogs = () => {
                         : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("createdDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}
@@ -221,7 +223,9 @@ const SMSLogs = () => {
                         : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("sentDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}

@@ -258,7 +258,9 @@ const SearchRecords = () => {
                         : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("fromDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}
@@ -280,7 +282,9 @@ const SearchRecords = () => {
                       formik.values.toDate ? dayjs(formik.values.toDate) : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("toDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}

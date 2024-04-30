@@ -62,8 +62,8 @@ const EmailLogs = () => {
       dispatch(
         emailLog({
           receiverName: values.receiverName,
-          createdDate: values.createDate.format("MM-DD-YYYY"),
-          sentDate: values.sentDate.format("MM-DD-YYYY"),
+          createdDate: values.createDate,
+          sentDate: values.sentDate,
           email: values.email,
           roleName: values.role,
           sortBy: orderBy,
@@ -196,7 +196,9 @@ const EmailLogs = () => {
                         : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue?.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("createDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}
@@ -221,7 +223,9 @@ const EmailLogs = () => {
                         : null
                     }
                     onChange={(newValue) => {
-                      const formattedDate = newValue ? newValue : null;
+                      const formattedDate = newValue
+                        ? newValue.format("YYYY-MM-DD")
+                        : null;
                       formik.setFieldValue("sentDate", formattedDate);
                     }}
                     onBlur={formik.handleBlur}
