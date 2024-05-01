@@ -290,9 +290,9 @@ const SMSLogs = () => {
                             <TableCell key={column.id} align="center">
                               {row[column.id] !== null
                                 ? column.id === "recipient"
-                                  ? `${row?.receiver?.patientFirstName} ${row?.receiver?.patientLastName}`
+                                  ? `${row?.receiver?.firstName} ${row?.receiver?.lastName}`
                                   : column.id === "roleName"
-                                    ? row?.receiver?.user?.role?.Name
+                                    ? row?.receiver?.role?.Name
                                     : column.id === "sent"
                                       ? row?.isSMSSent
                                         ? "Yes"
