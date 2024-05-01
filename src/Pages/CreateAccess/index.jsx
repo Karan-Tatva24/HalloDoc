@@ -86,8 +86,10 @@ const CreateAccess = () => {
             navigate(AppRoutes.ACCOUNT_ACCESS);
             dispatch(apiSuccess());
             toast.success(response.payload.message);
-          } else if (response.type === "updateRole/rejected")
+          } else if (response.type === "updateRole/rejected") {
             dispatch(apiFails());
+            toast.error(response?.payload?.data?.message);
+          }
         },
       );
     } else {
@@ -97,8 +99,10 @@ const CreateAccess = () => {
           navigate(AppRoutes.ACCOUNT_ACCESS);
           dispatch(apiSuccess());
           toast.success(response.payload.message);
-        } else if (response.type === "createAccess/rejected")
+        } else if (response.type === "createAccess/rejected") {
           dispatch(apiFails());
+          toast.error(response?.payload?.data?.message);
+        }
       });
     }
   };

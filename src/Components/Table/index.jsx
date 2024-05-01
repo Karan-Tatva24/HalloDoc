@@ -455,7 +455,8 @@ const MyTable = ({
                                         response.type ===
                                         "houseCallType/fulfilled"
                                       ) {
-                                        dispatch(getProviderDashboardCount());
+                                        dispatch(getPatientName(row.id));
+                                        navigate(AppRoutes.ENCOUNTER_FORM);
                                         dispatch(apiSuccess());
                                       } else if (
                                         response.type ===

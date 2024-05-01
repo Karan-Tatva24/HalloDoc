@@ -35,6 +35,7 @@ const CancelAgreementModal = ({ id, open, handleClose }) => {
         } else if (res.type === "cancelAgreement/rejected") {
           toast.error(res.payload?.data?.validation?.message);
           dispatch(apiFails());
+          toast.error(res.payload?.data?.message);
         }
       });
     },

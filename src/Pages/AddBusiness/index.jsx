@@ -82,9 +82,11 @@ const AddBusiness = () => {
             dispatch(clearBusiness());
             navigate(AppRoutes.PARTNERS);
             dispatch(apiSuccess());
-            toast.success(response.payload.message);
-          } else if (response.type === "updateBusiness/rejected")
+            toast.success(response.payload?.message);
+          } else if (response.type === "updateBusiness/rejected") {
             dispatch(apiFails());
+            toast.error(response?.payload?.data?.message);
+          }
         },
       );
     } else {
@@ -93,9 +95,11 @@ const AddBusiness = () => {
           dispatch(clearBusiness());
           navigate(AppRoutes.PARTNERS);
           dispatch(apiSuccess());
-          toast.success(response.payload.message);
-        } else if (response.type === "addBusiness/rejected")
+          toast.success(response.payload?.message);
+        } else if (response.type === "addBusiness/rejected") {
           dispatch(apiFails());
+          toast.error(response?.payload?.data?.message);
+        }
       });
     }
   };

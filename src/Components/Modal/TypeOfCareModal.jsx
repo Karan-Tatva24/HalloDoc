@@ -10,11 +10,15 @@ import {
   apiPending,
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
+import { useNavigate } from "react-router-dom/dist";
+import { AppRoutes } from "../../constants/routes";
+import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
 
 const TypeOfCareModal = ({ open, handleClose }) => {
   const [selectedType, setSelectedType] = useState("");
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.root.patientName);
+  const navigate = useNavigate();
 
   return (
     <Modal open={open} handleClose={handleClose} header="Select Type Of Care">
@@ -53,8 +57,12 @@ const TypeOfCareModal = ({ open, handleClose }) => {
               (response) => {
                 if (response.type === "typeOfCare/fulfilled") {
                   dispatch(getProviderDashboardCount());
-                  setSelectedType("");
+                  if (selectedType === "Consult") {
+                    dispatch(getPatientName(id));
+                    navigate(AppRoutes.ENCOUNTER_FORM);
+                  }
                   handleClose();
+                  setSelectedType("");
                   dispatch(apiSuccess());
                 } else if (response.type === "typeOfCare/rejected")
                   dispatch(apiFails());

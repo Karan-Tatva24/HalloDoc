@@ -11,6 +11,7 @@ import {
   apiPending,
   apiSuccess,
 } from "../../../redux/halloSlices/apiStatusSlice";
+import { AppRoutes } from "../../../constants/routes";
 
 const Agreement = () => {
   const [open, setOpen] = useState(false);
@@ -49,11 +50,13 @@ const Agreement = () => {
                 dispatch(apiPending());
                 dispatch(acceptAgreement(id)).then((res) => {
                   if (res.type === "acceptAgreement/fulfilled") {
-                    navigate(-1);
+                    navigate(AppRoutes.LOGIN);
                     dispatch(apiSuccess());
                     toast.success(res.payload.message);
-                  } else if (res.type === "acceptAgreement/rejected")
+                  } else if (res.type === "acceptAgreement/rejected") {
                     dispatch(apiFails());
+                    toast.error(res.payload?.data?.message);
+                  }
                 });
               }}
             />
