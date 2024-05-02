@@ -86,24 +86,24 @@ const DashBoard = () => {
     dispatch(apiPending());
     if (accountType === "Admin") {
       dispatch(dashboardCount()).then((response) => {
-        if (response.type === "") dispatch(apiFails("dashboardCount/rejected"));
+        if (response.type === "dashboardCount/rejected") dispatch(apiFails());
       });
       dispatch(getProfession()).then((response) => {
-        if (response.type === "") dispatch(apiFails("getProfession/rejected"));
+        if (response.type === "getProfession/rejected") dispatch(apiFails());
       });
       dispatch(getRegions()).then((response) => {
-        if (response.type === "") dispatch(apiFails("getRegions/rejected"));
+        if (response.type == "getRegions/rejected") dispatch(apiFails());
       });
     } else if (accountType === "Physician") {
       dispatch(getProviderDashboardCount()).then((response) => {
-        if (response.type === "")
-          dispatch(apiFails("getProviderDashboardCount/rejected"));
+        if (response.type === "getProviderDashboardCount/rejected")
+          dispatch(apiFails());
       });
       dispatch(getRegions()).then((response) => {
-        if (response.type === "") dispatch(apiFails("getRegions/rejected"));
+        if (response.type === "getRegions/rejected") dispatch(apiFails());
       });
       dispatch(getProfession()).then((response) => {
-        if (response.type === "") dispatch(apiFails("getProfession/rejected"));
+        if (response.type === "getProfession/rejected") dispatch(apiFails());
       });
     }
     dispatch(apiSuccess());

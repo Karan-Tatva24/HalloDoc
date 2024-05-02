@@ -52,7 +52,7 @@ const ProviderOnCall = () => {
 
     setOffDutyProviders(
       providerOnCallData?.filter(
-        (data) => data?.onCallStatus === "Unavailable",
+        (data) => data?.onCallStatus === "UnScheduled",
       ),
     );
   }, [providerOnCallData]);

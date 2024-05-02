@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const addBusinessSchema = Yup.object({
-  businessName: Yup.string().required("Business Name is Required!"),
+  businessName: Yup.string().trim().required("Business Name is Required!"),
   profession: Yup.string().required("Select Profession!"),
   faxNumber: Yup.number().required("Fax Number is Required!"),
   phone: Yup.string()
@@ -10,9 +10,11 @@ export const addBusinessSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email format!")
     .required("Email must Required!"),
-  businessContact: Yup.string().required("Business Contact is Required!"),
-  street: Yup.string().required("Street is Required!"),
-  city: Yup.string().required("City is Required!"),
-  state: Yup.string().required("State is Required!"),
-  zipCode: Yup.string().required("Zip/Postal Code is Required!"),
+  businessContact: Yup.string()
+    .trim()
+    .required("Business Contact is Required!"),
+  street: Yup.string().trim().required("Street is Required!"),
+  city: Yup.string().trim().required("City is Required!"),
+  state: Yup.string().trim().required("State is Required!"),
+  zipCode: Yup.string().trim().required("Zip/Postal Code is Required!"),
 });

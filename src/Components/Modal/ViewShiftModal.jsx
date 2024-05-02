@@ -81,6 +81,11 @@ const ViewShiftModal = ({ open, handleClose }) => {
     });
   }, [viewShiftData]);
 
+  const checkShift = (shiftDate) => {
+    const today = new Date();
+    return shiftDate < today;
+  };
+
   return (
     <Modal open={open} handleClose={handleClose} header="View Shift">
       <form>
@@ -173,55 +178,59 @@ const ViewShiftModal = ({ open, handleClose }) => {
               helperText={formik.touched.endTime && formik.errors.endTime}
             />
           </Box>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="center"
-            gap={1.5}
-          >
-            <Button
-              name="Return"
-              onClick={() => {
-                dispatch(toggleApproved(viewShiftData?.id)).then((response) => {
-                  if (response.type === "toggleApproved/fulfilled") {
-                    toast.success(response.payload.message);
-                    setIsDisabled(true);
-                    handleClose();
-                    accountType === "Admin"
-                      ? dispatch(viewShiftByDate({ regions: "all" }))
-                      : dispatch(mySchedule({}));
-                  }
-                });
-              }}
-            />
-            <Button
-              name={isDisabled ? "Edit" : "Save"}
-              onClick={
-                isDisabled ? () => setIsDisabled(false) : () => handleSave()
-              }
-            />
-            <Button
-              name="Delete"
-              color="error"
-              onClick={() => {
-                dispatch(apiPending());
-                dispatch(deleteShift({ shiftIds: [viewShiftData?.id] })).then(
-                  (response) => {
-                    if (response.type === "deleteShift/fulfilled") {
-                      toast.success(response.payload.message);
-                      setIsDisabled(true);
-                      handleClose();
-                      accountType === "Admin"
-                        ? dispatch(viewShiftByDate({ regions: "all" }))
-                        : dispatch(mySchedule({}));
-                      dispatch(apiSuccess());
-                    } else if (response.type === "deleteShift/rejected")
-                      dispatch(apiFails());
-                  },
-                );
-              }}
-            />
-          </Box>
+          {!checkShift(formik.values.shiftDate) ? (
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              gap={1.5}
+            >
+              <Button
+                name="Return"
+                onClick={() => {
+                  dispatch(toggleApproved(viewShiftData?.id)).then(
+                    (response) => {
+                      if (response.type === "toggleApproved/fulfilled") {
+                        toast.success(response.payload.message);
+                        setIsDisabled(true);
+                        handleClose();
+                        accountType === "Admin"
+                          ? dispatch(viewShiftByDate({ regions: "all" }))
+                          : dispatch(mySchedule({}));
+                      }
+                    },
+                  );
+                }}
+              />
+              <Button
+                name={isDisabled ? "Edit" : "Save"}
+                onClick={
+                  isDisabled ? () => setIsDisabled(false) : () => handleSave()
+                }
+              />
+              <Button
+                name="Delete"
+                color="error"
+                onClick={() => {
+                  dispatch(apiPending());
+                  dispatch(deleteShift({ shiftIds: [viewShiftData?.id] })).then(
+                    (response) => {
+                      if (response.type === "deleteShift/fulfilled") {
+                        toast.success(response.payload.message);
+                        setIsDisabled(true);
+                        handleClose();
+                        accountType === "Admin"
+                          ? dispatch(viewShiftByDate({ regions: "all" }))
+                          : dispatch(mySchedule({}));
+                        dispatch(apiSuccess());
+                      } else if (response.type === "deleteShift/rejected")
+                        dispatch(apiFails());
+                    },
+                  );
+                }}
+              />
+            </Box>
+          ) : null}
         </Box>
       </form>
     </Modal>

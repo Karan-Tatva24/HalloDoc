@@ -10,5 +10,5 @@ export const transferModalSchema = Yup.object({
     is: true,
     then: (schema) => schema.required("Physician is Required!"),
   }),
-  description: Yup.string().required("Description is Required!"),
+  description: Yup.string().trim().required("Description is Required!"),
 });

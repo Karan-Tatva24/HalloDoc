@@ -11,8 +11,8 @@ export const accountInfoSchema = Yup.object({
 });
 
 export const administratorInfoSchema = Yup.object({
-  firstName: Yup.string().required("First name Required!"),
-  lastName: Yup.string().required("Last name Required!"),
+  firstName: Yup.string().trim().required("First name Required!"),
+  lastName: Yup.string().trim().required("Last name Required!"),
   email: Yup.string().email("Invalid email!").required("Email Required!"),
   confirmEmail: Yup.string()
     .email("Invalid email!")
@@ -24,11 +24,12 @@ export const administratorInfoSchema = Yup.object({
 });
 
 export const addressInfoSchema = Yup.object({
-  address1: Yup.string().required("Address Required!"),
-  address2: Yup.string().required("Address Required!"),
-  city: Yup.string().required("City Required!"),
-  state: Yup.string().required("State Required!"),
+  address1: Yup.string().trim().required("Address Required!"),
+  address2: Yup.string().trim().required("Address Required!"),
+  city: Yup.string().trim().required("City Required!"),
+  state: Yup.string().trim().required("State Required!"),
   zipCode: Yup.string()
+    .trim()
     .required("Zip Required!")
     .matches(/^\d{5,6}$/, "Invalid zip code"),
   altPhone: Yup.string()
@@ -37,19 +38,19 @@ export const addressInfoSchema = Yup.object({
 });
 
 export const physicianInformationSchema = Yup.object({
-  firstName: Yup.string().required("First name Required!"),
-  lastName: Yup.string().required("Last name Required!"),
+  firstName: Yup.string().trim().required("First name Required!"),
+  lastName: Yup.string().trim().required("Last name Required!"),
   email: Yup.string().email("Invalid email!").required("Email Required!"),
   phoneNumber: Yup.string()
     .required("Required!")
     .matches(/^\d{10,12}$/, "Invalid phone number"),
-  medicalLicense: Yup.string().required("Require!"),
-  NPINumber: Yup.string().required("Require!"),
-  syncEmailAddress: Yup.string().email("Invalid email!"),
+  medicalLicense: Yup.string().trim().required("Require!"),
+  NPINumber: Yup.string().trim().required("Require!"),
+  syncEmailAddress: Yup.string().trim().email("Invalid email!"),
 });
 
 export const providerProfileSchema = Yup.object({
-  businessName: Yup.string().required("Required!"),
-  businessWebsite: Yup.string().required("Required!"),
-  adminNotes: Yup.string().required("Required!"),
+  businessName: Yup.string().trim().required("Required!"),
+  businessWebsite: Yup.string().trim().required("Required!"),
+  adminNotes: Yup.string().trim().required("Required!"),
 });

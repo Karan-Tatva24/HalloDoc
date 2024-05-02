@@ -18,12 +18,6 @@ import {
   apiSuccess,
 } from "../../redux/halloSlices/apiStatusSlice";
 
-const addDays = (date, days) => {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
 const formatDateTime = (date, time) => {
   return `${date}T${time}:00`;
 };
@@ -68,45 +62,6 @@ const MySchedule = () => {
           backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
         };
         processedEvents.push(event);
-
-        if (shift.isRepeat) {
-          const daysOfWeek = [
-            "sunday",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-          ];
-          const repeatCount = shift.repeatUpto || 1;
-
-          for (let i = 1; i <= repeatCount; i++) {
-            daysOfWeek.forEach((day, index) => {
-              if (shift[day]) {
-                const date = addDays(
-                  new Date(shift.shiftDate),
-                  i * 7 + index - new Date(shift.shiftDate).getDay(),
-                );
-                const repeatedEvent = {
-                  ...event,
-                  id: `${shift.id}-repeat-${i}-${day}`,
-                  title: `${shift?.physician?.firstName} ${shift?.physician?.lastName} (Repeated)`,
-                  start: formatDateTime(
-                    date.toISOString().split("T")[0],
-                    shift.startTime,
-                  ),
-                  end: formatDateTime(
-                    date.toISOString().split("T")[0],
-                    shift.endTime,
-                  ),
-                  backgroundColor: shift.isApproved ? "#2f6b2f" : "#fca2b0",
-                };
-                processedEvents.push(repeatedEvent);
-              }
-            });
-          }
-        }
       });
 
       setEvents(processedEvents);

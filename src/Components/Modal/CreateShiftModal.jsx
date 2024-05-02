@@ -39,6 +39,30 @@ const CreateShiftModal = ({ open, handleClose }) => {
   );
   const { accountType } = useSelector((state) => state?.root.loggedUserData);
 
+  const today = dayjs().startOf("day");
+
+  const getMinTime = () => {
+    const today = dayjs().startOf("day");
+    const selectedDate = dayjs(formik.values.shiftDate);
+    return selectedDate.isSame(today, "day") ? dayjs() : null;
+  };
+
+  const handleTimeChange = (event) => {
+    const minTime = getMinTime();
+    const selectedTime = dayjs(event.target.value, "HH:mm");
+
+    if (minTime && selectedTime.isBefore(minTime, "minute")) {
+      formik.setFieldError(
+        event.target.name,
+        "Cannot select a past time for today.",
+      );
+      formik.setFieldValue(event.target.name, "");
+    } else {
+      formik.setFieldValue(event.target.name, event.target.value);
+      formik.setFieldError(event.target.name, "");
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       isAdmin: accountType === "Admin",
@@ -159,6 +183,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
             label="Shift Date"
             fullWidth
             inputFormat="DD/MM/YYYY"
+            minDate={today}
             value={
               formik.values.shiftDate ? dayjs(formik.values.shiftDate) : null
             }
@@ -177,12 +202,17 @@ const CreateShiftModal = ({ open, handleClose }) => {
               type="time"
               fullWidth
               value={formik.values.startTime}
-              onChange={formik.handleChange}
+              onChange={handleTimeChange}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.startTime && Boolean(formik.errors.startTime)
               }
               helperText={formik.touched.startTime && formik.errors.startTime}
+              InputProps={{
+                inputProps: {
+                  min: getMinTime() ? getMinTime().format("HH:mm") : "",
+                },
+              }}
             />
             <Input
               name="endTime"

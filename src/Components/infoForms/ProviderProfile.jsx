@@ -151,7 +151,6 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
               variant="contained"
               size="large"
               startIcon={<CloudUploadOutlinedIcon />}
-              type="submit"
             />
           </Box>
         </Grid>
@@ -188,7 +187,6 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
               variant="contained"
               size="large"
               startIcon={<CloudUploadOutlinedIcon />}
-              type="submit"
             />
           </Box>
         </Grid>
@@ -199,6 +197,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
             size="large"
             startIcon={<EditIcon />}
             onClick={() => setOpenModal(true)}
+            disabled={isDisabled}
           />
         </Grid>
         <Grid item xs={4}>
