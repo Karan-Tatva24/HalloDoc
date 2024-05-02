@@ -190,9 +190,15 @@ const Scheduling = () => {
               },
             }}
             headerToolbar={{
-              left: "title prev next",
+              left: "title prev customIcon next",
               center: "",
               right: "resourceTimelineDay resourceTimelineWeek dayGridMonth",
+            }}
+            customButtons={{
+              customIcon: {
+                text: " ",
+                icon: "gg-calendar-dates",
+              },
             }}
             resourceAreaHeaderContent="Physicians"
             events={events}

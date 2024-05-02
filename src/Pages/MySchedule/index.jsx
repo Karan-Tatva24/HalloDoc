@@ -107,6 +107,10 @@ const MySchedule = () => {
                   handleOpen("create shift");
                 },
               },
+              customIcon: {
+                text: " ",
+                icon: "gg-calendar-dates",
+              },
             }}
             views={{
               dayGridMonth: {
@@ -116,7 +120,7 @@ const MySchedule = () => {
               },
             }}
             headerToolbar={{
-              left: "title prev next",
+              left: "title prev customIcon next",
               center: "",
               right: "myCustomButton",
             }}
