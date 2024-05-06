@@ -37,7 +37,7 @@ const CreateShiftModal = ({ open, handleClose }) => {
   const { regions, physicians } = useSelector(
     (state) => state.root.getRegionPhysician,
   );
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const today = dayjs().startOf("day");
 

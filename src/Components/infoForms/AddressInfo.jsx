@@ -44,7 +44,7 @@ const AddressInfo = ({
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const { id } = useSelector((state) => state.root.loggedUserData);
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
   const dispatch = useDispatch();
 
   const formik = useFormik({

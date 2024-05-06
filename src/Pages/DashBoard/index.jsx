@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import RequestPageOutlinedIcon from "@mui/icons-material/RequestPageOutlined";
@@ -62,83 +62,71 @@ const DashBoard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const state = useSelector((state) => state.root.dashboardCount);
   const counts = state?.dashboardCount;
-  const handleOpen = (name, id) => {
+
+  const handleOpen = useCallback((name, id) => {
     setModalName(name);
     setRowId(id);
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
     setModalName("");
-  };
+  }, []);
 
-  const handleClick = (name) => {
+  const handleClick = useCallback((name) => {
     setActiveButton(name);
     setIsActive(true);
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(apiPending());
+    const apiCalls = [];
+
     if (accountType === "Admin") {
-      dispatch(dashboardCount()).then((response) => {
-        if (response.type === "dashboardCount/rejected") dispatch(apiFails());
-      });
-      dispatch(getProfession()).then((response) => {
-        if (response.type === "getProfession/rejected") dispatch(apiFails());
-      });
-      dispatch(getRegions()).then((response) => {
-        if (response.type == "getRegions/rejected") dispatch(apiFails());
-      });
-    } else if (accountType === "Physician") {
-      dispatch(getProviderDashboardCount()).then((response) => {
-        if (response.type === "getProviderDashboardCount/rejected")
-          dispatch(apiFails());
-      });
-      dispatch(getRegions()).then((response) => {
-        if (response.type === "getRegions/rejected") dispatch(apiFails());
-      });
-      dispatch(getProfession()).then((response) => {
-        if (response.type === "getProfession/rejected") dispatch(apiFails());
-      });
+      apiCalls.push(dispatch(dashboardCount()));
     }
-    dispatch(apiSuccess());
+
+    if (accountType === "Admin" || accountType === "Physician") {
+      apiCalls.push(dispatch(getRegions()));
+      apiCalls.push(dispatch(getProfession()));
+    }
+
+    if (accountType === "Physician") {
+      apiCalls.push(dispatch(getProviderDashboardCount()));
+    }
+
+    Promise.all(apiCalls)
+      .then((responses) => {
+        const hasRejected = responses.some((response) =>
+          response.type.endsWith("rejected"),
+        );
+        if (hasRejected) {
+          dispatch(apiFails());
+        } else {
+          dispatch(apiSuccess());
+        }
+      })
+      .catch(() => {
+        dispatch(apiFails());
+      });
   }, [accountType, dispatch]);
 
   useEffect(() => {
-    switch (activeButton) {
-      case "New":
-        setColumns(newColumns);
-        setDropDown(newDropdown);
-        break;
-      case "Pending":
-        setColumns(pendingColumns);
-        setDropDown(pendingDropdown);
-        break;
-      case "Active":
-        setColumns(activeColumns);
-        setDropDown(activeDropdown);
-        break;
-      case "Conclude":
-        setColumns(concludeColumns);
-        setDropDown(concludeDropdown);
-        break;
-      case "To Close":
-        setColumns(toCloseColumns);
-        setDropDown(toCloseDropdown);
-        break;
-      case "UnPaid":
-        setColumns(unpaidColumns);
-        setDropDown(unpaidDropdown);
-        break;
-      default:
-        setColumns(newColumns);
-        setDropDown(newDropdown);
-    }
+    const columnData = {
+      New: { columns: newColumns, dropDown: newDropdown },
+      Pending: { columns: pendingColumns, dropDown: pendingDropdown },
+      Active: { columns: activeColumns, dropDown: activeDropdown },
+      Conclude: { columns: concludeColumns, dropDown: concludeDropdown },
+      "To Close": { columns: toCloseColumns, dropDown: toCloseDropdown },
+      UnPaid: { columns: unpaidColumns, dropDown: unpaidDropdown },
+    };
+    setColumns(columnData[activeButton]?.columns || newColumns);
+    setDropDown(columnData[activeButton]?.dropDown || newDropdown);
   }, [activeButton]);
 
   return (

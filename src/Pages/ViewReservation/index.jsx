@@ -51,7 +51,7 @@ const ViewReservation = () => {
   const data = state?.viewCase;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: initialValues,

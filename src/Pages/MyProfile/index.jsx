@@ -28,7 +28,7 @@ const MyProfile = () => {
 
   const { profileData } = useSelector((state) => state.root.adminProfile);
   const { roles } = useSelector((state) => state.root.getRoles);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   useEffect(() => {
     dispatch(apiPending());

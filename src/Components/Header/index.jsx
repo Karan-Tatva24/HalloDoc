@@ -36,7 +36,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userName, accountType } = useSelector(
-    (state) => state?.root.loggedUserData,
+    (state) => state.root.loggedUserData,
   );
   const { isLoggedIn } = useSelector((state) => state.root.login);
 

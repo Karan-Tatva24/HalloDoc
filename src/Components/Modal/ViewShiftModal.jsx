@@ -37,7 +37,7 @@ const ViewShiftModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { regions } = useSelector((state) => state.root.getRegionPhysician);
   const { viewShiftData } = useSelector((state) => state.root.viewShift);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues,

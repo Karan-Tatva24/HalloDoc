@@ -29,7 +29,7 @@ const ViewNotes = () => {
   const data = state?.notes;
   const dispatch = useDispatch();
   const id = data?.id;
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: {

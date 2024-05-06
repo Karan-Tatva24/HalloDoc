@@ -35,7 +35,7 @@ const ProviderProfile = ({
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
 
   const dispatch = useDispatch();
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues,

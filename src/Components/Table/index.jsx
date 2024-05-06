@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -55,63 +55,53 @@ const MyTable = ({
   activeState,
 }) => {
   const navigate = useNavigate();
-  const [tableData, setTableData] = useState([]);
-  const [columns, setColumns] = useState(stateColumns);
-  const [dropdown, setDropdown] = useState(stateDropDown);
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [requestType, setRequestType] = useState("all");
+  const [copiedStates, setCopiedStates] = useState({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [copiedStates, setCopiedStates] = useState({});
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [rowId, setRowId] = useState(null);
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("Requested Date");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [rowId, setRowId] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const open = Boolean(anchorEl);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    setPage(0);
-    setPageNo(1);
-    setRowsPerPage(10);
-  }, [activeState]);
-
-  useEffect(() => {
-    setColumns(
+  const columns = useMemo(
+    () =>
       stateColumns?.filter((column) =>
         column.accountTypes.includes(accountType),
       ),
-    );
-  }, [accountType, stateColumns]);
-
-  useEffect(() => {
-    setDropdown(
+    [accountType, stateColumns],
+  );
+  const dropdown = useMemo(
+    () =>
       stateDropDown?.filter((dropdown) =>
         dropdown.accountTypes?.includes(accountType),
       ),
-    );
-  }, [accountType, stateDropDown]);
-
-  const { stateData } = useSelector((state) => state.root.newState);
-  const { providerStateData } = useSelector(
-    (state) => state.root.dashboardByState,
+    [accountType, stateDropDown],
   );
 
-  const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { stateData, providerStateData, regions } = useSelector((state) => ({
+    stateData: state.root.newState.stateData,
+    providerStateData: state.root.dashboardByState.providerStateData,
+    regions: state.root.getRegionPhysician.regions,
+  }));
 
-  useEffect(() => {
-    accountType === "Admin"
-      ? setTableData(stateData?.rows)
-      : setTableData(providerStateData?.rows);
+  const tableData = useMemo(() => {
+    return accountType === "Admin" ? stateData?.rows : providerStateData?.rows;
   }, [accountType, providerStateData, stateData]);
 
-  const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
+  const handleRequestSort = useCallback(
+    (property) => {
+      const isAsc = orderBy === property && order === "asc";
+      setOrder(isAsc ? "desc" : "asc");
+      setOrderBy(property);
+    },
+    [order, orderBy],
+  );
 
   const handleClick = (event, id) => {
     setRowId(id);

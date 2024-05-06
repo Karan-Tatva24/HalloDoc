@@ -38,7 +38,7 @@ const AccountInfo = ({ id, name, userName, status, role, roles }) => {
   const [passwordDisable, setPasswordDisable] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues,

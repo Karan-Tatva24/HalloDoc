@@ -49,7 +49,7 @@ const PhysiciansInformation = ({
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.root.getRegionPhysician);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const formik = useFormik({
     initialValues: initialValues,

@@ -68,7 +68,7 @@ const EncounterForm = () => {
   const { encounterFormData } = useSelector(
     (state) => state.root.encounterForm,
   );
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
 
   const {
     id,

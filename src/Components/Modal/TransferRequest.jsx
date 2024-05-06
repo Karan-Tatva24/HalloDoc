@@ -25,7 +25,7 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
     (state) => state.root.getRegionPhysician,
   );
   const { id } = useSelector((state) => state.root.patientName);
-  const { accountType } = useSelector((state) => state?.root.loggedUserData);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
   const [phyId, setPhyId] = useState(-1);
 
   const formik = useFormik({
