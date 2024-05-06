@@ -13,7 +13,14 @@ const CreateNewRequestModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
 
   return (
-    <Modal open={open} handleClose={handleClose} header="Create New Request">
+    <Modal
+      open={open}
+      handleClose={() => {
+        setSelectedType("");
+        handleClose();
+      }}
+      header="Create New Request"
+    >
       <Typography variant="body1" p={2}>
         Here, I want to create new request for ...
       </Typography>

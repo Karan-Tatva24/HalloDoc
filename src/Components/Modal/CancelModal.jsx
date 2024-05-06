@@ -52,7 +52,14 @@ const CancelModal = ({ open, handleClose }) => {
   });
 
   return (
-    <Modal open={open} handleClose={handleClose} header="Confirm Cancellation">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Confirm Cancellation"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>

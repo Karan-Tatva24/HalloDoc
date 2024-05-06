@@ -51,7 +51,14 @@ const ContactProviderModal = ({ open, handleClose, id }) => {
     validationSchema: contactProviderSchema,
   });
   return (
-    <Modal open={open} handleClose={handleClose} header="Contact Your Provider">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Contact Your Provider"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <FormControl>

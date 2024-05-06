@@ -51,7 +51,10 @@ const SendLinkModal = ({ open, handleClose }) => {
   return (
     <Modal
       open={open}
-      handleClose={handleClose}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
       header="Send mail to patient for submitting request"
     >
       <form onSubmit={formik.handleSubmit}>

@@ -44,7 +44,10 @@ const RequestToAdminModal = ({ id, open, handleClose }) => {
   return (
     <Modal
       open={open}
-      handleClose={handleClose}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
       header="Request To Administrator"
     >
       <form onSubmit={formik.handleSubmit}>

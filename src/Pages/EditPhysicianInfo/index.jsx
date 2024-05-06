@@ -40,8 +40,6 @@ const EditPhysicianInfo = () => {
     state,
     zipCode,
     altPhone,
-    photo,
-    signature,
     isAgreementDoc,
     isBackgroundDoc,
     isNonDisclosureDoc,
@@ -73,6 +71,9 @@ const EditPhysicianInfo = () => {
   const licenseDoc = userFiles?.filter(
     (file) => file?.docType === "licenseDoc",
   )?.[0]?.fileName;
+
+  const photoName = userFiles?.filter((file) => file?.docType === "Photo")?.[0]
+    ?.fileName;
 
   return (
     <>
@@ -134,8 +135,7 @@ const EditPhysicianInfo = () => {
               businessName={business?.businessName}
               businessWebsite={business?.businessWebsite}
               notes={notes}
-              photo={photo}
-              signature={signature}
+              photoName={photoName}
             />
             <Divider sx={{ backgroundColor: "#1f1e1e86" }} />
             <OnBoarding

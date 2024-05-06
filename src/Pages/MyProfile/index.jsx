@@ -90,6 +90,9 @@ const MyProfile = () => {
     (file) => file?.docType === "licenseDoc",
   )?.[0]?.fileName;
 
+  const photoName = userFiles?.filter((file) => file?.docType === "Photo")?.[0]
+    ?.fileName;
+
   return (
     <>
       <Box className="main-profile-container">
@@ -169,8 +172,7 @@ const MyProfile = () => {
                   id={id}
                   businessName={business?.businessName}
                   businessWebsite={business?.businessWebsite}
-                  photo={userFiles?.photo}
-                  signature={userFiles?.signature}
+                  photoName={photoName}
                   notes={notes}
                 />
                 <Divider sx={{ backgroundColor: "#1f1e1e86" }} />

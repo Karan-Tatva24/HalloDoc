@@ -41,7 +41,14 @@ const CancelAgreementModal = ({ id, open, handleClose }) => {
     },
   });
   return (
-    <Modal open={open} handleClose={handleClose} header="Cancel Confirmation">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Cancel Confirmation"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="h6">Test, test</Typography>

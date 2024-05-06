@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import BasicModal from "./Modal";
+import Modal from "./Modal";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { blockModalSchema } from "../../ValidationSchema";
@@ -44,7 +44,14 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
     },
   });
   return (
-    <BasicModal open={open} handleClose={handleClose} header="Confirm Block">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Confirm Block"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>
@@ -82,7 +89,7 @@ const ConfirmBlockModal = ({ open, handleClose }) => {
           </Box>
         </Box>
       </form>
-    </BasicModal>
+    </Modal>
   );
 };
 

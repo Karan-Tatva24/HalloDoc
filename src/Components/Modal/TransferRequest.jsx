@@ -75,7 +75,15 @@ const TransferRequest = ({ isAdmin, open, handleClose }) => {
   });
 
   return (
-    <Modal open={open} handleClose={handleClose} header="Transfer Request">
+    <Modal
+      open={open}
+      handleClose={() => {
+        dispatch(clearPhysician());
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Transfer Request"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">

@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import EditIcon from "@mui/icons-material/Edit";
 import { Input } from "../TextField/Input";
 import { Button } from "../Button";
 import { useFormik } from "formik";
 import { providerProfileSchema } from "../../ValidationSchema";
-import SignatureCanvas from "react-signature-canvas";
 import {
   editProviderProfile,
   physicianProfile,
@@ -25,29 +23,19 @@ const INITIAL_VALUE = {
   adminNotes: "",
 };
 
-const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
+const ProviderProfile = ({
+  id,
+  businessName,
+  businessWebsite,
+  notes,
+  photoName,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [selectedSignature, setSelectedSignature] = useState(null);
   const [initialValues, setInitialValues] = useState(INITIAL_VALUE);
-  const [openModel, setOpenModal] = useState(false);
-  const [imageURL, setImageURL] = useState(null);
-  const sigCanvas = useRef();
+
   const dispatch = useDispatch();
   const { accountType } = useSelector((state) => state?.root.loggedUserData);
-
-  const create = () => {
-    const URL = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
-    setImageURL(URL);
-    setOpenModal(false);
-  };
-
-  const download = () => {
-    const dlink = document.createElement("a");
-    dlink.setAttribute("href", imageURL);
-    dlink.setAttribute("download", "signature.png");
-    dlink.click();
-  };
 
   const formik = useFormik({
     initialValues,
@@ -66,11 +54,6 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
   const handlePhotoChange = (event) => {
     event.preventDefault();
     setSelectedPhoto(event.target.files[0]);
-  };
-
-  const handleSignatureChange = (event) => {
-    event.preventDefault();
-    setSelectedSignature(event.target.files[0]);
   };
 
   return (
@@ -120,7 +103,7 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
             }
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Box display="flex" position="relative" mb={2} mt={2}>
             <Button
               style={{
@@ -142,7 +125,11 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
                 hidden
               />
               <label htmlFor="photo">
-                {selectedPhoto !== null ? selectedPhoto.name : "Select Photo"}
+                {photoName
+                  ? photoName
+                  : selectedPhoto !== null
+                    ? selectedPhoto.name
+                    : "Select Photo"}
               </label>
             </Button>
 
@@ -153,93 +140,6 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
               startIcon={<CloudUploadOutlinedIcon />}
             />
           </Box>
-        </Grid>
-        <Grid item xs={10} md={4}>
-          <Box display="flex" position="relative" mb={2} mt={2}>
-            <Button
-              style={{
-                color: "#000000",
-                display: "flex",
-                justifyContent: "flex-start",
-                backgroundColor: "#f6f6f6",
-              }}
-              fullWidth
-              variant="outlined"
-              component="label"
-              title="Upload-files"
-            >
-              <input
-                onChange={handleSignatureChange}
-                type="file"
-                id="signature"
-                disabled={isDisabled}
-                hidden
-              />
-              <label htmlFor="signature">
-                {selectedSignature !== null
-                  ? selectedSignature.name
-                  : "Signature"}
-              </label>
-            </Button>
-
-            <Button
-              name="Upload"
-              variant="contained"
-              size="large"
-              startIcon={<CloudUploadOutlinedIcon />}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={2}>
-          <Button
-            name="Create"
-            variant="contained"
-            size="large"
-            startIcon={<EditIcon />}
-            onClick={() => setOpenModal(true)}
-            disabled={isDisabled}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          {openModel && (
-            <div className="modalContainer">
-              <div className="modal">
-                <div className="sigPadContainer">
-                  <SignatureCanvas
-                    penColor="black"
-                    canvasProps={{
-                      width: 500,
-                      height: 200,
-                      className: "sigCanvas",
-                    }}
-                    ref={sigCanvas}
-                  />
-                  <hr />
-                  <button onClick={() => sigCanvas.current.clear()}>
-                    Clear
-                  </button>
-                </div>
-                <div className="modal__bottom">
-                  <button onClick={() => setOpenModal(false)}>Cancel</button>
-                  <button className="create" onClick={create}>
-                    Create
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {imageURL && (
-            <>
-              <img src={imageURL} alt="signature" className="signature" />
-              <br />
-              <button
-                onClick={download}
-                style={{ padding: "5px", marginTop: "5px" }}
-              >
-                Download
-              </button>
-            </>
-          )}
         </Grid>
         <Grid item xs={12}>
           <Input
@@ -283,9 +183,8 @@ const ProviderProfile = ({ id, businessName, businessWebsite, notes }) => {
                     "businessWebsite",
                     formik.values.businessWebsite,
                   );
-                  formData.append("adminNotes", formik.values.adminNotes);
-                  formData.append("photo", selectedPhoto);
-                  formData.append("signature", selectedSignature);
+                  formData.append("notes", formik.values.adminNotes);
+                  formData.append("Photo", selectedPhoto);
                   dispatch(editProviderProfile({ id, data: formData })).then(
                     (response) => {
                       if (response.type === "editProviderProfile/fulfilled") {

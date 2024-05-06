@@ -37,7 +37,14 @@ const RequestSupportModal = ({ open, handleClose }) => {
     },
   });
   return (
-    <Modal open={open} handleClose={handleClose} header="Request Support">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        handleClose();
+      }}
+      header="Request Support"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography>

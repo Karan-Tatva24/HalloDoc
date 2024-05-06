@@ -56,7 +56,15 @@ const AssignModal = ({ open, handleClose }) => {
     },
   });
   return (
-    <Modal open={open} handleClose={handleClose} header="Assign Request">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        dispatch(clearPhysician());
+        handleClose();
+      }}
+      header="Assign Request"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Typography variant="caption">

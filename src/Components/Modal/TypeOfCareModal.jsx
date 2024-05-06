@@ -21,7 +21,14 @@ const TypeOfCareModal = ({ open, handleClose }) => {
   const navigate = useNavigate();
 
   return (
-    <Modal open={open} handleClose={handleClose} header="Select Type Of Care">
+    <Modal
+      open={open}
+      handleClose={() => {
+        setSelectedType("");
+        handleClose();
+      }}
+      header="Select Type Of Care"
+    >
       <Box
         display="flex"
         justifyContent="center"

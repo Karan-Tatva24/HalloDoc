@@ -124,7 +124,16 @@ const CreateShiftModal = ({ open, handleClose }) => {
   };
 
   return (
-    <Modal open={open} handleClose={handleClose} header="Create Shift">
+    <Modal
+      open={open}
+      handleClose={() => {
+        formik.resetForm();
+        dispatch(clearPhysician());
+        setChecked(false);
+        handleClose();
+      }}
+      header="Create Shift"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" p={2} gap={3}>
           <Input
