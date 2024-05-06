@@ -129,6 +129,30 @@ const DashBoard = () => {
     setDropDown(columnData[activeButton]?.dropDown || newDropdown);
   }, [activeButton]);
 
+  const handleExport = async (exportType, fileName) => {
+    try {
+      const response = await dispatch(exportType);
+      if (response.type?.endsWith("fulfilled")) {
+        const blob = new Blob([response.payload], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.remove();
+        toast.success(response.payload.message);
+      } else {
+        throw new Error("File download failed.");
+      }
+    } catch (error) {
+      toast.error(`Error downloading file: ${error.message}`);
+    }
+  };
+
   return (
     <>
       <Box>
@@ -225,60 +249,19 @@ const DashBoard = () => {
                           name="Export"
                           variant="contained"
                           startIcon={<SendOutlinedIcon />}
-                          onClick={() => {
-                            dispatch(exportByState(activeButton.toLowerCase()))
-                              .then((response) => {
-                                if (
-                                  response.type === "exportByState/fulfilled"
-                                ) {
-                                  const blob = new Blob([response.payload], {
-                                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                  });
-                                  const url = window.URL.createObjectURL(blob);
-                                  const link = document.createElement("a");
-                                  link.href = url;
-                                  link.download = `${activeButton}State-patients.xlsx`;
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  window.URL.revokeObjectURL(url);
-                                  link.remove();
-                                  toast.success(response.payload.message);
-                                } else {
-                                  toast.error("File download failed.");
-                                }
-                              })
-                              .catch((error) => {
-                                toast.error("Error downloading file:", error);
-                              });
-                          }}
+                          onClick={() =>
+                            handleExport(
+                              exportByState(activeButton.toLowerCase()),
+                              `${activeButton}State-patients.xlsx`,
+                            )
+                          }
                         />
                         <Button
                           name="Export All"
                           variant="contained"
                           startIcon={<SendOutlinedIcon />}
                           onClick={() =>
-                            dispatch(exportAll())
-                              .then((response) => {
-                                if (response.type === "exportAll/fulfilled") {
-                                  const blob = new Blob([response.payload], {
-                                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                  });
-                                  const url = window.URL.createObjectURL(blob);
-                                  const link = document.createElement("a");
-                                  link.href = url;
-                                  link.download = `all-patients.xlsx`;
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  window.URL.revokeObjectURL(url);
-                                  link.remove();
-                                  toast.success(response.payload.message);
-                                } else {
-                                  toast.error("File download failed.");
-                                }
-                              })
-                              .catch((error) => {
-                                toast.error("Error downloading file:", error);
-                              })
+                            handleExport(exportAll(), "all-patients.xlsx")
                           }
                         />
                         <Button
