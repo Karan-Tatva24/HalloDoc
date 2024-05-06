@@ -249,115 +249,122 @@ const CreateShiftModal = ({ open, handleClose }) => {
               labelPlacement="top"
             />
           </Box>
-          <Grid item xs={12} md={6}>
-            <Typography>
-              <b>Repeat Days</b>
-            </Typography>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="sunday"
-                  disabled={!checked}
-                  checked={formik.values.sunday}
-                  onChange={handleCheckboxChange}
-                  size="medium"
+          {checked ? (
+            <>
+              <Grid item xs={12} md={6}>
+                <Typography>
+                  <b>Repeat Days</b>
+                </Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="sunday"
+                      disabled={!checked}
+                      checked={formik.values.sunday}
+                      onChange={handleCheckboxChange}
+                      size="medium"
+                    />
+                  }
+                  label="Every Sunday"
                 />
-              }
-              label="Every Sunday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="monday"
-                  disabled={!checked}
-                  checked={formik.values.monday}
-                  onChange={handleCheckboxChange}
-                  size="medium"
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="monday"
+                      disabled={!checked}
+                      checked={formik.values.monday}
+                      onChange={handleCheckboxChange}
+                      size="medium"
+                    />
+                  }
+                  label="Every Monday"
                 />
-              }
-              label="Every Monday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="tuesday"
-                  disabled={!checked}
-                  checked={formik.values.tuesday}
-                  onChange={handleCheckboxChange}
-                  size="medium"
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="tuesday"
+                      disabled={!checked}
+                      checked={formik.values.tuesday}
+                      onChange={handleCheckboxChange}
+                      size="medium"
+                    />
+                  }
+                  label="Every Tuesday"
                 />
-              }
-              label="Every Tuesday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="wednesday"
-                  disabled={!checked}
-                  size="medium"
-                  checked={formik.values.wednesday}
-                  onChange={handleCheckboxChange}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="wednesday"
+                      disabled={!checked}
+                      size="medium"
+                      checked={formik.values.wednesday}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Every Wednesday"
                 />
-              }
-              label="Every Wednesday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="thursday"
-                  disabled={!checked}
-                  size="medium"
-                  checked={formik.values.thursday}
-                  onChange={handleCheckboxChange}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="thursday"
+                      disabled={!checked}
+                      size="medium"
+                      checked={formik.values.thursday}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Every thursday"
                 />
-              }
-              label="Every thursday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="friday"
-                  disabled={!checked}
-                  size="medium"
-                  checked={formik.values.friday}
-                  onChange={handleCheckboxChange}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="friday"
+                      disabled={!checked}
+                      size="medium"
+                      checked={formik.values.friday}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Every Friday"
                 />
-              }
-              label="Every Friday"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="saturday"
-                  disabled={!checked}
-                  size="medium"
-                  checked={formik.values.saturday}
-                  onChange={handleCheckboxChange}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="saturday"
+                      disabled={!checked}
+                      size="medium"
+                      checked={formik.values.saturday}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Every Saturday"
                 />
-              }
-              label="Every Saturday"
-            />
-          </Grid>
-          <Grid item xs={12} md={12} lg={12}>
-            <Input
-              name="repeatUpto"
-              label="Repeat End"
-              fullWidth
-              disabled={!checked}
-              select
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.repeatUpto}
-              error={
-                formik.touched.repeatUpto && Boolean(formik.errors.repeatUpto)
-              }
-              helperText={formik.touched.repeatUpto && formik.errors.repeatUpto}
-            >
-              <MenuItem value="2">2-times</MenuItem>
-              <MenuItem value="3">3-times</MenuItem>
-              <MenuItem value="4">4-times</MenuItem>
-            </Input>
-          </Grid>
+              </Grid>
+              <Grid item xs={12} md={12} lg={12}>
+                <Input
+                  name="repeatUpto"
+                  label="Repeat End"
+                  fullWidth
+                  disabled={!checked}
+                  select
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.repeatUpto}
+                  error={
+                    formik.touched.repeatUpto &&
+                    Boolean(formik.errors.repeatUpto)
+                  }
+                  helperText={
+                    formik.touched.repeatUpto && formik.errors.repeatUpto
+                  }
+                >
+                  <MenuItem value="2">2-times</MenuItem>
+                  <MenuItem value="3">3-times</MenuItem>
+                  <MenuItem value="4">4-times</MenuItem>
+                </Input>
+              </Grid>
+            </>
+          ) : null}
           <Box display="flex" justifyContent="flex-end" gap={2}>
             <Button name="Save" type="submit" variant="contained" />
             <Button
