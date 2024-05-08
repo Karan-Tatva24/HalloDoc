@@ -25,7 +25,11 @@ Axios.interceptors.request.use((config) => {
 Axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.data?.errorMessage === "jwt expired") {
+    console.log(error);
+    if (
+      error?.response?.data?.errorMessage === "jwt expired" ||
+      error?.response?.data?.errorMessage === "Not authorized"
+    ) {
       localStorage.clear();
       window.location = AppRoutes.LOGIN;
     } else if (error?.response?.data?.status === 404) {
