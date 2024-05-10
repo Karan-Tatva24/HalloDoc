@@ -13,7 +13,9 @@ import {
 
 const EncounterModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
-  const { id } = useSelector((state) => state.root.patientName);
+  const { id, patientFirstName } = useSelector(
+    (state) => state.root.patientName,
+  );
 
   const handleDownload = () => {
     dispatch(apiPending());
@@ -25,12 +27,15 @@ const EncounterModal = ({ open, handleClose }) => {
           });
 
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob, `encounter_form.pdf`);
+            window.navigator.msSaveOrOpenBlob(
+              blob,
+              `${patientFirstName}_encounter_form.pdf`,
+            );
           } else {
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.href = url;
-            link.download = `encounter_form.pdf`;
+            link.download = `${patientFirstName}_encounter_form.pdf`;
             document.body.appendChild(link);
             link.click();
             URL.revokeObjectURL(url);
