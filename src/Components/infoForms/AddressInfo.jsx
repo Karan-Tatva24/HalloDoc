@@ -179,50 +179,52 @@ const AddressInfo = ({
                 name="Save"
                 type="submit"
                 onClick={() => {
-                  if (name === "EditProvider") {
-                    dispatch(apiPending());
-                    dispatch(
-                      editProviderProfile({ id: index, data: formik.values }),
-                    ).then((response) => {
-                      if (response.type === "editProviderProfile/fulfilled") {
-                        dispatch(physicianProfile(index));
-                        dispatch(apiSuccess());
-                        toast.success(response.payload.message);
-                      } else if (
-                        response.type === "editProviderProfile/rejected"
-                      ) {
-                        dispatch(apiFails());
-                        toast.error(
-                          response.payload?.data?.validation?.body?.message,
-                        );
-                      }
-                    });
-                  }
+                  if (Object.keys(formik.errors).length === 0) {
+                    if (name === "EditProvider") {
+                      dispatch(apiPending());
+                      dispatch(
+                        editProviderProfile({ id: index, data: formik.values }),
+                      ).then((response) => {
+                        if (response.type === "editProviderProfile/fulfilled") {
+                          dispatch(physicianProfile(index));
+                          dispatch(apiSuccess());
+                          toast.success(response.payload.message);
+                        } else if (
+                          response.type === "editProviderProfile/rejected"
+                        ) {
+                          dispatch(apiFails());
+                          toast.error(
+                            response.payload?.data?.validation?.body?.message,
+                          );
+                        }
+                      });
+                    }
 
-                  if (name === "MyProfile") {
-                    dispatch(apiPending());
-                    dispatch(
-                      editAdminProfile({
-                        id,
-                        section: "billing",
-                        updatedData: formik.values,
-                      }),
-                    ).then((response) => {
-                      if (response.type === "editAdminProfile/fulfilled") {
-                        dispatch(adminProfile(id));
-                        dispatch(apiSuccess());
-                        toast.success(response.payload.message);
-                      } else if (
-                        response.type === "editAdminProfile/rejected"
-                      ) {
-                        dispatch(apiFails());
-                        toast.error(
-                          response.payload?.data?.validation?.body?.message,
-                        );
-                      }
-                    });
+                    if (name === "MyProfile") {
+                      dispatch(apiPending());
+                      dispatch(
+                        editAdminProfile({
+                          id,
+                          section: "billing",
+                          updatedData: formik.values,
+                        }),
+                      ).then((response) => {
+                        if (response.type === "editAdminProfile/fulfilled") {
+                          dispatch(adminProfile(id));
+                          dispatch(apiSuccess());
+                          toast.success(response.payload.message);
+                        } else if (
+                          response.type === "editAdminProfile/rejected"
+                        ) {
+                          dispatch(apiFails());
+                          toast.error(
+                            response.payload?.data?.validation?.body?.message,
+                          );
+                        }
+                      });
+                    }
+                    setIsDisabled(true);
                   }
-                  setIsDisabled(true);
                 }}
               />
               <Button

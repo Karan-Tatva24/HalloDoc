@@ -50,6 +50,8 @@ const ViewUpload = () => {
     id,
     patientEmail,
   } = useSelector((state) => state.root.patientName);
+  const { accountType } = useSelector((state) => state.root.loggedUserData);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -336,18 +338,22 @@ const ViewUpload = () => {
                   color="primary"
                   onClick={handleDownloadAll}
                 />
-                <Button
-                  name="Delete Selected"
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleDeleteAll}
-                />
-                <Button
-                  name="Send Mail"
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleSendMail}
-                />
+                {accountType === "User" ? null : (
+                  <>
+                    <Button
+                      name="Delete Selected"
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleDeleteAll}
+                    />
+                    <Button
+                      name="Send Mail"
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleSendMail}
+                    />
+                  </>
+                )}
               </Box>
             </Box>
             <TableContainer component={Paper}>

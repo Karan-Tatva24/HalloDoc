@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../constants/routes";
 import { useDispatch } from "react-redux";
 import { selectRequestType } from "../../redux/halloSlices/patientSlices/commonSlice";
+import { toast } from "react-toastify";
 
 const CreateNewRequestModal = ({ open, handleClose }) => {
   const [selectedType, setSelectedType] = useState("");
@@ -48,8 +49,11 @@ const CreateNewRequestModal = ({ open, handleClose }) => {
         <Button
           name="Continue"
           onClick={() => {
-            dispatch(selectRequestType(selectedType));
-            navigate(AppRoutes.SUBMIT_INFORMATION);
+            if (selectedType !== "") {
+              dispatch(selectRequestType(selectedType));
+              setSelectedType("");
+              navigate(AppRoutes.SUBMIT_INFORMATION);
+            } else toast.error("Please select any one type.");
           }}
         />
         <Button

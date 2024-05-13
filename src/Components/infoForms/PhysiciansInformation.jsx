@@ -242,22 +242,24 @@ const PhysiciansInformation = ({
                 name="Save"
                 type="submit"
                 onClick={() => {
-                  dispatch(apiPending());
-                  dispatch(
-                    editProviderProfile({ id, data: formik.values }),
-                  ).then((response) => {
-                    if (response.type === "editProviderProfile/fulfilled") {
-                      dispatch(physicianProfile(id));
-                      dispatch(apiSuccess());
-                      toast.success(response.payload.message);
-                    } else if (
-                      response.type === "editProviderProfile/rejected"
-                    ) {
-                      dispatch(apiFails());
-                      toast.error(response.payload?.data?.message);
-                    }
-                  });
-                  setIsDisabled(true);
+                  if (Object.keys(formik.errors).length === 0) {
+                    dispatch(apiPending());
+                    dispatch(
+                      editProviderProfile({ id, data: formik.values }),
+                    ).then((response) => {
+                      if (response.type === "editProviderProfile/fulfilled") {
+                        dispatch(physicianProfile(id));
+                        dispatch(apiSuccess());
+                        toast.success(response.payload.message);
+                      } else if (
+                        response.type === "editProviderProfile/rejected"
+                      ) {
+                        dispatch(apiFails());
+                        toast.error(response.payload?.data?.message);
+                      }
+                    });
+                    setIsDisabled(true);
+                  }
                 }}
               />
               <Button

@@ -110,7 +110,7 @@ const App = () => {
                 />
               }
             >
-              <Route path="/*" element={<PageNotFound />} />
+              <Route path="*" element={<PageNotFound />} />
 
               {/* ******* This routes are access by only login user ******* */}
               <Route element={<RequireAuth />}>

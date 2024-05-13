@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom/dist";
 import { AppRoutes } from "../../constants/routes";
 import { getPatientName } from "../../redux/halloAPIs/adminAPIs/dashboardAPIs/getPatientNameAPI";
+import { toast } from "react-toastify";
 
 const TypeOfCareModal = ({ open, handleClose }) => {
   const [selectedType, setSelectedType] = useState("");
@@ -59,22 +60,24 @@ const TypeOfCareModal = ({ open, handleClose }) => {
         <Button
           name="Save"
           onClick={() => {
-            dispatch(apiPending());
-            dispatch(typeOfCare({ id, typeOfCare: selectedType })).then(
-              (response) => {
-                if (response.type === "typeOfCare/fulfilled") {
-                  dispatch(getProviderDashboardCount());
-                  if (selectedType === "Consult") {
-                    dispatch(getPatientName(id));
-                    navigate(AppRoutes.ENCOUNTER_FORM);
-                  }
-                  handleClose();
-                  setSelectedType("");
-                  dispatch(apiSuccess());
-                } else if (response.type === "typeOfCare/rejected")
-                  dispatch(apiFails());
-              },
-            );
+            if (selectedType !== "") {
+              dispatch(apiPending());
+              dispatch(typeOfCare({ id, typeOfCare: selectedType })).then(
+                (response) => {
+                  if (response.type === "typeOfCare/fulfilled") {
+                    dispatch(getProviderDashboardCount());
+                    if (selectedType === "Consult") {
+                      dispatch(getPatientName(id));
+                      navigate(AppRoutes.ENCOUNTER_FORM);
+                    }
+                    handleClose();
+                    dispatch(apiSuccess());
+                  } else if (response.type === "typeOfCare/rejected")
+                    dispatch(apiFails());
+                },
+              );
+            } else toast.error("Please select any one type.");
+            setSelectedType("");
           }}
         />
         <Button

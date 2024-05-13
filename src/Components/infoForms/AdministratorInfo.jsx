@@ -187,25 +187,27 @@ const AdministratorInfo = ({ firstName, lastName, email, phone, regions }) => {
               name="Save"
               type="submit"
               onClick={() => {
-                dispatch(apiPending());
-                dispatch(
-                  editAdminProfile({
-                    section: "administration",
-                    updatedData: formik.values,
-                  }),
-                ).then((response) => {
-                  if (response.type === "editAdminProfile/fulfilled") {
-                    dispatch(adminProfile());
-                    dispatch(apiSuccess());
-                    toast.success(response.payload.message);
-                  } else if (response.type === "editAdminProfile/rejected") {
-                    dispatch(apiFails());
-                    toast.error(
-                      response.payload?.data?.validation?.body?.message,
-                    );
-                  }
-                });
-                setIsDisabled(true);
+                if (Object.keys(formik.errors).length === 0) {
+                  dispatch(apiPending());
+                  dispatch(
+                    editAdminProfile({
+                      section: "administration",
+                      updatedData: formik.values,
+                    }),
+                  ).then((response) => {
+                    if (response.type === "editAdminProfile/fulfilled") {
+                      dispatch(adminProfile());
+                      dispatch(apiSuccess());
+                      toast.success(response.payload.message);
+                    } else if (response.type === "editAdminProfile/rejected") {
+                      dispatch(apiFails());
+                      toast.error(
+                        response.payload?.data?.validation?.body?.message,
+                      );
+                    }
+                  });
+                  setIsDisabled(true);
+                }
               }}
             />
             <Button

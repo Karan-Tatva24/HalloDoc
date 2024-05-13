@@ -4,7 +4,7 @@ export const columns = [
     label: "Account Type",
   },
   {
-    id: "accountPOC",
+    id: "firstName",
     label: "Account POC",
   },
   {

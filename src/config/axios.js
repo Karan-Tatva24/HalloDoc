@@ -25,7 +25,6 @@ Axios.interceptors.request.use((config) => {
 Axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log(error);
     if (
       error?.response?.data?.errorMessage === "jwt expired" ||
       error?.response?.data?.errorMessage === "Not authorized"
@@ -33,7 +32,7 @@ Axios.interceptors.response.use(
       localStorage.clear();
       window.location = AppRoutes.LOGIN;
     } else if (error?.response?.data?.status === 404) {
-      window.location = AppRoutes.INVOICING;
+      window.location.href = "/404";
       toast.error(error?.response?.data?.message);
     }
     return Promise.reject(error);

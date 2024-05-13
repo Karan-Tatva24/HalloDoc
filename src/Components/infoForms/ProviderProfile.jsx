@@ -176,32 +176,34 @@ const ProviderProfile = ({
                 name="Save"
                 type="submit"
                 onClick={() => {
-                  dispatch(apiPending());
-                  const formData = new FormData();
-                  formData.append("businessName", formik.values.businessName);
-                  formData.append(
-                    "businessWebsite",
-                    formik.values.businessWebsite,
-                  );
-                  formData.append("notes", formik.values.adminNotes);
-                  formData.append("Photo", selectedPhoto);
-                  dispatch(editProviderProfile({ id, data: formData })).then(
-                    (response) => {
-                      if (response.type === "editProviderProfile/fulfilled") {
-                        dispatch(physicianProfile(id));
-                        dispatch(apiSuccess());
-                        toast.success(response.payload.message);
-                      } else if (
-                        response.type === "editProviderProfile/rejected"
-                      ) {
-                        dispatch(apiFails());
-                        toast.error(
-                          response.payload?.data?.validation?.message,
-                        );
-                      }
-                    },
-                  );
-                  setIsDisabled(true);
+                  if (Object.keys(formik.errors).length === 0) {
+                    dispatch(apiPending());
+                    const formData = new FormData();
+                    formData.append("businessName", formik.values.businessName);
+                    formData.append(
+                      "businessWebsite",
+                      formik.values.businessWebsite,
+                    );
+                    formData.append("notes", formik.values.adminNotes);
+                    formData.append("Photo", selectedPhoto);
+                    dispatch(editProviderProfile({ id, data: formData })).then(
+                      (response) => {
+                        if (response.type === "editProviderProfile/fulfilled") {
+                          dispatch(physicianProfile(id));
+                          dispatch(apiSuccess());
+                          toast.success(response.payload.message);
+                        } else if (
+                          response.type === "editProviderProfile/rejected"
+                        ) {
+                          dispatch(apiFails());
+                          toast.error(
+                            response.payload?.data?.validation?.message,
+                          );
+                        }
+                      },
+                    );
+                    setIsDisabled(true);
+                  }
                 }}
               />
               <Button

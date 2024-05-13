@@ -155,13 +155,18 @@ const UserAccess = () => {
                         align="center"
                         style={{ minWidth: column.minWidth }}
                       >
-                        <TableSortLabel
-                          active={orderBy === column.id}
-                          direction={order}
-                          onClick={() => handleRequestSort(column.id)}
-                        >
-                          {column.label}
-                        </TableSortLabel>
+                        {column.id === "openRequest" ||
+                        column.id === "actions" ? (
+                          `${column.label}`
+                        ) : (
+                          <TableSortLabel
+                            active={orderBy === column.id}
+                            direction={order}
+                            onClick={() => handleRequestSort(column.id)}
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -188,7 +193,7 @@ const UserAccess = () => {
                                     }
                                   />
                                 </Box>
-                              ) : column.id === "accountPOC" ? (
+                              ) : column.id === "firstName" ? (
                                 `${row?.firstName}, ${row?.lastName}`
                               ) : (
                                 row?.[column.id]

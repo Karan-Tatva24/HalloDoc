@@ -23,6 +23,7 @@ import { loginHeading } from "../../assets/Images";
 import { toast } from "react-toastify";
 import "./header.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { clearAccountType } from "../../redux/halloSlices/adminSlices/loggedUserDataSlice";
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,8 +43,10 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(clearAccountType());
     navigate(AppRoutes.LOGIN);
     toast.success("You are successfully logout");
+    localStorage.clear();
   };
 
   const handleMenuClose = () => {
@@ -200,14 +203,6 @@ const Header = () => {
                         }}
                       >
                         Scheduling
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          navigate(AppRoutes.INVOICING);
-                          handleMenuClose();
-                        }}
-                      >
-                        Invoicing
                       </MenuItem>
                     </Menu>
                   )}

@@ -10,6 +10,13 @@ const initialState = {
 export const loggedUserDataSlice = createSlice({
   name: "Logged User Data",
   initialState,
+  reducers: {
+    clearAccountType: (state) => {
+      state.accountType = "";
+      state.id = "";
+      state.userName = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loggedUser.fulfilled, (state, action) => {
       if (action.payload) {
@@ -22,3 +29,4 @@ export const loggedUserDataSlice = createSlice({
 });
 
 export default loggedUserDataSlice.reducer;
+export const { clearAccountType } = loggedUserDataSlice.actions;
