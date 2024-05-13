@@ -138,15 +138,6 @@ const Header = () => {
                   Provider Location
                 </NavLink>
               </li>
-            ) : accountType === "Physician" ? (
-              <li>
-                <NavLink
-                  to={AppRoutes.INVOICING}
-                  className={({ isActive }) => (isActive ? "active" : "")}
-                >
-                  Invoicing
-                </NavLink>
-              </li>
             ) : null}
             {accountType === "Physician" ? (
               <li>
@@ -342,7 +333,7 @@ const Header = () => {
           >
             <ListItemText primary="Dashboard" />
           </ListItemButton>
-          {accountType === "Admin" ? (
+          {accountType === "Admin" && (
             <ListItemButton
               onClick={() => {
                 setDrawerOpen(false);
@@ -350,15 +341,6 @@ const Header = () => {
               }}
             >
               <ListItemText primary="Provider Location" />
-            </ListItemButton>
-          ) : (
-            <ListItemButton
-              onClick={() => {
-                setDrawerOpen(false);
-                navigate(AppRoutes.INVOICING);
-              }}
-            >
-              <ListItemText primary="Invoicing" />
             </ListItemButton>
           )}
           {accountType === "Physician" ? (
