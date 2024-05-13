@@ -78,7 +78,7 @@ const Header = () => {
             variant="outlined"
             size="large"
             className="toggle-btn icon-btn"
-            onClick={() => setDrawerOpen(true)}
+            onClick={() => setDrawerOpen(!drawerOpen)}
           >
             <MenuOutlinedIcon fontSize="large" />
           </Button>

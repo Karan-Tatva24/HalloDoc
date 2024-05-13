@@ -84,11 +84,11 @@ const MyTable = ({
     [accountType, stateDropDown],
   );
 
-  const { stateData, providerStateData, regions } = useSelector((state) => ({
-    stateData: state.root.newState.stateData,
-    providerStateData: state.root.dashboardByState.providerStateData,
-    regions: state.root.getRegionPhysician.regions,
-  }));
+  const { stateData } = useSelector((state) => state.root.newState);
+  const { regions } = useSelector((state) => state.root.getRegionPhysician);
+  const { providerStateData } = useSelector(
+    (state) => state.root.dashboardByState,
+  );
 
   const tableData = useMemo(() => {
     return accountType === "Admin" ? stateData?.rows : providerStateData?.rows;
