@@ -238,7 +238,10 @@ const ProviderInfo = () => {
                                     name="Contact"
                                     variant="outlined"
                                     size="small"
-                                    onClick={() => handleOpen(row?.id)}
+                                    onClick={() => {
+                                      if (!row?.stopNotification)
+                                        handleOpen(row?.id);
+                                    }}
                                   />
                                   <Button
                                     name="Edit"
